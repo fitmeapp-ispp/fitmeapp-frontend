@@ -3,18 +3,50 @@
             <div class="col-12">
                 <div class="card">
                     <div class="grid grid-nogutter mb-3">
-                        <div class="col-4 text-left">
+                        <div class="col-9 text-left">
                             <h1>Almuerzo</h1>
                         </div>
-                        <div class="col-2 text-center">
-                            <p> KCalorías: 66 Kcal / 2185 Kcal</p>
-                            <p> Proteínas: 1,02 g / 109 g</p>
+
+							<div class="col-5 text-center">
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">KCalorías</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+								<div class="bg-teal-500 h-full" style="width:3%"></div>
+							</div>
+							<span class="text-teal-500 ml-3 font-medium">66 Kcal / 2185 Kcal</span>
+							</div>
+
+							<div class="col-3 text-center"></div>
+
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Proteínas</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+								<div class="bg-teal-500 h-full" style="width:7%"></div>
+							</div>
+							<span class="text-teal-500 ml-3 font-medium">19.67 g / 273 g</span>
+							</div>
                         </div>
-                        <div class="col-2 text-center">
-                            <p> Carbohidratos: 11,67 g / 273 g</p>
-                            <p> Grasas: 0,46g / 73 g</p>
+                        <div class="col-4 text-center">
+
+
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Carbohidratos</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+									<div class="bg-teal-500 h-full" style="width:36%"></div>
+								</div>
+								<span class="text-teal-500 ml-3 font-medium">110 g / 273 g</span>
+							</div>
+							<div class="col-3 text-center"></div>
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Grasas</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+									<div class="bg-teal-500 h-full" style="width:50%"></div>
+								</div>
+								<span class="text-teal-500 ml-3 font-medium">38g / 73 g</span>
+							</div>
+
                         </div>
-                        <div class="col-4 text-right">
+                        <div class="col-3 text-right">
                             <Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success mr-2" />
                         </div>
                     </div>
