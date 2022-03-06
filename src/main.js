@@ -122,6 +122,8 @@ app.use(ToastService);
 app.use(router);
 app.use(store);
 
+
+
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
 app.directive('code', CodeHighlight);
