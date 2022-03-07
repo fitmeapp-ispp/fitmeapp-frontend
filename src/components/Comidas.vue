@@ -5,6 +5,7 @@
                     <div class="grid grid-nogutter mb-3">
                         <div class="col-9 text-left">
                             <h1>Almuerzo</h1>
+
                         </div>
 
 							<div class="col-5 text-center">
@@ -26,9 +27,8 @@
 							<span class="text-teal-500 ml-3 font-medium">19.67 g / 273 g</span>
 							</div>
                         </div>
+
                         <div class="col-4 text-center">
-
-
 							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
 								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Carbohidratos</span>
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
@@ -61,6 +61,18 @@
                         </template>
                     </Toolbar>
                 </div>
+
+				
+			<div class="card">			
+				<div class="card col-5">					
+					<div class="col-2">Macarrones</div>
+					<div>66 de KCalorías</div>
+					<div>19.67g de Proteínas</div>
+					<div>110g de Carbohidratos</div>
+					<div>38g de Grasas</div>
+					</div>
+			</div>
+			
             </div>
     </div>
 
