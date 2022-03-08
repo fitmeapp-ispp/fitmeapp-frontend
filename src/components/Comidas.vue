@@ -118,11 +118,14 @@
                                 <div class="text-align-center"> 
                                     <div class="grid grid-nogutter">
                                         <div class="col-4 text-left">
-                                            <img :src="'images/product/' + slotProps.data.image" :alt="slotProps.data.name" class="w-9 shadow-2 my-3 mx-0"/>
+                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0"/>
                                         </div>
                                         <div class="col-8 text-left">
-                                            <div class="text-2xl font-bold">{{slotProps.data.name}}</div>
-                                            <div class="mb-3">{{slotProps.data.description}}</div>
+                                            <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
+											<div class="mb-3"></div>
+                                            <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
+											<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
+											<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +143,7 @@
 </template>
 
 <script>
-	import ProductService from "../service/ProductService";
+	//import ProductService from "../service/ProductService";
     import {FilterMatchMode,FilterOperator} from 'primevue/api';
 	export default {
 		data() {
@@ -176,13 +179,20 @@
 		},
 		productService: null,
 		created() {
-			this.productService = new ProductService();
+			
             this.initFilters1();
 		},
 		mounted() {
-			this.productService.getProducts().then(data => this.dataviewValue = data);
+			this.fetchItems();
 		},
 		methods: {
+			fetchItems()
+			{
+				let uri = 'http://localhost:3000/comida';
+				this.axios.get(uri).then((response) => {
+				this.dataviewValue = response.data;
+				});
+			},
             initFilters1() {
 				this.filters1 = {
 					'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
