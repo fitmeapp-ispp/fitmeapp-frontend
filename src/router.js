@@ -1,11 +1,29 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Dashboard from './components/Dashboard.vue';
+import Ejercicio from './components/Ejercicio.vue';
+import Comidas from './components/Comidas.vue';
+import Perfil from './components/Perfil.vue';
 
 const routes = [
     {
         path: '/',
         name: 'dashboard',
         component: Dashboard,
+    },
+    {
+        path: '/comidas',
+        name: 'comidas',
+        component: Comidas,
+    },
+    {
+        path: '/ejercicio',
+        name: 'ejercicio',
+        component: Ejercicio,
+    },
+    {
+        path: '/perfil',
+        name: 'perfil',
+        component: Perfil,
     },
     {
         path: '/crud',

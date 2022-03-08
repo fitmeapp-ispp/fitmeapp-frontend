@@ -1,36 +1,24 @@
 <template>
-	<div class="layout-topbar">
-		<router-link to="/" class="layout-topbar-logo">
-			<img alt="Logo" :src="topbarImage()" />
-			<span>SAKAI</span>
+<div class="ex2">
+	<div class="bg-green-600  font-bold border-round m-2 flex align-items-center justify-content-center">
+		<span class="col-12 mt-2 lg:col-1 lg:mb-0"></span>
+		<img alt="Logo" :src="topbarImage()" />
+		<span class="col-12 mt-2 lg:col-1 lg:mb-0"></span>
+		<router-link to="/" class="col-12 mt-2 lg:col-2 lg:mb-0">
+			<H1 class="color">HOME</H1>
 		</router-link>
-
-		<button class="p-link layout-topbar-menu-button layout-topbar-button"
-			v-styleclass="{ selector: '@next', enterClass: 'hidden', enterActiveClass: 'scalein', 
-			leaveToClass: 'hidden', leaveActiveClass: 'fadeout', hideOnOutsideClick: true}">
-			<i class="pi pi-ellipsis-v"></i>
-		</button>
-		<ul class="layout-topbar-menu hidden lg:flex origin-top">
-			<li>
-				<button class="p-link layout-topbar-button">
-					<i class="pi pi-calendar"></i>
-					<span>Events</span>
-				</button>
-			</li>
-			<li>
-				<button class="p-link layout-topbar-button">
-					<i class="pi pi-cog"></i>
-					<span>Settings</span>
-				</button>
-			</li>
-			<li>
-				<button class="p-link layout-topbar-button">
-					<i class="pi pi-user"></i>
-					<span>Profile</span>
-				</button>
-			</li>
-		</ul>
+		<router-link to="/comidas" class="col-12 mt-2 lg:col-2 lg:mb-0">
+			<H1 class="color">COMIDAS</H1>
+		</router-link>
+		<router-link to="/ejercicio" class="col-12 mt-2 lg:col-2 lg:mb-0">
+			<H1 class="color">EJERCICIO</H1>
+		</router-link>
+		<router-link to="/perfil" class="col-12 mt-2 lg:col-2 lg:mb-0">
+			<H1 class="color">PERFIL</H1>
+		</router-link>
+		<span class="col-12 mt-2 lg:col-2 lg:mb-0"></span>
 	</div>
+</div>
 </template>
 
 <script>
@@ -43,7 +31,7 @@ export default {
             this.$emit('topbar-menu-toggle', event);
         },
 		topbarImage() {
-			return this.$appState.darkTheme ? 'images/logo-white.svg' : 'images/logo-dark.svg';
+			return this.$appState.darkTheme ? 'images/Logo_ISPP.png' : 'images/Logo_ISPP.png';
 		}
     },
 	computed: {
@@ -53,3 +41,18 @@ export default {
 	}
 }
 </script>
+<style>
+	
+	H1.color{
+		text-align: center;
+		color:white;
+	}
+	H1.color:hover {
+
+		color: black;
+	}
+
+	.ex2 {
+		margin: 0px 0px 0 0px;
+	}
+</style>

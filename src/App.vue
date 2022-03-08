@@ -1,8 +1,8 @@
 <template>
 	<div :class="containerClass" @click="onWrapperClick">
-        <AppTopBar @menu-toggle="onMenuToggle" />
+        <AppTopBar id="navbar" @menu-toggle="onMenuToggle" />
 
-        <div class="layout-main-container">
+        <div class="m-4">
             <div class="layout-main">
                 <router-view />
             </div>
@@ -133,8 +133,13 @@ export default {
             ]
         }
     },
-    watch: {
+    watch: {   
         $route() {
+            if (this.$route.fullPath === "/login") {
+                document.getElementById("navbar").style="display:none"
+            }else{
+                document.getElementById("navbar").style=""
+            }
             this.menuActive = false;
             this.$toast.removeAllGroups();
         }
