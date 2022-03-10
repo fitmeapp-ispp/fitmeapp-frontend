@@ -31,6 +31,78 @@
       </div>
     </div>
 
+
+
+
+
+
+
+<div class="grid">
+		<div class="col-12">
+			<div class="card">
+				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" v-model:filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+					<template #header>
+						<div class="grid grid-nogutter">
+							<div class="col-4 text-left">
+								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By Price" @change="onSortChange($event)"/>
+							</div>
+                            <div class="col-4 text-center">
+                                <span class="p-input-icon-left mb-2">
+                                    <i class="pi pi-search" />
+                                </span>
+                            </div>
+							<div class="col-4 text-right">
+								<DataViewLayoutOptions v-model="layout" />
+							</div>
+						</div>
+					</template>
+					<template #list="slotProps">
+						<div class="col-12">
+							<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+								<div class="flex-1 text-center md:text-left">
+									<div class="font-bold text-2xl">{{slotProps.data.name}}</div>
+									<div class="mb-3">{{slotProps.data.description}}</div>
+
+								</div>
+								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+								</div>
+							</div>
+						</div>
+					</template>
+
+					<template #grid="slotProps">
+						<div class="col-12 md:col-4">
+							<div class="card m-3 border-1 surface-border">
+                                <div class="text-align-center"> 
+                                    <div class="grid grid-nogutter">
+                                        <div class="col-4 text-left">
+                                        </div>
+                                        <div class="col-8 text-left">
+                                            <div class="text-2xl font-bold">{{slotProps.data.name}}</div>
+                                            <div class="text-2xl font-bold">{{slotProps.data.description}}</div>
+
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="flex align-items-center justify-content-between">
+                                    <div></div>
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+								</div>
+							</div>
+						</div>
+					</template>
+				</DataView>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
 </template>
 
 <script>
@@ -43,6 +115,7 @@ export default {
       selectedMusculo: null,
       selectedMusculo2: null,
       selectedMusculo3: null,
+      dataviewValue: null,
       musculos: [
                 {name: 'Piernas', code: 'NY'},
                 {name: 'Espalda y Hombros', code: 'RM'},
@@ -100,7 +173,17 @@ export default {
     };
   },
   themeChangeListener: null,
+  mounted() {
+    this.fetchItems();
+  },
   methods: {
+            fetchItems()
+        {
+          let uri = 'http://localhost:3000/ejercicio';
+          this.axios.get(uri).then((response) => {
+          this.dataviewValue = response.data;
+          });
+        },
     formatCurrency(value) {
       return value.toLocaleString("en-US", {
         style: "currency",
