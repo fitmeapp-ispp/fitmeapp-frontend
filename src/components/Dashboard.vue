@@ -1,4 +1,6 @@
 <template>
+	<Topbar />
+
 	<div class="grid">
 		<div class="col-12 lg:col-6 xl:col-3">
 			<div class="card mb-0">
@@ -242,7 +244,12 @@
 </template>
 
 <script>
+import Topbar from '@/components/Topbar'
+
 export default {
+	components: {
+		Topbar
+	},
 	data() {
 		return {
 			products: null,

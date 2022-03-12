@@ -5,7 +5,9 @@ export default createStore({
   plugins: [createPersistedState()],
   state: {
     username: '',
-    password: ''
+    password: '',
+    userId: '',
+    loggedIn: false,
   },
   mutations: {
     saveUsername(state, username){
@@ -17,7 +19,16 @@ export default createStore({
     removeCredentialsUser(state){
       state.username = '';
       state.password = '';
-    }
+    },
+    saveUserId(state, userId){
+      state.userId = userId;
+    },
+    logIn(state){
+      state.loggedIn = true;
+    },
+    logOut(state){
+      state.loggedIn = false;
+    },
   },
   actions: {
     saveUsername({commit}, username){
@@ -28,7 +39,16 @@ export default createStore({
     },
     removeCredentialsUser({commit}){
       commit("removeCredentialsUser");
-    }
+    },
+    saveUserId({commit}, userId) {
+      commit("saveUserId", userId);
+    },
+    logIn({commit}){
+      commit("logIn");
+    },
+    logOut({commit}){
+      commit("logOut");
+    },
   },
   modules: {
   }

@@ -1,6 +1,6 @@
 <template>
 	<div :class="containerClass" @click="onWrapperClick">
-        <AppTopBar @menu-toggle="onMenuToggle" />
+        <!-- <AppTopBar @menu-toggle="onMenuToggle" /> -->
 
         <div class="layout-main-container">
             <div class="layout-main">
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import AppTopBar from './AppTopbar.vue';
+// import AppTopBar from './AppTopbar.vue';
 import AppFooter from './AppFooter.vue';
 
 export default {
@@ -234,7 +234,7 @@ export default {
             this.removeClass(document.body, 'body-overflow-hidden');
     },
     components: {
-        'AppTopBar': AppTopBar,
+        // 'AppTopBar': AppTopBar,
         'AppFooter': AppFooter,
     }
 }
