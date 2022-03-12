@@ -99,10 +99,13 @@
 					<template #list="slotProps">
 						<div class="col-12">
 							<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-								<img :src="'images/product/' + slotProps.data.image" :alt="slotProps.data.name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
 								<div class="flex-1 text-center md:text-left">
-									<div class="font-bold text-2xl">{{slotProps.data.name}}</div>
-									<div class="mb-3">{{slotProps.data.description}}</div>
+									<div class="font-bold text-2xl">{{slotProps.data.product_name}}</div>
+									<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
+                                    <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
+									<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
+									<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
 
 								</div>
 								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
@@ -123,6 +126,7 @@
                                         <div class="col-8 text-left">
                                             <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
 											<div class="mb-3"></div>
+											<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
                                             <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
 											<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
 											<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
@@ -172,8 +176,8 @@
 				sortOrder: null,
 				sortField: null,
 				sortOptions: [
-					{label: 'Price High to Low', value: '!price'},
-					{label: 'Price Low to High', value: 'price'},
+					{label: 'Price High to Low', value: '!product_name'},
+					{label: 'Price Low to High', value: 'product_name'},
 				]
 			}
 		},
