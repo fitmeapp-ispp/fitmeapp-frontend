@@ -57,38 +57,21 @@
 						</div>
 					</template>
 					<template #list="slotProps">
-						<div class="col-12">
-							<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-								<div class="flex-1 text-center md:text-left">
-									<div class="font-bold text-2xl">{{slotProps.data.name}}</div>
-									<div class="mb-3">{{slotProps.data.description}}</div>
-
-								</div>
-								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
-								</div>
-							</div>
-						</div>
-					</template>
-
-					<template #grid="slotProps">
 						<div class="col-12 md:col-4">
-							<div class="card m-3 border-1 surface-border">
-                                <div class="text-align-center"> 
-                                    <div class="grid grid-nogutter">
-                                        <div class="col-4 text-left">
-                                        </div>
-                                        <div class="col-8 text-left">
-                                            <div class="text-2xl font-bold">{{slotProps.data.name}}</div>
-                                            <div class="text-2xl font-bold">{{slotProps.data.description}}</div>
-
-                                        </div>
-                                    </div>
-                                </div>
-								<div class="flex align-items-center justify-content-between">
-                                    <div></div>
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
-								</div>
+                <div class="ejercicioCard">
+                    <img src="" class="ejercicio-img">
+                    <div class="ejercicio-container">
+                        <div class="ejercicio-head">
+                            <div class="ejercicio-title">{{slotProps.data.name}}</div>
+                            <span class="calorias">(Calorias)</span>
+                        </div>
+                        <ul>
+                            <li class="text">Dificultad</li>
+                            <li class="text">Material</li>
+                            <li class="text">Tiempo</li>
+                        </ul>
+                        <img src="" class="zonaEjercicio-img">
+                    </div>
 							</div>
 						</div>
 					</template>
@@ -254,3 +237,60 @@ export default {
   },
 };
 </script>
+<style>
+    .ejercicio-img {
+        margin: auto;
+        margin-left: 0px;
+        margin-right: 0px;
+        width: 10rem;
+        height: 10rem;
+    }
+    .ejercicioCard {
+        z-index:2;
+        border-radius: 10px;
+        padding: 1rem 0 1rem 1rem;
+        width: 40rem;
+        height: 13rem;
+        position: relative; 
+        background-color: gray;
+        display: flex;
+        flex-direction: row;
+    }
+    .ejercicio-container{
+        margin-left:1vw;
+    }
+    .calorias {
+        margin-right: 1vw;
+        overflow: visible;
+        z-index:2;
+        font-size: calc(1vw + 1vh + 0.7vmin);
+    }
+    .ejercicio-head {
+        height: calc(1vw + 1vh + 2vmin);
+        font-size: calc(1vw + 1vh + 1vmin);
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+    }
+    .ejercicio-title {
+        display: inline;
+        width: 100%;
+        height: calc(1vw + 1vh + 2vmin);
+        font-size: calc(1vw + 1vh + 1vmin);
+        z-index: 3;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .text {
+        font-size: calc(0.7vw + 0.7vh + 0.4vmin);
+    }
+    .zonaEjercicio-img {
+        position: absolute;
+        bottom: 1%;
+        right: 1%;
+        width: 8.5rem;
+        height: 8.5rem;
+        background-color: red;
+        z-index: -1;
+    }
+</style>
