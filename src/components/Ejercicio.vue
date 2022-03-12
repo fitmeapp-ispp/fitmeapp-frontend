@@ -46,11 +46,11 @@
 							<div class="col-4 text-left">
 								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By Price" @change="onSortChange($event)"/>
 							</div>
-                            <div class="col-4 text-center">
-                                <span class="p-input-icon-left mb-2">
-                                    <i class="pi pi-search" />
-                                </span>
-                            </div>
+                <div class="col-4 text-center">
+                    <span class="p-input-icon-left mb-2">
+                        <i class="pi pi-search" />
+                    </span>
+                </div>
 							<div class="col-4 text-right">
 								<DataViewLayoutOptions v-model="layout" />
 							</div>
@@ -58,21 +58,21 @@
 					</template>
 					<template #list="slotProps">
 						<div class="col-12 md:col-4">
-            <div class="item">
-                <div class="ejercicioCard container row ">
+            <div class="item container">
+                <div class="ejercicioCard row ">
                     <img src="" class="ejercicio-img col">
-                    <div class="ejercicio-container">
-                        <div class="ejercicio-head">
-                            <div class="ejercicio-title">{{slotProps.data.name}}</div>
-                            <span class="calorias">(Calorias)</span>
-                        </div>
-                        <ul>
-                            <li class="text">Dificultad</li>
-                            <li class="text">Material</li>
-                            <li class="text">Tiempo</li>
-                        </ul>
-                        <img src="" class="zonaEjercicio-img">
-                    </div>
+                    <div class="ejercicio-container col-8">
+                      <div class="ejercicio-head row">
+                        <div class="ejercicio-title col">{{slotProps.data.name}}</div>
+                        <span class="calorias col-4">(Calorias)</span>
+                      </div>
+                    <ul>
+                      <li class="text">Dificultad</li>
+                      <li class="text">Material</li>
+                      <li class="text">Tiempo</li>
+                    </ul>
+                    <img src="" class="zonaEjercicio-img">
+                </div>
 							</div>
             </div>
 						</div>
@@ -245,56 +245,54 @@ export default {
     }
     .ejercicio-img {
         margin: auto;
-        margin-left: 0px;
-        margin-right: 0px;
         width: 100%;
-        height: 100%;
+        height: 7vw;
+        object-fit: cover;
     }
     .ejercicioCard {
         z-index:2;
         border-radius: 10px;
         padding: 1rem 0 1rem 1rem;
         width: 100%;
-        height: 100%;
+        height: auto;
+        object-fit: cover;
         position: relative; 
         background-color: gray;
         display: flex;
         flex-direction: row;
     }
     .ejercicio-container{
-        margin-left:1vw;
+        padding: 0;
+    }
+    .ejercicio-head {
+        height: calc(1vw + 1vh + 2vmin);
+        font-size: calc(1vw + 1vh + 1vmin);
+        display: flex;
+        flex-direction: row;
     }
     .calorias {
         margin-right: 1vw;
         overflow: visible;
         z-index:2;
-        font-size: calc(1vw + 1vh + 0.7vmin);
-    }
-    .ejercicio-head {
-        height: calc(1vw + 1vh + 2vmin);
-        font-size: calc(1vw + 1vh + 1vmin);
-        overflow: hidden;
-        display: flex;
-        flex-direction: row;
+        font-size: calc(0.4vw + 0.4vh + 0.4vmin);
     }
     .ejercicio-title {
         display: inline;
         width: 100%;
-        height: calc(1vw + 1vh + 2vmin);
-        font-size: calc(1vw + 1vh + 1vmin);
+        height: 100%;
+        font-size: calc(0.5vw + 0.5vh + 0.5vmin);
         z-index: 3;
         text-overflow: ellipsis;
-        overflow: hidden;
     }
     .text {
-        font-size: calc(0.7vw + 0.7vh + 0.4vmin);
+        font-size: calc(0.4vw + 0.4vh + 0.4vmin);
     }
     .zonaEjercicio-img {
         position: absolute;
-        bottom: 1%;
-        right: 1%;
-        width: 8.5rem;
-        height: 8.5rem;
+        bottom: 2%;
+        right: 2%;
+        width: 6vw;
+        height: 6vw;
         background-color: red;
         z-index: -1;
     }
