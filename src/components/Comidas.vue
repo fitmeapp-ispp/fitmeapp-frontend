@@ -83,12 +83,12 @@
 					<template #header>
 						<div class="grid grid-nogutter">
 							<div class="col-4 text-left">
-								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By Price" @change="onSortChange($event)"/>
+								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
 							</div>
                             <div class="col-4 text-center">
                                 <span class="p-input-icon-left mb-2">
                                     <i class="pi pi-search" />
-                                    <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%"/>
+                                    <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
                                 </span>
                             </div>
 							<div class="col-4 text-right">
@@ -176,8 +176,10 @@
 				sortOrder: null,
 				sortField: null,
 				sortOptions: [
-					{label: 'Price High to Low', value: '!product_name'},
-					{label: 'Price Low to High', value: 'product_name'},
+					{label: 'Mayor a menor número de Kcal', value: '!energy_kcal_100g'},
+					{label: 'Menor a mayor número de kcal', value: 'energy_kcal_100g'},
+					{label: 'Alfabéticamente', value: 'product_name'},
+					{label: 'Alfabéticamente inverso', value: 'product_name'},
 				]
 			}
 		},
@@ -190,6 +192,12 @@
 			this.fetchItems();
 		},
 		methods: {
+			enterClicked(){
+				let uri = 'http://localhost:3000/comida/' + document.getElementById('BuscadorComidas').value;
+				this.axios.get(uri).then((response) => {
+				this.dataviewValue = response.data;
+				});
+			},
 			fetchItems()
 			{
 				let uri = 'http://localhost:3000/comida';
