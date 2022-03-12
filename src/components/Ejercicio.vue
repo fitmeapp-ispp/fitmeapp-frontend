@@ -58,8 +58,9 @@
 					</template>
 					<template #list="slotProps">
 						<div class="col-12 md:col-4">
-                <div class="ejercicioCard">
-                    <img src="" class="ejercicio-img">
+            <div class="item">
+                <div class="ejercicioCard container row ">
+                    <img src="" class="ejercicio-img col">
                     <div class="ejercicio-container">
                         <div class="ejercicio-head">
                             <div class="ejercicio-title">{{slotProps.data.name}}</div>
@@ -73,6 +74,7 @@
                         <img src="" class="zonaEjercicio-img">
                     </div>
 							</div>
+            </div>
 						</div>
 					</template>
 				</DataView>
@@ -238,19 +240,22 @@ export default {
 };
 </script>
 <style>
+    .item {
+      padding: 10px;
+    }
     .ejercicio-img {
         margin: auto;
         margin-left: 0px;
         margin-right: 0px;
-        width: 10rem;
-        height: 10rem;
+        width: 100%;
+        height: 100%;
     }
     .ejercicioCard {
         z-index:2;
         border-radius: 10px;
         padding: 1rem 0 1rem 1rem;
-        width: 40rem;
-        height: 13rem;
+        width: 100%;
+        height: 100%;
         position: relative; 
         background-color: gray;
         display: flex;
