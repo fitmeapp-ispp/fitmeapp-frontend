@@ -1,6 +1,10 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import Dashboard from './components/Dashboard.vue';
+import Ejercicio from './components/Ejercicio.vue';
 import Comidas from './components/Comidas.vue';
+import Perfil from './components/Perfil.vue';
+const Login = () => import("./pages/Login.vue");
+import store from './store'
 
 const routes = [
     {
@@ -14,6 +18,16 @@ const routes = [
         component: Comidas,
     },
     {
+        path: '/ejercicio',
+        name: 'ejercicio',
+        component: Ejercicio,
+    },
+    {
+        path: '/perfil',
+        name: 'perfil',
+        component: Perfil,
+    },
+    {
         path: '/crud',
         name: 'crud',
         component: () => import('./pages/CrudDemo.vue')
@@ -21,13 +35,27 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('./pages/Login.vue')
+        component: Login
     },
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    routes,
+    history: createWebHistory(process.env.BASE_URL),
+    routes
+  })
+
+router.beforeEach((to, from, next) => {
+    const publicPages = ['/', '/login'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = store.state.loggedIn;
+
+    // trying to access a restricted page + not logged in
+    // redirect to login page
+    if (authRequired && !loggedIn) {
+        next('/login');
+    } else {
+        next();
+    }
 });
 
 export default router;
