@@ -6,7 +6,15 @@
     }
     }
 }
+.carrousel-comidas{
+    max-height: 150px;
+    align-items: right;
+    margin: 4px;
+}
 #imagen-busqueda{
-    max-height: 200;
-    max-width: 250;
+    height: 50%  !important;
+}
+#imagen-comida{
+    height: 10px  !important;
+    width: 10% !important;
 }

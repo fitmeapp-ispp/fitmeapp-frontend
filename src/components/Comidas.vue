@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="grid">
             <div class="col-12">
                 <div class="card">
@@ -63,24 +64,27 @@
                 </div>
 
 			<!-- Inicio del carrousel -->
-				<div class="col-12">
+			<div>
+				<div class="col-12 ">
 					<div class="card">
-						<h5>Comidas tomadas</h5>
-						<Carousel :value="slotProps" :numVisible="3" :numScroll="3" :circular="false" :responsiveOptions="carouselResponsiveOptions">
+						<h5>Comida Almuerzo</h5>
+						<Carousel :value="dataviewValueCarrousel" :numVisible="4" :numScroll="3" :circular="false">
 								<template #item="slotProps">
-									<div class="col-12" >
-										<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
-											<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"/>
-										<div class="flex-1 text-center md:text-left">
-								</div>
-							</div>
-						</div>
+									<div class="col-12" style="text-align: center">
+										<div class="carrousel-comidas">
+											<div class="card">
+												<div class="font-bold" style="margin: 4px">{{slotProps.data.product_name}}</div>
+												<div style="margin: 4px">Kcal: {{slotProps.data.energy_kcal_100g}}g. Cantidad: 100g</div>
+												<div><Button label="Quitar" style="margin: 4px" class="p-button-success" align="right"/></div>
+											</div>
+										</div>
+									</div>
 								</template>
 						</Carousel>
 					</div>
 				</div>
+			</div>
 			<!-- Fin del carrousel -->
-
             </div>
     </div>
 
@@ -107,7 +111,7 @@
 					<template #list="slotProps">
 						<div class="col-12" >
 							<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
-								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"/>
+								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"  id="imagen-busqueda"/>
 								<div class="flex-1 text-center md:text-left">
 									<div class="font-bold text-2xl">{{slotProps.data.product_name}}</div>
 									<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
@@ -128,8 +132,8 @@
 							<div class="card m-3 border-1 surface-border">
                                 <div class="text-align-center"> 
                                     <div class="grid grid-nogutter alimento-busqueda">
-                                        <div class="col-4 text-left" id="imagen-busqueda">
-                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0" />
+                                        <div class="col-4 text-left" >
+                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
                                         </div>
                                         <div class="col-8 text-left">
                                             <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
@@ -152,6 +156,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
@@ -198,6 +203,7 @@
 		},
 		mounted() {
 			this.fetchItems();
+			this.carrousel();
 		},
 		methods: {
 			enterClicked(){
@@ -206,9 +212,23 @@
 				this.dataviewValue = response.data;
 				});
 			},
+			carrousel(){
+				let uri = 'http://localhost:3000/comida/carrusel';
+				this.axios.get(uri).then((response) => {
+				this.dataviewValueCarrousel = response.data;
+				});
+			},
+
 			fetchItems()
 			{
 				let uri = 'http://localhost:3000/comida';
+				this.axios.get(uri).then((response) => {
+				this.dataviewValue = response.data;
+				});
+			},
+			favoritos()
+			{
+				let uri = 'http://localhost:3000/favoritos';
 				this.axios.get(uri).then((response) => {
 				this.dataviewValue = response.data;
 				});
