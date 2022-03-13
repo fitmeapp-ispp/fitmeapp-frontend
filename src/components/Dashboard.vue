@@ -1,6 +1,4 @@
 <template>
-	<Topbar />
-
 	<div class="grid">
         <LeftCardHome/>
         <RightCardHome/>
@@ -9,12 +7,9 @@
 
 <script>
 import LeftCardHome from './LeftCardHome.vue';
-import RightCardHome from './RightCardHome';
+import RightCardHome from './RightCardHome.vue';
 
 export default {
-	components: {
-		Topbar
-	},
 	data() {
 		return {
         }
