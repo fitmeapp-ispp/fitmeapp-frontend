@@ -62,17 +62,25 @@
                     </Toolbar>
                 </div>
 
-				
-			<div class="card">			
-				<div class="card col-5">					
-					<div class="col-2">Macarrones</div>
-					<div>66 de KCalorías</div>
-					<div>19.67g de Proteínas</div>
-					<div>110g de Carbohidratos</div>
-					<div>38g de Grasas</div>
+			<!-- Inicio del carrousel -->
+				<div class="col-12">
+					<div class="card">
+						<h5>Comidas tomadas</h5>
+						<Carousel :value="slotProps" :numVisible="3" :numScroll="3" :circular="false" :responsiveOptions="carouselResponsiveOptions">
+								<template #item="slotProps">
+									<div class="col-12" >
+										<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
+											<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"/>
+										<div class="flex-1 text-center md:text-left">
+								</div>
+							</div>
+						</div>
+								</template>
+						</Carousel>
 					</div>
-			</div>
-			
+				</div>
+			<!-- Fin del carrousel -->
+
             </div>
     </div>
 
@@ -97,9 +105,9 @@
 						</div>
 					</template>
 					<template #list="slotProps">
-						<div class="col-12">
-							<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+						<div class="col-12" >
+							<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
+								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"/>
 								<div class="flex-1 text-center md:text-left">
 									<div class="font-bold text-2xl">{{slotProps.data.product_name}}</div>
 									<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
@@ -119,9 +127,9 @@
 						<div class="col-12 md:col-4">
 							<div class="card m-3 border-1 surface-border">
                                 <div class="text-align-center"> 
-                                    <div class="grid grid-nogutter">
-                                        <div class="col-4 text-left">
-                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0"/>
+                                    <div class="grid grid-nogutter alimento-busqueda">
+                                        <div class="col-4 text-left" id="imagen-busqueda">
+                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0" />
                                         </div>
                                         <div class="col-8 text-left">
                                             <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
@@ -238,4 +246,5 @@
 
 <style scoped lang="scss">
 @import '../assets/demo/badges.scss';
+@import '../assets/styles/comidas.scss';
 </style>
