@@ -1,6 +1,7 @@
 <template>
-  
+<div>
 <Toast position="bottom-right"/>
+    <!-- EL USUARIO ES JOSE Y LA CONTRASEÑA ES JOSE -->
 
   <div class="grid" style="justify-content: center;">
     <div class="col-4">
@@ -33,6 +34,7 @@
       </div>
     </div>
   </div>
+</div>  
 </template>
 
 <script>
@@ -41,7 +43,6 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 import axios from "axios";
 import Toast from 'primevue/toast';
-
 export default {
     name: 'Login',
     components: {
@@ -106,7 +107,6 @@ export default {
 </script>
 
 <style scoped>
-
 .grid {
   justify-content: center;
 }

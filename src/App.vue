@@ -1,8 +1,8 @@
 <template>
-	<div :class="containerClass" @click="onWrapperClick">
-        <!-- <AppTopBar @menu-toggle="onMenuToggle" /> -->
+	<div>
+        <AppTopBar id="navbar"/>
 
-        <div class="layout-main-container">
+        <div class="m-4">
             <div class="layout-main">
                 <router-view />
             </div>
@@ -12,8 +12,8 @@
 </template>
 
 <script>
-// import AppTopBar from './AppTopbar.vue';
-import AppFooter from './AppFooter.vue';
+import AppTopBar from './AppTopbar.vue';
+/* import AppFooter from './AppFooter.vue'; */
 
 export default {
     emits: ['change-theme'],
@@ -133,8 +133,13 @@ export default {
             ]
         }
     },
-    watch: {
+    watch: {   
         $route() {
+            if (this.$route.fullPath === "/login") {
+                document.getElementById("navbar").style="display:none"
+            }else{
+                document.getElementById("navbar").style=""
+            }
             this.menuActive = false;
             this.$toast.removeAllGroups();
         }
@@ -234,8 +239,8 @@ export default {
             this.removeClass(document.body, 'body-overflow-hidden');
     },
     components: {
-        // 'AppTopBar': AppTopBar,
-        'AppFooter': AppFooter,
+        'AppTopBar': AppTopBar,
+        /* 'AppFooter': AppFooter, */
     }
 }
 </script>
