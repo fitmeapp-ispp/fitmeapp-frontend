@@ -53,7 +53,7 @@
                     </div>
                     <Toolbar>
                         <template v-slot:start>
-                            <Button label="Favoritos" icon="pi pi-star" class="p-button-warning mr-2" />
+                            <Button label="Favoritos" icon="pi pi-star" class="p-button-warning mr-2" v-on:click="favoritos()"/>
                             <Button label="Recientes"  class="mr-2" />
                             <Button label="Creados"  class="p-button-success mr-2" />
                         </template>
@@ -228,7 +228,7 @@
 			},
 			favoritos()
 			{
-				let uri = 'http://localhost:3000/favoritos';
+				let uri = 'http://localhost:3000/comida/favoritos/' + this.$store.state.username;
 				this.axios.get(uri).then((response) => {
 				this.dataviewValue = response.data;
 				});
