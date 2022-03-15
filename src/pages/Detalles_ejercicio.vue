@@ -13,7 +13,11 @@
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
             <div class="card mb-0">
-                <div class="text-900 font-medium text-xl">Nombre del ejercicio</div>
+
+                
+
+
+                <div class="text-900 font-medium text-xl">{{dataviewValue[0].name}}</div>
                 <br>
                 <div class="text-900 font-small text-xl">Calorías</div>
                 <div class="text-900 font-small text-xl">Material</div>
@@ -86,3 +90,27 @@
             float: right;
         }
 </style>
+
+<script>
+//import {FilterMatchMode,FilterOperator} from 'primevue/api'
+
+export default {
+        data() {
+                return {
+                    dataviewValue: null,
+                }
+        },
+        created(){
+                this.fetchItems();
+        },
+        methods: {
+                fetchItems(){
+                    let uri = 'http://localhost:3000/exercise/1';
+                    this.axios.get(uri).then((response) => {
+                    this.dataviewValue = response.data;
+                    console.log(this.dataviewValue);
+                    });
+                }
+        }
+}
+</script>

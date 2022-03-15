@@ -18,8 +18,8 @@ const routes = [
         component: () => import('./pages/Login.vue')
     },
     {
-        path: '/detalles_ejercicio',
-        name: 'detalles_ejercicio',
+        path: '/ejercicio/detalles/',
+        name: 'Detalles_Ejercicio',
         component: () => import('./pages/Detalles_ejercicio.vue')
     },
 ];
