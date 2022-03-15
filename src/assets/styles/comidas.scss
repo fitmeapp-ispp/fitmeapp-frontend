@@ -2,7 +2,7 @@
     &.grid-nogutter {
         color: #256029;
     &.alimento-busqueda{
-        height: 300px;
+        height: 225px;
     }
     }
 }
@@ -12,7 +12,9 @@
     margin: 4px;
 }
 #imagen-busqueda{
-    height: 50%  !important;
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
 }
 #imagen-comida{
     height: 10px  !important;
