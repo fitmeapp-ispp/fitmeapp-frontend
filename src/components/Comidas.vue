@@ -64,11 +64,11 @@
                 </div>
 
 			<!-- Inicio del carrousel -->
-			<div>
+			<div v-if=dataviewValueCarrusel>
 				<div class="col-12 ">
 					<div class="card">
 						<h5>Comida Almuerzo</h5>
-						<Carousel :value="dataviewValueCarrousel" :numVisible="4" :numScroll="3" :circular="false">
+						<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :circular="false">
 								<template #item="slotProps">
 									<div class="col-12" style="text-align: center">
 										<div class="carrousel-comidas">
@@ -91,7 +91,7 @@
 	<div class="grid">
 		<div class="col-12">
 			<div class="card">
-				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" v-model:filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
 					<template #header>
 						<div class="grid grid-nogutter">
 							<div class="col-4 text-left">
@@ -109,45 +109,45 @@
 						</div>
 					</template>
 					<template #list="slotProps">
-						<div class="col-12" >
-							<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
-								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"  id="imagen-busqueda"/>
+						<div class="col-12">
+							<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+								<img :src=slotProps.data.imagen :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"  id="imagen-busqueda"/>
 								<div class="flex-1 text-center md:text-left">
-									<div class="font-bold text-2xl">{{slotProps.data.product_name}}</div>
-									<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
-                                    <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
-									<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
-									<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
+									<div class="font-bold text-2xl">{{slotProps.data.nombre}}</div>
+									<div class="mb-3">Kcal {{slotProps.data.kcal_100g}} g</div>
+                                    <div class="mb-3">Grasas {{slotProps.data.grasa_100g}} g</div>
+									<div class="mb-3">Carbohidratos {{slotProps.data.carbohidratos_100g}} g</div>
+									<div class="mb-3">Proteínas {{slotProps.data.proteinas_100g}} g</div>
 
 								</div>
 								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded" @click="detallesAlimento(slotProps.data)" ></Button>
 								</div>
 							</div>
 						</div>
 					</template>
 
 					<template #grid="slotProps">
-						<div class="col-12 md:col-4">
+						<div  @click="detallesAlimento(slotProps.data)" class="col-12 md:col-4">
 							<div class="card m-3 border-1 surface-border">
                                 <div class="text-align-center"> 
                                     <div class="grid grid-nogutter alimento-busqueda">
                                         <div class="col-4 text-left" >
-                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
+                                            <img :src=slotProps.data.imagen :alt="slotProps.data.nombre" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
                                         </div>
                                         <div class="col-8 text-left">
-                                            <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
+                                            <div class="text-2xl font-bold">{{slotProps.data.nombre}}</div>
 											<div class="mb-3"></div>
-											<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
-                                            <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
-											<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
-											<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
+											<div class="mb-3">Kcal {{slotProps.data.kcal_100g}} g</div>
+                                            <div class="mb-3">Grasas {{slotProps.data.grasa_100g}} g</div>
+											<div class="mb-3">Carbohidratos {{slotProps.data.carbohidratos_100g}} g</div>
+											<div class="mb-3">Proteínas {{slotProps.data.proteinas_100g}} g</div>
                                         </div>
                                     </div>
                                 </div>
 								<div class="flex align-items-center justify-content-between">
                                     <div></div>
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded" @click="detallesAlimento(slotProps.data)"></Button>
 								</div>
 							</div>
 						</div>
@@ -155,12 +155,19 @@
 				</DataView>
 			</div>
 		</div>
+		<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid col-3">
+			<div class="container">
+				<img :src="alimento.imagen" :alt="alimento.nombre" class="imagenDetalle" id="imagen-busqueda"/>
+				<div class="centered">{{alimento.nombre}}</div>
+			</div>
+			
+		</Dialog>
 	</div>
 </div>
 </template>
 
 <script>
-	//import ProductService from "../service/ProductService";
+	import AlimentoService from "../service/AlimentoService";
     import {FilterMatchMode,FilterOperator} from 'primevue/api';
 	export default {
 		data() {
@@ -183,7 +190,10 @@
 					{name: 'Barcelona', code: 'BRC'},
 					{name: 'Rome', code: 'RM'},
 				],
-				dataviewValue: null,
+				dataviewValue: {},
+				dataviewValueCarrusel: {},
+				alimentoDialog: false,
+				alimento: null,
 				layout: 'grid',
 				sortKey: null,
 				sortOrder: null,
@@ -196,10 +206,10 @@
 				]
 			}
 		},
-		productService: null,
-		created() {
-			
-            this.initFilters1();
+		alimentoService: null,
+		created(){
+			this.alimentoService = new AlimentoService();
+			this.initFilters1();	
 		},
 		mounted() {
 			this.fetchItems();
@@ -213,18 +223,12 @@
 				});
 			},
 			carrousel(){
-				let uri = 'http://localhost:3000/comida/carrusel';
-				this.axios.get(uri).then((response) => {
-				this.dataviewValueCarrousel = response.data;
-				});
+				this.alimentoService.getCarrusel().then(data => this.dataviewValueCarrusel = data);
 			},
 
 			fetchItems()
 			{
-				let uri = 'http://localhost:3000/comida';
-				this.axios.get(uri).then((response) => {
-				this.dataviewValue = response.data;
-				});
+				this.alimentoService.getAlimentos().then(data => this.dataviewValue = data);
 			},
 			favoritos()
 			{
@@ -259,7 +263,12 @@
 					this.sortField = value;
 					this.sortKey = sortValue;
 				}
-			}
+			},
+			detallesAlimento(peticionPublicacion) {
+			this.peticionPublicacion = {...peticionPublicacion};
+			this.peticionPublicacionDraft = {...peticionPublicacion};
+			this.peticionPublicacionDialog = true;
+		},
 		}
 	}
 </script>
@@ -267,4 +276,16 @@
 <style scoped lang="scss">
 @import '../assets/demo/badges.scss';
 @import '../assets/styles/comidas.scss';
+</style>
+<style scoped>
+.imagenDetalle{
+	position: relative;
+	text-align: center;
+}
+.centered {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
 </style>
