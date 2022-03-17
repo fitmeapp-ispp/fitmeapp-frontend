@@ -64,14 +64,14 @@
                     <div class="ejercicio-container col-8">
                       <div class="ejercicio-head row">
                         <div class="ejercicio-title col">{{slotProps.data.name}}</div>
-                        <span class="calorias col-4">(Calorias)</span>
+                        <span class="calorias col-4">({{slotProps.data.exercise_base}}Kc)</span>
                       </div>
                     <ul>
-                      <li class="text">Dificultad</li>
-                      <li class="text">Material</li>
-                      <li class="text">Tiempo</li>
+                      <li class="text">Dificultad {{slotProps.data.category}}</li>
+                      <li class="text">Material {{slotProps.data.url_main}}</li>
+                      <li class="text">Tiempo {{slotProps.data.muscle_name}}</li>
                     </ul>
-                    <img src="" class="zonaEjercicio-img">
+                    <img src="{{slotProps.data.url_main}}" class="zonaEjercicio-img">
                 </div>
 							</div>
             </div>
@@ -162,13 +162,30 @@ export default {
     this.fetchItems();
   },
   methods: {
-            fetchItems()
-        {
-          let uri = 'http://localhost:3000/ejercicio';
-          this.axios.get(uri).then((response) => {
-          this.dataviewValue = response.data;
-          });
-        },
+    fetchItems() {
+      this.axios.get("/ejercicio").then((response) => {
+        let ejercicios = response.data;
+        let data = [];
+        for (let ejercicio of ejercicios) {
+          var id = ejercicio["muscles"][0];
+          if (id!=undefined) {
+            this.axios.get("/musculo/"+id).then((res) => {
+              ejercicio.muscle_name =  res.data[0]["name"];
+              ejercicio["muscle_url_main"] =  res.data[0]["image_url_main"];
+              data.push(ejercicio)
+            });
+          }
+          else {
+              ejercicio.muscle_name =  "N/A";
+              ejercicio["muscle_url_main"] =  "";
+              data.push(ejercicio)
+          }
+          //console.log(data);
+        }
+        console.log(data);
+        this.dataviewValue = data;
+      });
+    },
     formatCurrency(value) {
       return value.toLocaleString("en-US", {
         style: "currency",
@@ -263,6 +280,8 @@ export default {
     }
     .ejercicio-container{
         padding: 0;
+        display: flex;
+        flex-direction: column;
     }
     .ejercicio-head {
         height: calc(1vw + 1vh + 2vmin);
@@ -279,6 +298,8 @@ export default {
     .ejercicio-title {
         display: inline;
         width: 100%;
+        max-width: 100%;
+        overflow: hidden;
         height: 100%;
         font-size: calc(0.5vw + 0.5vh + 0.5vmin);
         z-index: 3;
