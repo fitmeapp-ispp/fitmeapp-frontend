@@ -133,7 +133,7 @@
                                 <div class="text-align-center"> 
                                     <div class="grid grid-nogutter alimento-busqueda">
                                         <div class="col-4 text-left" >
-                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
+                                            <img :src="slotProps.data.image_url || 'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
                                         </div>
                                         <div class="col-8 text-left">
                                             <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
