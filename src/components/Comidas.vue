@@ -54,7 +54,7 @@
                     <Toolbar>
                         <template v-slot:start>
                             <Button label="Favoritos" icon="pi pi-star" class="p-button-warning mr-2" v-on:click="favoritos()"/>
-                            <Button label="Recientes"  class="mr-2" />
+                            <Button label="Recientes"  class="mr-2" v-on:click="recientes()"/>
                             <Button label="Creados"  class="p-button-success mr-2" />
                         </template>
                         <template v-slot:end>
@@ -68,13 +68,13 @@
 				<div class="col-12 ">
 					<div class="card">
 						<h5>Comida Almuerzo</h5>
-						<Carousel :value="dataviewValueCarrousel" :numVisible="4" :numScroll="3" :circular="false">
+						<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :circular="false">
 								<template #item="slotProps">
 									<div class="col-12" style="text-align: center">
 										<div class="carrousel-comidas">
 											<div class="card">
-												<div class="font-bold" style="margin: 4px">{{slotProps.data.product_name}}</div>
-												<div style="margin: 4px">Kcal: {{slotProps.data.energy_kcal_100g}}g. Cantidad: 100g</div>
+												<div class="font-bold" style="margin: 4px">{{slotProps.data.nombre}}</div>
+												<div style="margin: 4px">Kcal: {{slotProps.data.kcal_100g}}g. Cantidad: 100g</div>
 												<div><Button label="Quitar" style="margin: 4px" class="p-button-success" align="right"/></div>
 											</div>
 										</div>
@@ -91,7 +91,7 @@
 	<div class="grid">
 		<div class="col-12">
 			<div class="card">
-				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" v-model:filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
 					<template #header>
 						<div class="grid grid-nogutter">
 							<div class="col-4 text-left">
@@ -100,7 +100,7 @@
                             <div class="col-4 text-center">
                                 <span class="p-input-icon-left mb-2">
                                     <i class="pi pi-search" />
-                                    <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
+                                    <InputText  placeholder="Buscar" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
                                 </span>
                             </div>
 							<div class="col-4 text-right">
@@ -111,13 +111,13 @@
 					<template #list="slotProps">
 						<div class="col-12" >
 							<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
-								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"  id="imagen-busqueda"/>
+								<img :src=slotProps.data.imagen :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"  id="imagen-busqueda"/>
 								<div class="flex-1 text-center md:text-left">
-									<div class="font-bold text-2xl">{{slotProps.data.product_name}}</div>
-									<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
-                                    <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
-									<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
-									<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
+									<div class="font-bold text-2xl">{{slotProps.data.nombre}}</div>
+									<div class="mb-3">Kcal {{slotProps.data.kcal_100g}} g</div>
+                                    <div class="mb-3">Grasas {{slotProps.data.grasa_100g}} g</div>
+									<div class="mb-3">Carbohidratos {{slotProps.data.carbohidratos_100g}} g</div>
+									<div class="mb-3">Proteínas {{slotProps.data.proteinas_100g}} g</div>
 
 								</div>
 								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
@@ -133,15 +133,15 @@
                                 <div class="text-align-center"> 
                                     <div class="grid grid-nogutter alimento-busqueda">
                                         <div class="col-4 text-left" >
-                                            <img :src="slotProps.data.image_url || 'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
+                                            <img :src="slotProps.data.imagen || 'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
                                         </div>
                                         <div class="col-8 text-left">
-                                            <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
+                                            <div class="text-2xl font-bold">{{slotProps.data.nombre}}</div>
 											<div class="mb-3"></div>
-											<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
-                                            <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
-											<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
-											<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
+											<div class="mb-3">Kcal {{slotProps.data.kcal_100g}} g</div>
+                                            <div class="mb-3">Grasas {{slotProps.data.grasa_100g}} g</div>
+											<div class="mb-3">Carbohidratos {{slotProps.data.carbohidratos_100g}} g</div>
+											<div class="mb-3">Proteínas {{slotProps.data.proteinas_100g}} g</div>
                                         </div>
                                     </div>
                                 </div>
@@ -160,8 +160,7 @@
 </template>
 
 <script>
-	//import ProductService from "../service/ProductService";
-    import {FilterMatchMode,FilterOperator} from 'primevue/api';
+	import AlimentoService from "../service/AlimentoService";
 	export default {
 		data() {
 			return {
@@ -183,68 +182,51 @@
 					{name: 'Barcelona', code: 'BRC'},
 					{name: 'Rome', code: 'RM'},
 				],
-				dataviewValue: null,
+				dataviewValue: {},
+				dataviewValueCarrusel: {},
 				layout: 'grid',
 				sortKey: null,
 				sortOrder: null,
 				sortField: null,
 				sortOptions: [
-					{label: 'Mayor a menor número de Kcal', value: '!energy_kcal_100g'},
-					{label: 'Menor a mayor número de kcal', value: 'energy_kcal_100g'},
-					{label: 'Alfabéticamente', value: 'product_name'},
-					{label: 'Alfabéticamente inverso', value: 'product_name'},
+					{label: 'Mayor a menor número de Kcal', value: '!kcal_100g'},
+					{label: 'Menor a mayor número de kcal', value: 'kcal_100g'},
+					{label: 'Alfabéticamente', value: 'nombre'},
+					{label: 'Alfabéticamente inverso', value: '!nombre'},
 				]
 			}
 		},
-		productService: null,
+		alimentoService: null,
 		created() {
 			
-            this.initFilters1();
+            this.alimentoService= new AlimentoService();
 		},
 		mounted() {
 			this.fetchItems();
 			this.carrousel();
+
 		},
 		methods: {
 			enterClicked(){
-				let uri = 'http://localhost:3000/comida/' + document.getElementById('BuscadorComidas').value;
-				this.axios.get(uri).then((response) => {
-				this.dataviewValue = response.data;
-				});
+			this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
 			},
 			carrousel(){
-				let uri = 'http://localhost:3000/comida/carrusel';
-				this.axios.get(uri).then((response) => {
-				this.dataviewValueCarrousel = response.data;
-				});
+				this.alimentoService.getCarrusel().then(data => this.dataviewValueCarrusel = data);
 			},
 
 			fetchItems()
 			{
-				let uri = 'http://localhost:3000/comida';
-				this.axios.get(uri).then((response) => {
-				this.dataviewValue = response.data;
-				});
+				this.alimentoService.getAlimentos().then(data => this.dataviewValue = data);
 			},
 			favoritos()
 			{
-				let uri = 'http://localhost:3000/comida/favoritos/' + this.$store.state.username;
-				this.axios.get(uri).then((response) => {
-				this.dataviewValue = response.data;
-				});
+				this.alimentoService.getFavoritos(this.$store.state.username).then(data => this.dataviewValue = data);
+				
 			},
-            initFilters1() {
-				this.filters1 = {
-					'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-					'name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-					'country.name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-					'representative': {value: null, matchMode: FilterMatchMode.IN},
-					'date': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]},
-					'balance': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
-					'status': {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
-					'activity': {value: null, matchMode: FilterMatchMode.BETWEEN},
-					'verified': {value: null, matchMode: FilterMatchMode.EQUALS}
-				}
+			recientes()
+			{
+				this.alimentoService.getRecientes(this.$store.state.username).then(data => this.dataviewValue = data);
+				
 			},
 			onSortChange(event){
 				const value = event.value.value;
