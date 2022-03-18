@@ -120,7 +120,7 @@
 									<div class="mb-3">Proteínas {{slotProps.data.proteinas_100g}} g</div>
 
 								</div>
-								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0" v-if="slotProps.data.verificado">
 									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
 								</div>
 							</div>
