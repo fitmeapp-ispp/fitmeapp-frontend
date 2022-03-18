@@ -1,106 +1,270 @@
 <template>
-	<h1>Comidas </h1>
+<div>
+    <div class="grid">
+            <div class="col-12">
+                <div class="card">
+                    <div class="grid grid-nogutter mb-3">
+                        <div class="col-9 text-left">
+                            <h1>Almuerzo</h1>
+
+                        </div>
+
+							<div class="col-5 text-center">
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">KCalorías</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+								<div class="bg-teal-500 h-full" style="width:3%"></div>
+							</div>
+							<span class="text-teal-500 ml-3 font-medium">66 Kcal / 2185 Kcal</span>
+							</div>
+
+							<div class="col-3 text-center"></div>
+
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Proteínas</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+								<div class="bg-teal-500 h-full" style="width:7%"></div>
+							</div>
+							<span class="text-teal-500 ml-3 font-medium">19.67 g / 273 g</span>
+							</div>
+                        </div>
+
+                        <div class="col-4 text-center">
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Carbohidratos</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+									<div class="bg-teal-500 h-full" style="width:36%"></div>
+								</div>
+								<span class="text-teal-500 ml-3 font-medium">110 g / 273 g</span>
+							</div>
+							<div class="col-3 text-center"></div>
+							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
+								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Grasas</span>
+								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
+									<div class="bg-teal-500 h-full" style="width:50%"></div>
+								</div>
+								<span class="text-teal-500 ml-3 font-medium">38g / 73 g</span>
+							</div>
+
+                        </div>
+                        <div class="col-3 text-right">
+                            <Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success mr-2" />
+                        </div>
+                    </div>
+                    <Toolbar>
+                        <template v-slot:start>
+                            <Button label="Favoritos" icon="pi pi-star" class="p-button-warning mr-2" v-on:click="favoritos()"/>
+                            <Button label="Recientes"  class="mr-2" />
+                            <Button label="Creados"  class="p-button-success mr-2" />
+                        </template>
+                        <template v-slot:end>
+                            <SplitButton label="Alérgenos" :model="toolbarItems"></SplitButton>
+                        </template>
+                    </Toolbar>
+                </div>
+
+			<!-- Inicio del carrousel -->
+			<div>
+				<div class="col-12 ">
+					<div class="card">
+						<h5>Comida Almuerzo</h5>
+						<Carousel :value="dataviewValueCarrousel" :numVisible="4" :numScroll="3" :circular="false">
+								<template #item="slotProps">
+									<div class="col-12" style="text-align: center">
+										<div class="carrousel-comidas">
+											<div class="card">
+												<div class="font-bold" style="margin: 4px">{{slotProps.data.product_name}}</div>
+												<div style="margin: 4px">Kcal: {{slotProps.data.energy_kcal_100g}}g. Cantidad: 100g</div>
+												<div><Button label="Quitar" style="margin: 4px" class="p-button-success" align="right"/></div>
+											</div>
+										</div>
+									</div>
+								</template>
+						</Carousel>
+					</div>
+				</div>
+			</div>
+			<!-- Fin del carrousel -->
+            </div>
+    </div>
+
+	<div class="grid">
+		<div class="col-12">
+			<div class="card">
+				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" v-model:filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+					<template #header>
+						<div class="grid grid-nogutter">
+							<div class="col-4 text-left">
+								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
+							</div>
+                            <div class="col-4 text-center">
+                                <span class="p-input-icon-left mb-2">
+                                    <i class="pi pi-search" />
+                                    <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
+                                </span>
+                            </div>
+							<div class="col-4 text-right">
+								<DataViewLayoutOptions v-model="layout" />
+							</div>
+						</div>
+					</template>
+					<template #list="slotProps">
+						<div class="col-12" >
+							<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
+								<img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"  id="imagen-busqueda"/>
+								<div class="flex-1 text-center md:text-left">
+									<div class="font-bold text-2xl">{{slotProps.data.product_name}}</div>
+									<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
+                                    <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
+									<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
+									<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
+
+								</div>
+								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+								</div>
+							</div>
+						</div>
+					</template>
+
+					<template #grid="slotProps">
+						<div class="col-12 md:col-4">
+							<div class="card m-3 border-1 surface-border">
+                                <div class="text-align-center"> 
+                                    <div class="grid grid-nogutter alimento-busqueda">
+                                        <div class="col-4 text-left" >
+                                            <img :src=slotProps.data.image_url :alt="slotProps.data.product_name" class="w-9 shadow-2 my-3 mx-0 " id="imagen-busqueda"/>
+                                        </div>
+                                        <div class="col-8 text-left">
+                                            <div class="text-2xl font-bold">{{slotProps.data.product_name}}</div>
+											<div class="mb-3"></div>
+											<div class="mb-3">Kcal {{slotProps.data.energy_kcal_100g}} g</div>
+                                            <div class="mb-3">Grasas {{slotProps.data.fat_100g}} g</div>
+											<div class="mb-3">Carbohidratos {{slotProps.data.carbohydrates_100g}} g</div>
+											<div class="mb-3">Proteínas {{slotProps.data.proteins_100g}} g</div>
+                                        </div>
+                                    </div>
+                                </div>
+								<div class="flex align-items-center justify-content-between">
+                                    <div></div>
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+								</div>
+							</div>
+						</div>
+					</template>
+				</DataView>
+			</div>
+		</div>
+	</div>
+</div>
 </template>
 
 <script>
-export default {
-	data() {
-		return {
-			products: null,
-			lineData: {
-				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-				datasets: [
-					{
-						label: 'Revenue',
-						data: [65, 59, 80, 81, 56, 55, 40],
-						fill: false,
-						backgroundColor: '#2f4860',
-						borderColor: '#2f4860',
-						tension: 0.4
-					},
-					{
-						label: 'Sales',
-						data: [28, 48, 40, 19, 86, 27, 90],
-						fill: false,
-						backgroundColor: '#00bb7e',
-						borderColor: '#00bb7e',
-						tension: 0.4
-					}
+	//import ProductService from "../service/ProductService";
+    import {FilterMatchMode,FilterOperator} from 'primevue/api';
+	export default {
+		data() {
+			return {
+				picklistValue: [[
+					{name: 'San Francisco', code: 'SF'},
+					{name: 'London', code: 'LDN'},
+					{name: 'Paris', code: 'PRS'},
+					{name: 'Istanbul', code: 'IST'},
+					{name: 'Berlin', code: 'BRL'},
+					{name: 'Barcelona', code: 'BRC'},
+					{name: 'Rome', code: 'RM'},
+				],[]],
+				orderlistValue: [
+					{name: 'San Francisco', code: 'SF'},
+					{name: 'London', code: 'LDN'},
+					{name: 'Paris', code: 'PRS'},
+					{name: 'Istanbul', code: 'IST'},
+					{name: 'Berlin', code: 'BRL'},
+					{name: 'Barcelona', code: 'BRC'},
+					{name: 'Rome', code: 'RM'},
+				],
+				dataviewValue: null,
+				layout: 'grid',
+				sortKey: null,
+				sortOrder: null,
+				sortField: null,
+				sortOptions: [
+					{label: 'Mayor a menor número de Kcal', value: '!energy_kcal_100g'},
+					{label: 'Menor a mayor número de kcal', value: 'energy_kcal_100g'},
+					{label: 'Alfabéticamente', value: 'product_name'},
+					{label: 'Alfabéticamente inverso', value: 'product_name'},
 				]
+			}
+		},
+		productService: null,
+		created() {
+			
+            this.initFilters1();
+		},
+		mounted() {
+			this.fetchItems();
+			this.carrousel();
+		},
+		methods: {
+			enterClicked(){
+				let uri = 'http://localhost:3000/comida/' + document.getElementById('BuscadorComidas').value;
+				this.axios.get(uri).then((response) => {
+				this.dataviewValue = response.data;
+				});
 			},
-			items: [
-                {label: 'Add New', icon: 'pi pi-fw pi-plus'},
-                {label: 'Remove', icon: 'pi pi-fw pi-minus'}
-            ],
-			lineOptions: null,
-		}
-	},
-	themeChangeListener: null,
-	methods: {
-		formatCurrency(value) {
-			return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-		},
-		isDarkTheme() {
-            return this.$appState.darkTheme === true;
-        },
-		applyLightTheme() {
-			this.lineOptions = {
-				plugins: {
-					legend: {
-						labels: {
-							color: '#495057'
-						}
-					}
-				},
-				scales: {
-					x: {
-						ticks: {
-							color: '#495057'
-						},
-						grid: {
-							color:  '#ebedef',
-						}
-					},
-					y: {
-						ticks: {
-							color: '#495057'
-						},
-						grid: {
-							color:  '#ebedef',
-						}
-					},
+			carrousel(){
+				let uri = 'http://localhost:3000/comida/carrusel';
+				this.axios.get(uri).then((response) => {
+				this.dataviewValueCarrousel = response.data;
+				});
+			},
+
+			fetchItems()
+			{
+				let uri = 'http://localhost:3000/comida';
+				this.axios.get(uri).then((response) => {
+				this.dataviewValue = response.data;
+				});
+			},
+			favoritos()
+			{
+				let uri = 'http://localhost:3000/comida/favoritos/' + this.$store.state.username;
+				this.axios.get(uri).then((response) => {
+				this.dataviewValue = response.data;
+				});
+			},
+            initFilters1() {
+				this.filters1 = {
+					'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+					'name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
+					'country.name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
+					'representative': {value: null, matchMode: FilterMatchMode.IN},
+					'date': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]},
+					'balance': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
+					'status': {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
+					'activity': {value: null, matchMode: FilterMatchMode.BETWEEN},
+					'verified': {value: null, matchMode: FilterMatchMode.EQUALS}
 				}
-			};
-		},
-		applyDarkTheme() {
-			this.lineOptions = {
-				plugins: {
-					legend: {
-						labels: {
-							color: '#ebedef'
-						}
-					}
-				},
-				scales: {
-					x: {
-						ticks: {
-							color: '#ebedef'
-						},
-						grid: {
-							color:  'rgba(160, 167, 181, .3)',
-						}
-					},
-					y: {
-						ticks: {
-							color: '#ebedef'
-						},
-						grid: {
-							color:  'rgba(160, 167, 181, .3)',
-						}
-					},
+			},
+			onSortChange(event){
+				const value = event.value.value;
+				const sortValue = event.value;
+				if (value.indexOf('!') === 0) {
+					this.sortOrder = -1;
+					this.sortField = value.substring(1, value.length);
+					this.sortKey = sortValue;
 				}
-			};
+				else {
+					this.sortOrder = 1;
+					this.sortField = value;
+					this.sortKey = sortValue;
+				}
+			}
 		}
 	}
-}
 </script>
+
+<style scoped lang="scss">
+@import '../assets/demo/badges.scss';
+@import '../assets/styles/comidas.scss';
+</style>
