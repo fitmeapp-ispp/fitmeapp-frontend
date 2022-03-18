@@ -4,13 +4,13 @@
         <canvas id="donut_chart"></canvas>
         <br>
         <div class="card">
-          <h2>Hola</h2>
+          <h2>chart // Desayuno  //  Aquí van imágenes // aquí kcal <Button label="Añadir" class="p-button-success" /></h2> 
         </div>
         <div class="card">
-          <h2>Hola</h2>  
+          <h2>chart // Comida //  Aquí van imágenes // aquí kcal <Button label="Añadir" class="p-button-success" /></h2>  
         </div>        
         <div class="card">
-          <h2>Hola</h2>
+          <h2>chart // Cena  //  Aquí van imágenes // aquí kcal <Button label="Añadir" class="p-button-success" /> </h2>
         </div>        
       </div>	
     </div>
