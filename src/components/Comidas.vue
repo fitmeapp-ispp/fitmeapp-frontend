@@ -217,7 +217,7 @@
 							<h4 class="tituloDetalles text-center">Alérgenos</h4>
 						</div>
 						<div class="grid justify-content-center align-content-center">
-							<div class="col-3 align-content-around" v-for="(alergeno) of imagenesAlergenos" :key="alergeno">
+							<div class="col-3 align-content-around" v-for="(alergeno) of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
 								<img :src="'images/alergenos/'+alergeno+'.svg'" :alt="alergeno" class="imagen-alergeno" />
 							</div>
 						</div>
@@ -250,7 +250,6 @@ export default {
 					{label: 'Alfabéticamente', value: 'product_name'},
 					{label: 'Alfabéticamente inverso', value: 'product_name'},
 				],
-				imagenesAlergenos: [],
 				dctAlergenos: {
 					'gluten': /(gluten)/,
 					'crustaceos': /(crustaceans|crustaceos)/,
@@ -313,7 +312,6 @@ export default {
 				}
 			},
 			detallesAlimento(alimento) {
-				this.obtenerAlergenos(alimento.alergenos);
 				this.alimento = alimento;
 				this.alimentoDialog = true;
 			},
@@ -321,13 +319,15 @@ export default {
 				console.log('alimentoId'+alimentoId);
 			},
 			obtenerAlergenos(alergenosAlimento){
+				let imagenesAlergenos = [];
 				for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
 				{
 					if (expresion.test(alergenosAlimento.toLowerCase()))
 					{
-						this.imagenesAlergenos.push(alergeno);
+						imagenesAlergenos.push(alergeno);
 					}
 				}
+				return imagenesAlergenos;
 			},
 		}
 	}
