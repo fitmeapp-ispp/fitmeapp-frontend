@@ -19,9 +19,33 @@ export default class AlimentoService {
     }
 
     getCarrusel(){
-        return axios.request(`/carrusel`)
+        return axios.request(`/alimentos/carrusel`)
         .then((response) => response.data)
         .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    getFavoritos(username){
+        return axios.get(`/alimentos/favoritos/${username}`)
+        .then((response) => response.data)
+        .catch((e) =>{
+            console.log('error' + e);
+        });
+    }
+
+    getRecientes(username){
+        return axios.get(`/alimentos/recientes/${username}`)
+        .then((response) => response.data)
+        .catch((e) =>{
+            console.log('error' + e);
+        });
+    }
+
+    getBuscador(valor){
+        return axios.get(`/alimentos/buscador/${valor}`)
+        .then((response) => response.data)
+        .catch((e) =>{
             console.log('error' + e);
         });
     }

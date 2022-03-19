@@ -54,7 +54,7 @@
                     <Toolbar>
                         <template v-slot:start>
                             <Button label="Favoritos" icon="pi pi-star" class="p-button-warning mr-2" v-on:click="favoritos()"/>
-                            <Button label="Recientes"  class="mr-2" />
+                            <Button label="Recientes"  class="mr-2" @click="recientes"/>
                             <Button label="Creados"  class="p-button-success mr-2" />
                         </template>
                         <template v-slot:end>
@@ -91,7 +91,7 @@
 	<div class="grid">
 		<div class="col-12">
 			<div class="card">
-				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
 					<template #header>
 						<div class="grid grid-nogutter">
 							<div class="col-4 text-left">
@@ -100,7 +100,7 @@
                             <div class="col-4 text-center">
                                 <span class="p-input-icon-left mb-2">
                                     <i class="pi pi-search" />
-                                    <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
+                                    <InputText placeholder="Keyword Search" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
                                 </span>
                             </div>
 							<div class="col-4 text-right">
@@ -121,7 +121,7 @@
 
 								</div>
 								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded" @click="detallesAlimento(slotProps.data)" ></Button>
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
 								</div>
 							</div>
 						</div>
@@ -147,7 +147,7 @@
                                 </div>
 								<div class="flex align-items-center justify-content-between">
                                     <div></div>
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded" @click="detallesAlimento(slotProps.data)"></Button>
+									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
 								</div>
 							</div>
 						</div>
@@ -155,12 +155,75 @@
 				</DataView>
 			</div>
 		</div>
-		<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid col-3">
-			<div class="container">
-				<img :src="alimento.imagen" :alt="alimento.nombre" class="imagenDetalle" id="imagen-busqueda"/>
-				<div class="centered">{{alimento.nombre}}</div>
+		<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%;" @close="this.imagenesAlergenos=[]">
+			<div class="contenedor-imagen-detalles">
+				<img :src="alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles" />
+				<h4 class="centered">{{alimento.nombre}}</h4>
 			</div>
-			
+			<div class="container">
+				<div class="grid justify-content-center mb-3">
+					<div class="bg-gray-300 card field col-10">
+						<p class="p-flex">
+							Añadir 
+							<InputNumber id="cantidad" v-model="cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus class="col-1"/>
+							gramos de alimento al registro diario de hoy
+							<Button class="p-button"  @click="anyadirConsumicion(alimento._id)">
+								<span class="p-button-label">Añadir</span>
+							</Button>
+						</p>
+					</div>
+				</div>
+				<div class="grid justify-content-around">
+					<div class="container bg-gray-500 card col-6 justify-content-center">
+						<div class="row justify-content-center text-center flex">
+							<h4 class="tituloDetalles text-center">Valores nutricionales (100g)</h4>
+						</div>
+						<div class="grid row pl-5" style="font-size:large;">
+							<div class="col-6">
+									<p class="p-flex"> <b>Kcal:</b> {{alimento.kcal_100g}} Kcal</p>
+							</div>
+							<div class="col-6">
+								<p class="p-flex"> <b>Proteinas:</b> {{alimento.proteinas_100g}} g</p>
+							</div>
+						</div>
+						<div class="row pl-5" style="font-size:large;">
+							<p class="p-flex"> <b>Carbohidratos:</b> {{alimento.carbohidratos_100g}} g de los cuales <b>azúcares: </b>{{alimento.azucares_100g}} g</p>
+						</div>
+						<div class="row pl-5" style="font-size:large;">
+							<p class="p-flex"> <b>Grasas:</b> {{alimento.grasa_100g}} g de las cuales <b>saturadas: </b>{{alimento.grasas_std_100g}} g</p>
+						</div>
+						<div class="grid row pl-5" style="font-size:large;">
+							<div class="col-6">
+								<p class="p-flex"> <b>Sal:</b> {{alimento.sal_100g}} g</p>
+							</div>
+							<div class="col-6">
+								<p class="p-flex"> <b>Sodio:</b> {{alimento.sodio_100g}} g</p>
+							</div>
+						</div>
+						<div class="grid row pl-5" style="font-size:large;">
+							<div class="col-6">
+								<p class="p-flex"> <b>Fibra:</b> {{alimento.fibra_100g}} g</p>
+							</div>
+							<div class="col-6">
+								<p class="p-flex"> <b>Colesterol:</b> {{alimento.colesterol_100g}} g</p>
+							</div>
+						</div>
+						<div class="row pl-5" style="font-size:large;">
+							<p class="p-flex"> <b>Potasio:</b> {{alimento.potasio_100g}} g</p>
+						</div>
+					</div>
+					<div class="container bg-gray-500 card col-5">
+						<div class="row justify-content-center text-center">
+							<h4 class="tituloDetalles text-center">Alérgenos</h4>
+						</div>
+						<div class="grid justify-content-center align-content-center">
+							<div class="col-3 align-content-around" v-for="(alergeno) of imagenesAlergenos" :key="alergeno">
+								<img :src="'images/alergenos/'+alergeno+'.svg'" :alt="alergeno" class="imagen-alergeno" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</Dialog>
 	</div>
 </div>
@@ -168,33 +231,16 @@
 
 <script>
 	import AlimentoService from "../service/AlimentoService";
-    import {FilterMatchMode,FilterOperator} from 'primevue/api';
-	export default {
+
+export default {
 		data() {
 			return {
-				picklistValue: [[
-					{name: 'San Francisco', code: 'SF'},
-					{name: 'London', code: 'LDN'},
-					{name: 'Paris', code: 'PRS'},
-					{name: 'Istanbul', code: 'IST'},
-					{name: 'Berlin', code: 'BRL'},
-					{name: 'Barcelona', code: 'BRC'},
-					{name: 'Rome', code: 'RM'},
-				],[]],
-				orderlistValue: [
-					{name: 'San Francisco', code: 'SF'},
-					{name: 'London', code: 'LDN'},
-					{name: 'Paris', code: 'PRS'},
-					{name: 'Istanbul', code: 'IST'},
-					{name: 'Berlin', code: 'BRL'},
-					{name: 'Barcelona', code: 'BRC'},
-					{name: 'Rome', code: 'RM'},
-				],
 				dataviewValue: {},
 				dataviewValueCarrusel: {},
 				alimentoDialog: false,
 				alimento: null,
 				layout: 'grid',
+				cantidad: null,
 				sortKey: null,
 				sortOrder: null,
 				sortField: null,
@@ -203,13 +249,29 @@
 					{label: 'Menor a mayor número de kcal', value: 'energy_kcal_100g'},
 					{label: 'Alfabéticamente', value: 'product_name'},
 					{label: 'Alfabéticamente inverso', value: 'product_name'},
-				]
+				],
+				imagenesAlergenos: [],
+				dctAlergenos: {
+					'gluten': /(gluten)/,
+					'crustaceos': /(crustaceans|crustaceos)/,
+					'huevo': /(eggs|huevos)/,
+					'pescado': /(fish|pescado)/,
+					'cacahuetes': /(peanuts|cacahuetes)/,
+					'soja': /(soybeans|soja)/,
+					'leche': /(milk|leche)/,
+					'frutos_de_cascara': /(nuts|frutos)/,
+					'apio': /(celery|apio)/,
+					'mostaza': /(mustard|mostaza)/,
+					'sesamo': /(sesame|sesamo)/,
+					'azufre_sulfitos': /(sulphites|sulfitos)/,
+					'altramuces': /(lupins|altramuces)/,
+					'moluscos': /(molluscs|moluscos)/
+				},
 			}
 		},
 		alimentoService: null,
 		created(){
-			this.alimentoService = new AlimentoService();
-			this.initFilters1();	
+			this.alimentoService = new AlimentoService();	
 		},
 		mounted() {
 			this.fetchItems();
@@ -217,10 +279,8 @@
 		},
 		methods: {
 			enterClicked(){
-				let uri = 'http://localhost:3000/comida/' + document.getElementById('BuscadorComidas').value;
-				this.axios.get(uri).then((response) => {
-				this.dataviewValue = response.data;
-				});
+				let keyword = document.getElementById('BuscadorComidas').value ? '' : document.getElementById('BuscadorComidas').value.toString();
+				this.alimentoService.getBuscador(keyword).then(data => this.dataviewValue = data);
 			},
 			carrousel(){
 				this.alimentoService.getCarrusel().then(data => this.dataviewValueCarrusel = data);
@@ -232,23 +292,11 @@
 			},
 			favoritos()
 			{
-				let uri = 'http://localhost:3000/comida/favoritos/' + this.$store.state.username;
-				this.axios.get(uri).then((response) => {
-				this.dataviewValue = response.data;
-				});
+				this.alimentoService.getFavoritos(this.$store.state.username).then(data => this.dataviewValue = data);
 			},
-            initFilters1() {
-				this.filters1 = {
-					'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-					'name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-					'country.name': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-					'representative': {value: null, matchMode: FilterMatchMode.IN},
-					'date': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.DATE_IS}]},
-					'balance': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
-					'status': {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.EQUALS}]},
-					'activity': {value: null, matchMode: FilterMatchMode.BETWEEN},
-					'verified': {value: null, matchMode: FilterMatchMode.EQUALS}
-				}
+			recientes()
+			{
+				this.alimentoService.getRecientes(this.$store.state.username).then(data => this.dataviewValue = data);
 			},
 			onSortChange(event){
 				const value = event.value.value;
@@ -264,11 +312,23 @@
 					this.sortKey = sortValue;
 				}
 			},
-			detallesAlimento(peticionPublicacion) {
-			this.peticionPublicacion = {...peticionPublicacion};
-			this.peticionPublicacionDraft = {...peticionPublicacion};
-			this.peticionPublicacionDialog = true;
-		},
+			detallesAlimento(alimento) {
+				this.obtenerAlergenos(alimento.alergenos);
+				this.alimento = alimento;
+				this.alimentoDialog = true;
+			},
+			anyadirConsumicion(alimentoId){
+				console.log('alimentoId'+alimentoId);
+			},
+			obtenerAlergenos(alergenosAlimento){
+				for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
+				{
+					if (expresion.test(alergenosAlimento.toLowerCase()))
+					{
+						this.imagenesAlergenos.push(alergeno);
+					}
+				}
+			},
 		}
 	}
 </script>
@@ -276,16 +336,4 @@
 <style scoped lang="scss">
 @import '../assets/demo/badges.scss';
 @import '../assets/styles/comidas.scss';
-</style>
-<style scoped>
-.imagenDetalle{
-	position: relative;
-	text-align: center;
-}
-.centered {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
 </style>
