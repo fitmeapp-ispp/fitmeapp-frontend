@@ -38,7 +38,7 @@
 		<div class="col-12">
       <div class="contenedor">
 				<router-link to= "/buscarEjercicio">
-          <img src="../assets/styles/foto.png"/>
+          <img src="../assets/images/foto.png"/>
 					<div class="texto-centrado"> En esta sección podrás buscar a partir de unos filtros establecidos.</div>
 				</router-link>
       </div>
