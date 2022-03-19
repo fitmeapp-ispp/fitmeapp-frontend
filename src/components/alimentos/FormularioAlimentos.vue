@@ -135,7 +135,7 @@ export default {
 			errorNombre: null,
 			errorMarca: null,
 			selector_alergenos: [
-				{name: 'Cereales', code: 'cereales'},
+				{name: 'Gluten', code: 'gluten'},
 				{name: 'Crustáceos', code: 'crustaceos'},
 				{name: 'Huevos', code: 'huevos'},
 				{name: 'Pescado', code: 'pescado'},
