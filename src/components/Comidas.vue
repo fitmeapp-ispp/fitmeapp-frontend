@@ -15,7 +15,7 @@
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
 								<div class="bg-teal-500 h-full" style="width:3%"></div>
 							</div>
-							<span class="text-teal-500 ml-3 font-medium">66 Kcal / 2185 Kcal</span>
+							<span class="text-teal-500 ml-3 font-medium">66 Kcal / 2100 Kcal</span>
 							</div>
 
 							<div class="col-3 text-center"></div>
@@ -73,9 +73,9 @@
 									<div class="col-12" style="text-align: center">
 										<div class="carrousel-comidas">
 											<div class="card">
-												<div class="font-bold" style="margin: 4px">{{slotProps.data.nombre}}</div>
-												<div style="margin: 4px">Kcal: {{slotProps.data.kcal_100g}}g. Cantidad: 100g</div>
-												<div><Button label="Quitar" style="margin: 4px" class="p-button-success" align="right"/></div>
+												<div class="font-bold" style="margin: 4px">{{slotProps.data.alimento.nombre}}</div>
+												<div style="margin: 4px">Kcal: {{slotProps.data.alimento.kcal_100g}}g. Cantidad: {{slotProps.data.cantidad}}g</div>
+												<div><Button label="Quitar" style="margin: 4px" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data.alimento._id )" /></div>
 											</div>
 										</div>
 									</div>
@@ -184,6 +184,7 @@
 				],
 				dataviewValue: {},
 				dataviewValueCarrusel: {},
+				dataUserView: {},
 				layout: 'grid',
 				sortKey: null,
 				sortOrder: null,
@@ -204,7 +205,8 @@
 		mounted() {
 			this.fetchItems();
 			this.carrousel();
-
+			this.userKcal();
+			
 		},
 		methods: {
 			enterClicked(){
@@ -212,6 +214,11 @@
 			},
 			carrousel(){
 				this.alimentoService.getCarrusel().then(data => this.dataviewValueCarrusel = data);
+			},
+			
+			userKcal(){
+				this.alimentoService.getUserKcak(this.$store.state.username).then(data =>{this.dataUserView = data 
+				console.log(this.dataUserView[0].kcal_recomendadas)} );
 			},
 
 			fetchItems()
@@ -227,6 +234,11 @@
 			{
 				this.alimentoService.getRecientes(this.$store.state.username).then(data => this.dataviewValue = data);
 				
+			},
+			eliminarDelCarrusel(alimentoId){
+				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.comidaId).then(
+				data => {this.dataviewValueCarrusel = data
+						this.carrousel()});
 			},
 			onSortChange(event){
 				const value = event.value.value;

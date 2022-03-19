@@ -19,7 +19,7 @@ export default class AlimentoService {
     }
 
     getCarrusel(){
-        return axios.request(`/alimentos/carrusel`)
+        return axios.request(`/comidas/carrusel/6235e8699070dfd5bbb7e986`)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -28,6 +28,15 @@ export default class AlimentoService {
  
     getFavoritos(username){
         return axios.get(`/alimentos/favoritos/`+ username)
+        .then((response) => 
+				response.data)
+                .catch((e)=>{
+                    console.log('error' + e);
+                });
+    }
+
+    getUserKcak(username){
+        return axios.get(`/users/`+ username)
         .then((response) => 
 				response.data)
                 .catch((e)=>{
@@ -59,6 +68,14 @@ export default class AlimentoService {
 
     guardarAlimento(alimento){
         return axios.post('/alimentos/', alimento);
+    }
+
+    deleteFromCarrusel(alimentoId, comidaId){
+        return axios.delete(`/comidas/carrusel/${comidaId}/${alimentoId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
     }
 
 }

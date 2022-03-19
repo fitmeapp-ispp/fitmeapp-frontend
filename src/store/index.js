@@ -9,6 +9,7 @@ export default createStore({
     password: '',
     userId: '',
     loggedIn: false,
+    comidaId: '6235e8699070dfd5bbb7e986'
   },
   mutations: {
     saveUsername(state, username){
