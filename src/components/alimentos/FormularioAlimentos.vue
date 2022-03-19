@@ -8,13 +8,13 @@
 				</div>
 			</div>
 			<div class="card p-fluid">
-				<div class="formgrid grid">
-					<div class="field col">
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
 						<label for="nombre">Nombre*</label>
 						<InputText id="nombre" v-model.trim="alimento.nombre" required="true" autofocus :class="{'p-invalid': enviado && errorNombre}" />
 						<small class="p-invalid" v-if="enviado && errorNombre">{{this.errorNombre}}</small>
 					</div>
-					<div class="field col">
+					<div class="field col-12 md:col-6">
 						<label for="marca">Marca*</label>
 						<InputText id="marca" v-model="alimento.marca" required="true" autofocus :class="{'p-invalid': enviado && errorMarca}" />
 						<small class="p-invalid" v-if="enviado && errorMarca">{{this.errorMarca}}</small>
@@ -25,69 +25,69 @@
 						Información Nutricional
 				</div>
 
-				<div class="formgrid grid">
-					<div class="field col">
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
 						<label for="kcal">Energía* (Kcal)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.kcal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.kcal_100g}"/>
 						<small class="p-invalid" v-if="enviado && !alimento.kcal_100g">Debe indicar cuántas kcal tiene.</small>
 					</div>
-					<div class="field col">
+					<div class="field col-12 md:col-6">
 						<label for="kcal">Proteinas* (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.proteinas_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.proteinas_100g}"/>
 						<small class="p-invalid" v-if="enviado && !alimento.proteinas_100g">Debe indicar si lleva proteinas.</small>
 					</div>
 				</div>
-				<div class="formgrid grid">
-					<div class="field col">
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
 						<label for="grasas">Grasas* (g)</label>
 						<InputNumber id="grasas" mode="decimal" :min="0" v-model="alimento.grasa_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasa_100g}"/>
 						<small class="p-invalid" v-if="enviado && !alimento.grasa_100g">Debe indicar si lleva grasas.</small>
 					</div>
-					<div class="field col">
+					<div class="field col-12 md:col-6">
 						<label for="grasasStd">Grasas saturadas* (g)</label>
 						<InputNumber id="grasasStd" mode="decimal" :min="0" v-model="alimento.grasas_std_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasas_std_100g}"/>
 						<small class="p-invalid" v-if="enviado && !alimento.grasas_std_100g">Debe indicar si lleva grasas saturadas.</small>
 					</div>
 				</div>
-				<div class="formgrid grid">
-						<div class="field col">
-							<label for="kcal">Carbohidratos* (g)</label>
-							<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.carbohidratos_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.carbohidratos_100g}"/>
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
+						<label for="kcal">Carbohidratos* (g)</label>
+						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.carbohidratos_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.carbohidratos_100g}"/>
 						<small class="p-invalid" v-if="enviado && !alimento.carbohidratos_100g">Debe indicar si lleva carbohidratos.</small>
-						</div>
-						<div class="field col">
-							<label for="kcal">Azúcares* (g)</label>
-							<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.azucares_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.azucares_100g}"/>
+					</div>
+					<div class="field col-12 md:col-6">
+						<label for="kcal">Azúcares* (g)</label>
+						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.azucares_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.azucares_100g}"/>
 						<small class="p-invalid" v-if="enviado && !alimento.azucares_100g">Debe indicar si lleva azúcares.</small>
-						</div>
+					</div>
 				</div>
-				<div class="formgrid grid">
-					<div class="field col">
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
 						<label for="name2">Sal* (g)</label>
 						<InputNumber id="inputtext" mode="decimal" :min="0" v-model="alimento.sal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.sal_100g}"/>
 						<small class="p-invalid" v-if="enviado && !alimento.sal_100g">Debe indicar si lleva sal.</small>
 					</div>
-					<div class="field col">
+					<div class="field col-12 md:col-6">
 						<label for="kcal">Sodio (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.sodio_100g" :maxFractionDigits="2"/>
 					</div>
 				</div>
-				<div class="formgrid grid">
-					<div class="field col">
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
 						<label for="name2">Fibra (g)</label>
 						<InputNumber id="inputtext" mode="decimal" :min="0" v-model="alimento.fibra_100g" :maxFractionDigits="2"/>
 					</div>
-					<div class="field col">
+					<div class="field col-12 md:col-6">
 						<label for="kcal">Colesterol (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.colesterol_100g" :maxFractionDigits="2"/>
 					</div>
 				</div>
-				<div class="formgrid grid">
-					<div class="field col">
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
 						<label for="kcal">Potasio (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.potasio_100g" :maxFractionDigits="2"/>
 					</div>
-					<div class="field col">
+					<div class="field col-12 md:col-6">
 						<label for="alergenos">Alérgenos</label>
 						<MultiSelect v-model="alimento.alergenos" :options="selector_alergenos" optionLabel="Alérgenos" placeholder="Seleccione los alérgenos" :filter="true">
 							<template #value="slotProps">
@@ -109,12 +109,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="grid">
-				<div class="col-4"></div>
-				<div class="col-4 text-center">
+			<div class="p-fluid formgrid grid">
+				<div class="field col-12 md:col-2 md:col-offset-5">
 					<Button label="Guardar Alimento" style="background-color:#1DA750; color:white;" @click="guardarAlimento"/>
 				</div>
-				<div class="col-4 text-right">
+				<div class="field col-12 md:col-2 md:col-offset-3">
 					<Button label="Volver" style="background-color:#1DA750; color:white;" @click="volver"/>
 				</div>
 			</div>
@@ -193,7 +192,7 @@ export default {
 						this.$toast.add({severity:'error', summary: 'Fallo', detail: 'No se ha podido actualizar el alimento, lo sentimos.', life: 3000});
 					})
 				}else{
-					this.alimento.creado_por = 'Test'; //SERÁ EL NICKNAME DEL USUARIO
+					this.alimento.creado_por = this.$store.state.username;
 					this.alimentoService.guardarAlimento(this.alimento)
 					.then(() => {
 						//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
