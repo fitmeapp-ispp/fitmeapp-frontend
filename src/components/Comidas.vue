@@ -162,66 +162,78 @@
 			</div>
 			<div class="container">
 				<div class="grid justify-content-center mb-3">
-					<div class="bg-gray-300 card field col-10">
-						<p class="p-flex">
-							Añadir 
-							<InputNumber id="cantidad" v-model="cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus class="col-1"/>
-							gramos de alimento al registro diario de hoy
-							<Button class="p-button"  @click="anyadirConsumicion(alimento._id)">
+					<div class="bg-gray-300 card field col-10 ">
+						<div class="formgroup-inline align-content-center justify-content-center">
+							<div class="field mt-4 text-center" style="color:black; font-size:large;">
+								Añadir
+							</div>
+							<div class="field mt-2">
+								<InputNumber id="cantidad" v-model="cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus class="col-1"/>
+							</div>
+							<div class="field mt-4 text-center" style="color:black; font-size:large;">
+								gramos de alimento al registro diario de hoy
+							</div>
+							<div class="field mt-3">
+								<Button class="p-button"  @click="anyadirConsumicion(alimento._id)">
 								<span class="p-button-label">Añadir</span>
 							</Button>
-						</p>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="grid justify-content-around">
-					<div class="container bg-gray-500 card col-6 justify-content-center">
+				<div class="formgroup-inline justify-content-around">
+					<div class="field bg-gray-500 card lg:col-6 md:col-12 justify-content-center">
 						<div class="row justify-content-center text-center flex">
-							<h4 class="tituloDetalles text-center">Valores nutricionales (100g)</h4>
+							<h4 class="tituloDetalles text-center p-flex">Valores nutricionales (100g)</h4>
 						</div>
-						<div class="grid row pl-5" style="font-size:large;">
-							<div class="col-6">
-									<p class="p-flex"> <b>Kcal:</b> {{alimento.kcal_100g}} Kcal</p>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Kcal:</b> {{alimento.kcal_100g}} Kcal</h5>
 							</div>
-							<div class="col-6">
-								<p class="p-flex"> <b>Proteinas:</b> {{alimento.proteinas_100g}} g</p>
-							</div>
+							<div class="field">
+								<h5 class="p-flex align-self-center"><b>Proteinas:</b> {{alimento.proteinas_100g}} g</h5>
+							</div>	
 						</div>
-						<div class="row pl-5" style="font-size:large;">
-							<p class="p-flex"> <b>Carbohidratos:</b> {{alimento.carbohidratos_100g}} g de los cuales <b>azúcares: </b>{{alimento.azucares_100g}} g</p>
-						</div>
-						<div class="row pl-5" style="font-size:large;">
-							<p class="p-flex"> <b>Grasas:</b> {{alimento.grasa_100g}} g de las cuales <b>saturadas: </b>{{alimento.grasas_std_100g}} g</p>
-						</div>
-						<div class="grid row pl-5" style="font-size:large;">
-							<div class="col-6">
-								<p class="p-flex"> <b>Sal:</b> {{alimento.sal_100g}} g</p>
-							</div>
-							<div class="col-6">
-								<p class="p-flex"> <b>Sodio:</b> {{alimento.sodio_100g}} g</p>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Carbohidratos:</b> {{alimento.carbohidratos_100g}} g de los cuales <b>azúcares: </b>{{alimento.azucares_100g}} g</h5>
 							</div>
 						</div>
-						<div class="grid row pl-5" style="font-size:large;">
-							<div class="col-6">
-								<p class="p-flex"> <b>Fibra:</b> {{alimento.fibra_100g}} g</p>
-							</div>
-							<div class="col-6">
-								<p class="p-flex"> <b>Colesterol:</b> {{alimento.colesterol_100g}} g</p>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Grasas:</b> {{alimento.grasa_100g}} g de las cuales <b>saturadas: </b>{{alimento.grasas_std_100g}} g</h5>
 							</div>
 						</div>
-						<div class="row pl-5" style="font-size:large;">
-							<p class="p-flex"> <b>Potasio:</b> {{alimento.potasio_100g}} g</p>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Sal:</b> {{alimento.sal_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Sodio:</b> {{alimento.sodio_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Fibra:</b> {{alimento.fibra_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Colesterol:</b> {{alimento.colesterol_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Potasio:</b> {{alimento.potasio_100g}} g</h5>
+							</div>
+						</div>	
+					</div>	
+					<div class="field bg-gray-500 card lg:col-5 md:col-12 justify-content-center">
+						<div class="row justify-content-center text-center flex">
+							<h4 class="tituloDetalles text-center p-flex">Alérgenos</h4>
 						</div>
-					</div>
-					<div class="container bg-gray-500 card col-5">
-						<div class="row justify-content-center text-center">
-							<h4 class="tituloDetalles text-center">Alérgenos</h4>
-						</div>
-						<div class="grid justify-content-center align-content-center">
-							<div class="col-3 align-content-around" v-for="(alergeno) of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
-								<img :src="'images/alergenos/'+alergeno+'.svg'" :alt="alergeno" class="imagen-alergeno" />
+						<div class="formgroup-inline row flex justify-content-around">
+							<div class="field" v-for="(alergeno) of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
+								<span class="p-image p-component p-image-preview-container">
+									<img :src="'images/alergenos/'+alergeno+'.svg'"  width="100" :alt="alergeno"/>
+								</span>
 							</div>
 						</div>
-					</div>
+					</div>	
 				</div>
 			</div>
 		</Dialog>
