@@ -64,7 +64,7 @@
                 </div>
 
 			<!-- Inicio del carrousel -->
-			<div v-if=dataviewValueCarrusel>
+			<div v-show=carruselVacio>
 				<div class="col-12 ">
 					<div class="card">
 						<h5>Comida {{ $store.state.tipo}}</h5>
@@ -145,7 +145,7 @@
                                         </div>
                                     </div>
                                 </div>
-								<div class="flex align-items-center justify-content-between">
+								<div class="flex align-items-center justify-content-between" v-if="slotProps.data.verificado">
                                     <div></div>
 									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
 								</div>
@@ -182,6 +182,7 @@
 					{name: 'Barcelona', code: 'BRC'},
 					{name: 'Rome', code: 'RM'},
 				],
+				carruselVacio: false,
 				dataviewValue: {},
 				dataviewValueCarrusel: {},
 				dataUserView: {},
@@ -228,7 +229,8 @@
 				this.alimentoService.getComida(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data =>{ this.dataviewValueComida = data});
 			},
 			carrousel(){
-				this.alimentoService.getCarrusel(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data => this.dataviewValueCarrusel = data);
+				this.alimentoService.getCarrusel(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data =>{ this.dataviewValueCarrusel = data
+				this.carruselVacio = data.length >0});
 			},
 			
 			userKcal(){
@@ -256,7 +258,7 @@
 				
 			},
 			eliminarDelCarrusel(alimentoId){
-				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.carrousel());
+				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.$router.go());
 			},
 			onSortChange(event){
 				const value = event.value.value;
