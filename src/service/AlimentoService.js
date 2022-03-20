@@ -105,4 +105,12 @@ export default class AlimentoService {
         });
     }
 
+    anyadirACarrusel(alimentoId,cantidad, body){
+        return axios.post(`/comidas/add/${alimentoId}/${cantidad}`,body)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
 }
