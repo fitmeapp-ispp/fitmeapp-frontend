@@ -19,7 +19,7 @@ export default class AlimentoService {
     }
 
     getAlimentosNoAlergeno(alergeno) {
-		return axios.get(`/alimentos/alergenos/${alergeno}`)
+		return axios.get(`/alimentos/alergenos/`+alergeno)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
