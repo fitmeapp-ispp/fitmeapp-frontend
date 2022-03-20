@@ -51,6 +51,7 @@
         </Sidebar>
     </div>  
  </div> 
+
 </template>
 
 
@@ -67,6 +68,12 @@ export default {
         topbarImage() {
             return 'images/Logo_ISPP.png';
         },
+		    onTopbarMenuToggle(event) {
+            this.$emit('topbar-menu-toggle', event);
+        },
+		    topbarImage() {
+			    return this.$appState.darkTheme ? 'images/Logo_ISPP.png' : 'images/Logo_ISPP.png';
+		    }
     },
     computed: {
         darkTheme() {
