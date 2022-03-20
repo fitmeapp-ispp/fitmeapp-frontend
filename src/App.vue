@@ -1,7 +1,7 @@
 <template>
-	<div>
-        <AppTopBar id="navbar"/>
-
+	<div :class="containerClass" @click="onWrapperClick">
+        <AppTopBar id="navbar" @menu-toggle="onMenuToggle" />
+        <SupportButton />
         <div class="m-4">
             <div class="layout-main">
                 <router-view />
@@ -14,7 +14,7 @@
 <script>
 import AppTopBar from './AppTopbar.vue';
 /* import AppFooter from './AppFooter.vue'; */
-
+import SupportButton from "./components/SupportButton.vue";
 export default {
     emits: ['change-theme'],
     data() {
@@ -239,12 +239,14 @@ export default {
             this.removeClass(document.body, 'body-overflow-hidden');
     },
     components: {
+        "SupportButton": SupportButton,
         'AppTopBar': AppTopBar,
         /* 'AppFooter': AppFooter, */
     }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss"> 
+
 @import './App.scss';
 </style>
