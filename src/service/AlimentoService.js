@@ -18,6 +18,7 @@ export default class AlimentoService {
         });
     }
 
+
     getAlimentosNoAlergeno(alergeno) {
 		return axios.get(`/alimentos/alergenos/`+alergeno)
         .then((response) => response.data)
@@ -25,6 +26,7 @@ export default class AlimentoService {
             console.log('error' + e);
         });
     }
+
 
     getCreados(username) {
 		return axios.get(`/alimentos/creados/${username}`)
