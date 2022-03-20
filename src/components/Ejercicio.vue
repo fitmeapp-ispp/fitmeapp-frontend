@@ -1,40 +1,37 @@
 <template>
 
   <h2>Buscar Ejercicio</h2>
+  <!-- {{dataviewValue}} -->
   <div class="card mb-0">
     <div class="grid formgrid">
+
       <div class="col-12 mb-2 lg:col-2 lg:mb-0">
-         <h3>Nombre</h3>
+        <h3>Nombre</h3>
         <input class="p-inputtext p-component" id="username" type="text">
       </div>
+
       <div class="col-12 mb-2 lg:col-2 lg:mb-0">
         <h3>Zona muscular</h3>
         <Dropdown v-model="selectedMusculo" :options="musculos" optionLabel="name" optionValue="code" placeholder="Selecciona una zona muscular" />
       </div>
-        <div class="col-12 mb-2 lg:col-3 lg:mb-0">
+
+      <div class="col-12 mb-2 lg:col-3 lg:mb-0">
         <h4>Calorias quemadas </h4>
         <Slider id="slider1" v-model="calorias" :range="true" />
         <br>
-       <b> {{calorias[0]}}</b> Kcal  <b>{{calorias[1]}}</b> Kcal
-        
+        <b> {{calorias[0]}}</b> Kcal  <b>{{calorias[1]}}</b> Kcal
       </div>
-        <div class="col-12 mb-2 lg:col-2 lg:mb-0">
+
+      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
         <h3>Tipo</h3>
         <Dropdown v-model="selectedMusculo2" :options="musculos2" optionLabel="name" optionValue="code" placeholder="Escoja materiales" />
       </div>
-        <div class="col-12 mb-2 lg:col-2 lg:mb-0">
+      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
         <h3>Dificultad</h3>
         <Dropdown v-model="selectedMusculo3" :options="musculos3" optionLabel="name" optionValue="code" placeholder="Elija dificultad" />
       </div>
-    
-        
-      </div>
     </div>
-
-
-
-
-
+  </div>
 
 
 <div class="grid">
@@ -46,50 +43,38 @@
 							<div class="col-4 text-left">
 								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By Price" @change="onSortChange($event)"/>
 							</div>
-                            <div class="col-4 text-center">
-                                <span class="p-input-icon-left mb-2">
-                                    <i class="pi pi-search" />
-                                </span>
-                            </div>
+                <div class="col-4 text-center">
+                    <span class="p-input-icon-left mb-2">
+                        <i class="pi pi-search" />
+                    </span>
+                </div>
 							<div class="col-4 text-right">
 								<DataViewLayoutOptions v-model="layout" />
 							</div>
 						</div>
 					</template>
 					<template #list="slotProps">
-						<div class="col-12">
-							<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-								<div class="flex-1 text-center md:text-left">
-									<div class="font-bold text-2xl">{{slotProps.data.name}}</div>
-									<div class="mb-3">{{slotProps.data.description}}</div>
-
-								</div>
-								<div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
-								</div>
-							</div>
-						</div>
-					</template>
-
-					<template #grid="slotProps">
 						<div class="col-12 md:col-4">
-							<div class="card m-3 border-1 surface-border">
-                                <div class="text-align-center"> 
-                                    <div class="grid grid-nogutter">
-                                        <div class="col-4 text-left">
-                                        </div>
-                                        <div class="col-8 text-left">
-                                            <div class="text-2xl font-bold">{{slotProps.data.name}}</div>
-                                            <div class="text-2xl font-bold">{{slotProps.data.description}}</div>
+            <div class="item container">
+                <div class="ejercicioCard row ">
+                    <img src="" class="ejercicio-img col">
+                    <div class="ejercicio-container col-8">
+                      <div class="ejercicio-head row">
+                        <div class="ejercicio-title col">{{slotProps.data.name}}</div>
+                        <span class="calorias col-4">({{slotProps.data.exercise_base}}Kc)</span>
+                      </div>
 
-                                        </div>
-                                    </div>
-                                </div>
-								<div class="flex align-items-center justify-content-between">
-                                    <div></div>
-									<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
-								</div>
+                    <ul>
+                      <li class="text">Grupo muscular: {{slotProps.data.category}}</li>
+                      <li class="text">Material: {{slotProps.data.equipment.join(", ")}}</li>
+                    </ul>
+
+                    <div :style="'background-image:' + slotProps.data.musclesImage + '; background-repeat-x: no-repeat; background-repeat-y: no-repeat;'">
+                      <img src="https://wger.de/static/images/muscles/muscular_system_front.svg" style="visibility: hidden;"/>
+                    </div>
+                </div>
 							</div>
+            </div>
 						</div>
 					</template>
 				</DataView>
@@ -97,16 +82,9 @@
 		</div>
 	</div>
 
-
-
-
-
-
-
 </template>
 
 <script>
-/* document.getElementById("slider1").addEventListener() */
 
 export default {
   data() {
@@ -177,13 +155,63 @@ export default {
     this.fetchItems();
   },
   methods: {
-            fetchItems()
-        {
-          let uri = 'http://localhost:3000/ejercicio';
-          this.axios.get(uri).then((response) => {
-          this.dataviewValue = response.data;
-          });
-        },
+    fetchItems() {
+      this.axios.get("/ejercicio").then((response) => {
+        this.dataviewValue = response.data;
+        
+        for (let ejercicio of this.dataviewValue) {
+          let arrayPromesas = []
+          let arrayIdMusculosPrincipales = ejercicio["muscles"];
+          let arrayIdMusculosSecundarios = ejercicio["muscles_secondary"];
+          let musclesUrls = []
+
+          if (arrayIdMusculosPrincipales.length > 0) {
+
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles = []
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles_secondary = []
+
+            for (let idMusculoPrincipal of arrayIdMusculosPrincipales) {
+              let promesaMusculoPrincipal = this.axios.get("/musculo/"+idMusculoPrincipal).then((res) => {
+                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles.push(res.data)
+                musclesUrls.push("url(https://wger.de" + res.data.image_url_main + ")")
+              });
+
+              arrayPromesas.push(promesaMusculoPrincipal)
+            }
+            
+            for (let idMusculoSecundario of arrayIdMusculosSecundarios) {
+              let promesaMusculoSecundario = this.axios.get("/musculo/"+idMusculoSecundario).then((res) => {
+                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles_secondary.push(res.data)
+                musclesUrls.push("url(https://wger.de" + res.data.image_url_secondary + ")")
+              });
+
+              arrayPromesas.push(promesaMusculoSecundario)
+            }
+
+            Promise.all(arrayPromesas).then(() => {
+              this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].musclesImage = musclesUrls.join() + ",url(https://wger.de/static/images/muscles/muscular_system_front.svg)"
+            })
+
+          } else {
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].musclesImage = "url(https://static.thenounproject.com/png/1077671-200.png)"
+          }
+
+          let arrayIdMMateriales = ejercicio["equipment"];
+
+          if (arrayIdMMateriales.length > 0) {
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment = []
+            
+            for (let idMaterial of arrayIdMMateriales) {
+              this.axios.get("/material/"+idMaterial).then((res) => {
+                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment.push(res.data.name)
+              });
+            }
+          } else {
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment = ["None / No data available"]
+          }
+
+      }})
+    },
     formatCurrency(value) {
       return value.toLocaleString("en-US", {
         style: "currency",
@@ -254,3 +282,65 @@ export default {
   },
 };
 </script>
+<style>
+    .item {
+      padding: 10px;
+    }
+    .ejercicio-img {
+        margin: auto;
+        width: 100%;
+        height: 7vw;
+        object-fit: cover;
+    }
+    .ejercicioCard {
+        z-index:2;
+        border-radius: 10px;
+        padding: 1rem 0 1rem 1rem;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        position: relative; 
+        background-color: gray;
+        display: flex;
+        flex-direction: row;
+    }
+    .ejercicio-container{
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .ejercicio-head {
+        height: calc(1vw + 1vh + 2vmin);
+        font-size: calc(1vw + 1vh + 1vmin);
+        display: flex;
+        flex-direction: row;
+    }
+    .calorias {
+        margin-right: 1vw;
+        overflow: visible;
+        z-index:2;
+        font-size: calc(0.4vw + 0.4vh + 0.4vmin);
+    }
+    .ejercicio-title {
+        display: inline;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        height: 100%;
+        font-size: calc(0.5vw + 0.5vh + 0.5vmin);
+        z-index: 3;
+        text-overflow: ellipsis;
+    }
+    .text {
+        font-size: calc(0.4vw + 0.4vh + 0.4vmin);
+    }
+    .zonaEjercicio-img {
+        position: absolute;
+        bottom: 2%;
+        right: 2%;
+        width: 6vw;
+        height: 6vw;
+        background-color: red;
+        z-index: -1;
+    }
+</style>
