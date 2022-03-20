@@ -38,7 +38,7 @@ const routes = [
         component: Login
     },
     {
-        path: '/ejercicio/detalles/',
+        path: '/ejercicio/detalles/:ejercicioId',
         name: 'Detalles_Ejercicio',
         component: () => import('./pages/Detalles_ejercicio.vue')
     },

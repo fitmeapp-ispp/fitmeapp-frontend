@@ -10,7 +10,7 @@
           <Column field="name" header="Nombre" :style="{width:'150px'}">
           
 						<template #body="{data}">
-              <router-link class="text-bold" to="/ejercicio/detalles">{{data.name}}</router-link>
+              <router-link :to="'/ejercicio/detalles/' + data._id">{{data.name}}</router-link>
             </template>
 
 					</Column>
@@ -98,8 +98,7 @@ export default {
         "Obliquus externus abdominis",
         "Soleus"
       ],
-      dataviewValue: null,
-
+      dataviewValue: null
     };
   },
 
@@ -113,9 +112,12 @@ export default {
           let uri = '/ejercicios';
           axios.get(uri).then((response) => {
           this.dataviewValue = response.data;
+          console.log(this.dataviewValue);
           });
     },
-
+    exercise_url(url){
+        return url._id;
+    }
 
     
 
