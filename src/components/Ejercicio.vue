@@ -1,35 +1,36 @@
 <template>
 
   <h2>Buscar Ejercicio</h2>
-  <!-- {{dataviewValue}} -->
+
   <div class="card mb-0">
     <div class="grid formgrid">
 
-      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
-        <h3>Nombre</h3>
-        <input class="p-inputtext p-component" id="username" type="text">
+      <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+        <h2>Nombre</h2>
+        <InputText v-model="filtroNombreEjercicio" placeholder="Introduce el nombre de un ejercicio..." />
       </div>
 
-      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
-        <h3>Zona muscular</h3>
-        <Dropdown v-model="selectedMusculo" :options="musculos" optionLabel="name" optionValue="code" placeholder="Selecciona una zona muscular" />
+      <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+        <h2>Grupo muscular</h2>
+        <Dropdown v-model="filtroGrupoMuscular" :options="gruposMusculares" optionLabel="nombre" optionValue="nombre" placeholder="Selecciona un grupo muscular" />
       </div>
 
-      <div class="col-12 mb-2 lg:col-3 lg:mb-0">
-        <h4>Calorias quemadas </h4>
-        <Slider id="slider1" v-model="calorias" :range="true" />
-        <br>
-        <b> {{calorias[0]}}</b> Kcal  <b>{{calorias[1]}}</b> Kcal
+      <div class="col-12 mb-2 lg:col-4 lg:mb-0">
+        <h2>Material</h2>
+        <MultiSelect v-model="filtroMaterial" :options="materiales" optionLabel="nombre" optionValue="nombre" placeholder="Escoja materiales">
+          <template #value="slotProps">
+						<template v-if="!slotProps.value || slotProps.value.length === 0">
+							<div class="p-1">Selecciona un material</div>
+						</template>
+					</template>
+					<template #option="slotProps">
+						<div class="flex align-items-center">
+							<div>{{slotProps.option.nombre}}</div>
+						</div>
+					</template>
+        </MultiSelect>
       </div>
 
-      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
-        <h3>Tipo</h3>
-        <Dropdown v-model="selectedMusculo2" :options="musculos2" optionLabel="name" optionValue="code" placeholder="Escoja materiales" />
-      </div>
-      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
-        <h3>Dificultad</h3>
-        <Dropdown v-model="selectedMusculo3" :options="musculos3" optionLabel="name" optionValue="code" placeholder="Elija dificultad" />
-      </div>
     </div>
   </div>
 
@@ -37,32 +38,18 @@
 <div class="grid">
 		<div class="col-12">
 			<div class="card">
-				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" v-model:filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
-					<template #header>
-						<div class="grid grid-nogutter">
-							<div class="col-4 text-left">
-								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Sort By Price" @change="onSortChange($event)"/>
-							</div>
-                <div class="col-4 text-center">
-                    <span class="p-input-icon-left mb-2">
-                        <i class="pi pi-search" />
-                    </span>
-                </div>
-							<div class="col-4 text-right">
-								<DataViewLayoutOptions v-model="layout" />
-							</div>
-						</div>
-					</template>
-					<template #list="slotProps">
+        <h1 v-if="filtroNombreEjercicio.length > 0 && ejerciciosFiltrados.length == 0">No existen ejercicios que cumplan con los filtros!</h1>
+
+				<DataView :value="ejerciciosFiltrados" :layout="layout" :paginator="true" :rows="9" :sortOrder="-1" :sortField="name">
+					<template #grid="slotProps">
 						<div class="col-12 md:col-4">
-            <div class="item container">
+              <div class="item container">
                 <div class="ejercicioCard row ">
-                    <img src="" class="ejercicio-img col">
-                    <div class="ejercicio-container col-8">
-                      <div class="ejercicio-head row">
-                        <div class="ejercicio-title col">{{slotProps.data.name}}</div>
-                        <span class="calorias col-4">({{slotProps.data.exercise_base}}Kc)</span>
-                      </div>
+                  <img src="" class="ejercicio-img col">
+                  <div class="ejercicio-container col-8">
+                    <div class="ejercicio-head row">
+                      <div class="ejercicio-title col">{{slotProps.data.name}}</div>
+                    </div>
 
                     <ul>
                       <li class="text">Grupo muscular: {{slotProps.data.category}}</li>
@@ -72,11 +59,12 @@
                     <div :style="'background-image:' + slotProps.data.musclesImage + '; background-repeat-x: no-repeat; background-repeat-y: no-repeat;'">
                       <img src="https://wger.de/static/images/muscles/muscular_system_front.svg" style="visibility: hidden;"/>
                     </div>
+                  </div>
                 </div>
-							</div>
-            </div>
+              </div>
 						</div>
 					</template>
+
 				</DataView>
 			</div>
 		</div>
@@ -86,80 +74,48 @@
 
 <script>
 
+
 export default {
-  data() {
-    return {
-      calorias: [20,80],
-      selectedMusculo: null,
-      selectedMusculo2: null,
-      selectedMusculo3: null,
-      dataviewValue: null,
-      musculos: [
-                {name: 'Piernas', code: 'NY'},
-                {name: 'Espalda y Hombros', code: 'RM'},
-                {name: 'Brazos', code: 'LDN'},
-                {name: 'Abdominales', code: 'IST'},
-                {name: 'Pecho', code: 'PRS'}
-            ],
-                  musculos2: [
-                {name: 'Sin material', code: 'NY'},
-                {name: 'Con mancuerna', code: 'RM'},
-                {name: 'Con maquinas', code: 'LDN'},
-            ],
-                  musculos3: [
-                {name: 'Principiante', code: 'NY'},
-                {name: 'Fácil', code: 'RM'},
-                {name: 'Medio', code: 'LDN'},
-                {name: 'Difícil', code: 'IST'},
-                {name: 'Muy Difícil', code: 'PRS'}
-            ],
-      products: null,
-      lineData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
-        datasets: [
-          {
-            label: "Revenue",
-            data: [65, 59, 80, 81, 56, 55, 40],
-            fill: false,
-            backgroundColor: "#2f4860",
-            borderColor: "#2f4860",
-            tension: 0.4,
-          },
-          {
-            label: "Sales",
-            data: [28, 48, 40, 19, 86, 27, 90],
-            fill: false,
-            backgroundColor: "#00bb7e",
-            borderColor: "#00bb7e",
-            tension: 0.4,
-          },
-        ],
-      },
-      items: [
-        { label: "Add New", icon: "pi pi-fw pi-plus" },
-        { label: "Remove", icon: "pi pi-fw pi-minus" },
-      ],
-      lineOptions: null,
-    };
-  },
-  themeChangeListener: null,
   mounted() {
     this.fetchItems();
+  },
+  data() {
+    return {
+      ejercicios: null,
+      filtroGrupoMuscular: null,
+      filtroMaterial: null,
+      filtroNombreEjercicio: "",
+      layout: 'grid',
+      gruposMusculares: [
+        {nombre: 'All'},
+        {nombre: 'Arms'},
+        {nombre: 'Legs'},
+        {nombre: 'Abs'},
+        {nombre: 'Chest'},
+        {nombre: 'Back'},
+        {nombre: 'Shoulders'},
+        {nombre: 'Calves'}
+      ],
+      materiales: [
+        {nombre: 'Barbell'},
+        {nombre: 'SZ-Bar'},
+        {nombre: 'Dumbbell'},
+        {nombre: 'Gym mat'},
+        {nombre: 'Swiss Ball'},
+        {nombre: 'Pull-up bar'},
+        {nombre: 'none (bodyweight exercise)'},
+        {nombre: 'Bench'},
+        {nombre: 'Incline bench'},
+        {nombre: 'Kettlebell'}
+      ],
+    };
   },
   methods: {
     fetchItems() {
       this.axios.get("/ejercicio").then((response) => {
-        this.dataviewValue = response.data;
-        
-        for (let ejercicio of this.dataviewValue) {
+        this.ejercicios = response.data;
+
+        for (let ejercicio of this.ejercicios) {
           let arrayPromesas = []
           let arrayIdMusculosPrincipales = ejercicio["muscles"];
           let arrayIdMusculosSecundarios = ejercicio["muscles_secondary"];
@@ -167,12 +123,12 @@ export default {
 
           if (arrayIdMusculosPrincipales.length > 0) {
 
-            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles = []
-            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles_secondary = []
+            this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles = []
+            this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles_secondary = []
 
             for (let idMusculoPrincipal of arrayIdMusculosPrincipales) {
               let promesaMusculoPrincipal = this.axios.get("/musculo/"+idMusculoPrincipal).then((res) => {
-                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles.push(res.data)
+                this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles.push(res.data)
                 musclesUrls.push("url(https://wger.de" + res.data.image_url_main + ")")
               });
 
@@ -181,7 +137,7 @@ export default {
             
             for (let idMusculoSecundario of arrayIdMusculosSecundarios) {
               let promesaMusculoSecundario = this.axios.get("/musculo/"+idMusculoSecundario).then((res) => {
-                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles_secondary.push(res.data)
+                this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles_secondary.push(res.data)
                 musclesUrls.push("url(https://wger.de" + res.data.image_url_secondary + ")")
               });
 
@@ -189,99 +145,64 @@ export default {
             }
 
             Promise.all(arrayPromesas).then(() => {
-              this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].musclesImage = musclesUrls.join() + ",url(https://wger.de/static/images/muscles/muscular_system_front.svg)"
+              this.ejercicios[this.ejercicios.indexOf(ejercicio)].musclesImage = musclesUrls.join() + ",url(https://wger.de/static/images/muscles/muscular_system_front.svg)"
             })
 
           } else {
-            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].musclesImage = "url(https://static.thenounproject.com/png/1077671-200.png)"
+            this.ejercicios[this.ejercicios.indexOf(ejercicio)].musclesImage = "url(https://static.thenounproject.com/png/1077671-200.png)"
           }
 
           let arrayIdMMateriales = ejercicio["equipment"];
 
           if (arrayIdMMateriales.length > 0) {
-            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment = []
+            this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = []
             
             for (let idMaterial of arrayIdMMateriales) {
               this.axios.get("/material/"+idMaterial).then((res) => {
-                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment.push(res.data.name)
+                this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment.push(res.data.name)
               });
             }
           } else {
-            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment = ["None / No data available"]
+            this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = ["No data available"]
           }
 
-      }})
-    },
-    formatCurrency(value) {
-      return value.toLocaleString("en-US", {
-        style: "currency",
-        currency: "USD",
-      });
-    },
-    isDarkTheme() {
-      return this.$appState.darkTheme === true;
-    },
-    applyLightTheme() {
-      this.lineOptions = {
-        plugins: {
-          legend: {
-            labels: {
-              color: "#495057",
-            },
-          },
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: "#495057",
-            },
-            grid: {
-              color: "#ebedef",
-            },
-          },
-          y: {
-            ticks: {
-              color: "#495057",
-            },
-            grid: {
-              color: "#ebedef",
-            },
-          },
-        },
-      };
-    },
-    applyDarkTheme() {
-      this.lineOptions = {
-        plugins: {
-          legend: {
-            labels: {
-              color: "#ebedef",
-            },
-          },
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: "#ebedef",
-            },
-            grid: {
-              color: "rgba(160, 167, 181, .3)",
-            },
-          },
-          y: {
-            ticks: {
-              color: "#ebedef",
-            },
-            grid: {
-              color: "rgba(160, 167, 181, .3)",
-            },
-          },
-        },
-      };
+          this.ejerciciosFiltrados = this.ejercicios
+        }
+      })
     },
   },
+  computed: {
+    ejerciciosFiltrados() {
+      if (this.filtroNombreEjercicio.length == 0 && this.filtroGrupoMuscular == null && this.filtroMaterial == null) {
+        return this.ejercicios
+      } else {
+        let resultadoFiltrado = this.ejercicios
+
+        if (this.filtroNombreEjercicio.length > 0) {
+          resultadoFiltrado = resultadoFiltrado.filter(e => {
+            return e.name.toLowerCase().includes(this.filtroNombreEjercicio.toLowerCase())
+          })
+        }
+
+        if (this.filtroGrupoMuscular != null && this.filtroGrupoMuscular != "All") {
+          resultadoFiltrado = resultadoFiltrado.filter(e => {
+            return e.category == this.filtroGrupoMuscular
+          })
+        }
+
+        if (this.filtroMaterial != null) {
+          resultadoFiltrado = resultadoFiltrado.filter(e => {
+            return this.filtroMaterial.every(material => e.equipment.includes(material))
+          })
+        }
+
+        return resultadoFiltrado
+      }
+    }
+  }
 };
 </script>
+
 <style>
     .item {
       padding: 10px;
@@ -314,12 +235,6 @@ export default {
         font-size: calc(1vw + 1vh + 1vmin);
         display: flex;
         flex-direction: row;
-    }
-    .calorias {
-        margin-right: 1vw;
-        overflow: visible;
-        z-index:2;
-        font-size: calc(0.4vw + 0.4vh + 0.4vmin);
     }
     .ejercicio-title {
         display: inline;
