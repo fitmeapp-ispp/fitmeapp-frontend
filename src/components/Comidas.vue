@@ -5,7 +5,7 @@
                 <div class="card">
                     <div class="grid grid-nogutter mb-3">
                         <div class="col-9 text-left">
-                            <h1>Almuerzo</h1>
+                            <h1> {{ $store.state.tipo}} </h1>
 
                         </div>
 
@@ -15,7 +15,7 @@
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
 								<div class="bg-teal-500 h-full" style="width:3%"></div>
 							</div>
-							<span class="text-teal-500 ml-3 font-medium">66 Kcal / 2100 Kcal</span>
+							<span class="text-teal-500 ml-3 font-medium">{{dataviewValueComida[0]["kcal_100g"]}} Kcal / {{ kcal_recomendadas }} Kcal</span>
 							</div>
 
 							<div class="col-3 text-center"></div>
@@ -25,7 +25,7 @@
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
 								<div class="bg-teal-500 h-full" style="width:7%"></div>
 							</div>
-							<span class="text-teal-500 ml-3 font-medium">19.67 g / 273 g</span>
+							<span class="text-teal-500 ml-3 font-medium">{{dataviewValueComida[0].proteinas_100g}} g / {{ proteinas_recomendadas }} g</span>
 							</div>
                         </div>
 
@@ -35,7 +35,7 @@
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
 									<div class="bg-teal-500 h-full" style="width:36%"></div>
 								</div>
-								<span class="text-teal-500 ml-3 font-medium">110 g / 273 g</span>
+								<span class="text-teal-500 ml-3 font-medium"> {{dataviewValueComida[0].carbohidratos_100g}} g / {{ carbohidratos_recomendados }} g</span>
 							</div>
 							<div class="col-3 text-center"></div>
 							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
@@ -43,7 +43,7 @@
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
 									<div class="bg-teal-500 h-full" style="width:50%"></div>
 								</div>
-								<span class="text-teal-500 ml-3 font-medium">38g / 73 g</span>
+								<span class="text-teal-500 ml-3 font-medium"> {{dataviewValueComida[0].grasa_100g}} g / {{ grasas_recomendadas }} g</span>
 							</div>
 
                         </div>
@@ -55,7 +55,7 @@
                         <template v-slot:start>
                             <Button label="Favoritos" icon="pi pi-star" class="p-button-warning mr-2" v-on:click="favoritos()"/>
                             <Button label="Recientes"  class="mr-2" v-on:click="recientes()"/>
-                            <Button label="Creados"  class="p-button-success mr-2" />
+                            <Button label="Creados"  class="p-button-success mr-2" v-on:click="creados()" />
                         </template>
                         <template v-slot:end>
                             <SplitButton label="Alérgenos" :model="toolbarItems"></SplitButton>
@@ -64,10 +64,10 @@
                 </div>
 
 			<!-- Inicio del carrousel -->
-			<div>
+			<div v-if=dataviewValueCarrusel>
 				<div class="col-12 ">
 					<div class="card">
-						<h5>Comida Almuerzo</h5>
+						<h5>Comida {{ $store.state.tipo}}</h5>
 						<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :circular="false">
 								<template #item="slotProps">
 									<div class="col-12" style="text-align: center">
@@ -185,6 +185,11 @@
 				dataviewValue: {},
 				dataviewValueCarrusel: {},
 				dataUserView: {},
+				kcal_recomendadas: 0,
+				carbohidratos_recomendados: 0,
+				proteinas_recomendadas: 0,
+				grasas_recomendadas: 0,
+				dataviewValueComida: [{'kcal_100g':0}],
 				layout: 'grid',
 				sortKey: null,
 				sortOrder: null,
@@ -206,19 +211,34 @@
 			this.fetchItems();
 			this.carrousel();
 			this.userKcal();
-			
+			this.comidaCarrusel();
 		},
 		methods: {
 			enterClicked(){
 			this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
 			},
+			creados(){
+				this.alimentoService.getCreados(this.$store.state.username).then(data =>{ this.dataviewValue = data
+				console.log(data)});
+			},
+			alergenos(alergeno){
+				this.alimentoService.getAlimentosNoAlergeno(alergeno).then(/*data =>{ this.dataviewValue = data}*/);
+			},
+			comidaCarrusel(){
+				this.alimentoService.getComida(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data =>{ this.dataviewValueComida = data});
+			},
 			carrousel(){
-				this.alimentoService.getCarrusel().then(data => this.dataviewValueCarrusel = data);
+				this.alimentoService.getCarrusel(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data => this.dataviewValueCarrusel = data);
 			},
 			
 			userKcal(){
-				this.alimentoService.getUserKcak(this.$store.state.username).then(data =>{this.dataUserView = data 
-				console.log(this.dataUserView[0].kcal_recomendadas)} );
+				this.alimentoService.getUserKcak(this.$store.state.username).then(data =>{this.dataUserView = data
+				this.kcal_recomendadas = (this.dataUserView[0].kcal_recomendadas/3).toFixed(2)
+				this.carbohidratos_recomendados = (this.dataUserView[0].carbohidratos_recomendados/3).toFixed(2)
+				this.proteinas_recomendadas = (this.dataUserView[0].proteinas_recomendadas/3).toFixed(2)
+				this.grasas_recomendadas = (this.dataUserView[0].grasas_recomendadas/3).toFixed(2)
+
+				} );
 			},
 
 			fetchItems()
@@ -236,9 +256,7 @@
 				
 			},
 			eliminarDelCarrusel(alimentoId){
-				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.comidaId).then(
-				data => {this.dataviewValueCarrusel = data
-						this.carrousel()});
+				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.carrousel());
 			},
 			onSortChange(event){
 				const value = event.value.value;
