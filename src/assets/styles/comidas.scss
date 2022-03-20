@@ -1,0 +1,22 @@
+.grid {
+    &.grid-nogutter {
+        color: #256029;
+    &.alimento-busqueda{
+        height: 225px;
+    }
+    }
+}
+.carrousel-comidas{
+    max-height: 150px;
+    align-items: right;
+    margin: 4px;
+}
+#imagen-busqueda{
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+}
+#imagen-comida{
+    height: 10px  !important;
+    width: 10% !important;
+}
