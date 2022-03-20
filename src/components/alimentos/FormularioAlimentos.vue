@@ -89,7 +89,7 @@
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="alergenos">Alérgenos</label>
-						<MultiSelect v-model="alimento.alergenos" :options="selector_alergenos" optionLabel="Alérgenos" placeholder="Seleccione los alérgenos" :filter="true">
+						<MultiSelect v-model="alergenosSel" :options="selector_alergenos" optionLabel="Alérgenos" placeholder="Seleccione los alérgenos" :filter="true">
 							<template #value="slotProps">
 								<div class="inline-flex align-items-center py-1 px-2 bg-primary text-primary border-round mr-2" v-for="option of slotProps.value" :key="option.code">
 									<span :class="'mr-2 flag flag-' + option.code.toLowerCase()" style="width:18px; height: 12px"/>
@@ -133,6 +133,7 @@ export default {
 			enviado: false,
 			errorNombre: null,
 			errorMarca: null,
+			alergenosSel: [],
 			selector_alergenos: [
 				{name: 'Gluten', code: 'gluten'},
 				{name: 'Crustáceos', code: 'crustaceos'},
@@ -173,18 +174,19 @@ export default {
 
 				//TRANSFORMAMOS LOS ALERGENOS EN UN STRING
 				let alergenos = [];
-				if(!this.alimento.alergenos.length){
-					for(let alergeno of this.alimento.alergenos){
+			
+				if(this.alergenosSel.length > 0){
+					for(let alergeno of this.alergenosSel){
 						alergenos.push(alergeno.code);
 					}
 					this.alimento.alergenos = alergenos.join(",");
 				}
-
+				
 				if (this.alimento._id) {
 					this.alimentoService.actualizarAlimento(this.alimento)
 					.then(() => {
 						//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
-						this.$router.push({ name: 'selector_alimentos_recetas', params: {mensaje: 'alimentoModificado'} });
+						this.$router.push({ name: 'comidas', params: {mensaje: 'alimentoModificado'} });
 					})
 					.catch((e)=>{
 						//SI OCURRE ALGÚN FALLO AL INSERTAR EN LA BD, MOSTRAR
@@ -196,7 +198,7 @@ export default {
 					this.alimentoService.guardarAlimento(this.alimento)
 					.then(() => {
 						//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
-						this.$router.push({ name: 'selector_alimentos_recetas', params: {mensaje: 'alimentoInsertado'} });
+						this.$router.push({ name: 'comidas', params: {mensaje: 'alimentoInsertado'} });
 					})
 					.catch((e)=>{
 						//SI OCURRE ALGÚN FALLO AL INSERTAR EN LA BD, MOSTRAR
@@ -228,7 +230,7 @@ export default {
 		},
 		volver()
 		{
-			this.$router.push('/alimentos_recetas');
+			this.$router.push('/comidas');
 		}
 	}
 }
