@@ -1,7 +1,5 @@
 <template>
 <div>
-
-
 <span v-if="$store.state.loggedIn"><h1>Logged in as {{$store.state.username}}</h1></span>
 <br>
 <button class="p-button p-component mr-2 mb-2" @click="toggleMenu">
