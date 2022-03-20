@@ -20,7 +20,7 @@ export default class AlimentoService {
 
 
     getAlimentosNoAlergeno(alergeno) {
-		return axios.get(`/alimentos/alergenos/${alergeno}`)
+		return axios.get(`/alimentos/alergenos/`+alergeno)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -99,6 +99,14 @@ export default class AlimentoService {
 
     deleteFromCarrusel(alimentoId, tipo, fecha,username){
         return axios.delete(`/comidas/carrusel/${alimentoId}/${tipo}/${fecha}/${username}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    anyadirACarrusel(alimentoId,cantidad, body){
+        return axios.post(`/comidas/add/${alimentoId}/${cantidad}`,body)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);

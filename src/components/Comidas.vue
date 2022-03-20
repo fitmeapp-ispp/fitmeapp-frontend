@@ -13,9 +13,9 @@
 							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
 								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">KCalorías</span>
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
-								<div class="bg-teal-500 h-full" style="width:3%"></div>
+								<div class="bg-teal-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"></div>
 							</div>
-							<span class="text-teal-500 ml-3 font-medium">{{dataviewValueComida[0]["kcal_100g"]}} Kcal / {{ kcal_recomendadas }} Kcal</span>
+							<span class="text-teal-500 ml-3 font-medium">{{ dataviewValueComida[0]["kcal_100g"] }} Kcal / {{ kcal_recomendadas }} Kcal</span>
 							</div>
 
 							<div class="col-3 text-center"></div>
@@ -23,9 +23,9 @@
 							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
 								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Proteínas</span>
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
-								<div class="bg-teal-500 h-full" style="width:7%"></div>
+								<div class="bg-teal-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"></div>
 							</div>
-							<span class="text-teal-500 ml-3 font-medium">{{dataviewValueComida[0].proteinas_100g}} g / {{ proteinas_recomendadas }} g</span>
+							<span class="text-teal-500 ml-3 font-medium">{{ dataviewValueComida[0]["proteinas_100g"] }} g / {{ proteinas_recomendadas }} g</span>
 							</div>
                         </div>
 
@@ -33,7 +33,7 @@
 							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
 								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Carbohidratos</span>
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
-									<div class="bg-teal-500 h-full" style="width:36%"></div>
+									<div class="bg-teal-500 h-full" v-bind:style="'width:' + ratioCarbohidrato + '%'"></div>
 								</div>
 								<span class="text-teal-500 ml-3 font-medium"> {{dataviewValueComida[0].carbohidratos_100g}} g / {{ carbohidratos_recomendados }} g</span>
 							</div>
@@ -41,7 +41,7 @@
 							<div class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center">
 								<span class="text-900 font-medium mr-2 mb-1 md:mb-0">Grasas</span>
 								<div class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem" style="height:8px">
-									<div class="bg-teal-500 h-full" style="width:50%"></div>
+									<div class="bg-teal-500 h-full" v-bind:style="'width:' + ratioGrasa + '%'"></div>
 								</div>
 								<span class="text-teal-500 ml-3 font-medium"> {{dataviewValueComida[0].grasa_100g}} g / {{ grasas_recomendadas }} g</span>
 							</div>
@@ -60,7 +60,9 @@
                             <Button label="Creados"  class="p-button-success mr-2" v-on:click="creados()" />
                         </template>
                         <template v-slot:end>
-                            <SplitButton label="Alérgenos" :model="toolbarItems"></SplitButton>
+                            <SplitButton label="Alérgenos" :model="toolbarItems" v-model="filtroAlergeno" @click="alergenos()">
+								
+							</SplitButton>
                         </template>
                     </Toolbar>
                 </div>
@@ -248,6 +250,7 @@
 	export default {
 		data() {
 			return {
+				alimentoDialog: false,
 				carruselVacio: false,
 				dataviewValue: {},
 				dataviewValueCarrusel: {},
@@ -256,8 +259,100 @@
 				carbohidratos_recomendados: 0,
 				proteinas_recomendadas: 0,
 				grasas_recomendadas: 0,
-				dataviewValueComida: [{'kcal_100g':0}],
+				ratiokcal: 0,
+				ratioProteina: 0,
+				ratioCarbohidrato: 0,
+				ratioGrasa: 0,
+				dataviewValueComida: [{'kcal_100g':0},{'proteinas_100g':0},{'carbohidratos_100g':0},{'grasa_100g':0}],
 				layout: 'grid',
+				filtroAlergeno:null,
+				toolbarItems: [
+					{
+						label: 'Gluten',
+						icon: 'pi pi-filter',
+						value: 'gluten',
+						click: this.alergenos('gluten')
+					},
+					{
+						label: 'Crustáceos',
+						icon: 'pi pi-filter',
+						value: 'crustaceos',
+						click: this.alergenos('crustaceos')
+					},
+					{
+						label: 'Huevo',
+						icon: 'pi pi-filter',
+						value: 'huevo',
+						click: this.alergenos('huevo')
+					},
+					{
+						label: 'Pescado',
+						icon: 'pi pi-filter',
+						value: 'pescado',
+						click: this.alergenos('pescado')
+					},
+					{
+						label: 'Cacahuetes',
+						icon: 'pi pi-filter',
+						value: 'cacahuetes',
+						click: this.alergenos('cacahuetes')
+					},
+					{
+						label: 'Soja',
+						icon: 'pi pi-filter',
+						value: 'soja',
+						click: this.alergenos('soja')
+						
+					},
+					{
+						label: 'Leche',
+						icon: 'pi pi-filter',
+						value: 'leche',
+						click: this.alergenos('leche')
+					},
+					{
+						label: 'Frutos de cáscara',
+						icon: 'pi pi-filter',
+						value: 'frutos_de_cascara',
+						click: this.alergenos('frutos_de_cascara')
+					},
+					{
+						label: 'Apio',
+						icon: 'pi pi-filter',
+						value: 'apio',
+						click: this.alergenos('apio')
+					},
+					{
+						label: 'Mostaza',
+						icon: 'pi pi-filter',
+						value: 'mostaza',
+						click: this.alergenos('mostaza')
+					},
+					{
+						label: 'Sésamo',
+						icon: 'pi pi-filter',
+						value: 'sesamo',
+						click: this.alergenos('sesamo')
+					},
+					{
+						label: 'Azufre y sulfitos',
+						icon: 'pi pi-filter',
+						value: 'azufre_sulfitos',
+						click: this.alergenos('azufre_sulfitos')
+					},
+					{
+						label: 'Altramuces',
+						icon: 'pi pi-filter',
+						value: 'altramuces',
+						click: this.alergenos('altramuces')
+					},
+					{
+						label: 'Moluscos',
+						icon: 'pi pi-filter',
+						value: 'moluscos',
+						click: this.alergenos('moluscos')
+					},
+				],
 				cantidad: null,
 				sortKey: null,
 				sortOrder: null,
@@ -288,27 +383,50 @@
 		},
 		alimentoService: null,
 		created(){
-			this.alimentoService = new AlimentoService();	
+			this.alimentoService = new AlimentoService();
+			this.dataviewValueComida = [{'kcal_100g':0},{'proteinas_100g':0},{'carbohidratos_100g':0},{'grasa_100g':0}];
 		},
 		mounted() {
 			this.fetchItems();
 			this.carrousel();
 			this.userKcal();
 			this.comidaCarrusel();
+
 		},
 		methods: {
 			enterClicked(){
-			  this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
+				this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
+			},
+			ratios(){
+
+				this.ratiokcal = Math.round(this.dataviewValueComida[0]["kcal_100g"] / this.kcal_recomendadas * 100);
+				if (this.ratiokcal>100) this.ratiokcal = 100;
+				console.log(this.ratiokcal);
+				this.ratioProteina = Math.round(this.dataviewValueComida[0].proteinas_100g  / this.proteinas_recomendadas * 100);
+				if (this.ratioProteina>100) this.ratioProteina = 100;
+				console.log(this.ratioProteina);
+				this.ratioCarbohidrato = Math.round(this.dataviewValueComida[0].carbohidratos_100g / this.carbohidratos_recomendados * 100);
+				if (this.ratioCarbohidrato>100) this.ratioCarbohidrato = 100;
+				console.log(this.ratioCarbohidrato);
+				this.ratioGrasa = Math.round(this.dataviewValueComida[0].grasa_100g /  this.grasas_recomendadas * 100);
+				if (this.ratioGrasa>100) this.ratioGrasa = 100;
+				console.log(this.ratioGrasa);
 			},
 			creados(){
 				this.alimentoService.getCreados(this.$store.state.username).then(data =>{ this.dataviewValue = data
 				console.log(data)});
 			},
-			alergenos(alergeno){
-				this.alimentoService.getAlimentosNoAlergeno(alergeno).then(/*data =>{ this.dataviewValue = data}*/);
+			alergenos(){
+				//this.alimentoService.getAlimentosNoAlergeno(alergeno).then(/*data =>{ this.dataviewValue = data}*/);
 			},
 			comidaCarrusel(){
-				this.alimentoService.getComida(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data =>{ this.dataviewValueComida = data});
+				this.alimentoService.getComida(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data =>{ this.dataviewValueComida = data
+				this.dataviewValueComida[0].kcal_100g = this.dataviewValueComida[0].kcal_100g.toFixed(2)
+				this.dataviewValueComida[0].proteinas_100g = this.dataviewValueComida[0].proteinas_100g.toFixed(2)
+				this.dataviewValueComida[0].carbohidratos_100g = this.dataviewValueComida[0].carbohidratos_100g.toFixed(2)
+				this.dataviewValueComida[0].grasa_100g = this.dataviewValueComida[0].grasa_100g.toFixed(2)
+				this.ratios()});
+
 			},
 			carrousel(){
 				this.alimentoService.getCarrusel(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(data =>{ this.dataviewValueCarrusel = data
@@ -321,6 +439,7 @@
 				this.carbohidratos_recomendados = (this.dataUserView[0].carbohidratos_recomendados/3).toFixed(2)
 				this.proteinas_recomendadas = (this.dataUserView[0].proteinas_recomendadas/3).toFixed(2)
 				this.grasas_recomendadas = (this.dataUserView[0].grasas_recomendadas/3).toFixed(2)
+				
 
 				});
 			},
@@ -359,7 +478,9 @@
 				this.alimentoDialog = true;
 			},
 			anyadirConsumicion(alimentoId){
-				console.log('alimentoId'+alimentoId);
+				//console.log('alimentoId'+alimentoId, 'cantidad'+this.cantidad);
+				//console.log(this.dataviewValueComida[0]);
+				this.alimentoService.anyadirACarrusel(alimentoId,this.cantidad,this.dataviewValueComida[0]).then(this.$router.go());
 			},
 			obtenerAlergenos(alergenosAlimento){
 				let imagenesAlergenos = [];
