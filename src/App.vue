@@ -1,6 +1,6 @@
 <template>
-	<div>
-        <AppTopBar id="navbar"/>
+	<div :class="containerClass" @click="onWrapperClick">
+        <AppTopBar id="navbar" @menu-toggle="onMenuToggle" />
         <SupportButton />
         <div class="m-4">
             <div class="layout-main">
