@@ -1,40 +1,37 @@
 <template>
 
   <h2>Buscar Ejercicio</h2>
+  <!-- {{dataviewValue}} -->
   <div class="card mb-0">
     <div class="grid formgrid">
+
       <div class="col-12 mb-2 lg:col-2 lg:mb-0">
-         <h3>Nombre</h3>
+        <h3>Nombre</h3>
         <input class="p-inputtext p-component" id="username" type="text">
       </div>
+
       <div class="col-12 mb-2 lg:col-2 lg:mb-0">
         <h3>Zona muscular</h3>
         <Dropdown v-model="selectedMusculo" :options="musculos" optionLabel="name" optionValue="code" placeholder="Selecciona una zona muscular" />
       </div>
-        <div class="col-12 mb-2 lg:col-3 lg:mb-0">
+
+      <div class="col-12 mb-2 lg:col-3 lg:mb-0">
         <h4>Calorias quemadas </h4>
         <Slider id="slider1" v-model="calorias" :range="true" />
         <br>
-       <b> {{calorias[0]}}</b> Kcal  <b>{{calorias[1]}}</b> Kcal
-        
+        <b> {{calorias[0]}}</b> Kcal  <b>{{calorias[1]}}</b> Kcal
       </div>
-        <div class="col-12 mb-2 lg:col-2 lg:mb-0">
+
+      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
         <h3>Tipo</h3>
         <Dropdown v-model="selectedMusculo2" :options="musculos2" optionLabel="name" optionValue="code" placeholder="Escoja materiales" />
       </div>
-        <div class="col-12 mb-2 lg:col-2 lg:mb-0">
+      <div class="col-12 mb-2 lg:col-2 lg:mb-0">
         <h3>Dificultad</h3>
         <Dropdown v-model="selectedMusculo3" :options="musculos3" optionLabel="name" optionValue="code" placeholder="Elija dificultad" />
       </div>
-    
-        
-      </div>
     </div>
-
-
-
-
-
+  </div>
 
 
 <div class="grid">
@@ -66,12 +63,15 @@
                         <div class="ejercicio-title col">{{slotProps.data.name}}</div>
                         <span class="calorias col-4">({{slotProps.data.exercise_base}}Kc)</span>
                       </div>
+
                     <ul>
-                      <li class="text">Dificultad {{slotProps.data.category}}</li>
-                      <li class="text">Material {{slotProps.data.material}}</li>
-                      <li class="text">Tiempo {{slotProps.data.muscle_name}}</li>
+                      <li class="text">Grupo muscular: {{slotProps.data.category}}</li>
+                      <li class="text">Material: {{slotProps.data.equipment.join(", ")}}</li>
                     </ul>
-                    <img v-bind:src="slotProps.data.muscle_url_main" class="zonaEjercicio-img">
+
+                    <div :style="'background-image:' + slotProps.data.musclesImage + '; background-repeat-x: no-repeat; background-repeat-y: no-repeat;'">
+                      <img src="https://wger.de/static/images/muscles/muscular_system_front.svg" style="visibility: hidden;"/>
+                    </div>
                 </div>
 							</div>
             </div>
@@ -82,16 +82,9 @@
 		</div>
 	</div>
 
-
-
-
-
-
-
 </template>
 
 <script>
-/* document.getElementById("slider1").addEventListener() */
 
 export default {
   data() {
@@ -164,35 +157,60 @@ export default {
   methods: {
     fetchItems() {
       this.axios.get("/ejercicio").then((response) => {
-        let ejercicios = response.data;
-        let data = [];
-        for (let ejercicio of ejercicios) {
-          var id = ejercicio["muscles"][0];
-          if (id!=undefined) {
-            this.axios.get("/musculo/"+id).then((res) => {
-              ejercicio.muscle_name =  res.data[0]["name"];
-              ejercicio["muscle_url_main"] =  res.data[0]["image_url_main"];
-              data.push(ejercicio)
-            });
+        this.dataviewValue = response.data;
+        
+        for (let ejercicio of this.dataviewValue) {
+          let arrayPromesas = []
+          let arrayIdMusculosPrincipales = ejercicio["muscles"];
+          let arrayIdMusculosSecundarios = ejercicio["muscles_secondary"];
+          let musclesUrls = []
+
+          if (arrayIdMusculosPrincipales.length > 0) {
+
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles = []
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles_secondary = []
+
+            for (let idMusculoPrincipal of arrayIdMusculosPrincipales) {
+              let promesaMusculoPrincipal = this.axios.get("/musculo/"+idMusculoPrincipal).then((res) => {
+                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles.push(res.data)
+                musclesUrls.push("url(https://wger.de" + res.data.image_url_main + ")")
+              });
+
+              arrayPromesas.push(promesaMusculoPrincipal)
+            }
+            
+            for (let idMusculoSecundario of arrayIdMusculosSecundarios) {
+              let promesaMusculoSecundario = this.axios.get("/musculo/"+idMusculoSecundario).then((res) => {
+                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].muscles_secondary.push(res.data)
+                musclesUrls.push("url(https://wger.de" + res.data.image_url_secondary + ")")
+              });
+
+              arrayPromesas.push(promesaMusculoSecundario)
+            }
+
+            Promise.all(arrayPromesas).then(() => {
+              this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].musclesImage = musclesUrls.join() + ",url(https://wger.de/static/images/muscles/muscular_system_front.svg)"
+            })
+
+          } else {
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].musclesImage = "url(https://static.thenounproject.com/png/1077671-200.png)"
           }
-          else {
-              ejercicio.muscle_name =  "N/A";
-              ejercicio["muscle_url_main"] =  "";
-              data.push(ejercicio)
+
+          let arrayIdMMateriales = ejercicio["equipment"];
+
+          if (arrayIdMMateriales.length > 0) {
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment = []
+            
+            for (let idMaterial of arrayIdMMateriales) {
+              this.axios.get("/material/"+idMaterial).then((res) => {
+                this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment.push(res.data.name)
+              });
+            }
+          } else {
+            this.dataviewValue[this.dataviewValue.indexOf(ejercicio)].equipment = ["None / No data available"]
           }
-          if (ejercicio["equipment"].length!=0) {
-          this.axios.get("/material/getnombres/"+ejercicio["equipment"].toString()).then((matRes) => {
-            ejercicio.material = matRes[0];
-            console.log(matRes);
-          });
-          }
-          else {
-            ejercicio.material = "";
-          }
-        }
-        console.log(data);
-        this.dataviewValue = data;
-      });
+
+      }})
     },
     formatCurrency(value) {
       return value.toLocaleString("en-US", {
