@@ -49,13 +49,14 @@ import { useRoute } from 'vue-router';
 		},
 		methods: {
 			nuevaReceta () {
-				location.href = "#/recetas/form";
+				location.href = "/recetas/form";
 			},
 			nuevoAlimento () {
-				location.href = "#/alimentos/form";
+				location.href = "/alimentos/form";
 			},
 			volver () {
 				this.enviado = true;
+				location.href = "/comidas";
 			}
 		}
 	}

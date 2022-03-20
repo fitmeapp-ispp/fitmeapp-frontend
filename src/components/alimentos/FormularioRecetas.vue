@@ -102,6 +102,10 @@
             },
             guardarReceta () {
 				this.enviado = true;
+			},
+			volver () {
+				this.enviado = true;
+				location.href = "/alimentos_recetas";
 			}
 		}
 	}
