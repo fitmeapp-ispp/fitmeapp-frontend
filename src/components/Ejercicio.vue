@@ -68,10 +68,10 @@
                       </div>
                     <ul>
                       <li class="text">Dificultad {{slotProps.data.category}}</li>
-                      <li class="text">Material {{slotProps.data.url_main}}</li>
+                      <li class="text">Material {{slotProps.data.material}}</li>
                       <li class="text">Tiempo {{slotProps.data.muscle_name}}</li>
                     </ul>
-                    <img src="{{slotProps.data.url_main}}" class="zonaEjercicio-img">
+                    <img v-bind:src="slotProps.data.muscle_url_main" class="zonaEjercicio-img">
                 </div>
 							</div>
             </div>
@@ -180,7 +180,15 @@ export default {
               ejercicio["muscle_url_main"] =  "";
               data.push(ejercicio)
           }
-          //console.log(data);
+          if (ejercicio["equipment"].length!=0) {
+          this.axios.get("/material/getnombres/"+ejercicio["equipment"].toString()).then((matRes) => {
+            ejercicio.material = matRes[0];
+            console.log(matRes);
+          });
+          }
+          else {
+            ejercicio.material = "";
+          }
         }
         console.log(data);
         this.dataviewValue = data;
