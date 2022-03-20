@@ -1,14 +1,19 @@
 <template>
-	<div :class="containerClass" @click="onWrapperClick">
-        <AppTopBar id="navbar" @menu-toggle="onMenuToggle" />
+    <div :class="containerClass" @click="onWrapperClick">
+        <AppTopBar @menu-toggle="onMenuToggle" />
         <SupportButton />
-        <div class="m-4">
+        <div class="layout-main-container">
             <div class="layout-main">
                 <router-view />
             </div>
             <AppFooter />
         </div>
-	</div>
+
+        <AppConfig :layoutMode="layoutMode" @layout-change="onLayoutChange" @change-theme="changeTheme" />
+        <transition name="layout-mask">
+            <div class="layout-mask p-component-overlay" v-if="mobileMenuActive"></div>
+        </transition>
+    </div>
 </template>
 
 <script>
@@ -135,11 +140,11 @@ export default {
     },
     watch: {   
         $route() {
-            if (this.$route.fullPath === "/login") {
+            /* if (this.$route.fullPath === "/login") {
                 document.getElementById("navbar").style="display:none"
             }else{
                 document.getElementById("navbar").style=""
-            }
+            } */
             this.menuActive = false;
             this.$toast.removeAllGroups();
         }
@@ -246,7 +251,6 @@ export default {
 }
 </script>
 
-<style lang="scss"> 
-
+<style lang="scss">
 @import './App.scss';
 </style>
