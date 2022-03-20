@@ -112,7 +112,7 @@
 					</template>
 					<template #list="slotProps">
 						<div class="col-12" >
-							<div class="flex flex-column md:flex-row align-items-center p-3 w-full" >
+							<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
 								<img :src=slotProps.data.imagen :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" tyle="width: 100%; display: block;"  id="imagen-busqueda"/>
 								<div class="flex-1 text-center md:text-left">
 									<div class="font-bold text-2xl">{{slotProps.data.nombre}}</div>
@@ -130,7 +130,7 @@
 					</template>
 
 					<template #grid="slotProps">
-						<div class="col-12 md:col-4">
+						<div  @click="detallesAlimento(slotProps.data)" class="col-12 md:col-4">
 							<div class="card m-3 border-1 surface-border">
                                 <div class="text-align-center"> 
                                     <div class="grid grid-nogutter alimento-busqueda">
@@ -157,6 +157,88 @@
 				</DataView>
 			</div>
 		</div>
+		<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%;" @close="this.imagenesAlergenos=[]">
+			<div class="contenedor-imagen-detalles">
+				<img :src="alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles" />
+				<h4 class="centered">{{alimento.nombre}}</h4>
+			</div>
+			<div class="container">
+				<div class="grid justify-content-center mb-3">
+					<div class="bg-gray-300 card field col-10 ">
+						<div class="formgroup-inline align-content-center justify-content-center">
+							<div class="field mt-4 text-center" style="color:black; font-size:large;">
+								Añadir
+							</div>
+							<div class="field mt-2">
+								<InputNumber id="cantidad" v-model="cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus class="col-1"/>
+							</div>
+							<div class="field mt-4 text-center" style="color:black; font-size:large;">
+								gramos de alimento al registro diario de hoy
+							</div>
+							<div class="field mt-3">
+								<Button class="p-button"  @click="anyadirConsumicion(alimento._id)">
+								<span class="p-button-label">Añadir</span>
+							</Button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="formgroup-inline justify-content-around">
+					<div class="field bg-gray-500 card lg:col-6 md:col-12 justify-content-center">
+						<div class="row justify-content-center text-center flex">
+							<h4 class="tituloDetalles text-center p-flex">Valores nutricionales (100g)</h4>
+						</div>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Kcal:</b> {{alimento.kcal_100g}} Kcal</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex align-self-center"><b>Proteinas:</b> {{alimento.proteinas_100g}} g</h5>
+							</div>	
+						</div>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Carbohidratos:</b> {{alimento.carbohidratos_100g}} g de los cuales <b>azúcares: </b>{{alimento.azucares_100g}} g</h5>
+							</div>
+						</div>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Grasas:</b> {{alimento.grasa_100g}} g de las cuales <b>saturadas: </b>{{alimento.grasas_std_100g}} g</h5>
+							</div>
+						</div>
+						<div class="formgroup-inline justify-content-around row text-center flex">
+							<div class="field">
+								<h5 class="p-flex"><b>Sal:</b> {{alimento.sal_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Sodio:</b> {{alimento.sodio_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Fibra:</b> {{alimento.fibra_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Colesterol:</b> {{alimento.colesterol_100g}} g</h5>
+							</div>
+							<div class="field">
+								<h5 class="p-flex"><b>Potasio:</b> {{alimento.potasio_100g}} g</h5>
+							</div>
+						</div>	
+					</div>	
+					<div class="field bg-gray-500 card lg:col-5 md:col-12 justify-content-center">
+						<div class="row justify-content-center text-center flex">
+							<h4 class="tituloDetalles text-center p-flex">Alérgenos</h4>
+						</div>
+						<div class="formgroup-inline row flex justify-content-around">
+							<div class="field" v-for="(alergeno) of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
+								<span class="p-image p-component p-image-preview-container">
+									<img :src="'images/alergenos/'+alergeno+'.svg'"  width="100" :alt="alergeno"/>
+								</span>
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</Dialog>
 	</div>
 </div>
 </template>
@@ -166,24 +248,6 @@
 	export default {
 		data() {
 			return {
-				picklistValue: [[
-					{name: 'San Francisco', code: 'SF'},
-					{name: 'London', code: 'LDN'},
-					{name: 'Paris', code: 'PRS'},
-					{name: 'Istanbul', code: 'IST'},
-					{name: 'Berlin', code: 'BRL'},
-					{name: 'Barcelona', code: 'BRC'},
-					{name: 'Rome', code: 'RM'},
-				],[]],
-				orderlistValue: [
-					{name: 'San Francisco', code: 'SF'},
-					{name: 'London', code: 'LDN'},
-					{name: 'Paris', code: 'PRS'},
-					{name: 'Istanbul', code: 'IST'},
-					{name: 'Berlin', code: 'BRL'},
-					{name: 'Barcelona', code: 'BRC'},
-					{name: 'Rome', code: 'RM'},
-				],
 				carruselVacio: false,
 				dataviewValue: {},
 				dataviewValueCarrusel: {},
@@ -194,6 +258,7 @@
 				grasas_recomendadas: 0,
 				dataviewValueComida: [{'kcal_100g':0}],
 				layout: 'grid',
+				cantidad: null,
 				sortKey: null,
 				sortOrder: null,
 				sortField: null,
@@ -201,14 +266,29 @@
 					{label: 'Mayor a menor número de Kcal', value: '!kcal_100g'},
 					{label: 'Menor a mayor número de kcal', value: 'kcal_100g'},
 					{label: 'Alfabéticamente', value: 'nombre'},
-					{label: 'Alfabéticamente inverso', value: '!nombre'},
-				]
+					{label: 'Alfabéticamente inverso', value: 'nombre'},
+				],
+				dctAlergenos: {
+					'gluten': /(gluten)/,
+					'crustaceos': /(crustaceans|crustaceos)/,
+					'huevo': /(eggs|huevos)/,
+					'pescado': /(fish|pescado)/,
+					'cacahuetes': /(peanuts|cacahuetes)/,
+					'soja': /(soybeans|soja)/,
+					'leche': /(milk|leche)/,
+					'frutos_de_cascara': /(nuts|frutos)/,
+					'apio': /(celery|apio)/,
+					'mostaza': /(mustard|mostaza)/,
+					'sesamo': /(sesame|sesamo)/,
+					'azufre_sulfitos': /(sulphites|sulfitos)/,
+					'altramuces': /(lupins|altramuces)/,
+					'moluscos': /(molluscs|moluscos)/
+				},
 			}
 		},
 		alimentoService: null,
-		created() {
-			
-            this.alimentoService= new AlimentoService();
+		created(){
+			this.alimentoService = new AlimentoService();	
 		},
 		mounted() {
 			this.fetchItems();
@@ -218,7 +298,7 @@
 		},
 		methods: {
 			enterClicked(){
-			this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
+			  this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
 			},
 			creados(){
 				this.alimentoService.getCreados(this.$store.state.username).then(data =>{ this.dataviewValue = data
@@ -242,7 +322,7 @@
 				this.proteinas_recomendadas = (this.dataUserView[0].proteinas_recomendadas/3).toFixed(2)
 				this.grasas_recomendadas = (this.dataUserView[0].grasas_recomendadas/3).toFixed(2)
 
-				} );
+				});
 			},
 
 			fetchItems()
@@ -252,12 +332,10 @@
 			favoritos()
 			{
 				this.alimentoService.getFavoritos(this.$store.state.username).then(data => this.dataviewValue = data);
-				
 			},
 			recientes()
 			{
 				this.alimentoService.getRecientes(this.$store.state.username).then(data => this.dataviewValue = data);
-				
 			},
 			eliminarDelCarrusel(alimentoId){
 				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.$router.go());
@@ -275,7 +353,25 @@
 					this.sortField = value;
 					this.sortKey = sortValue;
 				}
-			}
+			},
+			detallesAlimento(alimento) {
+				this.alimento = alimento;
+				this.alimentoDialog = true;
+			},
+			anyadirConsumicion(alimentoId){
+				console.log('alimentoId'+alimentoId);
+			},
+			obtenerAlergenos(alergenosAlimento){
+				let imagenesAlergenos = [];
+				for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
+				{
+					if (expresion.test(alergenosAlimento.toLowerCase()))
+					{
+						imagenesAlergenos.push(alergeno);
+					}
+				}
+				return imagenesAlergenos;
+			},
 		}
 	}
 </script>
