@@ -52,7 +52,7 @@
                     </div>
 
                     <ul>
-                      <li class="text">Grupo muscular: {{slotProps.data.category}}</li>
+                      <li class="text">Grupo muscular: {{slotProps.data.category.join(",")}}</li>
                       <li class="text">Material: {{slotProps.data.equipment.join(", ")}}</li>
                     </ul>
 
@@ -154,19 +154,38 @@ export default {
 
           let arrayIdMMateriales = ejercicio["equipment"];
 
+
           if (arrayIdMMateriales.length > 0) {
             this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = []
             
             for (let idMaterial of arrayIdMMateriales) {
               this.axios.get("/material/"+idMaterial).then((res) => {
                 this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment.push(res.data.name)
+          
+
+
               });
             }
           } else {
             this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = ["No data available"]
           }
 
-          this.ejerciciosFiltrados = this.ejercicios
+            let arrayIdMusclegrup = ejercicio["category"];
+
+             if (arrayIdMusclegrup > 0) {
+               this.ejercicios.category = [];
+            
+
+                 this.axios.get("/categoria/"+arrayIdMusclegrup).then((res) => {
+                   this.ejercicios[this.ejercicios.indexOf(ejercicio)].category=[res.data.name];
+
+                 });
+             } 
+             else {
+               this.ejercicios.category = ["No data available"]
+             }
+
+            this.ejerciciosFiltrados = this.ejercicios
         }
       })
     },
