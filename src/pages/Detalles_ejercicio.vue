@@ -7,7 +7,12 @@
             <Toast/>
         <h1>{{dataviewValue[0].name}}</h1>
         </div>
-         <div class="col-12 lg:col-2 xl:col-2">
+        <div class="col-12 lg:col-4 xl:col-4">
+            <div class="card mb-0">
+                <img src="https://wger.de/media/exercise-images/91/Crunches-1.png" style="width:280px">
+            </div>
+        </div>
+         <div class="col-12 lg:col-4 xl:col-4">
             <div class="card mb-0">
                 <div class="text-900 font-medium text-xl">Grupos musculares</div>
                 <br>
@@ -18,14 +23,13 @@
                     <li v-for="item in dataviewValue[0].muscles_secondary" :key="item.message">
                         {{ muscleList[item] }}
                     </li>
-                    <!-- <img  :src="require('../assets/images/muscle-'+ 1 +'.svg')" alt=""> -->
-                    <!-- <img :src="require('../assets/images/muscle-'+ dataviewValue[0].muscles[0] +'.svg')" alt="" style="height:200px"> -->
+                    <!-- <img  :src="require('../assets/images/muscle-'+ 1 +'.svg')" alt="" style="background-image"> -->
                     <!-- <div class="muscle-background" style="background-image: url(src/pages/assets/images/muscle-1.svg),url(/assets/images/muscle-6.svg);">
                     </div> -->
                 </div>
             </div>
         </div>
-        <div class="col-12 lg:col-2 xl:col-2">
+        <div class="col-12 lg:col-4 xl:col-4">
             <div class="card mb-0">
                 <div class="text-900 font-medium text-xl">Material</div>
                 <br>
@@ -35,14 +39,14 @@
                 <br>
             </div>
         </div>
-        <div class="col-12 lg:col-5 xl:col-5">
+        <div class="col-12 lg:col-8 xl:col-8">
             <div class="card mb-0">
                     <div class="text-900 font-medium text-xl">Descripción</div>
                     <br>
                     {{dataviewValue[0].description}}
             </div>
         </div>
-        <div class="col-12 lg:col-3 xl:col-3">
+        <div class="col-12 lg:col-4 xl:col-4">
             <div class="card mb-0">
                 <div class="text-900 font-medium text-xl">Dificultad</div>
                 <br>
@@ -57,36 +61,21 @@
         <h1>Ejercicios similares</h1>
         </div>
         <div class="col-12 lg:col-6 xl:col-4">
-            <div class="card mb-0">
-                <div class="text-900 font-medium text-xl">Nombre del ejercicio</div>
-                <br>
-                <div class="text-900 font-small text-xl">Calorías</div>
-                <div class="text-900 font-small text-xl">Material</div>
-                <div class="text-900 font-small text-xl">Repeticiones</div>
-                <div class="text-900 font-small text-xl">Tiempo</div>
-                <div class="text-900 font-small text-xl">Dificultad</div>
+            <div class="card mb-0"  @click="recargar(related_exercises[0]._id)">
+                <div class="text-900 font-medium text-xl">{{related_exercises[0].name}}
+                    <span class="pi pi-sign-out p-button-icon"></span></div>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-4">
-            <div class="card mb-0">
-                <div class="text-900 font-medium text-xl">Nombre del ejercicio</div>
-                <br>
-                <div class="text-900 font-small text-xl">Calorías</div>
-                <div class="text-900 font-small text-xl">Material</div>
-                <div class="text-900 font-small text-xl">Repeticiones</div>
-                <div class="text-900 font-small text-xl">Tiempo</div>
-                <div class="text-900 font-small text-xl">Dificultad</div>
+            <div class="card mb-0"  @click="recargar(related_exercises[1]._id)">
+                <div class="text-900 font-medium text-xl">{{related_exercises[1].name}}
+                    <span class="pi pi-sign-out p-button-icon"></span></div>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-4">
-            <div class="card mb-0">
-                <div class="text-900 font-medium text-xl">Nombre del ejercicio</div>
-                <br>
-                <div class="text-900 font-small text-xl">Calorías</div>
-                <div class="text-900 font-small text-xl">Material</div>
-                <div class="text-900 font-small text-xl">Repeticiones</div>
-                <div class="text-900 font-small text-xl">Tiempo</div>
-                <div class="text-900 font-small text-xl">Dificultad</div>
+            <div class="card mb-0"  @click="recargar(related_exercises[2]._id)">
+                <div class="text-900 font-medium text-xl">{{related_exercises[2].name}}
+                    <span class="pi pi-sign-out p-button-icon"></span></div>
             </div>
         </div> 
     </div>
@@ -149,6 +138,7 @@ export default {
                     ],
                     exerciseService: null,
                     dataviewValue: null,
+                    related_exercises: {}
                 }
         },
         created(){
@@ -157,16 +147,19 @@ export default {
         },
         methods: {
                 fetchExercise(){
-                    let uri = 'http://localhost:3000/exercise/' + this.$route.params.ejercicioId;
-                    this.axios.get(uri).then((response) => {
-                    this.dataviewValue = response.data;
+                    this.exerciseService.getExerciseById(this.$route.params.ejercicioId).then(data => {this.dataviewValue = data
+                    console.log(this.dataviewValue[0].muscles[0]);
+                    this.exerciseService.getExerciseByMuscle(this.dataviewValue[0].muscles[0]).then(data => {this.related_exercises = data
+                    console.log(this.related_exercises);});
                     });
+                    
                 },
                 saveExercise(){
                     if(this.nivel){
-                        this.exercise.username = "jose";
                         this.exercise.name = this.dataviewValue[0].name;
-                        this.exercise.date = "19-3-2022";
+                        this.exercise.username = this.$store.state.username;
+                        var d = new Date();
+                        this.exercise.date = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear();
                         if(this.nivel=="facil"){
                             this.exercise.kcal = 100;
                         }
@@ -185,7 +178,10 @@ export default {
                 },
                 goBack(){
                     this.$router.push('/ejercicios/'); 
-                }
+                },
+                recargar(id){
+                    location.href = "/ejercicio/detalles/"+id;
+                },
         }
 }
 </script>
