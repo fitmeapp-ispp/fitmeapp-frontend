@@ -61,6 +61,11 @@ const routes = [
         name: 'selector_alimentos_recetas',
         component: SelectorFormularios
     },
+    {
+        path: '/ejercicios',
+        name: 'ejercicios',
+        component: () => import('./pages/Ejercicios.vue')
+    },
 ];
 
 const router = createRouter({
