@@ -1,29 +1,52 @@
 <template>
 	<div class="grid">
-
         <!-- PARTE IZQUIERDA -->
         <div class="col-12 lg:col-6">
-            <div class="card">
-                <canvas id="donut_chart"></canvas>
-                <br>
-                <div class="card flex align-items-stretch">
-                    <div class="lg:col-6">
-                    <Tag class="mr-2" style="font-size:1.75rem; font-weight:600; background:#1da750;">Desayuno</Tag>
-                    <p style="margin-top:0.5em">Carbohidratos (g): {{carbsDesayuno}}</p>
-                    <p>Proteínas (g): {{protDesayuno}}</p>
-                    <p>Grasas (g): {{grasasDesayuno}}</p>
-                    <Button label="Añadir desayuno" class="p-button-outlined p-button-secondary" style="margin-top:1em" />
+            <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
+                <Chart type="doughnut" :data="pieData" :options="pieOptions" />
+
+                <div class="grid card col-12 align-content-center justify-content-center mt-3">
+                    <div class="p-fluid col-12 lg:col-6 md:col-6 ">
+
+                        <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Desayuno</Tag>
+
+                        <div class="formgroup-inline align-content-center justify-content-center">
+                            <div class="field">
+                                <label class="col-12 text-center">Carbohidratos</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{carbsDesayuno}}/{{carbohidratos_recomendados}}g</label>
+                            </div>
+                            <div class="field">
+                                <label class="col-12 text-center">Proteínas</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protDesayuno + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{protDesayuno}}/{{proteinas_recomendadas}}g</label>
+                            </div>
+                            <div class="field">
+                                <label class="col-12 text-center">Grasas</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasDesayuno + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{grasasDesayuno}}/{{grasas_recomendadas}}g</label>
+                            </div>
+                        </div>
+                        <a href="/comidas" class="router-link-active router-link-exact-active" aria-current="page">
+                            <Button label="Añadir desayuno" class="p-button-outlined p-button-secondary mt-1"/>
+                        </a>
                     </div>
-                    <div class="lg:col-6">
-                        <Carousel :value="imagenesDesayuno" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px;">
+                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                        <Carousel :value="imagenesDesayuno" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
                             <template #item="slotProps">
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2"/>
+                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
-                                            <h4 class="mb-1" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                            
+                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                           
                                         </div>
                                     </div>
                                 </div>
@@ -31,71 +54,117 @@
                         </Carousel>
                     </div>
                 </div>
-                <div class="card flex align-items-stretch">
-                    <div class="lg:col-6">
-                    <Tag class="mr-2" style="font-size:1.75rem; font-weight:600; background:#1da750;">Almuerzo</Tag>
-                    <p style="margin-top:0.5em">Carbohidratos (g): {{carbsAlmuerzo}}</p>
-                    <p>Proteínas (g): {{protAlmuerzo}}</p>
-                    <p>Grasas (g): {{grasasAlmuerzo}}</p>
-                    <Button label="Añadir almuerzo" class="p-button-outlined p-button-secondary" style="margin-top:1em" />
+                <!--Almuerzo-->
+                <div class="grid card col-12 align-content-center justify-content-center">
+                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                        <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Almuerzo</Tag>
+                        <div class="formgroup-inline align-content-center justify-content-center">
+                            <div class="field">
+                                <label class="col-12 text-center">Carbohidratos</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{carbsAlmuerzo}}/{{carbohidratos_recomendados}}g</label>
+                            </div>
+                            <div class="field">
+                                <label class="col-12 text-center">Proteínas</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protAlmuerzo + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{protAlmuerzo}}/{{proteinas_recomendadas}}g</label>
+                            </div>
+                            <div class="field">
+                                <label class="col-12 text-center">Grasas</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasAlmuerzo + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{grasasAlmuerzo}}/{{grasas_recomendadas}}g</label>
+                            </div>
+                        </div>
+                        <a href="/comidas" class="router-link-active router-link-exact-active" aria-current="page">
+                            <Button label="Añadir almuerzo" class="p-button-outlined p-button-secondary mt-1"/>
+                        </a>
                     </div>
-                    <div class="lg:col-6">
-                        <Carousel :value="imagenesAlmuerzo" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px;">
+                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                        <Carousel :value="imagenesAlmuerzo" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
                             <template #item="slotProps">
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2"/>
+                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
-                                            <h4 class="mb-1" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                            
+                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                           
                                         </div>
                                     </div>
                                 </div>
                             </template>
                         </Carousel>
                     </div>
-                </div>        
-                <div class="card flex align-items-stretch">
-                    <div class="lg:col-6">
-                    <Tag class="mr-2" style="font-size:1.75rem; font-weight:600; background:#1da750;">Cena</Tag>
-                    <p style="margin-top:0.5em">Carbohidratos (g): {{carbsCena}}</p>
-                    <p>Proteínas (g): {{protCena}}</p>
-                    <p>Grasas (g): {{grasasCena}}</p>
-                    <Button label="Añadir cena" class="p-button-outlined p-button-secondary" style="margin-top:1em" />
+                </div>
+                <!--Cena-->
+                <div class="grid card col-12 align-content-center justify-content-center">
+                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                        <div class="field grid align-content-md-center justify-content-md-center">
+                            <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Cena</Tag>
+                        </div>
+                        <div class="formgroup-inline align-content-center justify-content-center">
+                            <div class="field">
+                                <label class="col-12 text-center">Carbohidratos</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{carbsCena}}/{{carbohidratos_recomendados}}g</label>
+                            </div>
+                            <div class="field">
+                                <label class="col-12 text-center">Proteínas</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protCena + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{protCena}}/{{proteinas_recomendadas}}g</label>
+                            </div>
+                            <div class="field">
+                                <label class="col-12 text-center">Grasas</label>
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                    <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasCena + '%'"> </div>
+                                </div>
+                                <label class="col-12 text-center">{{grasasCena}}/{{grasas_recomendadas}}g</label>
+                            </div>
+                        </div>
+                        <a href="/comidas" class="router-link-active router-link-exact-active" aria-current="page">
+                            <Button label="Añadir cena" class="p-button-outlined p-button-secondary mt-1"/>
+                        </a>
                     </div>
-                    <div class="lg:col-6">
-                        <Carousel :value="imagenesCena" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px;">
+                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                        <Carousel :value="imagenesCena" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
                             <template #item="slotProps">
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2"/>
+                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
-                                            <h4 class="mb-1" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                            
+                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                           
                                         </div>
                                     </div>
                                 </div>
                             </template>
                         </Carousel>
                     </div>
-                </div>       
-            </div>	
+                </div>
+            </div>
         </div>
-
         <!-- PARTE DERECHA -->
         <div class="col-12 lg:col-6">
-            <div>
-                <div class="card flex align-items-stretch">
+                <div class="card grid justify-content-center"  style="margin-bottom:1em">
                     <div class="lg:col-6" style="text-align:center">
                         <Tag class="mr-2" style="font-size:2.50rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
-                        <Knob id="graficoPasos" :strokeWidth="5"  v-model="porcentajePasos" :valueTemplate="pasos + ' pasos'" :size="340" valueColor="#1da750" />
+                        <Knob id="graficoPasos" :strokeWidth="5"  v-model="porcentajePasos" :valueTemplate="pasos + ' pasos'" :size="250" valueColor="#1da750" style="width:100" />
                     </div>
 
-                    <div class="lg:col-6" style="text-align:center">
+                    <div class="col-12 lg:col-6 md:col-6" style="text-align:center">
                         <Tag class="mr-2" style="font-size:2.50rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
-                        <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="200px" style="max-width: 400px; margin-top: 2em;">
+                        <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="200px" style="max-width: 400px; margin-top: 2em; margin-left: 1em;">
                             <template #item="slotProps">
                                 <div class="product-item">
                                     <div class="product-item-content">
@@ -109,10 +178,11 @@
                                 </div>
                             </template>
                         </Carousel>
-                        <Button label="Añadir ejercicio" class="p-button-outlined p-button-secondary" />
+                        <a href="/ejercicios" class="router-link-active router-link-exact-active" aria-current="page">
+                            <Button label="Añadir ejercicio" class="p-button-outlined p-button-secondary" />
+                        </a>
                     </div>
                 </div>
-            </div> 
 
             <div class="card grid p-fluid">
                 <div class="card col-12 md:col-12">
@@ -148,7 +218,6 @@
 </template>
 
 <script>
-import Chart from 'chart.js/auto'
 
 export default {
 	data() {
@@ -192,15 +261,16 @@ export default {
                 }
             ],
             type:"doughnut",
-			doughnutData: {
-            labels: ['Carbohidratos (g)','Proteinas (g)','Grasas (g)'],
-            datasets: [
-                {
-                    data: [300, 50, 100],
-                    backgroundColor: ["#00bb7e","#36A2EB","#2f4860"],
-                    hoverBackgroundColor: ["#00bb7e","#36A2EB","#2f4860"],
-                }
-            ]},
+			pieData: {
+				labels: ['Carbohidratos', 'Proteínas', 'Grasas'],
+				datasets: [
+					{
+						data: [300, 50, 100],
+						backgroundColor: ["#a855f7","#06b6d4","#eec137"],
+                        hoverBackgroundColor: ["#a855f7","#06b6d4","#eec137"],
+					}
+				]
+			},
 			options: {
                 responsive: true,
                 aspectRatio: 3.5,
@@ -220,17 +290,6 @@ export default {
                             }
                         }
                     }
-                }
-            },
-            duotonePlugin : {
-                id:"duotoneText",
-                afterDatasetsDraw(chart){
-                    const {ctx, chartArea:{
-                        top,width,height
-                    }} = chart;
-                    ctx.font= "30px Arial"
-                    ctx.textAlign="center"
-                    ctx.fillText("",width/2,height/2+top)
                 }
             },
             pasosRecomendados:5000,
@@ -265,24 +324,16 @@ export default {
 			},
 			lineOptions: null
 		}
-    },    
-	methods: {
-
-    },
-    components: {
-    },
-    mounted(){
-        const ctx = document.getElementById('donut_chart');
-        new Chart(ctx, {
-        type:this.type,
-        data: this.doughnutData,
-        options: this.options,
-        plugins: [this.duotonePlugin]
-        });
     }
 }
 </script>
 <style>
+
+    .p-knob {
+        width: 100%;
+        height: 100%;
+    }
+
     .p-knob-text {
         font: bolder;
         font-size:13.2px !important;
@@ -296,15 +347,21 @@ export default {
             margin: .3rem;
             text-align: center;
             padding: 2rem 0;
-        }
+    }
 
-        .product-image {
-            width: 25%;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
-        }
+    .product-image {
+        width: 25%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    }
 
-        .product-image-2 {
-            width: 50%;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    .product-image-2 {
+        width: 50%;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    }
+
+    @media only screen and (max-width: 1600px) {
+        .textoImagen{
+                    display: none;
         }
+    }
 </style>
