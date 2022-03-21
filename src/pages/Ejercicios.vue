@@ -5,6 +5,7 @@
 		<h3>EJERCICIOS RECOMENDADOS DEL DÍA </h3>
 		<div class="col-12">
 			<div class="tabla">
+        <br>
         <DataTable :value="dataviewValue" :rows="5">
                       
           <Column field="name" header="Nombre" :style="{width:'150px'}">
@@ -67,7 +68,7 @@
     transform: translate(-50%, -50%);
 	color:rgb(0, 0, 0);
 	background-color: rgb(202, 211, 203);
-	opacity: .75;
+	opacity: .8;
 	font-weight: bold;
 	font-size: large;
 }
