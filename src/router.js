@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Dashboard from './components/Dashboard.vue';
+import Ejercicio from './components/Ejercicio.vue';
 
 import FormularioAlimentos from './components/alimentos/FormularioAlimentos.vue';
 import FormularioRecetas from './components/alimentos/FormularioRecetas.vue';
