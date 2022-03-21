@@ -1,0 +1,52 @@
+.grid {
+    &.grid-nogutter {
+        color: #256029;
+    &.alimento-busqueda{
+        height: 225px;
+    }
+    }
+}
+.carrousel-comidas{
+    max-height: 150px;
+    align-items: right;
+    margin: 4px;
+}
+#imagen-busqueda{
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+}
+#imagen-comida{
+    height: 10px  !important;
+    width: 10% !important;
+}
+
+.contenedor-imagen-detalles{
+    position: relative;
+    text-align: center;
+}
+
+.imagen-comida-detalles{
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    opacity: 50%;
+}
+
+.centered {
+    color: #256029;
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.tituloDetalles{
+    color:black;
+    font-size: x-large;
+}
+
+.imagen-alergeno{
+    width: 100%;
+    object-fit: contain;
+}
