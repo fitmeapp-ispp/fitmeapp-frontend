@@ -37,7 +37,7 @@
             <router-link to="/comidas" @click="visibleLeft=false">
                 <H1 class="color">COMIDAS</H1>
             </router-link>
-            <router-link to="/ejercicio" @click="visibleLeft=false">
+            <router-link to="/ejercicios" @click="visibleLeft=false">
                 <H1 class="color">EJERCICIOS </H1>
             </router-link>
             <router-link to="/perfil" @click="visibleLeft=false">
