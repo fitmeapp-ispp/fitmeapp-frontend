@@ -42,6 +42,16 @@ const routes = [
         component: Login
     },
     {
+        path: '/ejercicio/detalles/:ejercicioId',
+        name: 'Detalles_Ejercicio',
+        component: () => import('./pages/Detalles_ejercicio.vue')
+    },
+    {
+        path: '/ejercicios',
+        name: 'ejercicios',
+        component: () => import('./pages/Ejercicios.vue')
+    },
+    {
         path: '/peso',
         name: 'peso',
         component: () => import('./pages/PesoObjetivo.vue')
@@ -60,11 +70,6 @@ const routes = [
         path: '/alimentos_recetas',
         name: 'selector_alimentos_recetas',
         component: SelectorFormularios
-    },
-    {
-        path: '/ejercicios',
-        name: 'ejercicios',
-        component: () => import('./pages/Ejercicios.vue')
     },
 ];
 
