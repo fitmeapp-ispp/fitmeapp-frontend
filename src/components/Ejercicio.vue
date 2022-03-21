@@ -35,7 +35,7 @@
   </div>
 
 
-<div class="grid">
+
 		<div class="col-12">
 			<div class="card">
         <h1 v-if="filtroNombreEjercicio.length > 0 && ejerciciosFiltrados.length == 0">No existen ejercicios que cumplan con los filtros!</h1>
@@ -43,41 +43,45 @@
 				<DataView :value="ejerciciosFiltrados" :layout="layout" :paginator="true" :rows="9" :sortOrder="-1" :sortField="name">
 					<template #grid="slotProps">
 						<div class="col-12 md:col-4">
-              <div class="item container">
-                <div class="ejercicioCard row ">
-                  
-                  <!-- <img v-for="image of slotProps.data.images" :key="image" :src="image" class="ejercicio-img col"> -->
-                  
-                  <div class="ejercicio-container col-8">
-                    <div class="ejercicio-head row">
-                      <div class="ejercicio-title col">{{slotProps.data.name}}</div>
-                    </div>
+              <div class="item container overflow-hidden">
+                
+                    <div class="ejercicioCard bg-green-400 border-style: solid row ">
+                      <div class="formgroup-inline overflow-hidden">
+                      <!-- <img v-for="image of slotProps.data.images" :key="image" :src="image" class="ejercicio-img col"> -->
+                      
+                      <div class="ejercicio-container col-12 md:col-6 ">
+                        <div class="ejercicio-head row">
+                          <div class="ejercicio-title col">{{slotProps.data.name}}</div>
+                        </div>
 
-                    <ul>
-                      <li class="text">Grupo muscular: {{slotProps.data.category.join(",")}}</li>
-                      <li class="text">Material: {{slotProps.data.equipment.join(", ")}}</li>
-                    </ul>
+                        <ul>
+                          <li class="text">Grupo muscular: {{slotProps.data.category.join(", ")}}</li>
+                          <li class="text">Material: {{slotProps.data.equipment.join(", ")}}</li>
+                        </ul>
 
-                    <Carousel v-if="slotProps.data.images.length > 0" :value="slotProps.data.images" :responsiveOptions="responsiveOptions"
-                      :circular="true" :autoplayInterval="3000">
-                      <template #item="slotProps2">
-                        <img :src="slotProps2.data" width="100"/>
-                      </template>
-                    </Carousel>
-
-                    <div :style="'background-image:' + slotProps.data.musclesImage + '; background-repeat-x: no-repeat; background-repeat-y: no-repeat;'">
-                      <img src="https://wger.de/static/images/muscles/muscular_system_front.svg" style="visibility: hidden;"/>
+                        <Carousel v-if="slotProps.data.images.length > 0" :value="slotProps.data.images" :responsiveOptions="responsiveOptions"
+                          :circular="true" :autoplayInterval="3000">
+                          <template #item="slotProps2">
+                            <img :src="slotProps2.data" width="100"/>
+                          </template>
+                        </Carousel>
+                      </div>
+                      <div class="ejercicio-container col-12 md:col-6 ">
+                        <div :style="'background-image:' + slotProps.data.musclesImage +'; background-repeat-x: no-repeat; background-repeat-y: no-repeat;background-color:#E0E0E0;border-radius: 20px;border-style: solid;text-align:center;'">
+                          <img src="https://wger.de/static/images/muscles/muscular_system_front.svg" style="visibility: hidden;"/>
+                        </div>
+    
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 						</div>
 					</template>
 
 				</DataView>
 			</div>
 		</div>
-	</div>
+
 
 </template>
 
@@ -294,4 +298,14 @@ export default {
         background-color: red;
         z-index: -1;
     }
+  @media (min-width: 600px) {
+  .invisibleEnOrdenador {
+    display: none;
+  }
+  }
+  @media (max-width: 600px) {
+  .invisibleEnMovil {
+    display: none;
+  }
+  }
 </style>
