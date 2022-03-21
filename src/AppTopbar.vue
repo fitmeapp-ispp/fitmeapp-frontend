@@ -13,7 +13,7 @@
             <router-link to="/comidas">
                 <H1 class="color">COMIDAS</H1>
             </router-link>
-            <router-link to="/ejercicio">
+            <router-link to="/ejercicios">
                 <H1 class="color">EJERCICIOS </H1>
             </router-link>
             <router-link to="/perfil">
