@@ -159,6 +159,7 @@ export default {
                         }
                         console.log(this.exercise);
                         this.exerciseService.saveExercise(this.exercise);
+                        this.$toast.add({severity:'success', summary: 'Éxito', detail: 'El ejercicio se ha añadido a la lista de realizados.', life: 3000});
                     }
                     else{
                         this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Debe seleccionar un nivel de dificultad.', life: 3000});
