@@ -45,7 +45,9 @@
 						<div class="col-12 md:col-4">
               <div class="item container">
                 <div class="ejercicioCard row ">
-                  <img src="" class="ejercicio-img col">
+                  
+                  <!-- <img v-for="image of slotProps.data.images" :key="image" :src="image" class="ejercicio-img col"> -->
+                  
                   <div class="ejercicio-container col-8">
                     <div class="ejercicio-head row">
                       <div class="ejercicio-title col">{{slotProps.data.name}}</div>
@@ -55,6 +57,13 @@
                       <li class="text">Grupo muscular: {{slotProps.data.category.join(",")}}</li>
                       <li class="text">Material: {{slotProps.data.equipment.join(", ")}}</li>
                     </ul>
+
+                    <Carousel v-if="slotProps.data.images.length > 0" :value="slotProps.data.images" :responsiveOptions="responsiveOptions"
+                      :circular="true" :autoplayInterval="3000">
+                      <template #item="slotProps2">
+                        <img :src="slotProps2.data" width="100"/>
+                      </template>
+                    </Carousel>
 
                     <div :style="'background-image:' + slotProps.data.musclesImage + '; background-repeat-x: no-repeat; background-repeat-y: no-repeat;'">
                       <img src="https://wger.de/static/images/muscles/muscular_system_front.svg" style="visibility: hidden;"/>
@@ -73,7 +82,6 @@
 </template>
 
 <script>
-
 
 export default {
   mounted() {
@@ -108,6 +116,23 @@ export default {
         {nombre: 'Incline bench'},
         {nombre: 'Kettlebell'}
       ],
+      responsiveOptions: [
+        {
+          breakpoint: '1024px',
+          numVisible: 3,
+          numScroll: 3
+        },
+        {
+          breakpoint: '600px',
+          numVisible: 2,
+          numScroll: 2
+        },
+        {
+          breakpoint: '480px',
+          numVisible: 1,
+          numScroll: 1
+        }
+      ]
     };
   },
   methods: {
@@ -154,38 +179,30 @@ export default {
 
           let arrayIdMMateriales = ejercicio["equipment"];
 
-
           if (arrayIdMMateriales.length > 0) {
             this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = []
             
             for (let idMaterial of arrayIdMMateriales) {
               this.axios.get("/material/"+idMaterial).then((res) => {
                 this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment.push(res.data.name)
-          
-
-
               });
             }
           } else {
             this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = ["No data available"]
           }
 
-            let arrayIdMusclegrup = ejercicio["category"];
+          let arrayIdMusclegrup = ejercicio["category"];
 
-             if (arrayIdMusclegrup > 0) {
-               this.ejercicios.category = [];
-            
+          if (arrayIdMusclegrup > 0) {
+            this.ejercicios.category = [];
+            this.axios.get("/categoria/"+arrayIdMusclegrup).then((res) => {
+              this.ejercicios[this.ejercicios.indexOf(ejercicio)].category=[res.data.name];
+            });
+          } else {
+            this.ejercicios.category = ["No data available"]
+          }
 
-                 this.axios.get("/categoria/"+arrayIdMusclegrup).then((res) => {
-                   this.ejercicios[this.ejercicios.indexOf(ejercicio)].category=[res.data.name];
-
-                 });
-             } 
-             else {
-               this.ejercicios.category = ["No data available"]
-             }
-
-            this.ejerciciosFiltrados = this.ejercicios
+          this.ejerciciosFiltrados = this.ejercicios
         }
       })
     },
