@@ -7,12 +7,7 @@
             <Toast/>
         <h1>{{dataviewValue[0].name}}</h1>
         </div>
-        <div class="col-12 lg:col-4 xl:col-4">
-            <div class="card mb-0">
-                <img src="https://wger.de/media/exercise-images/91/Crunches-1.png" style="width:280px">
-            </div>
-        </div>
-         <div class="col-12 lg:col-4 xl:col-4">
+         <div class="col-12 lg:col-2 xl:col-2">
             <div class="card mb-0">
                 <div class="text-900 font-medium text-xl">Grupos musculares</div>
                 <br>
@@ -29,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 lg:col-4 xl:col-4">
+        <div class="col-12 lg:col-2 xl:col-2">
             <div class="card mb-0">
                 <div class="text-900 font-medium text-xl">Material</div>
                 <br>
@@ -39,14 +34,14 @@
                 <br>
             </div>
         </div>
-        <div class="col-12 lg:col-8 xl:col-8">
+        <div class="col-12 lg:col-5 xl:col-5">
             <div class="card mb-0">
                     <div class="text-900 font-medium text-xl">Descripción</div>
                     <br>
                     {{dataviewValue[0].description}}
             </div>
         </div>
-        <div class="col-12 lg:col-4 xl:col-4">
+        <div class="col-12 lg:col-3 xl:col-3">
             <div class="card mb-0">
                 <div class="text-900 font-medium text-xl">Dificultad</div>
                 <br>
