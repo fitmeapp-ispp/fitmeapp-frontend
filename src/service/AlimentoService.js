@@ -18,15 +18,13 @@ export default class AlimentoService {
         });
     }
 
-
-    getAlimentosNoAlergeno(alergeno) {
-		return axios.get(`/alimentos/alergenos/`+alergeno)
+    getNoAlergeno(alergeno) {
+		return axios.request(`/alimentos/alergenos/`+alergeno)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
     }
-
 
     getCreados(username) {
 		return axios.get(`/alimentos/creados/${username}`)
