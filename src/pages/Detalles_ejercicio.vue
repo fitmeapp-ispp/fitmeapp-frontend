@@ -7,6 +7,11 @@
             <Toast/>
         <h1>{{dataviewValue[0].name}}</h1>
         </div>
+        <div v-if="dataviewValue[0].images.length>0" class="col-12 lg:col-2 xl:col-2">
+            <div class="card mb-0">
+                <img v-for="image of dataviewValue[0].images" :key="image" :src="image" width="100">
+            </div>
+        </div>
          <div class="col-12 lg:col-2 xl:col-2">
             <div class="card mb-0">
                 <div class="text-900 font-medium text-xl">Grupos musculares</div>
