@@ -11,7 +11,7 @@
           <Column field="name" header="Nombre" :style="{width:'150px'}">
           
 						<template #body="{data}">
-              <router-link class="text-bold" to="/ejercicio/detalles">{{data.name}}</router-link>
+              <router-link :to="'/ejercicio/detalles/' + data._id">{{data.name}}</router-link>
             </template>
 
 					</Column>
@@ -39,7 +39,7 @@
 		<div class="col-12">
       <div class="contenedor">
 				<router-link to= "/buscarEjercicio">
-          <img src="../assets/styles/foto.png"/>
+          <img src="../assets/images/foto.png"/>
 					<div class="texto-centrado"> En esta sección podrás buscar a partir de unos filtros establecidos.</div>
 				</router-link>
       </div>
@@ -99,8 +99,7 @@ export default {
         "Obliquus externus abdominis",
         "Soleus"
       ],
-      dataviewValue: null,
-
+      dataviewValue: null
     };
   },
 
@@ -114,9 +113,12 @@ export default {
           let uri = '/ejercicios';
           axios.get(uri).then((response) => {
           this.dataviewValue = response.data;
+          console.log(this.dataviewValue);
           });
     },
-
+    exercise_url(url){
+        return url._id;
+    }
 
     
 
