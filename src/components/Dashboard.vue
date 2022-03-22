@@ -33,11 +33,11 @@
                                 <label class="col-12 text-center">{{grasasDesayuno}}/{{grasas_recomendadas}}g</label>
                             </div>
                         </div>
-                        <a href="/comidas" class="router-link-active router-link-exact-active" aria-current="page">
-                            <Button label="Añadir desayuno" class="p-button-outlined p-button-secondary mt-1"/>
-                        </a>
+                        <router-link to="/comidas" class="mt-1">
+                            <Button label="Añadir desayuno" class="p-button-outlined p-button-secondary"/>
+                        </router-link>
                     </div>
-                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                    <div class="grid col-12 lg:col-6 md:col-6 justify-content-center align-items-center" v-if="imagenesDesayuno">
                         <Carousel :value="imagenesDesayuno" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
                             <template #item="slotProps">
                                 <div class="product-item">
@@ -81,11 +81,11 @@
                                 <label class="col-12 text-center">{{grasasAlmuerzo}}/{{grasas_recomendadas}}g</label>
                             </div>
                         </div>
-                        <a href="/comidas" class="router-link-active router-link-exact-active" aria-current="page">
-                            <Button label="Añadir almuerzo" class="p-button-outlined p-button-secondary mt-1"/>
-                        </a>
+                        <router-link to="/comidas" class="mt-1">
+                            <Button label="Añadir almuerzo" class="p-button-outlined p-button-secondary"/>
+                        </router-link>
                     </div>
-                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                    <div class="grid col-12 lg:col-6 md:col-6 justify-content-center align-items-center" v-if="imagenesAlmuerzo">
                         <Carousel :value="imagenesAlmuerzo" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
                             <template #item="slotProps">
                                 <div class="product-item">
@@ -131,11 +131,11 @@
                                 <label class="col-12 text-center">{{grasasCena}}/{{grasas_recomendadas}}g</label>
                             </div>
                         </div>
-                        <a href="/comidas" class="router-link-active router-link-exact-active" aria-current="page">
-                            <Button label="Añadir cena" class="p-button-outlined p-button-secondary mt-1"/>
-                        </a>
+                        <router-link to="/comidas" class="mt-1">
+                            <Button label="Añadir cena" class="p-button-outlined p-button-secondary"/>
+                        </router-link>
                     </div>
-                    <div class="p-fluid col-12 lg:col-6 md:col-6">
+                    <div class="grid col-12 lg:col-6 md:col-6 justify-content-center align-items-center" v-if="imagenesCena">
                         <Carousel :value="imagenesCena" :numVisible="1" :numScroll="1" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
                             <template #item="slotProps">
                                 <div class="product-item">
@@ -155,59 +155,59 @@
             </div>
         </div>
         <!-- PARTE DERECHA -->
-        <div class="col-12 lg:col-6">
-                <div class="card grid justify-content-center"  style="margin-bottom:1em">
-                    <div class="lg:col-6" style="text-align:center">
-                        <Tag class="mr-2" style="font-size:2.50rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
-                        <Knob id="graficoPasos" :strokeWidth="5"  v-model="porcentajePasos" :valueTemplate="pasos + ' pasos'" :size="250" valueColor="#1da750" style="width:100" />
-                    </div>
+       <div class="col-12 lg:col-6">
+            <div class="grid card justify-content-between">
+                <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
+                    <Knob class="grid justify-content-center align-item-center mt-1 text-fluid" id="graficoPasos" :strokeWidth="5"  v-model="porcentajePasos" :valueTemplate="pasos + ' pasos'" :size="250" valueColor="#1da750" />
+                </div>
 
-                    <div class="col-12 lg:col-6 md:col-6" style="text-align:center">
-                        <Tag class="mr-2" style="font-size:2.50rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
-                        <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="200px" style="max-width: 400px; margin-top: 2em; margin-left: 1em;">
-                            <template #item="slotProps">
-                                <div class="product-item">
-                                    <div class="product-item-content">
-                                        <div class="mb-3">
-                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image"/>
-                                        </div>
-                                        <div>
-                                            <h4 class="mb-1">{{slotProps.data.nombre}}</h4>                                            
-                                        </div>
+                <div class= "grid col-12 lg:col-6 align-items-center justify-content-center" v-if="imagenes"> <!--Si no hay ejercicios realizados no muestra esta sección-->
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
+                    <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="200px" class="grid justify-content-center align-item-center mt-2 ml-1">
+                        <template #item="slotProps">
+                            <div class="product-item">
+                                <div class="product-item-content">
+                                    <div class="mb-3">
+                                        <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image"/>
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-1">{{slotProps.data.nombre}}</h4>                                            
                                     </div>
                                 </div>
-                            </template>
-                        </Carousel>
-                        <a href="/ejercicios" class="router-link-active router-link-exact-active" aria-current="page">
-                            <Button label="Añadir ejercicio" class="p-button-outlined p-button-secondary" />
-                        </a>
-                    </div>
+                            </div>
+                        </template>
+                    </Carousel>
+                    <router-link to="/ejercicios" class="mt-1">
+                        <Button label="Añadir ejercicio" class="p-button-outlined p-button-secondary"/>
+                    </router-link>
                 </div>
+            </div>
 
             <div class="card grid p-fluid">
                 <div class="card col-12 md:col-12">
                     <div class="text-center">
-                        <Tag class="mr-2" value="Peso objetivo: 74.5" style="font-size:2.75rem; font-weight:800; background:#1da750;"></Tag>
+                        <Tag class="col-12 text-center" value="Peso objetivo: 74.5" style="font-size:2.75rem; font-weight:800; background:#1da750;"></Tag>
                     </div>
                 </div>
                 
-                <div class="col-12 md:col-3" >
-                    <div class="card flex align-items-center" style="height:48%;">
+                <div class="col-12 md:col-5" >
+                    <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
-                            <Tag class="mr-2" value="Peso actual:" :rounded="true" style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
+                            <Tag class="col-12 text-center" value="Peso actual:"  style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
                             <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
                         </div>
                     </div>
                 
-                    <div class="card flex align-items-center" style="height:48%;">
+                    <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
-                            <Tag class="mr-2" value="Peso de ayer:" :rounded="true" style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
+                            <Tag value="Peso de ayer:" style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
                             <InputNumber v-model="pesoDeAyer" :step="0.5" :disabled="true"></InputNumber>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card col-12 md:col-9" style="height:100%">  
+                <div class="card col-12 md:col-7">  
                     <h5 class="text-center"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
                     <Chart type="line" :data="lineData" :options="lineOptions" />
                 </div>

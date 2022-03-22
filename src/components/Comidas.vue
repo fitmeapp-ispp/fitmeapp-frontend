@@ -48,7 +48,7 @@
 
                         </div>
                         <div class="col-3 text-right">
-							<router-link to="/alimentos_recetas">
+							<router-link to="/alimentos/form">
                             <Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success mr-2" />
 							</router-link>
                         </div>

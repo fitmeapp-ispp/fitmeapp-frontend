@@ -8,19 +8,23 @@
 				</div>
 
 				<div class="flex align-items-center justify-content-around mb-5">
-					<Button class="p-button-success" style="background-color: #4CD07D;" @click="nuevaReceta">
+					<!--<Button class="p-button-success" style="background-color: #4CD07D;" @click="nuevaReceta">
 						<span class="p-button-label">Nueva receta</span>
-					</Button>
-					<Button class="p-button-success" style="background-color: #4CD07D;" @click="nuevoAlimento">
-						<span class="p-button-label">Nuevo alimento</span>
-					</Button>
+					</Button>-->
+					<router-link to="/alimentos/form">
+						<Button class="p-button-success" style="background-color: #4CD07D;">
+							<span class="p-button-label">Nuevo alimento</span>
+						</Button>
+					</router-link>
 				</div>
 
 				<div class="grid justify-content-center">
 					<div class="col-12 text-center">
-						<Button class="p-button-success" style="background-color: #1DA750;" @click="volver">
-							<span class="p-button-label">Volver</span>
-						</Button>
+						<router-link to="/comidas">
+							<Button class="p-button-success" style="background-color: #1DA750;">
+								<span class="p-button-label">Volver</span>
+							</Button>
+						</router-link>
 					</div>
 				</div>
 			</div>
@@ -48,16 +52,6 @@ import { useRoute } from 'vue-router';
 			}
 		},
 		methods: {
-			nuevaReceta () {
-				location.href = "/recetas/form";
-			},
-			nuevoAlimento () {
-				location.href = "/alimentos/form";
-			},
-			volver () {
-				this.enviado = true;
-				location.href = "/comidas";
-			}
 		}
 	}
 </script>
