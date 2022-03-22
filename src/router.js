@@ -3,8 +3,9 @@ import Dashboard from './components/Dashboard.vue';
 import Ejercicio from './components/Ejercicio.vue';
 
 import FormularioAlimentos from './components/alimentos/FormularioAlimentos.vue';
-import FormularioRecetas from './components/alimentos/FormularioRecetas.vue';
-import SelectorFormularios from './components/alimentos/SelectorFormularios.vue';
+//import FormularioRecetas from './components/alimentos/FormularioRecetas.vue';
+//import SelectorFormularios from './components/alimentos/SelectorFormularios.vue';
+import Ejercicio from './components/Ejercicio.vue';
 import Comidas from './components/Comidas.vue';
 import Perfil from './components/Perfil.vue';
 const Login = () => import("./pages/Login.vue");
@@ -61,15 +62,20 @@ const routes = [
         name: 'alimentos_form',
         component: FormularioAlimentos
     },
-    {
+/*     {
         path: '/recetas/form',
         name: 'recetas_form',
         component: FormularioRecetas
-    },
+    }, 
     {
         path: '/alimentos_recetas',
         name: 'selector_alimentos_recetas',
         component: SelectorFormularios
+    },*/
+    {
+        path: '/ejercicios',
+        name: 'ejercicios',
+        component: () => import('./pages/Ejercicios.vue')
     },
 ];
 
