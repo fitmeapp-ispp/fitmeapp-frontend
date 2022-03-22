@@ -6,28 +6,28 @@
                 <Chart type="doughnut" :data="pieData" :options="pieOptions" />
 
                 <div class="grid card col-12 align-content-center justify-content-center mt-3">
-                    <div class="p-fluid col-12 lg:col-6 md:col-6 ">
+                    <div class="p-fluid col-12 lg:col-6 md:col-6">
 
                         <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Desayuno</Tag>
 
                         <div class="formgroup-inline align-content-center justify-content-center">
-                            <div class="field">
+                            <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{carbsDesayuno}}/{{carbohidratos_recomendados}}g</label>
                             </div>
-                            <div class="field">
+                            <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protDesayuno + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{protDesayuno}}/{{proteinas_recomendadas}}g</label>
                             </div>
-                            <div class="field">
+                            <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasDesayuno + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{grasasDesayuno}}/{{grasas_recomendadas}}g</label>
@@ -59,23 +59,23 @@
                     <div class="p-fluid col-12 lg:col-6 md:col-6">
                         <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Almuerzo</Tag>
                         <div class="formgroup-inline align-content-center justify-content-center">
-                            <div class="field">
+                            <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{carbsAlmuerzo}}/{{carbohidratos_recomendados}}g</label>
                             </div>
-                            <div class="field">
+                            <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protAlmuerzo + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{protAlmuerzo}}/{{proteinas_recomendadas}}g</label>
                             </div>
-                            <div class="field">
+                            <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasAlmuerzo + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{grasasAlmuerzo}}/{{grasas_recomendadas}}g</label>
@@ -109,23 +109,23 @@
                             <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Cena</Tag>
                         </div>
                         <div class="formgroup-inline align-content-center justify-content-center">
-                            <div class="field">
+                            <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{carbsCena}}/{{carbohidratos_recomendados}}g</label>
                             </div>
-                            <div class="field">
+                            <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protCena + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{protCena}}/{{proteinas_recomendadas}}g</label>
                             </div>
-                            <div class="field">
+                            <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:8px">
+                                <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasCena + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{grasasCena}}/{{grasas_recomendadas}}g</label>
