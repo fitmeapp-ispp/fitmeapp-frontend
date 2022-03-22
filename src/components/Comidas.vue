@@ -93,7 +93,7 @@
 	<div class="grid">
 		<div class="col-12">
 			<div class="card">
-				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :filters="filters1" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+				<DataView :value="dataviewValue" :layout="layout" :paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
 					<template #header>
 						<div class="grid grid-nogutter">
 							<div class="col-4 text-left">
