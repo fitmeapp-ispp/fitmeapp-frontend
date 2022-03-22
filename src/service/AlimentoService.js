@@ -18,15 +18,13 @@ export default class AlimentoService {
         });
     }
 
-
-    getAlimentosNoAlergeno(alergeno) {
-		return axios.get(`/alimentos/alergenos/`+alergeno)
+    getNoAlergeno(alergeno) {
+		return axios.request(`/alimentos/alergenos/`+alergeno)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
     }
-
 
     getCreados(username) {
 		return axios.get(`/alimentos/creados/${username}`)
@@ -107,6 +105,14 @@ export default class AlimentoService {
 
     anyadirACarrusel(alimentoId,cantidad, body){
         return axios.post(`/comidas/add/${alimentoId}/${cantidad}`,body)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    nuevaConsumicion(alimentoId, username){
+        return axios.post(`/alimentos/newConsumption/${alimentoId}/${username}`)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);

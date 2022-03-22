@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Dashboard from './components/Dashboard.vue';
+import Ejercicio from './components/Ejercicio.vue';
 
 import FormularioAlimentos from './components/alimentos/FormularioAlimentos.vue';
 //import FormularioRecetas from './components/alimentos/FormularioRecetas.vue';
@@ -40,6 +41,16 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login
+    },
+    {
+        path: '/ejercicio/detalles/:ejercicioId',
+        name: 'Detalles_Ejercicio',
+        component: () => import('./pages/Detalles_ejercicio.vue')
+    },
+    {
+        path: '/ejercicios',
+        name: 'ejercicios',
+        component: () => import('./pages/Ejercicios.vue')
     },
     {
         path: '/peso',
