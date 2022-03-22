@@ -1,11 +1,11 @@
 <template>
 	<div class="grid">
-        <div class="col-12 lg:col-12 xl:col-12">
-        <Button icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined mr-2 mb-2 lado_derecho" style="width:40px;height:40px" @click="goBack()"/>
-        </div>
-        <div class="col-12 lg:col-12 xl:col-12">
+        <div class="col-12 lg:col-4 xl:col-4">
             <Toast/>
         <h1>{{dataviewValue[0].name}}</h1>
+        </div>
+        <div class="col-12 lg:col-8 xl:col-8">
+        <Button label="Ejercicios recomendados" class="p-button-success mr-2 mb-2 lado_derecho" @click="goBack()"/>
         </div>
         <div v-if="dataviewValue[0].images.length>0" class="col-12 lg:col-2 xl:col-2">
             <div class="card mb-0">
@@ -59,20 +59,29 @@
         </div>
         <div class="col-12 lg:col-6 xl:col-4">
             <div class="card mb-0"  @click="recargar(related_exercises[0]._id)">
-                <div class="text-900 font-medium text-xl">{{related_exercises[0].name}}
-                    <span class="pi pi-sign-out p-button-icon"></span></div>
+                <div class="grid">
+                    <div class="text-900 font-medium text-xl col-12 lg:col-10 xl:col-10">{{related_exercises[0].name}}</div>
+                    <div  class= "col-12 lg:col-2 xl:col-2"><Button label="Detalles" class="p-button-success mr-2 mb-2 lado_derecho"></Button></div>
+                    <div  class= "col-12 lg:col-12 xl:col-12"><img v-for="image of related_exercises[0].images" :key="image" :src="image" height="100"></div>
+                </div>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-4">
             <div class="card mb-0"  @click="recargar(related_exercises[1]._id)">
-                <div class="text-900 font-medium text-xl">{{related_exercises[1].name}}
-                    <span class="pi pi-sign-out p-button-icon"></span></div>
+                <div class="grid">
+                    <div class="text-900 font-medium text-xl col-12 lg:col-10 xl:col-10">{{related_exercises[1].name}}</div>
+                    <div  class= "col-12 lg:col-2 xl:col-2"><Button label="Detalles" class="p-button-success mr-2 mb-2 lado_derecho"></Button></div>
+                    <div  class= "col-12 lg:col-12 xl:col-12"><img v-for="image of related_exercises[1].images" :key="image" :src="image" height="100"></div>
+                </div>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-4">
             <div class="card mb-0"  @click="recargar(related_exercises[2]._id)">
-                <div class="text-900 font-medium text-xl">{{related_exercises[2].name}}
-                    <span class="pi pi-sign-out p-button-icon"></span></div>
+                <div class="grid">
+                    <div class="text-900 font-medium text-xl col-12 lg:col-10 xl:col-10">{{related_exercises[2].name}}</div>
+                    <div  class= "col-12 lg:col-2 xl:col-2"><Button label="Detalles" class="p-button-success mr-2 mb-2 lado_derecho"></Button></div>
+                    <div  class= "col-12 lg:col-12 xl:col-12"><img v-for="image of related_exercises[2].images" :key="image" :src="image" height="100"></div>
+                </div>
             </div>
         </div> 
     </div>
