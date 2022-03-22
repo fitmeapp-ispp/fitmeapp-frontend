@@ -1,21 +1,26 @@
  <template>
- <div>
-    <div class="support">
-        <Button @click="openResponsive" icon="pi pi-search" style="border-radius:100%; height:6rem; width:6rem;" class="p-button-lg-rounded p-button-success" />
-    </div>
     <div>
-    <Dialog header="¿Quiéres enviarnos una incidencia?" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}">
-        <h4>Título</h4>
-        <InputText type="text" v-model="title" class="p-inputtext-lg" />
-        <br>
-        <h4>Cuerpo</h4>
-        <Textarea v-model="body" rows="4" cols="100" />
-        <template #footer>
-            <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/>
-            <Button label="Sí" icon="pi pi-check" @click="enviarIssue" autofocus />
-        </template>
-    </Dialog>
-    </div>
+        <div class="support">
+            <Button @click="openResponsive" icon="pi pi-exclamation-circle" class="p-button-rounded p-button-success soporte" />
+        </div>
+        <div>
+        <Dialog header="¿Quiéres enviarnos una incidencia?" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}">
+            <div class="grid justify-content-center align-items-center">
+                <div class="col-12">
+                    <h4>Título</h4>
+                    <InputText type="text" v-model="title" class="p-inputtext-lg col-12" />
+                </div>
+                <div class="col">
+                    <h4>Cuerpo</h4>
+                    <Textarea v-model="body" :autoResize="true" rows="5" class="col-12"/>
+                </div>
+            </div>
+            <template #footer>
+                <Button label="Cancelar" icon="pi pi-times" @click="closeResponsive"  style="background-color:#1DA750; color:white;" />
+                <Button label="Enviar" icon="pi pi-check" @click="enviarIssue" autofocus  style="background-color:#1DA750; color:white;"/>
+            </template>
+        </Dialog>
+        </div>
     </div>
 </template>
 
@@ -75,5 +80,10 @@ export default {
     bottom: 5%;
     right: 5%;
     z-index: 30;
+}
+
+.soporte:hover {
+    transform: scale(1.5);
+    transition: 0.5s;
 }
 </style>
