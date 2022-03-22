@@ -412,6 +412,7 @@
 				//console.log('alimentoId'+alimentoId, 'cantidad'+this.cantidad);
 				//console.log(this.dataviewValueComida[0]);
 				this.alimentoService.anyadirACarrusel(alimentoId,this.cantidad,this.dataviewValueComida).then(() => {this.userKcal()
+				this.alimentoService.nuevaConsumicion(alimentoId,this.$store.state.username);
 				this.alimentoDialog = false});
 
 			},
