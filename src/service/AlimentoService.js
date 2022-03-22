@@ -111,4 +111,12 @@ export default class AlimentoService {
         });
     }
 
+    nuevaConsumicion(alimentoId, username){
+        return axios.post(`/alimentos/newConsumption/${alimentoId}/${username}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
 }
