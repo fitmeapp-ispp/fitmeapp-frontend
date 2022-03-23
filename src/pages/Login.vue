@@ -6,11 +6,11 @@
   <div class="grid" style="justify-content: center;">
     <div class="col-4">
 			<div class="card">
-				<h2>Login/Register</h2>
+				<h2>Inicio sesión/Registro</h2>
 
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-10">
-						<label for="usernameId">Username</label>
+						<label for="usernameId">Usuario</label>
             <InputText v-model="username" name="username" id="usernameId" @keypress.enter="signIn()"
             :class="{'p-invalid': submitted && error.field === 'username'}" />
             <small class="p-error" v-if="submitted && error.field === 'username'" :key="error.message">{{error.message}}</small>
@@ -18,7 +18,7 @@
         </div>
         <div class="p-fluid formgrid grid">
           <div class="field col-12 md:col-10">
-						<label for="usernameId">Password</label>
+						<label for="usernameId">Contraseña</label>
             <Password v-model="password" name="password" id="passwordId" :feedback="false" @keypress.enter="signIn()" 
             :class="{'p-invalid': submitted && error.field === 'password'}" />
             <small class="p-error" v-if="submitted && error.field === 'password'">{{error.message}}</small>
@@ -28,8 +28,8 @@
         <small class="p-error" v-if="submitted && error.message === 'Missing credentials'">{{error.message}}</small>
 
         <div class="grid">
-          <Button type="button" icon="pi pi-check" label="Log in" class="p-button-info mt-4 mr-2" @click="signIn()" />
-          <Button type="button" icon="pi pi-check" label="Register" class="p-button-info mt-4 ml-2" @click="signUp()" />
+          <Button type="button" icon="pi pi-check" label="Iniciar sesión" class="p-button-info mt-4 mr-2" @click="signIn()" style="background-color:#1da750;"/>
+          <Button type="button" icon="pi pi-check" label="Registrarse" class="p-button-info mt-4 ml-2" @click="signUp()" style="background-color:#1da750;"/>
         </div>
       </div>
     </div>
@@ -80,7 +80,7 @@ export default {
                 this.$store.dispatch("saveUserId", response.data.userId);
                 this.$store.dispatch("logIn");
                 window.location.href = '/';
-                this.$toast.add({severity:'success', summary: 'Successful', detail: 'Logged in successfully', life: 3000});
+                this.$toast.add({severity:'success', summary: 'Successful', detail: 'Inicio de sesión correcto', life: 3000});
             }).catch(err => {
                 this.error = err.response.data
             })    
@@ -96,7 +96,7 @@ export default {
                 this.$store.dispatch("logIn");
                 console.log(response.data);
                 window.location.href = '/';
-                this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registered successfully', life: 3000});
+                this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
             }).catch(err => {
                 console.log("Error: ", err)
                 this.error = err.response.data
