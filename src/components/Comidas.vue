@@ -37,7 +37,7 @@
 						</div>
 					</div>
 					<div class="field mt-4 justify-content-center">
-						<router-link to="/alimentos_recetas">
+						<router-link to="/alimentos/form">
 							<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success mr-2"/>
 						</router-link>
 					</div>
@@ -47,13 +47,13 @@
 					<div class="grid justify-content-between">
 						<div class="formgroup-inline justify-content-center mt-2">
 							<div class="field">
-								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @:click="favoritos()"/>
+								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()"/>
 							</div>
 							<div class="field">
-								<Button label="Recientes" @:click="recientes()" />
+								<Button label="Recientes" @click="recientes()" />
 							</div>
 							<div class="field">
-								<Button label="Creados" class="p-button-success" @:click="creados()"/>
+								<Button label="Creados" class="p-button-success" @click="creados()"/>
 							</div>
 						</div>
 						<div class="mt-1">
@@ -396,13 +396,6 @@
 				if (this.ratioGrasa>100) this.ratioGrasa = 100;
 				console.log(this.ratioGrasa);
 			},
-			creados(){
-				this.alimentoService.getCreados(this.$store.state.username)
-				.then(data =>{ 
-					this.dataviewValue = data
-					console.log(data)
-				});
-			},
 			alergenos(){
 				this.alimentoService.getNoAlergeno(this.alergenosSel2).then(data =>{ this.dataviewValue = data});
 			},
@@ -445,6 +438,9 @@
 			},
 			recientes(){
 				this.alimentoService.getRecientes(this.$store.state.username).then(data => this.dataviewValue = data);
+			},
+			creados(){
+				this.alimentoService.getCreados(this.$store.state.username).then(data => this.dataviewValue = data);
 			},
 			eliminarDelCarrusel(alimentoId){
 				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.userKcal());

@@ -38,7 +38,7 @@
 		<h3>BUSCADOR DE EJERCICIOS</h3>
 		<div class="col-12">
       <div class="contenedor">
-				<router-link to= "/buscarEjercicio">
+				<router-link to= "/ejercicio">
           <img src="../assets/images/foto.png"/>
 					<div class="texto-centrado"> En esta sección podrás buscar a partir de unos filtros establecidos.</div>
 				</router-link>

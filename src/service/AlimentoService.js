@@ -27,7 +27,7 @@ export default class AlimentoService {
     }
 
     getCreados(username) {
-		return axios.get(`/alimentos/creados/${username}`)
+		return axios.get(`/alimentos/creados/`+username)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
