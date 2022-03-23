@@ -84,7 +84,7 @@
 		</div>
 		<!-- Fin del header-->
 		<!-- Comienza el cuerpo-->
-		<div class="grid">
+		<div class="grid col-12">
 			<!-- Comienza la tabla con los alimentos-->
 			<div class="col-12">
 				<div class="card">
@@ -107,23 +107,23 @@
 						</template>
 						<template #list="slotProps">
 							<div class="col-12">
-								<div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-									<img :src="slotProps.data.imagen" :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" 
+								<div class="flex flex-column md:flex-row align-items-center p-3 w-full"  @click="detallesAlimento(slotProps.data)">
+									<img :src="slotProps.data.imagen || 'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" 
 										style="width: 100%; display: block;" id="imagen-busqueda"/>
 									<div class="flex-1 text-center md:text-left">
-										<div class="font-bold text-2xl">
+										<div class="font-bold text-2xl" style="color:#256029;">
 											{{ slotProps.data.nombre }}
 										</div>
-										<div class="mb-3">
+										<div class="mb-3" style="color:#256029;">
 											Kcal {{ slotProps.data.kcal_100g }} g
 										</div>
-										<div class="mb-3">
+										<div class="mb-3" style="color:#256029;">
 											Grasas {{ slotProps.data.grasa_100g }} g
 										</div>
-										<div class="mb-3">
+										<div class="mb-3" style="color:#256029;">
 											Carbohidratos {{ slotProps.data.carbohidratos_100g }} g
 										</div>
-										<div class="mb-3">
+										<div class="mb-3" style="color:#256029;">
 											Proteínas {{ slotProps.data.proteinas_100g }} g
 										</div>
 									</div>
@@ -233,7 +233,7 @@
 								<div class="field">
 									<h5 class="p-flex">
 										<b>Grasas:</b> {{ alimento.grasa_100g }} g de las cuales
-										<b>saturadas: </b>{{ alimento.grasas_std_100g }} g
+										<b>saturadas: </b>{{ alimento['grasas-std_100g'] }} g
 									</h5>
 								</div>
 							</div>
