@@ -66,7 +66,7 @@ export default {
     },
     methods: {
         topbarImage() {
-            return 'images/Logo_ISPP.png';
+            return '/images/Logo_ISPP.png';
         }   
     },
     computed: {
