@@ -17,6 +17,7 @@ testem.log
 # local env files
 .env.local
 .env.*.local
+.env
 
 # Log files
 npm-debug.log*
@@ -32,3 +33,4 @@ yarn-error.log*
 *.sln
 *.sw*
 
+.env

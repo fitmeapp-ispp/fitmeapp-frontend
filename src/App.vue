@@ -1,20 +1,25 @@
 <template>
-	<div :class="containerClass" @click="onWrapperClick">
+    <div :class="containerClass" @click="onWrapperClick">
         <AppTopBar @menu-toggle="onMenuToggle" />
-
+        <SupportButton />
         <div class="layout-main-container">
             <div class="layout-main">
                 <router-view />
             </div>
             <AppFooter />
         </div>
-	</div>
+
+        <AppConfig :layoutMode="layoutMode" @layout-change="onLayoutChange" @change-theme="changeTheme" />
+        <transition name="layout-mask">
+            <div class="layout-mask p-component-overlay" v-if="mobileMenuActive"></div>
+        </transition>
+    </div>
 </template>
 
 <script>
 import AppTopBar from './AppTopbar.vue';
-import AppFooter from './AppFooter.vue';
-
+/* import AppFooter from './AppFooter.vue'; */
+import SupportButton from "./components/SupportButton.vue";
 export default {
     emits: ['change-theme'],
     data() {
@@ -133,8 +138,13 @@ export default {
             ]
         }
     },
-    watch: {
+    watch: {   
         $route() {
+            /* if (this.$route.fullPath === "/login") {
+                document.getElementById("navbar").style="display:none"
+            }else{
+                document.getElementById("navbar").style=""
+            } */
             this.menuActive = false;
             this.$toast.removeAllGroups();
         }
@@ -234,8 +244,9 @@ export default {
             this.removeClass(document.body, 'body-overflow-hidden');
     },
     components: {
+        "SupportButton": SupportButton,
         'AppTopBar': AppTopBar,
-        'AppFooter': AppFooter,
+        /* 'AppFooter': AppFooter, */
     }
 }
 </script>

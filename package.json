@@ -26,8 +26,12 @@
 	},
 	"dependencies": {
 		"axios": "^0.26.0",
+		"bootstrap-vue": "^2.21.2",
 		"chart.js": "3.3.2",
 		"core-js": "^3.6.5",
+		"dotenv": "^16.0.0",
+		"font-awesome": "^4.7.0",
+		"node-fetch": "^2.6.1",
 		"primeflex": "^3.1.2",
 		"primeicons": "^5.0.0",
 		"primevue": "^3.11.0",

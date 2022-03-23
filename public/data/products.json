@@ -3,7 +3,7 @@
 		{
 			"id": "1000",
 			"code": "f230fh0g3",
-			"name": "Bamboo Watch",
+			"name": "Macarrones sin gluten",
 			"description": "Product Description",
 			"image": "bamboo-watch.jpg",
 			"price": 65,
@@ -15,7 +15,7 @@
 		{
 			"id": "1001",
 			"code": "nvklal433",
-			"name": "Black Watch",
+			"name": "Fresas",
 			"description": "Product Description",
 			"image": "black-watch.jpg",
 			"price": 72,
@@ -27,7 +27,7 @@
 		{
 			"id": "1002",
 			"code": "zz21cz3c1",
-			"name": "Blue Band",
+			"name": "Tortilla de patatas",
 			"description": "Product Description",
 			"image": "blue-band.jpg",
 			"price": 79,
@@ -39,7 +39,7 @@
 		{
 			"id": "1003",
 			"code": "244wgerg2",
-			"name": "Blue T-Shirt",
+			"name": "Cafe con leche",
 			"description": "Product Description",
 			"image": "blue-t-shirt.jpg",
 			"price": 29,
@@ -51,7 +51,7 @@
 		{
 			"id": "1004",
 			"code": "h456wer53",
-			"name": "Bracelet",
+			"name": "Ciruela",
 			"description": "Product Description",
 			"image": "bracelet.jpg",
 			"price": 15,
@@ -63,7 +63,7 @@
 		{
 			"id": "1005",
 			"code": "av2231fwg",
-			"name": "Brown Purse",
+			"name": "Fresas con azúcar",
 			"description": "Product Description",
 			"image": "brown-purse.jpg",
 			"price": 120,
