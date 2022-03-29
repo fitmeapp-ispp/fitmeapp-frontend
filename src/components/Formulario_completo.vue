@@ -34,8 +34,8 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="password_confirm">Confirmación de la Contraseña*</label>
-						<InputText v-model="user.password_confirm" required="true"  id="password_confirm" type="password" :class="{'p-invalid': enviado && errorPassword}"/>
-						<small class="p-invalid" :key="errorPassword" v-if="enviado && errorPassword">{{this.errorPassword}}</small>
+						<InputText v-model="user.password_confirm" required="true"  id="password_confirm" type="password" :class="{'p-invalid': enviado && errorConfirmPassword}"/>
+						<small class="p-invalid" :key="errorConfirmPassword" v-if="enviado && errorConfirmPassword">{{this.errorConfirmPassword}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="email">Email</label>
@@ -44,7 +44,7 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="telefono">Teléfono*</label>
-						<InputNumber v-model="user.telefono" required="true" id="telefono" :class="{'p-invalid': enviado && errorTelefono}"/>
+						<InputText v-model="user.telefono" aria-valuenow="" required="true" id="telefono" :class="{'p-invalid': enviado && errorTelefono}"/>
 						<small class="p-invalid" :key="errorTelefono" v-if="enviado && errorTelefono">{{this.errorTelefono}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
@@ -64,22 +64,22 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="altura">Altura*</label>
-						<InputNumber id="altura" v-model="user.altura" type="text" placeholder="cm"  :class="{'p-invalid': enviado && errorAltura}"/>
+						<InputNumber id="altura" v-model="user.altura"  mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" placeholder="cm"  :class="{'p-invalid': enviado && errorAltura}"/>
 						<small class="p-invalid" :key="errorAltura" v-if="enviado && errorAltura">{{this.errorAltura}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="peso_inicial">Peso inicial*</label>
-						<InputNumber id="peso_inicial" v-model="user.peso_inicial" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorPesoInicial}" @change="cambioObjetivo()"/>
+						<InputNumber id="peso_inicial" v-model="user.peso_inicial" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorPesoInicial}" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorPesoInicial" v-if="enviado && errorAltura">{{this.errorPesoInicial}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="objetivo_peso">Objetivo de peso</label>
-						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled"/>
+						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorObjetivoPeso" v-if="enviado && errorObjetivoPeso">{{this.errorObjetivoPeso}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="objetivo_semanal">Objetivo semanal</label>
-						<InputText id="objetivo_semanal" v-model="user.objetivo_semanal" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
+						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
 						<small class="p-invalid" :key="errorObjetivoSemanal" v-if="enviado && errorObjetivoSemanal">{{this.errorObjetivoSemanal}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
@@ -88,7 +88,7 @@
 						<small class="p-invalid" :key="errorActividad" v-if="enviado && errorActividad">{{this.errorActividad}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
-						<label for="dieta">Dieta preferida*</label>
+						<label for="dieta">Dieta preferida</label>
 						<Dropdown id="dieta" v-model="user.dieta_pref" :options="dieta_prefs" optionLabel="name" placeholder="Elige uno" :class="{'p-invalid': enviado && errorDieta}"></Dropdown>
 						<small class="p-invalid" :key="errorDieta" v-if="enviado && errorDieta">{{this.errorDieta}}</small>
 					</div>
@@ -121,7 +121,7 @@
 			return {
 				userExists: null,
 				objetivo_peso_disabled: true,
-				user: {pasos:10000},
+				user: {pasos:10000, dieta_pref:{name: 'Estándar', code: 'estandar'}, tipo_alimentacion: {name: 'Clásica', code: 'clasica'}},
 				enviado: false,
 				prueba: null,
 				sexos: [
@@ -172,6 +172,7 @@
 				errorAltura: null,
 				errorDieta: null,
 				errorActividad: null,
+				errorSigue: false
 			}
 		},
 		userService: null,
@@ -191,7 +192,12 @@
 				this.objetivo_peso_disabled = true;
 				this.user.objetivo_peso = this.user.peso_inicial;
 				this.user.objetivo_semanal = 0;
+			}else if( this.user.objetivo.code === "perder_peso"){
+				this.user.objetivo_semanal = -0.5;
+			}else if( this.user.objetivo.code === "aumentar_masa"){
+					this.user.objetivo_semanal = 0.5;
 			}
+			this.comprobarCampos();
 			this.$forceUpdate();
 		},
 		guardar() {
@@ -231,7 +237,7 @@
 			if(!this.user.nombre || !regexLetras.test(this.user.nombre))
 			{
 				resultado = false;
-				this.errorNombre = 'El nombre solo puede tener letras';
+				this.errorNombre = 'El nombre es obligatorio y solo puede tener letras';
 			}else{
 				this.errorNombre = null;
 
@@ -239,7 +245,7 @@
 			if(!this.user.apellidos || !regexLetras.test(this.user.apellidos))
 			{
 				resultado = false;
-				this.errorApellido = 'El campo apellidos solo puede tener letras';
+				this.errorApellido = 'El campo apellidos es obligatorio y solo puede tener letras';
 			}else{
 				this.errorApellido = null;
 
@@ -248,31 +254,51 @@
 			if(!this.user.fecha || Date.parse(this.user.fecha)>=fecha)
 			{
 				resultado = false;
-				this.errorFecha = 'La fecha debe ser anterior al día de hoy';
+				this.errorFecha = 'La fecha es obligatoria y debe ser anterior al día de hoy';
 
 			}else{
 				this.errorFecha = null;
 				
 			}
 			this.userService.getUser(this.user.username).then(data => {this.userExists = data
-			if(!this.user.username || this.userExists)
+			
+			if(!this.user.username)
 			{
+				
 				resultado = false;
-				this.errorUser = 'El nombre de usuario ya está en uso';
+				this.errorUser = 'El nombre de usuario es obligatorio';
 
 			}else{
-				this.errorUser = null;
+				if(this.userExists)
+				{
+					resultado = false;
+					this.errorUser = 'El nombre de usuario ya está en uso';
+
+				}else{
+					this.errorUser = null;
+					
+				}
 				
-			}	  
+			}
+				  
 			this.$forceUpdate();
 			})
-			if(this.user.password !== this.user.password_confirm)
+			if(!this.user.password || this.user.password.length < 8)
 			{
 				resultado = false;
-				this.errorPassword = 'Las contraseñas no coinciden';
+				this.errorPassword = 'La contraseña es obligatoria y debe tener al menos 8 carácteres';
 
 			}else{
 				this.errorPassword = null;
+				
+			}
+			if(this.user.password !== this.user.password_confirm)
+			{
+				resultado = false;
+				this.errorConfirmPassword = 'Las contraseñas no coinciden';
+
+			}else{
+				this.errorConfirmPassword = null;
 				
 			}
 			if(!regexEmail.test(this.user.email))
@@ -287,7 +313,7 @@
 			if(!this.user.telefono || this.user.telefono.toString().length !== 9)
 			{
 				resultado = false;
-				this.errorTelefono = 'El telefono no es válido';
+				this.errorTelefono = 'El telefono es obligatorio y debe contener 9 dígitos';
 
 			}else{
 				this.errorTelefono = null;
@@ -320,7 +346,7 @@
 				this.errorObjetivo = null;
 				
 			}
-			if(!this.user.altura || this.user.altura >300 || this.user.altura < 25)
+			if(!this.user.altura || this.user.altura >300 || this.user.altura < 0)
 			{
 				resultado = false;
 				this.errorAltura = 'Altura inválida';
@@ -329,7 +355,7 @@
 				this.errorAltura = null;
 				
 			}
-			if(!this.user.peso_inicial || this.user.peso_inicial >600 || this.user.peso_inicial < 3)
+			if(!this.user.peso_inicial || this.user.peso_inicial >1000 || this.user.peso_inicial < 0)
 			{
 				resultado = false;
 				this.errorPesoInicial = 'Peso inválido';
@@ -346,22 +372,49 @@
 				this.user.objetivo_peso = this.user.peso_inicial;
 				this.user.objetivo_semanal = 0;
 			}
-			if((!this.user.objetivo_peso || this.user.objetivo_peso >600 || this.user.objetivo_peso < 3) && !this.objetivo_peso_disabled)
+			if((!this.user.objetivo_peso || this.user.objetivo_peso >1000 || this.user.objetivo_peso < 0) && !this.objetivo_peso_disabled)
 			{
 				resultado = false;
 				this.errorObjetivoPeso = 'Peso inválido';
 
 			}else{
-				this.errorObjetivoPeso = null;
+				if (this.user.objetivo.code === "perder_peso" && this.user.objetivo_peso >= this.user.peso_inicial){
+					this.errorSigue = false;
+					resultado = false;
+					this.errorObjetivoPeso = 'El peso es mayor al inicial (Objetivo: Perder peso)';
+				}else{
+					this.errorObjetivoPeso = null;
+					this.errorSigue = true;
+				}
+
+				if (this.user.objetivo.code === "aumentar_masa" && this.user.objetivo_peso <= this.user.peso_inicial){
+					resultado = false;
+					this.errorObjetivoPeso = 'El peso es menor al inicial (Objetivo: Aumentar masa muscular)';
+				}else if(this.errorSigue){
+					this.errorObjetivoPeso = null;
+				}
+
+				
 				
 			}
-			if((!this.user.objetivo_semanal || (this.user.objetivo_semanal > 0 && this.user.objetivo.code === "perder_peso")
-										|| (this.user.objetivo_semanal < 0 && this.user.objetivo.code === "aumentar_masa")) && !this.objetivo_peso_disabled)
+			console.log(this.user)
+			if(!this.user.objetivo_semanal  && !this.objetivo_peso_disabled)
+			{
+				this.errorSigue = false;
+				resultado = false;
+				this.errorObjetivoSemanal = 'El campo Objetivo semanal es obligatorio';
+
+			}else{
+				this.errorObjetivoSemanal = null;
+				this.errorSigue = true;
+			}
+			if(((this.user.objetivo_semanal > 0 && this.user.objetivo.code === "perder_peso")
+								|| (this.user.objetivo_semanal < 0 && this.user.objetivo.code === "aumentar_masa")) && !this.objetivo_peso_disabled)
 			{
 				resultado = false;
 				this.errorObjetivoSemanal = 'Peso inválido';
 
-			}else{
+			}else if(this.errorSigue){
 				this.errorObjetivoSemanal = null;
 				
 			}
