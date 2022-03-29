@@ -215,7 +215,6 @@
 				this.user.grasas_recomendadas = 70;
 				this.user.proteinas_recomendadas = 50;
 				delete this.user.password_confirm
-				console.log(this.user)
 				this.userService.guardar(this.user)
 				.then(() => {
 					//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
@@ -397,7 +396,6 @@
 				
 				
 			}
-			console.log(this.user)
 			if(!this.user.objetivo_semanal  && !this.objetivo_peso_disabled)
 			{
 				this.errorSigue = false;
