@@ -1,51 +1,38 @@
 <template>
-  <div class="grid">
+  <div class="grid justify-content-around">
     <!-- PARTE IZQUIERDA -->
-    <div class="col-12 lg:col-6">
-      <div class="grid col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
+    <div class="grid col-12 lg:col-6 justify-content-center">
         <div class="col-12">
-          <h2 class="text-center"> EJERCICIOS RECOMENDADOS DEL DÍA </h2>
+          <h3 class="text-center"> EJERCICIOS RECOMENDADOS DEL DÍA </h3>
         </div>
-        <div class="card">
-          <DeferredContent @load="fetchItems">
-            <DataView :value="dataviewValue" :layout="layout">
-              <template #list="slotProps">
-                <div class="card col-12 pt-1 pb-1">
-                  <div class="formgroup-inline">
-                    <div class="field ml-5">
-                      <Galleria :value="slotProps.data.images" :numVisible="1" containerStyle="max-width: 150px; max-height:150px;"
-                          :circular="true" :autoPlay="true" :transitionInterval="1500">
-                          <template #item="slotProps">
-                              <img :src="slotProps.item"  style="width: 90px; height:90px; display: block;" />
-                          </template>
-                          <template #thumbnail="slotProps">
-                            <img src="" :alt="slotProps.item.alt" style="display: block;" />
-                        </template>
-                      </Galleria>
-                    </div>
-                    <div class="field">
-                      {{slotProps.data.name}}
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <template #empty>No tiene ningún ejercicio recomendado</template>
-            </DataView>
-          </DeferredContent>
-        </div>    
-      </div>
+        <div class="card col-12">
+        <DataTable :value="dataviewValue" :rows="5">     
+          <Column field="name" header="Nombre" :style="{width:'150px'}">
+						<template #body="{data}">
+              <router-link :to="'/ejercicio/detalles/' + data._id">
+              <p class="p-flex">{{data.name}}</p>
+              </router-link>
+            </template>
+					</Column>
+          <Column field="muscles" header="Zona muscular" :style="{width:'150px'}">
+						<template #body="{data}" :v-model="muscleList">
+                <p class="p-flex text-bold">{{muscleList[data.muscles[0]]}}</p> 
+                <p class="p-flex text-bold">{{muscleList[data.muscles[1]]}}</p>
+                <p class="p-flex text-bold">{{muscleList[data.muscles[2]]}}</p>
+            </template>
+					</Column>
+        </DataTable>
+      </div>    
     </div>
     <!-- PARTE DERECHA -->
-    <div class="col-12 lg:col-6">
-      <div class="grid col-12 justify-content-center align-items-center">
+    <div class="grid col-12 lg:col-6 justify-content-center">
         <div class="col-12">
-          <h2 class="p-flex text-center">BUSCADOR DE EJERCICIOS</h2>
+          <h3 class="p-flex text-center">BUSCADOR DE EJERCICIOS</h3>
         </div>
         <router-link to= "/ejercicio">
           <img src='../../public/images/buscador_ejercicios.png' alt='Buscador de Ejercicios' class="img-fluid"/>
         </router-link>
-        <h4 class="p-flex text-center"> En esta sección podrás buscar a partir de unos filtros establecidos.</h4>
-      </div>
+        <h5 class="p-flex text-center">En esta sección podrás buscar a partir de unos filtros establecidos</h5>
     </div>
 	</div>
 </template>
@@ -88,7 +75,6 @@ export default {
           axios.get(uri)
           .then((response) => {
             this.dataviewValue = response.data;
-            console.log(this.dataviewValue);
           });
     },
     exercise_url(url){
