@@ -425,7 +425,12 @@
 					this.dataUserView = data
 					this.comidaCarrusel();
 					this.kcal_recomendadas = (this.dataUserView.kcal_recomendadas/3).toFixed(2)
-					this.carbohidratos_recomendados = (this.dataUserView.carbohidratos_recomendados/3).toFixed(2)
+					if(this.$store.state.tipo != "Cena"){
+						this.carbohidratos_recomendados = (this.dataUserView.carbohidratos_recomendados/2).toFixed(2)
+					}else{
+						this.carbohidratos_recomendados = 0
+					}
+					
 					this.proteinas_recomendadas = (this.dataUserView.proteinas_recomendadas/3).toFixed(2)
 					this.grasas_recomendadas = (this.dataUserView.grasas_recomendadas/3).toFixed(2)
 				});
