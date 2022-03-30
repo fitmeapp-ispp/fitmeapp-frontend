@@ -33,16 +33,30 @@ export default class AlimentoService {
             corrector_actividad = 1.90
         }
 
+        tmb *= corrector_actividad  
 
         if (user.sexo == "Masculino"){
             tmb = 66 + (13.7 * user.peso_actual) + (5 * user.altura) - (6.75 * calcularEdad(user.fecha))
+            if(user.objetivo == "Perder peso" || user.objetivo == "Aumentar masa muscular"){
+                console.log(tmb)
+                console.log(user.objetivo_peso)
+                tmb += user.objetivo_semanal * 1000
+                console.log(tmb)
+            }
         }else{
             tmb = 665 + (9.6 * user.peso_actual) + (1.8 * user.altura) - (4.7 * calcularEdad(user.fecha))
+            if(user.objetivo == "Perder peso" || user.objetivo == "Aumentar masa muscular"){
+                tmb += user.objetivo_semanal * 1600
+            }
         }
 
-        tmb *= corrector_actividad
+        if(tmb > 1200)  {
+            user.kcal_recomendadas = tmb
+        }else{
+            user.kcal_recomendadas = 1200
+        }
 
-        user.kcal_recomendadas = tmb
+        
         
         if(user.dieta_pref == "Estándar"){
             user.carbohidratos_recomendados = user.kcal_recomendadas * 0.5
