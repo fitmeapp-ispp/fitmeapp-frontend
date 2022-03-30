@@ -91,16 +91,16 @@
 					<DataView :value="dataviewValue" :layout="layout" :paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
 						<template #header>
 							<div class="grid grid-nogutter">
-								<div class="col-4 text-left">
+								<div class="col-4.5">
 									<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
 								</div>
-								<div class="col-4 text-center">
+								<div class="col-4.5">
 									<span class="p-input-icon-left mb-2">
 										<i class="pi pi-search" />
 										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
 									</span>
 								</div>
-								<div class="col-4 text-right">
+								<div class="col-3">
 									<DataViewLayoutOptions v-model="layout" />
 								</div>
 							</div>
@@ -136,6 +136,7 @@
 						</template>
 						<template #grid="slotProps">
 							<div @click="detallesAlimento(slotProps.data)" class="col-12 md:col-4">
+							<!--Working here!-->
 								<div class="card m-3 border-1 surface-border">
 									<div class="text-align-center">
 										<div class="grid grid-nogutter alimento-busqueda">
@@ -144,20 +145,24 @@
 														class="w-9 shadow-2 my-3 mx-0" id="imagen-busqueda"/>
 											</div>
 											<div class="col-8 text-left">
-												<div class="text-2xl font-bold">
+												<div class="comidaName font-bold">
 													{{ slotProps.data.nombre }}
 												</div>
-												<div class="mb-3"></div>
-												<div class="mb-3">
+												<!--<div class="mb-3"></div>-->
+												<!--<div class="mb-3 comidaText"></div>-->
+												<div class="comidaText">
 													Kcal {{ slotProps.data.kcal_100g }} g
 												</div>
-												<div class="mb-3">
+												<!--<div class="mb-3 comidaText"></div>-->
+												<div class="comidaText">
 													Grasas {{ slotProps.data.grasa_100g }} g
 												</div>
-												<div class="mb-3">
+												<!--<div class="mb-3 comidaText"></div>-->
+												<div class="comidaText">
 													Carbohidratos {{ slotProps.data.carbohidratos_100g }} g
 												</div>
-												<div class="mb-3">
+												<!--<div class="mb-3 comidaText"></div>-->
+												<div class="comidaText">
 													Proteínas {{ slotProps.data.proteinas_100g }} g
 												</div>
 											</div>
@@ -487,6 +492,27 @@
 </script>
 
 <style scoped lang="scss">
+.comidaName {
+	font-size: calc(1vw + 1vh + 1vmin);
+}
+.comidaText {
+	margin-top: 1vh;
+	font-size: 1rem
+}
+@media (max-width: 640px) {
+	.comidaName {
+		font-size: calc(1vw + 1vh + 2vmin);
+	}
+	.comidaText {
+		font-size: calc(1vw + 1vh + 0.3vmin)
+	}
+}
+.p-dropdown {
+	max-width: 100%;
+}
+.p-dataview-layout-options {
+	float: right;
+}
 @import "../assets/demo/badges.scss";
 @import "../assets/styles/comidas.scss";
 </style>
