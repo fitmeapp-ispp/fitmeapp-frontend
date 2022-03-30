@@ -26,10 +26,10 @@
                         </div>
                         <div class="p-fluid formgrid grid" v-for="(ing,indiceIngredientes) in receta.ingredientes" :key="indiceIngredientes">
                             <div class="field col-12 md:col-9">
-                                <InputText id="ingrediente" v-model="ing.ingrediente" required="true" autofocus/>
+                                <Dropdown id="ingrediente" v-model="ing.ingrediente" :options="alimentos" optionLabel="nombre" required="true" autofocus />
                             </div>
                             <div class="field col-12 md:col-3">
-                                <InputNumber id="cantidad" v-model="ing.cantidad" required="true" autofocus />
+                                <InputText id="cantidad" v-model="ing.cantidad" required="true" autofocus />
                             </div>
                             <div class="field col-12 md:col-10 md:col-offset-1">
                                 <Button class="p-button-success"  @click="anyadirIngrediente(indiceIngredientes)"  v-show="indiceIngredientes == receta.ingredientes.length-1">
@@ -44,12 +44,12 @@
                             Pasos
                         </div>
 
-                        <div class="formgrid grid justify-content-center" v-for="(paso,indicePasos) in pasos" :key="indicePasos">
+                        <div class="formgrid grid justify-content-center" v-for="(paso,indicePasos) in receta.pasos" :key="indicePasos">
                             <div class="field col-12">
-                                <InputText id="pasos" v-model="paso.paso" placeholder="Añada un paso" required="true" autofocus :class="{'p-invalid': enviado && !paso.paso}" />
+                                <InputText id="pasos" v-model="receta.pasos[indicePasos]" required="true" autofocus />
                             </div>
                             <div class="field col-12 md:col-10 md:col-offset-1">
-                                <Button class="p-button-success" @click="anyadirPaso(indicePasos)" v-show="indicePasos == pasos.length-1">
+                                <Button class="p-button-success" @click="anyadirPaso(indicePasos)" v-show="indicePasos == receta.pasos.length-1">
                                     <span class="p-button-label">Añadir</span>
                                 </Button>
                             </div>
@@ -71,6 +71,7 @@
 
 <script>
 import RecetaService from '../../service/RecetaService';
+import AlimentoService from '../../service/AlimentoService';
 export default {
 	data() {
 		return {
@@ -81,9 +82,8 @@ export default {
 					ingrediente: '',
 					cantidad: ''
 				}],
-				pasos: [{
-					paso: ''
-				}],},
+				pasos: ['']
+			},
 			enviado: false,
 			nombre: 'Macarrones con tomatico',
 			raciones: 3,
@@ -91,16 +91,23 @@ export default {
 				nombre: '',
 				cantidad: ''
 			}],
-			pasos: [{
-				paso: ''
-			}],
-			recetaService: null
+			pasos: [''],
+			recetaService: null,
+			alimentoService: null,
+			alimentos: {}
 		}
 	},
 	created(){
 		this.recetaService = new RecetaService();
+		this.alimentoService = new AlimentoService();
+		this.obtenerAlimentos();
 	},
 	methods: {
+		obtenerAlimentos(){
+                    this.alimentoService.getAlimentos().then(data => {this.alimentos = data
+					console.log(this.alimentos[0]);
+					});
+                },
 		anyadirIngrediente(){
 			this.receta.ingredientes.push({
 				ingrediente: '',
@@ -108,9 +115,7 @@ export default {
 			});
 		},
 		anyadirPaso(){
-			this.pasos.push({ 
-				paso: ''
-			});
+			this.receta.pasos.push('');
 		},
 		guardarReceta () {
 		this.enviado = true;
@@ -120,7 +125,10 @@ export default {
 		let comprobado = true;
 
 		if (comprobado) {
-			
+			console.log(this.receta);
+			for (var ingrediente of this.receta.ingredientes) {  
+			ingrediente = ingrediente.id;
+			}
 			if (this.receta._id) {
 				this.recetaService.actualizarReceta(this.receta)
 				.then(() => {
