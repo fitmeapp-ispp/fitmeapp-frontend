@@ -20,7 +20,7 @@ export default class AlimentoService {
 
     actualizarNutrientes(user){
         var corrector_actividad = 0
-
+        var tmb = 0
         if(user.nivel_actividad == "Poca o ninguna"){
             corrector_actividad = 1.2
         }else if(user.nivel_actividad == "Ejercicio Ligero"){
@@ -34,10 +34,10 @@ export default class AlimentoService {
         }
 
 
-        if (user.sexo = "Masculino"){
-            var tmb = 66 + (13.7 * user.peso_actual) + (5 * user.altura) - (6.75 * calcularEdad(user.fecha))
+        if (user.sexo == "Masculino"){
+            tmb = 66 + (13.7 * user.peso_actual) + (5 * user.altura) - (6.75 * calcularEdad(user.fecha))
         }else{
-            var tmb = 665 + (9.6 * user.peso_actual) + (1.8 * user.altura) - (4.7 * calcularEdad(user.fecha))
+            tmb = 665 + (9.6 * user.peso_actual) + (1.8 * user.altura) - (4.7 * calcularEdad(user.fecha))
         }
 
         tmb *= corrector_actividad
