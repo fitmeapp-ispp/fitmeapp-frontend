@@ -19,32 +19,29 @@ export default class AlimentoService {
     }
 
     actualizarNutrientes(user){
-        var corrector_actividad = 0
+        var corrector_actividad = 1.2
         var tmb = 0
-        if(user.nivel_actividad == "Poca o ninguna"){
-            corrector_actividad = 1.2
-        }else if(user.nivel_actividad == "Ejercicio Ligero"){
+        if(user.nivel_actividad == "Ejercicio Ligero"){
             corrector_actividad = 1.375
         }else if(user.nivel_actividad == "Ejercicio moderado"){
-            corrector_actividad = 1.550
+            corrector_actividad = 1.55
         }else if(user.nivel_actividad == "Ejercicio fuerte"){
             corrector_actividad = 1.725
         }else if(user.nivel_actividad == "Ejercicio muy fuerte"){
-            corrector_actividad = 1.90
+            corrector_actividad = 1.9
         }
-
-        tmb *= corrector_actividad  
+        
 
         if (user.sexo == "Masculino"){
             tmb = 66 + (13.7 * user.peso_actual) + (5 * user.altura) - (6.75 * calcularEdad(user.fecha))
+            tmb *= corrector_actividad  
             if(user.objetivo == "Perder peso" || user.objetivo == "Aumentar masa muscular"){
-                console.log(tmb)
-                console.log(user.objetivo_peso)
                 tmb += user.objetivo_semanal * 1000
-                console.log(tmb)
+
             }
         }else{
             tmb = 665 + (9.6 * user.peso_actual) + (1.8 * user.altura) - (4.7 * calcularEdad(user.fecha))
+            tmb *= corrector_actividad  
             if(user.objetivo == "Perder peso" || user.objetivo == "Aumentar masa muscular"){
                 tmb += user.objetivo_semanal * 1600
             }
@@ -68,7 +65,7 @@ export default class AlimentoService {
             user.grasas_recomendadas = user.kcal_recomendadas * 0.45
         }else if(user.dieta_pref == "Alta en proteínas"){
             user.carbohidratos_recomendados = user.kcal_recomendadas * 0.35
-            user.proteinas_recomendadas = user.kcal_recomendadas * 0.40
+            user.proteinas_recomendadas = user.kcal_recomendadas * 0.4
             user.grasas_recomendadas = user.kcal_recomendadas * 0.25
         }else if(user.dieta_pref == "Baja en grasas"){
             user.carbohidratos_recomendados = user.kcal_recomendadas * 0.55
