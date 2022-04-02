@@ -2,42 +2,53 @@
 	<div class="grid">
 		<div class="col-12">
 			<div class="card mb-3 col-12">
-				<div class="formgroup-inline justify-content-between align-items-between ">
-					<div class="field text-center mt-3">
-
-
-							<Button icon="pi pi-angle-left" v-if="tipo == 'Almuerzo'" @click="cambiarTipo('Desayuno')"/>
-							<Button icon="pi pi-angle-left" v-if="tipo == 'Cena'" @click="cambiarTipo('Almuerzo')"/>
-
-                            <h1 style="color:#256029;">{{ tipo }}</h1>
-                            
-                            <Button icon="pi pi-angle-right" v-if="tipo == 'Desayuno'" @click="cambiarTipo('Almuerzo')"/>
-							<Button icon="pi pi-angle-right" v-if="tipo == 'Almuerzo'" @click="cambiarTipo('Cena')"/>
-                            
+				<div class="formgroup-inline justify-content-around align-items-between ">
+					<div class="field formgroup-inline mt-3 mr-0">
+							<div class="field" v-if="tipo == 'Desayuno'">
+								<Button class="p-button-text" :disabled="true"/>
+							</div>
+							<div class="field" v-if="tipo == 'Almuerzo'">	
+								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Desayuno')"/>
+							</div>
+							<div class="field" v-if="tipo == 'Cena'">	
+								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
+							</div>
+							<div class="field mb-0">
+								<h2 class="text-center mt-1" style="color:#256029;">{{ tipo }}</h2>
+							</div>
+                            <div class="field" v-if="tipo == 'Desayuno'">
+                            <Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
+							</div>
+							<div class="field" v-if="tipo == 'Almuerzo'">
+							<Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Cena')"/>
+							</div>
+							<div class="field" v-if="tipo == 'Cena'">
+								<Button class="p-button-text" :disabled="true"/>
+							</div>
 					</div>
 					<div class="field formgroup-inline justify-content-center">
-						<div class="field">
+						<div class="field ml-3">
 							<label class="col-12 text-center">Kcalorías</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-orange-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"> </div>
 							</div>
 							<label class="col-12 text-center">{{ Math.round(dia.kcalIngeridas) }} Kcal /{{ dia.kcalRec }} Kcal</label>
 						</div>
-						<div class="field">
+						<div class="field field ml-3">
 							<label class="col-12 text-center">Proteínas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-purple-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"> </div>
 							</div>
 							<label class="col-12 text-center">{{ Math.round(dia.proteinasIngeridas) }} g /{{ dia.proteinasRec }} g</label>
 						</div>
-						<div class="field">
+						<div class="field field ml-3">
 							<label class="col-12 text-center">Carbohidratos</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-cyan-500 h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'"> </div>
 							</div>
 							<label class="col-12 text-center">{{ Math.round(dia.carbIngeridas) }} g / {{ dia.carbRec }} g</label>
 						</div>
-						<div class="field">
+						<div class="field field ml-3">
 							<label class="col-12 text-center">Grasas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-yellow-400 h-full"  v-bind:style="'width:' + ratioGrasa + '%'"> </div>
