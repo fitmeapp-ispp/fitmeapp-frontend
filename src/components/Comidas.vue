@@ -398,7 +398,7 @@
 				filters: ''
 			};
 			this.fetchItems();
-			/* this.obtenerDatosDia(); */
+			this.obtenerDatosDia(); 
 		},
 		methods: {
 			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
@@ -468,7 +468,6 @@
 				this.tipo = this.$route.params.tipo
 				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
-				console.log(this.dia)
 				if(this.tipo != "Cena"){
 					this.dia.carbRec = (this.dia.carbRec/2).toFixed(2)
 				}else{
