@@ -64,6 +64,9 @@
 							<div class="field">
 								<Button label="Creados" class="p-button-success" @click="creados()"/>
 							</div>
+							<div class="field">
+								<Button label="Limpiar Filtros" class="p-button-success" @click="limpiarFiltros()"/>
+							</div>
 						</div>
 						<div class="mt-1">
 							<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
@@ -97,7 +100,8 @@
 			<!-- Comienza la tabla con los alimentos-->
 			<div class="col-12">
 				<div class="card">
-					<DataView :value="dataviewValue" :layout="layout" :paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+					<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
+						:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
 						<template #header>
 							<div class="grid grid-nogutter">
 								<div class="col-4 text-left">
@@ -106,7 +110,7 @@
 								<div class="col-4 text-center">
 									<span class="p-input-icon-left mb-2">
 										<i class="pi pi-search" />
-										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
+										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
 									</span>
 								</div>
 								<div class="col-4 text-right">
@@ -302,7 +306,6 @@
 				dia: {},
 				alimentoDialog: false,
 				carruselVacio: false,
-				dataviewValue: {},
 				dataviewValueCarrusel: {},
 				dataUserView: {},
 				kcal_recomendadas: 0,
@@ -315,7 +318,6 @@
 				ratioGrasa: 0,
 				dataviewValueComida: {'kcal_100g':0,'proteinas_100g':0,'carbohidratos_100g':0,'grasa_100g':0},
 				layout: 'grid',
-				filtroAlergeno:null,
 				cantidad: null,
 				sortKey: null,
 				sortOrder: null,
@@ -324,7 +326,7 @@
 					{label: 'Mayor a menor número de Kcal', value: '!kcal_100g'},
 					{label: 'Menor a mayor número de kcal', value: 'kcal_100g'},
 					{label: 'Alfabéticamente', value: 'nombre'},
-					{label: 'Alfabéticamente inverso', value: 'nombre'},
+					{label: 'Alfabéticamente inverso', value: '!nombre'},
 				],
 				alergenosSel2: [],
 				selector_alergenos2: [
@@ -375,7 +377,13 @@
 						numVisible: 1,
 						numScroll: 1
 					}
-				]
+				],
+				dataviewValue: null,
+				totalRecords: 0,
+				lazyParams: {},
+				isRecientes: false,
+				isFavoritos: false,
+				isCreados: false,
 			}
 		},
 		alimentoService: null,
@@ -384,10 +392,78 @@
 			//this.dataviewValueCarrusel = [{'alimento': {"nombre": ""}}];
 		},
 		mounted() {
+			this.lazyParams = {
+				pagina: 0,
+				sort: [], //2 items: sortField y sortOrder (Ejemplo: Nombre,-1 ==> Ordenar por nombre inversamente)
+				filters: ''
+			};
 			this.fetchItems();
-			this.obtenerDatosDia();
+			/* this.obtenerDatosDia(); */
 		},
 		methods: {
+			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
+			fetchItems(){
+				if (this.isRecientes === true){
+					this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+					});
+				}else if (this.isFavoritos === true){
+					this.alimentoService.getFavoritos(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+				});
+				}else if (this.isCreados === true){
+					this.alimentoService.getCreados(this.$store.state.username, this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+					});
+				}else{
+					this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+					});
+				}
+			},
+			onPage(event){
+				this.lazyParams.pagina = event.page;
+				this.fetchItems();	
+			},
+			alergenos(){
+				this.lazyParams.filters = this.alergenosSel2.code;
+				this.fetchItems();
+			},
+			onSortChange(event){
+				let value = event.value.value;
+				if (value.indexOf('!') === 0) {
+					let sortField = value.substring(1, value.length)
+					this.lazyParams.sort = [sortField,'-1']
+				}
+				else {
+					this.lazyParams.sort = [value,'1']
+				}
+				this.fetchItems();
+			},
+			limpiarFiltros(){
+				this.lazyParams = {
+					pagina: 0,
+					sort: [], 
+					filters: ''
+				};
+				this.isCreados = false;
+				this.isRecientes = false;
+				this.isFavoritos = false;
+				this.alergenosSel2 = [];
+				this.sortKey = null,
+				this.sortOrder = null,
+				this.sortField = null,
+				this.fetchItems();
+			},
+			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			obtenerDatosDia(){
 				this.tipo = this.$route.params.tipo
 				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
@@ -411,9 +487,6 @@
 				});
 				
 			},
-			enterClicked(){
-				this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
-			},
 			ratios(){
 				this.ratiokcal = Math.round(this.dia.kcalIngeridas / this.dia.kcalRec * 100);
 				if (this.ratiokcal>100) this.ratiokcal = 100;
@@ -424,37 +497,26 @@
 				this.ratioGrasa = Math.round(this.dia.grasasIngeridas /  this.dia.grasasRec * 100);
 				if (this.ratioGrasa>100) this.ratioGrasa = 100;
 			},
-			alergenos(){
-				this.alimentoService.getNoAlergeno(this.alergenosSel2).then(data =>{ this.dataviewValue = data});
-			},
-			fetchItems(){
-				this.alimentoService.getAlimentos().then(data => this.dataviewValue = data);
-			},
 			favoritos(){
-				this.alimentoService.getFavoritos(this.$store.state.username).then(data => this.dataviewValue = data);
+				this.isCreados = false;
+				this.isRecientes = false;
+				this.isFavoritos = true;
+				this.fetchItems();
 			},
 			recientes(){
-				this.alimentoService.getRecientes(this.$store.state.username).then(data => this.dataviewValue = data);
+				this.isCreados = false;
+				this.isRecientes = true;
+				this.isFavoritos = false;
+				this.fetchItems();
 			},
 			creados(){
-				this.alimentoService.getCreados(this.$store.state.username).then(data => this.dataviewValue = data);
+				this.isCreados = true;
+				this.isRecientes = false;
+				this.isFavoritos = false;
+				this.fetchItems();
 			},
 			eliminarDelCarrusel(consumicionId){
 				this.alimentoService.deleteFromCarrusel(consumicionId,this.dia.tipo,this.dia._id).then(() => {this.obtenerDatosDia()});
-			},
-			onSortChange(event){
-				const value = event.value.value;
-				const sortValue = event.value;
-				if (value.indexOf('!') === 0) {
-					this.sortOrder = -1;
-					this.sortField = value.substring(1, value.length);
-					this.sortKey = sortValue;
-				}
-				else {
-					this.sortOrder = 1;
-					this.sortField = value;
-					this.sortKey = sortValue;
-				}
 			},
 			detallesAlimento(alimento) {
 				this.alimento = alimento;
