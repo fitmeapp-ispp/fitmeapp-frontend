@@ -103,17 +103,17 @@
 					<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
 						:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
 						<template #header>
-							<div class="grid grid-nogutter">
-								<div class="col-4 text-left">
+							<div class="grid formgroup-inline justify-content-between ">
+								<div class="field">
 									<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
 								</div>
-								<div class="col-4 text-center">
+								<div class="field">
 									<span class="p-input-icon-left mb-2">
 										<i class="pi pi-search" />
 										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
 									</span>
 								</div>
-								<div class="col-4 text-right">
+								<div class="field">
 									<DataViewLayoutOptions v-model="layout" />
 								</div>
 							</div>
