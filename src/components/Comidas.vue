@@ -4,7 +4,16 @@
 			<div class="card mb-3 col-12">
 				<div class="formgroup-inline justify-content-between align-items-between ">
 					<div class="field text-center mt-3">
-							<h1 style="color:#256029;">{{ tipo }}</h1>
+
+
+							<Button icon="pi pi-angle-left" v-if="tipo == 'Almuerzo'" @click="cambiarTipo('Desayuno')"/>
+							<Button icon="pi pi-angle-left" v-if="tipo == 'Cena'" @click="cambiarTipo('Almuerzo')"/>
+
+                            <h1 style="color:#256029;">{{ tipo }}</h1>
+                            
+                            <Button icon="pi pi-angle-right" v-if="tipo == 'Desayuno'" @click="cambiarTipo('Almuerzo')"/>
+							<Button icon="pi pi-angle-right" v-if="tipo == 'Almuerzo'" @click="cambiarTipo('Cena')"/>
+                            
 					</div>
 					<div class="field formgroup-inline justify-content-center">
 						<div class="field">
@@ -469,6 +478,9 @@
 				}
 				return imagenesAlergenos;
 			},
+			cambiarTipo(tipo){
+				location.href ='/comidas/'+tipo
+			}
 		}
 	}
 </script>
