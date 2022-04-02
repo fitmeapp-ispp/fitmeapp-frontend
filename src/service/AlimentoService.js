@@ -2,8 +2,16 @@ import axios from 'axios';
 
 export default class AlimentoService {
 
-    getAlimentos(){
-        return axios.get('/alimentos')
+    getAlimentos(lazyParams, buscador){
+        
+        return axios.get('/alimentos', {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters
+            }
+        })
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -18,20 +26,50 @@ export default class AlimentoService {
         });
     }
 
-    getNoAlergeno(alergeno) {
-		return axios.request(`/alimentos/alergenos/`+alergeno)
+    getCreados(username,lazyParams, buscador) {
+		return axios.get(`/alimentos/creados/${username}`, {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters
+            }
+        })
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
     }
 
-    getCreados(username) {
-		return axios.get(`/alimentos/creados/`+username)
+    getRecientes(userId,lazyParams, buscador){
+        return axios.get(`/alimentos/recientes/${userId}`, {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters
+            }
+        })
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
+    }
+
+    getFavoritos(username,lazyParams, buscador){
+        return axios.get(`/alimentos/favoritos/${username}`, {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters
+            }
+        })
+        .then((response) => 
+				response.data)
+                .catch((e)=>{
+                    console.log('error' + e);
+                });
     }
 
     getComida(tipo,fecha,username){
@@ -50,36 +88,9 @@ export default class AlimentoService {
             console.log('error' + e);
         });
     }
- 
-    getFavoritos(username){
-        return axios.get(`/alimentos/favoritos/`+ username)
-        .then((response) => 
-				response.data)
-                .catch((e)=>{
-                    console.log('error' + e);
-                });
-    }
 
     getUserKcak(username){
-        return axios.get(`/users/`+ username)
-        .then((response) => 
-				response.data)
-                .catch((e)=>{
-                    console.log('error' + e);
-                });
-    }
-
-    getBuscador(valor){
-        return axios.get(`/alimentos/buscador/`+ valor)
-        .then((response) => 
-				response.data)
-                .catch((e)=>{
-                    console.log('error' + e);
-                });
-    }
-
-    getRecientes(valor){
-        return axios.get(`/alimentos/recientes/`+ valor)
+        return axios.get(`/users/${username}`)
         .then((response) => 
 				response.data)
                 .catch((e)=>{
