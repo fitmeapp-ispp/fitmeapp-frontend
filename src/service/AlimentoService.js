@@ -103,8 +103,8 @@ export default class AlimentoService {
         });
     }
 
-    anyadirACarrusel(alimentoId,cantidad, body){
-        return axios.post(`/comidas/add/${alimentoId}/${cantidad}`,body)
+    anyadirACarrusel(alimentoId,cantidad, diaId,tipo){
+        return axios.post(`/comidas/add/${alimentoId}/${cantidad}/${diaId}/${tipo}`,)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -114,6 +114,33 @@ export default class AlimentoService {
     nuevaConsumicion(alimentoId, username){
         return axios.post(`/alimentos/newConsumption/${alimentoId}/${username}`)
         .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    crearConsumicion(){
+        return axios.post(`/consumicion`, {usuario: "6244d94635c17b47d527f178", alimento: "623240e3997148f56622accd", cantidad: 100})
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    crearDia(){
+        return axios.post(`/dia`, {usuario: "6244d94635c17b47d527f178", pesoActual: 60, pasosObjetivo: 10000,
+         consumicionesDesayuno: ["624742a89bdea6b9c0ff554d"],
+         consumicionesAlmuerzo: [], consumicionesCena: [], kcalRec:640, proteinasRec:100,carbRec:100,grasasRec:100})
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    getDia(){
+        return axios.get(`/comidas/Desayuno/`+"2022-04-01T19:01:28.616+00:00"+"/6244d94635c17b47d527f178")
+        .then((response) => 
+			response.data)
         .catch((e)=>{
             console.log('error' + e);
         });

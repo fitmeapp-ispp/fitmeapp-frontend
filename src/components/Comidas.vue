@@ -12,28 +12,28 @@
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-orange-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida.kcal_100g }} Kcal /{{ kcal_recomendadas }} Kcal</label>
+							<label class="col-12 text-center">{{ Math.round(dia.kcalIngeridas) }} Kcal /{{ dia.kcalRec }} Kcal</label>
 						</div>
 						<div class="field">
 							<label class="col-12 text-center">Proteínas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-purple-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida["proteinas_100g"] }} g /{{ proteinas_recomendadas }} g</label>
+							<label class="col-12 text-center">{{ Math.round(dia.proteinasIngeridas) }} g /{{ dia.proteinasRec }} g</label>
 						</div>
 						<div class="field">
 							<label class="col-12 text-center">Carbohidratos</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-cyan-500 h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida.carbohidratos_100g }} g / {{ carbohidratos_recomendados }} g</label>
+							<label class="col-12 text-center">{{ Math.round(dia.carbIngeridas) }} g / {{ dia.carbRec }} g</label>
 						</div>
 						<div class="field">
 							<label class="col-12 text-center">Grasas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-yellow-400 h-full"  v-bind:style="'width:' + ratioGrasa + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida.grasa_100g }} g /{{ grasas_recomendadas }} g</label>
+							<label class="col-12 text-center">{{ Math.round(dia.grasasIngeridas) }} g /{{ dia.grasasRec }} g</label>
 						</div>
 					</div>
 					<div class="field mt-4 justify-content-center">
@@ -289,6 +289,7 @@
 	export default {
 		data() {
 			return {
+				dia: {},
 				alimentoDialog: false,
 				carruselVacio: false,
 				dataviewValue: {},
@@ -374,66 +375,42 @@
 		},
 		mounted() {
 			this.fetchItems();
-			this.userKcal();
+			this.obtenerDatosDia();
 		},
 		methods: {
-			enterClicked(){
-				this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
-			},
-			ratios(){
-				this.ratiokcal = Math.round(this.dataviewValueComida.kcal_100g / this.kcal_recomendadas * 100);
-				console.log(this.kcal_recomendadas)
-				console.log(this.ratiokcal)
-				if (this.ratiokcal>100) this.ratiokcal = 100;
-				console.log(this.ratiokcal);
-				this.ratioProteina = Math.round(this.dataviewValueComida.proteinas_100g  / this.proteinas_recomendadas * 100);
-				if (this.ratioProteina>100) this.ratioProteina = 100;
-				console.log(this.ratioProteina);
-				this.ratioCarbohidrato = Math.round(this.dataviewValueComida.carbohidratos_100g / this.carbohidratos_recomendados * 100);
-				if (this.ratioCarbohidrato>100) this.ratioCarbohidrato = 100;
-				console.log(this.ratioCarbohidrato);
-				this.ratioGrasa = Math.round(this.dataviewValueComida.grasa_100g /  this.grasas_recomendadas * 100);
-				if (this.ratioGrasa>100) this.ratioGrasa = 100;
-				console.log(this.ratioGrasa);
-			},
-			alergenos(){
-				this.alimentoService.getNoAlergeno(this.alergenosSel2).then(data =>{ this.dataviewValue = data});
-			},
-			comidaCarrusel(){
-				this.alimentoService.getComida(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username)
-				.then(data =>{ 
-					this.dataviewValueComida = data
-					this.dataviewValueComida.kcal_100g = this.dataviewValueComida.kcal_100g.toFixed(2)
-					this.dataviewValueComida.proteinas_100g = this.dataviewValueComida.proteinas_100g.toFixed(2)
-					this.dataviewValueComida.carbohidratos_100g = this.dataviewValueComida.carbohidratos_100g.toFixed(2)
-					this.dataviewValueComida.grasa_100g = this.dataviewValueComida.grasa_100g.toFixed(2)
-					this.ratios()
-					this.carrousel()
-				});
-			},
-			carrousel(){
-				this.alimentoService.getCarrusel(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username)
-				.then(data =>{ 
-					this.dataviewValueCarrusel = data
-					this.carruselVacio = data.length > 0
-				});
-			},
-			
-			userKcal(){
-				this.alimentoService.getUserKcak(this.$store.state.username)
-				.then(data =>{
-					this.dataUserView = data
-					this.comidaCarrusel();
-					this.kcal_recomendadas = (this.dataUserView.kcal_recomendadas/3).toFixed(2)
+			obtenerDatosDia(){
+				this.alimentoService.getDia().then(data =>{this.dia = data,
+					console.log(data)
+					this.kcal_recomendadas = (this.dia.kcalRec/3).toFixed(2)
 					if(this.$store.state.tipo != "Cena"){
-						this.carbohidratos_recomendados = (this.dataUserView.carbohidratos_recomendados/2).toFixed(2)
+						this.carbohidratos_recomendados = (this.dia.kcalRec/2).toFixed(2)
 					}else{
 						this.carbohidratos_recomendados = 0
 					}
 					
-					this.proteinas_recomendadas = (this.dataUserView.proteinas_recomendadas/3).toFixed(2)
-					this.grasas_recomendadas = (this.dataUserView.grasas_recomendadas/3).toFixed(2)
+					this.dia.proteinasRec = (this.dia.proteinasRec/3).toFixed(2)
+					this.grasasRec = (this.dia.grasasRec/3).toFixed(2)
+					this.ratios();
+					this.dataviewValueCarrusel = this.dia.consumiciones
+					this.carruselVacio = this.dia.consumiciones.length > 0
 				});
+				
+			},
+			enterClicked(){
+				this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
+			},
+			ratios(){
+				this.ratiokcal = Math.round(this.dia.kcalIngeridas / this.dia.kcalRec * 100);
+				if (this.ratiokcal>100) this.ratiokcal = 100;
+				this.ratioProteina = Math.round(this.dia.proteinasIngeridas  / this.dia.proteinasRec * 100);
+				if (this.ratioProteina>100) this.ratioProteina = 100;
+				this.ratioCarbohidrato = Math.round(this.dia.kcalIngeridas / this.dia.kcalRec * 100);
+				if (this.ratioCarbohidrato>100) this.ratioCarbohidrato = 100;
+				this.ratioGrasa = Math.round(this.dia.grasasIngeridas /  this.dia.grasasRec * 100);
+				if (this.ratioGrasa>100) this.ratioGrasa = 100;
+			},
+			alergenos(){
+				this.alimentoService.getNoAlergeno(this.alergenosSel2).then(data =>{ this.dataviewValue = data});
 			},
 			fetchItems(){
 				this.alimentoService.getAlimentos().then(data => this.dataviewValue = data);
@@ -448,7 +425,7 @@
 				this.alimentoService.getCreados(this.$store.state.username).then(data => this.dataviewValue = data);
 			},
 			eliminarDelCarrusel(alimentoId){
-				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.userKcal());
+				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.obtenerDatosDia());
 			},
 			onSortChange(event){
 				const value = event.value.value;
@@ -469,9 +446,8 @@
 				this.alimentoDialog = true;
 			},
 			anyadirConsumicion(alimentoId){
-				this.alimentoService.anyadirACarrusel(alimentoId,this.cantidad,this.dataviewValueComida)
-				.then(() => {this.userKcal()
-					this.alimentoService.nuevaConsumicion(alimentoId,this.$store.state.username);
+				this.alimentoService.anyadirACarrusel(alimentoId,this.cantidad,this.dia._id,this.dia.tipo)
+				.then(() => {this.obtenerDatosDia()
 					this.cantidad = 0;
 					this.alimentoDialog = false
 				});
