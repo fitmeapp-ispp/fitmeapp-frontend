@@ -65,7 +65,7 @@
 								<Button label="Creados" class="p-button-success" @click="creados()"/>
 							</div>
 							<div class="field">
-								<Button label="Limpiar Filtros" class="p-button-success" @click="limpiarFiltros()"/>
+								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
 							</div>
 						</div>
 						<div class="mt-1">
