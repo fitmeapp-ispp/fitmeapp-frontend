@@ -19,7 +19,7 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="fecha">Fecha de Nacimiento*</label>
-						<InputText v-model="user.fecha" required="true" id="fecha" type="date" :class="{'p-invalid': enviado && errorFecha}"/>
+						<InputText v-model="user.fechaNacimiento" required="true" id="fechaNacimiento" type="date" :class="{'p-invalid': enviado && errorFecha}"/>
 						<small class="p-invalid" :key="errorFecha" v-if="enviado && errorFecha">{{this.errorFecha}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
@@ -251,7 +251,7 @@
 
 			}
 			var fecha = new Date();
-			if(!this.user.fecha || Date.parse(this.user.fecha)>=fecha)
+			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha)
 			{
 				resultado = false;
 				this.errorFecha = 'La fecha es obligatoria y debe ser anterior al día de hoy';
