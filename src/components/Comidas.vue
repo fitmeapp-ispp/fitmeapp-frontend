@@ -70,10 +70,10 @@
 								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()"/>
 							</div>
 							<div class="field">
-								<Button label="Recientes" @click="recientes()" />
+								<Button label="Recientes" icon="pi pi-clock" @click="recientes()" />
 							</div>
 							<div class="field">
-								<Button label="Creados" class="p-button-success" @click="creados()"/>
+								<Button label="Creados" icon="pi pi-pencil" class="p-button-success" @click="creados()"/>
 							</div>
 							<div class="field">
 								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
