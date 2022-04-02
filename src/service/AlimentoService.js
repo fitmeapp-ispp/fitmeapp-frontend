@@ -95,8 +95,8 @@ export default class AlimentoService {
         return axios.post('/alimentos/', alimento);
     }
 
-    deleteFromCarrusel(alimentoId, tipo, fecha,username){
-        return axios.delete(`/comidas/carrusel/${alimentoId}/${tipo}/${fecha}/${username}`)
+    deleteFromCarrusel(consumicionId, tipo, diaId){
+        return axios.delete(`/comidas/carrusel/${consumicionId}/${diaId}/${tipo}`)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -137,8 +137,8 @@ export default class AlimentoService {
         });
     }
 
-    getDia(){
-        return axios.get(`/comidas/Desayuno/`+"2022-04-01T19:01:28.616+00:00"+"/6244d94635c17b47d527f178")
+    getDia(tipo){
+        return axios.get(`/comidas/${tipo}/`+"2022-04-01T19:01:28.616+00:00"+"/6244d94635c17b47d527f178")
         .then((response) => 
 			response.data)
         .catch((e)=>{

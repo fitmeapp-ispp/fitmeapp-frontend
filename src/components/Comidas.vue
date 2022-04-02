@@ -4,7 +4,7 @@
 			<div class="card mb-3 col-12">
 				<div class="formgroup-inline justify-content-between align-items-between ">
 					<div class="field text-center mt-3">
-							<h1 style="color:#256029;">{{ $store.state.tipo }}</h1>
+							<h1 style="color:#256029;">{{ tipo }}</h1>
 					</div>
 					<div class="field formgroup-inline justify-content-center">
 						<div class="field">
@@ -71,7 +71,7 @@
 											<h4 class="mb-1">{{slotProps.data.alimento.nombre}}</h4>
 											<h6 class="mt-0 mb-3">Kcal: {{slotProps.data.alimento.kcal_100g}}g. Cantidad: {{slotProps.data.cantidad}}g</h6>
 											<div>
-												<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data.alimento._id )" />
+												<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
 											</div>
 										</div>
 									</div>
@@ -289,6 +289,7 @@
 	export default {
 		data() {
 			return {
+				tipo: "",
 				dia: {},
 				alimentoDialog: false,
 				carruselVacio: false,
@@ -371,7 +372,7 @@
 		alimentoService: null,
 		created(){
 			this.alimentoService = new AlimentoService();
-			this.dataviewValueComida = [{'kcal_100g':0},{'proteinas_100g':0},{'carbohidratos_100g':0},{'grasa_100g':0}];
+			//this.dataviewValueCarrusel = [{'alimento': {"nombre": ""}}];
 		},
 		mounted() {
 			this.fetchItems();
@@ -379,20 +380,25 @@
 		},
 		methods: {
 			obtenerDatosDia(){
-				this.alimentoService.getDia().then(data =>{this.dia = data,
-					console.log(data)
-					this.kcal_recomendadas = (this.dia.kcalRec/3).toFixed(2)
-					if(this.$store.state.tipo != "Cena"){
-						this.carbohidratos_recomendados = (this.dia.kcalRec/2).toFixed(2)
-					}else{
-						this.carbohidratos_recomendados = 0
-					}
+				this.tipo = this.$route.params.tipo
+				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
+				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
+				console.log(this.dia)
+				if(this.tipo != "Cena"){
+					this.dia.carbRec = (this.dia.carbRec/2).toFixed(2)
+				}else{
+					this.dia.carbRec = 0
+				}
 					
-					this.dia.proteinasRec = (this.dia.proteinasRec/3).toFixed(2)
-					this.grasasRec = (this.dia.grasasRec/3).toFixed(2)
-					this.ratios();
+				this.dia.proteinasRec = (this.dia.proteinasRec/3).toFixed(2)
+				this.dia.grasasRec = (this.dia.grasasRec/3).toFixed(2)
+				this.ratios();
+				
+				this.carruselVacio = this.dia.consumiciones[0]._id 
+				
+				if (this.carruselVacio){
 					this.dataviewValueCarrusel = this.dia.consumiciones
-					this.carruselVacio = this.dia.consumiciones.length > 0
+				} 
 				});
 				
 			},
@@ -404,7 +410,7 @@
 				if (this.ratiokcal>100) this.ratiokcal = 100;
 				this.ratioProteina = Math.round(this.dia.proteinasIngeridas  / this.dia.proteinasRec * 100);
 				if (this.ratioProteina>100) this.ratioProteina = 100;
-				this.ratioCarbohidrato = Math.round(this.dia.kcalIngeridas / this.dia.kcalRec * 100);
+				this.ratioCarbohidrato = Math.round(this.dia.carbIngeridas / this.dia.carbRec * 100);
 				if (this.ratioCarbohidrato>100) this.ratioCarbohidrato = 100;
 				this.ratioGrasa = Math.round(this.dia.grasasIngeridas /  this.dia.grasasRec * 100);
 				if (this.ratioGrasa>100) this.ratioGrasa = 100;
@@ -424,8 +430,8 @@
 			creados(){
 				this.alimentoService.getCreados(this.$store.state.username).then(data => this.dataviewValue = data);
 			},
-			eliminarDelCarrusel(alimentoId){
-				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.obtenerDatosDia());
+			eliminarDelCarrusel(consumicionId){
+				this.alimentoService.deleteFromCarrusel(consumicionId,this.dia.tipo,this.dia._id).then(() => {this.obtenerDatosDia()});
 			},
 			onSortChange(event){
 				const value = event.value.value;
