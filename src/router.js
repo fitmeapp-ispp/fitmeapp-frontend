@@ -32,11 +32,6 @@ const routes = [
         component: Perfil,
     },
     {
-        path: '/crud',
-        name: 'crud',
-        component: () => import('./pages/CrudDemo.vue')
-    },
-    {
         path: '/login',
         name: 'login',
         component: Login
@@ -84,7 +79,7 @@ const router = createRouter({
   })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/login'];
+    const publicPages = ['/login'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
 
