@@ -79,48 +79,29 @@ const routes = [
     {
         path: '/administrar',
         name: 'administrar',
-        component: () => import('./pages/PanelAdministracion.vue'),
+        component: () => import('./pages/admin/PanelAdministracion.vue'),
     },
     {
         path: '/administrar_usuarios',
         name: 'administrar_usuarios',
-        component: () => import('./pages/AdministrarUsuarios.vue')
+        component: () => import('./pages/admin/AdministrarUsuarios.vue')
     },
     {
         path: '/administrar_ejercicios',
         name: 'administrar_ejercicios',
-        component: () => import('./pages/AdministrarEjercicios.vue')
+        component: () => import('./pages/admin/AdministrarEjercicios.vue')
     },
     {
         path: '/administrar_recetas',
         name: 'administrar_recetas',
-        component: () => import('./pages/AdministrarRecetas.vue')
+        component: () => import('./pages/admin/AdministrarRecetas.vue')
     },
     {
         path: '/administrar_alimentos',
         name: 'administrar_alimentos',
-        component: () => import('./pages/AdministrarAlimentos.vue')
+        component: () => import('./pages/admin/AdministrarAlimentos.vue')
     },
-    {
-        path: '/add_usuario',
-        name: 'add_usuario',
-        component: () => import('./pages/AddUsuario.vue')
-    },
-    {
-        path: '/add_ejercicio',
-        name: 'add_ejercicio',
-        component: () => import('./pages/AddEjercicio.vue')
-    },
-    {
-        path: '/add_receta',
-        name: 'add_receta',
-        component: () => import('./pages/AddReceta.vue')
-    },
-    {
-        path: '/add_alimento',
-        name: 'add_alimento',
-        component: () => import('./pages/AddAlimento.vue')
-    },
+   
 ];
 
 const router = createRouter({
@@ -130,7 +111,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const publicPages = ['/', '/login'];
-    const adminPages = ['/administrar','administrar_usuarios','administrar_ejercicios','administrar_recetas','administrar_alimentos'];
+    const adminPages = ['/administrar','/administrar_usuarios','/administrar_ejercicios','/administrar_recetas','/administrar_alimentos'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
     const adminRequired = adminPages.includes(to.path);
