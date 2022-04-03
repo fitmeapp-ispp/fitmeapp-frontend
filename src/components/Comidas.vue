@@ -92,7 +92,10 @@
 									<div class="product-item">
 										<div class="product-item-content">
 											<h4 class="mb-1">{{slotProps.data.alimento.nombre}}</h4>
-											<h6 class="mt-0 mb-3">Kcal: {{slotProps.data.alimento.kcal_100g}}g. Cantidad: {{slotProps.data.cantidad}}g</h6>
+											
+												{{slotProps.data.alimento.kcal_100g}} kcal/100g. Cantidad:
+												<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus/>
+												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 p-button-secondary" />
 											<div>
 												<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
 											</div>
@@ -216,11 +219,16 @@
 									<InputNumber id="cantidad" v-model="cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus class="col-1"/>
 								</div>
 								<div class="field mt-4 text-center" style="color: black; font-size: large">
-									gramos de alimento al registro diario de hoy
+									gramos de alimento a hoy
 								</div>
 								<div class="field mt-3">
-									<Button class="p-button" @click="anyadirConsumicion(alimento._id)">
+									<Button class="p-button" @click="anyadirConsumicion(alimento._id,null)">
 										<span class="p-button-label">Añadir</span>
+									</Button>
+								</div>
+								<div class="field mt-3">
+									<Button class="p-button-danger" @click="anyadirADataViewCarrusel(alimento._id)">
+										<span class="p-button-label">Añadir a Calculadora</span>
 									</Button>
 								</div>
 							</div>
@@ -514,6 +522,7 @@
 				this.fetchItems();
 			},
 			recientes(){
+				console.log(this.dataviewValueCarrusel)
 				this.isCreados = false;
 				this.isRecientes = true;
 				this.isFavoritos = false;
@@ -532,12 +541,23 @@
 				this.alimento = alimento;
 				this.alimentoDialog = true;
 			},
-			anyadirConsumicion(alimentoId){
-				this.alimentoService.anyadirACarrusel(alimentoId,this.cantidad,this.dia._id,this.dia.tipo)
+			anyadirConsumicion(alimentoId, cantidad){
+				if (cantidad == null){
+					cantidad = this.cantidad
+				}
+
+				this.alimentoService.anyadirACarrusel(alimentoId,cantidad,this.dia._id,this.dia.tipo)
 				.then(() => {this.obtenerDatosDia()
 					this.cantidad = 0;
 					this.alimentoDialog = false
 				});
+			},
+			anyadirADataViewCarrusel(alimentoId){
+				this.alimentoService.getAlimento(alimentoId).then(data => {
+					this.dataviewValueCarrusel.push({alimento: data, cantidad: 0, fecha: this.dia.fecha, usuario: this.dia.usuario})
+					this.alimentoDialog = false
+				})
+				
 			},
 			obtenerAlergenos(alergenosAlimento){
 				let imagenesAlergenos = [];
