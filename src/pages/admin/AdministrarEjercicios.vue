@@ -1,8 +1,12 @@
 <template>
 	<div class="grid">
 		<div class="col-12">
+
 			<div class="card">
+				<h4 class="m-0">ADMINISTRAR EJERCICIOS</h4>
+				<br>
 				<Toast/>
+				
 				<Toolbar class="mb-4">
 					<template v-slot:start>
 						<div class="my-2">
@@ -13,12 +17,12 @@
 					
 				</Toolbar>
 
-				<DataTable ref="dt" :value="exercises" v-model:selection="selectedExercises" dataKey="id" :paginator="true" :rows="10" :filters="filters"
+				<DataTable ref="dt" :value="exercises" v-model:selection="selectedExercises" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
 							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} ejercicios" responsiveLayout="scroll">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-							<h5 class="m-0">Administrar Ejercicios</h5>
+							
 							<span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search" />
                                 <InputText v-model="filters['global'].value" placeholder="Buscar..." />
@@ -190,7 +194,7 @@
 <script>
 import axios from "axios"
 import {FilterMatchMode} from 'primevue/api';
-import ExerciseService from '../service/ExerciseService';
+import ExerciseService from '../../service/ExerciseService';
 export default {
 	data() {
 		return {
@@ -268,14 +272,14 @@ export default {
 		saveExercise() {
 			this.submitted = true;
 			if (this.exercise.name.trim()) {
-			if (this.exercise.id) {
+			if (this.exercise._id) {
+				
 				this.exercise.equipment = this.exercise.equipment.value ? this.exercise.equipment.value: this.exercise.equipment;
-				this.exercise[this.findIndexById(this.exercise.id)] = this.exercise;
+				this.exercise[this.findIndexById(this.exercise._id)] = this.exercise;
+				
 				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Actualizado', life: 3000});
 				}
 				else {
-					this.exercise.id = this.createId();
-					this.exercise.code = this.createId();
 					//this.exercise.image = 'exercise-placeholder.svg';
 					this.exercise.equipment = this.exercise.equipment ? this.exercise.equipment.value : 'none (bodyweight exercise)';
 					this.exercise.push(this.exercise);
@@ -285,6 +289,7 @@ export default {
 				this.exercise = {};
 			}
 		},
+
 		editExercise(exercise) {
 			this.exercise = {...exercise};
 			this.exerciseDialog = true;
@@ -294,7 +299,7 @@ export default {
 			this.deleteExerciseDialog = true;
 		},
 		deleteExercise() {
-			this.exercises = this.exercises.filter(val => val.id !== this.exercise.id);
+			this.exercises = this.exercises.filter(val => val._id !== this.exercise._id);
 			this.deleteExerciseDialog = false;
 			this.exercise = {};
 			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio eliminado', life: 3000});
@@ -302,20 +307,12 @@ export default {
 		findIndexById(id) {
 			let index = -1;
 			for (let i = 0; i < this.exercises.length; i++) {
-				if (this.exercises[i].id === id) {
+				if (this.exercises[i]._id === id) {
 					index = i;
 					break;
 				}
 			}
 			return index;
-		},
-		createId() {
-			let id = '';
-			var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-			for ( var i = 0; i < 5; i++ ) {
-				id += chars.charAt(Math.floor(Math.random() * chars.length));
-			}
-			return id;
 		},
 		exportCSV() {
 			this.$refs.dt.exportCSV();
@@ -338,7 +335,4 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-@import '../assets/demo/badges.scss';
-</style>
 
