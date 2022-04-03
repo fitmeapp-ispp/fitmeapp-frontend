@@ -44,7 +44,7 @@
 	</div>
 </template>
 <script>
-import axios from "axios"
+import EjercicioEjecucionService from '../service/EjercicioEjecucionService';
 
 export default {
   data() {
@@ -67,21 +67,21 @@ export default {
         "Obliquus externus abdominis",
         "Soleus"
       ],
+      ejecucionService: null,
       dataviewValue: null
     };
   },
 
   mounted() {
+    this.ejecucionService = new EjercicioEjecucionService();
     this.fetchItems();
   },
 
   methods: {
     
     fetchItems(){
-          let uri = '/ejercicios/recomendacion';
-          axios.get(uri)
-          .then((response) => {
-            this.dataviewValue = response.data;
+          this.ejecucionService.getRecomendados().then(data => {this.dataviewValue = data
+                    console.log(this.dataviewValue);
           });
     },
     exercise_url(url){
