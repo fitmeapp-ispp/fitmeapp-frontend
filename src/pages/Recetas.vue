@@ -4,10 +4,10 @@
         <div class="col-12 xl:col-6">
             <h3>Recetas </h3>
             <div class="col-12">
-            <DataView :value="dataviewValue" :layout="layout" :paginator="true" :rows="9" :sortOrder="-1" :sortField="name">
+            <DataView :value="dataviewValue" :layout="layout" :paginator="true" :rows="9" :sortOrder="-1">
                 <template #grid="slotProps">
-                    <div class="col-12 md:col-4">
-                        <div>{{slotProps.data.nombre}}</div>
+                    <div class="col-12 md:col-4 item">
+                        <div class="ff">{{slotProps.data.nombre}}</div>
 					</div>
 				</template>
 			</DataView>
@@ -19,7 +19,9 @@
 
 
 <style>
-
+.ff {
+    height: 10px;
+}
 </style>
 
 
@@ -45,9 +47,6 @@ export default {
             console.log(this.dataviewValue);
           });
     },
-    exercise_url(url){
-        return url._id;
-    }
   },
 };
 </script>
