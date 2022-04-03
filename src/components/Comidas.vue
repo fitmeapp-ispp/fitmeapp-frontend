@@ -32,28 +32,28 @@
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-orange-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ Math.round(dia.kcalIngeridas) }} Kcal /{{ dia.kcalRec }} Kcal</label>
+							<label class="col-12 text-center">{{ dia.kcalIngeridas }} Kcal /{{ dia.kcalRec }} Kcal</label>
 						</div>
 						<div class="field field ml-3">
 							<label class="col-12 text-center">Proteínas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-purple-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ Math.round(dia.proteinasIngeridas) }} g /{{ dia.proteinasRec }} g</label>
+							<label class="col-12 text-center">{{ dia.proteinasIngeridas }} g /{{ dia.proteinasRec }} g</label>
 						</div>
 						<div class="field field ml-3">
 							<label class="col-12 text-center">Carbohidratos</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-cyan-500 h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ Math.round(dia.carbIngeridas) }} g / {{ dia.carbRec }} g</label>
+							<label class="col-12 text-center">{{ dia.carbIngeridas }} g / {{ dia.carbRec }} g</label>
 						</div>
 						<div class="field field ml-3">
 							<label class="col-12 text-center">Grasas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-yellow-400 h-full"  v-bind:style="'width:' + ratioGrasa + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ Math.round(dia.grasasIngeridas) }} g /{{ dia.grasasRec }} g</label>
+							<label class="col-12 text-center">{{ dia.grasasIngeridas }} g /{{ dia.grasasRec }} g</label>
 						</div>
 					</div>
 					<div class="field mt-4 justify-content-center">
@@ -95,7 +95,7 @@
 											
 												{{slotProps.data.alimento.kcal_100g}} kcal/100g. Cantidad:
 												<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus/>
-												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 p-button-secondary" />
+												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
 											<div>
 												<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
 											</div>
@@ -139,10 +139,10 @@
 										style="width: 100%; display: block;" id="imagen-busqueda"/>
 									<div class="flex-1 text-center md:text-left">
 										<div class="font-bold text-2xl" style="color:#256029;">
-											{{ slotProps.data.nombre }}
+											{{ slotProps.data.nombre }} 
 										</div>
 										<div class="mb-3" style="color:#256029;">
-											Kcal {{ slotProps.data.kcal_100g }} g
+											{{ slotProps.data.kcal_100g }} kcal
 										</div>
 										<div class="mb-3" style="color:#256029;">
 											Grasas {{ slotProps.data.grasa_100g }} g
@@ -156,7 +156,7 @@
 									</div>
 									<div class=" flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0" 
 											v-if="slotProps.data.verificado">
-										<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+										<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
 									</div>
 								</div>
 							</div>
@@ -172,20 +172,20 @@
 											</div>
 											<div class="col-8 text-left">
 												<div class="text-2xl font-bold">
-													{{ slotProps.data.nombre }}
+													{{ slotProps.data.nombre }} ({{slotProps.data.calculadora}}g)
 												</div>
 												<div class="mb-3"></div>
 												<div class="mb-3">
-													Kcal {{ slotProps.data.kcal_100g }} g
+													{{ slotProps.data.kcal_100g.toFixed(2) }} kcal
 												</div>
 												<div class="mb-3">
-													Grasas {{ slotProps.data.grasa_100g }} g
+													Grasas {{ slotProps.data.grasa_100g.toFixed(2) }} g
 												</div>
 												<div class="mb-3">
-													Carbohidratos {{ slotProps.data.carbohidratos_100g }} g
+													Carbohidratos {{ slotProps.data.carbohidratos_100g.toFixed(2) }} g
 												</div>
 												<div class="mb-3">
-													Proteínas {{ slotProps.data.proteinas_100g }} g
+													Proteínas {{ slotProps.data.proteinas_100g.toFixed(2) }} g
 												</div>
 											</div>
 										</div>
@@ -219,16 +219,11 @@
 									<InputNumber id="cantidad" v-model="cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus class="col-1"/>
 								</div>
 								<div class="field mt-4 text-center" style="color: black; font-size: large">
-									gramos de alimento a hoy
+									gramos de alimento al registro diario de hoy
 								</div>
 								<div class="field mt-3">
 									<Button class="p-button" @click="anyadirConsumicion(alimento._id,null)">
 										<span class="p-button-label">Añadir</span>
-									</Button>
-								</div>
-								<div class="field mt-3">
-									<Button class="p-button-danger" @click="anyadirADataViewCarrusel(alimento._id)">
-										<span class="p-button-label">Añadir a Calculadora</span>
 									</Button>
 								</div>
 							</div>
@@ -244,53 +239,53 @@
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Kcal:</b> {{ alimento.kcal_100g }} Kcal
+										{{ alimento.kcal_100g.toFixed(2) }} Kcal
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex align-self-center">
-										<b>Proteinas:</b> {{ alimento.proteinas_100g }} g
+										<b>Proteinas:</b> {{ alimento.proteinas_100g.toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Carbohidratos:</b> {{ alimento.carbohidratos_100g }} g de
-										los cuales <b>azúcares: </b>{{ alimento.azucares_100g }} g
+										<b>Carbohidratos:</b> {{ alimento.carbohidratos_100g.toFixed(2) }} g de
+										los cuales <b>azúcares: </b>{{ alimento.azucares_100g.toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Grasas:</b> {{ alimento.grasa_100g }} g de las cuales
-										<b>saturadas: </b>{{ alimento['grasas-std_100g'] }} g
+										<b>Grasas:</b> {{ alimento.grasa_100g.toFixed(2) }} g de las cuales
+										<b>saturadas: </b>{{ alimento['grasas-std_100g'].toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
-									<h5 class="p-flex"><b>Sal:</b> {{ alimento.sal_100g }} g</h5>
+									<h5 class="p-flex"><b>Sal:</b> {{ alimento.sal_100g.toFixed(2) }} g</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Sodio:</b> {{ alimento.sodio_100g }} g
+										<b>Sodio:</b> {{ alimento.sodio_100g.toFixed(2) }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Fibra:</b> {{ alimento.fibra_100g }} g
+										<b>Fibra:</b> {{ alimento.fibra_100g.toFixed(2) }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Colesterol:</b> {{ alimento.colesterol_100g }} g
+										<b>Colesterol:</b> {{ alimento.colesterol_100g.toFixed(2) }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Potasio:</b> {{ alimento.potasio_100g }} g
+										<b>Potasio:</b> {{ alimento.potasio_100g.toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
@@ -417,7 +412,7 @@
 				filters: ''
 			};
 			this.fetchItems();
-			this.obtenerDatosDia(); 
+			
 		},
 		methods: {
 			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
@@ -445,6 +440,7 @@
 					.then(data => {
 						this.totalRecords = data.total;
 						this.dataviewValue = data.resultado;
+						this.obtenerDatosDia(); 
 					});
 				}
 			},
@@ -501,7 +497,23 @@
 				
 				if (this.carruselVacio){
 					this.dataviewValueCarrusel = this.dia.consumiciones
-				} 
+				}
+
+				this.dia.kcalIngeridas = this.dia.kcalIngeridas.toFixed(2)
+				this.dia.proteinasIngeridas = this.dia.proteinasIngeridas.toFixed(2)
+				this.dia.grasasIngeridas = this.dia.grasasIngeridas.toFixed(2)
+				this.dia.carbIngeridas = this.dia.carbIngeridas.toFixed(2)
+				
+				for (var i = 0; i< this.dataviewValue.length; i++){
+					var min = 0
+					var g_kcal = Math.round((this.dia.kcalRec - this.dia.kcalIngeridas)*100/this.dataviewValue[i].kcal_100g)
+					var g_proteinas = Math.round((this.dia.proteinasRec - this.dia.proteinasIngeridas)*100/this.dataviewValue[i].proteinas_100g)
+					var g_grasas = Math.round((this.dia.grasasRec - this.dia.grasasIngeridas)*100/this.dataviewValue[i].grasa_100g)
+					var g_carb = Math.round((this.dia.carbRec - this.dia.carbIngeridas)*100/this.dataviewValue[i].carbohidratos_100g)
+					this.dataviewValue[i].calculadora = Math.max(min,Math.min(g_kcal,g_proteinas,g_grasas,g_carb))
+				}
+				
+
 				});
 				
 			},
