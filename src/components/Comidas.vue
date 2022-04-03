@@ -179,7 +179,7 @@
 									<div class="flex align-items-center justify-content-between"
 											v-if="slotProps.data.verificado">
 										<div></div>
-										<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+										<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
 									</div>
 								</div>
 							</div>
