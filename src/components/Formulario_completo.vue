@@ -301,7 +301,8 @@
 				this.errorConfirmPassword = null;
 				
 			}
-			if(!regexEmail.test(this.user.email))
+
+			if(!regexEmail.test(this.user.email) && this.user.email)
 			{
 				resultado = false;
 				this.errorEmail = 'El email no es válido';
