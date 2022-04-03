@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Dashboard from './components/Dashboard.vue';
 import Ejercicio from './components/Ejercicio.vue';
+import Recetas from './pages/Recetas.vue';
 
 import FormularioAlimentos from './components/alimentos/FormularioAlimentos.vue';
 import FormularioRecetas from './components/alimentos/FormularioRecetas.vue';
@@ -65,6 +66,11 @@ const routes = [
         path: '/recetas/form',
         name: 'recetas_form',
         component: FormularioRecetas
+    }, 
+    {
+        path: '/recetas',
+        name: 'recetas',
+        component: Recetas
     }, 
     /*{
         path: '/alimentos_recetas',

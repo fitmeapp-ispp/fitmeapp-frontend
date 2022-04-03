@@ -1,3 +1,5 @@
+
+<!--
 <template>
 	<div class="grid">
 		<div class="col-12 md:col-12">
@@ -207,4 +209,4 @@ export default {
 		}
 	}
 }
-</script>
+</script>-->
