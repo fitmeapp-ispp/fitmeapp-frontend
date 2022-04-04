@@ -56,13 +56,14 @@ export default class AlimentoService {
         });
     }
 
-    getFavoritos(username,lazyParams, buscador){
+    getFavoritos(username,lazyParams, buscador, alimentoIds){
         return axios.get(`/alimentos/favoritos/${username}`, {
             params:{
                 pagina: lazyParams.pagina,
                 ordenar: lazyParams.sort,
                 buscador: buscador,
-                alergeno: lazyParams.filters
+                alergeno: lazyParams.filters,
+                alimentoIds: alimentoIds
             }
         })
         .then((response) => 

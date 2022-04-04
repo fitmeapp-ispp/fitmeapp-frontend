@@ -67,7 +67,7 @@
 					<div class="grid justify-content-between">
 						<div class="formgroup-inline justify-content-center mt-2">
 							<div class="field">
-								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()"/>
+								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()" />
 							</div>
 							<div class="field">
 								<Button label="Recientes" icon="pi pi-clock" @click="recientes()" />
@@ -162,17 +162,22 @@
 							</div>
 						</template>
 						<template #grid="slotProps">
-							<div @click="detallesAlimento(slotProps.data)" class="col-12 md:col-4">
+							<div  class="col-12 md:col-4">
 								<div class="card m-3 border-1 surface-border">
-									<div class="text-align-center">
+									<div @click="detallesAlimento(slotProps.data)" class="text-align-center">
 										<div class="grid grid-nogutter alimento-busqueda">
 											<div class="col-4 text-left">
 												<img :src="slotProps.data.imagen ||'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" 
 														class="w-9 shadow-2 my-3 mx-0" id="imagen-busqueda"/>
-											</div>
+											</div>											
 											<div class="col-8 text-left">
-												<div class="text-2xl font-bold">
-													{{ slotProps.data.nombre }} ({{slotProps.data.calculadora}}g)
+												<div class="flex align-items-center justify-content-between"
+														v-if="slotProps.data.verificado">
+													<div></div>
+													<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
+												</div>
+												<div class="text-2xl mt-2 font-bold">
+													{{ slotProps.data.nombre }} ({{slotProps.data.calculadora}}g) 
 												</div>
 												<div class="mb-3"></div>
 												<div class="mb-3">
@@ -190,10 +195,11 @@
 											</div>
 										</div>
 									</div>
-									<div class="flex align-items-center justify-content-between"
-											v-if="slotProps.data.verificado">
-										<div></div>
-										<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
+									<div class="text-right font-bold" v-if="favoritosList.includes(slotProps.data._id)">
+										<Button icon="pi pi-star" class="p-button-rounded  p-button-warning mr-2 mb-2" @click="deleteAFavoritos(slotProps.data._id)" />
+									</div>
+									<div class="text-right font-bold" v-else>
+										<Button icon="pi pi-star" class="p-button-rounded p-button-outlined p-button-warning mr-2 mb-2" @click="anyadirAFavoritos(slotProps.data._id)" />
 									</div>
 								</div>
 							</div>
@@ -313,9 +319,11 @@
 
 <script>
 	import AlimentoService from "../service/AlimentoService";
+	import UserService from "../service/UserService";
 	export default {
 		data() {
 			return {
+				cambioFav: false,
 				tipo: "",
 				dia: {},
 				alimentoDialog: false,
@@ -401,8 +409,12 @@
 			}
 		},
 		alimentoService: null,
+		userService: null,
+		favoritosList: [],
 		created(){
 			this.alimentoService = new AlimentoService();
+			this.userService = new UserService();
+			
 			//this.dataviewValueCarrusel = [{'alimento': {"nombre": ""}}];
 		},
 		mounted() {
@@ -417,31 +429,48 @@
 		methods: {
 			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			fetchItems(){
+				this.$forceUpdate();
 				if (this.isRecientes === true){
-					this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
-					.then(data => {
-						this.totalRecords = data.total;
-						this.dataviewValue = data.resultado;
+					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
+
+						this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
+						.then(data => {
+							this.totalRecords = data.total;
+							this.dataviewValue = data.resultado;
+						});
 					});
 				}else if (this.isFavoritos === true){
-					this.alimentoService.getFavoritos(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
-					.then(data => {
-						this.totalRecords = data.total;
-						this.dataviewValue = data.resultado;
-				});
+					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
+
+						this.alimentoService.getFavoritos(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value,this.favoritosList)
+						.then(data => {
+							this.totalRecords = data.total;
+							this.dataviewValue = data.resultado;
+						});
+					})
 				}else if (this.isCreados === true){
-					this.alimentoService.getCreados(this.$store.state.username, this.lazyParams, document.getElementById('BuscadorComidas').value)
-					.then(data => {
-						this.totalRecords = data.total;
-						this.dataviewValue = data.resultado;
-					});
+					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
+							
+						this.alimentoService.getCreados(this.$store.state.username, this.lazyParams, document.getElementById('BuscadorComidas').value)
+						.then(data => {
+							this.totalRecords = data.total;
+							this.dataviewValue = data.resultado;
+						});
+
+					})
 				}else{
-					this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
-					.then(data => {
-						this.totalRecords = data.total;
-						this.dataviewValue = data.resultado;
-						this.obtenerDatosDia(); 
-					});
+					this.userService.getFavoritos(this.$store.state.userId).then(data => {
+							this.favoritosList = data
+							this.$forceUpdate();
+						this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
+						.then(data => {
+							this.totalRecords = data.total;
+							this.dataviewValue = data.resultado;
+							this.obtenerDatosDia(); 
+							
+						});
+
+					})
 				}
 			},
 			onPage(event){
@@ -480,6 +509,9 @@
 			},
 			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			obtenerDatosDia(){
+
+			
+
 				this.tipo = this.$route.params.tipo
 				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
@@ -488,6 +520,7 @@
 				}else{
 					this.dia.carbRec = 0
 				}
+					
 					
 				this.dia.proteinasRec = (this.dia.proteinasRec/3).toFixed(2)
 				this.dia.grasasRec = (this.dia.grasasRec/3).toFixed(2)
@@ -512,8 +545,7 @@
 					var g_carb = Math.round((this.dia.carbRec - this.dia.carbIngeridas)*100/this.dataviewValue[i].carbohidratos_100g)
 					this.dataviewValue[i].calculadora = Math.max(min,Math.min(g_kcal,g_proteinas,g_grasas,g_carb))
 				}
-				
-
+				this.$forceUpdate();
 				});
 				
 			},
@@ -534,7 +566,6 @@
 				this.fetchItems();
 			},
 			recientes(){
-				console.log(this.dataviewValueCarrusel)
 				this.isCreados = false;
 				this.isRecientes = true;
 				this.isFavoritos = false;
@@ -584,6 +615,14 @@
 			},
 			cambiarTipo(tipo){
 				location.href ='/comidas/'+tipo
+			},
+			anyadirAFavoritos(alimentoId){
+				this.userService.postFavoritos(this.$store.state.userId,alimentoId)
+				.then(this.fetchItems());
+			},
+			deleteAFavoritos(alimentoId){
+				this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
+				.then(this.fetchItems());
 			}
 		}
 	}
