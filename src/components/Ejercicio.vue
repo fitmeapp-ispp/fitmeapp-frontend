@@ -117,7 +117,7 @@ export default {
 	},
   methods: {
         fetchItems() {
-      this.axios.get("/ejercicios/test").then((response) => {
+      this.axios.get("/ejercicio").then((response) => {
         this.ejercicios = response.data;
         for (let ejercicio of this.ejercicios) {
           let arrayPromesas = []
