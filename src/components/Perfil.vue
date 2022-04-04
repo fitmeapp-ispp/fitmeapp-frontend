@@ -28,8 +28,6 @@ import Menu from 'primevue/menu';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 // import FitAppLogo from "@/assets/FitAppLogo.png"
-import axios from 'axios'
-
 export default {
 	components: {
         Menu,
@@ -42,45 +40,6 @@ export default {
             // FitAppLogo: FitAppLogo,
             displayConfirmation: false,
             overlayMenuItems: [],
-        }
-    },
-    mounted: function() {
-        if (!this.$store.state.loggedIn) {this.overlayMenuItems.push({
-                    label: 'Log in',
-                    icon: 'pi pi-sign-in',
-                    command: () => {window.location = "/login"}
-                })
-        }
-        if (this.$store.state.loggedIn) {
-            this.overlayMenuItems.push({
-                    label: 'Log out',
-                    icon: 'pi pi-sign-out',
-                    command: () => {this.openConfirmation()}
-                })
-        }
-    },
-    methods: {
-        toggleMenu(event) {
-            this.$refs.menu.toggle(event);
-        },
-        openConfirmation() {
-            this.displayConfirmation = true;
-        },
-        closeConfirmation() {
-            this.displayConfirmation = false;
-        },
-        logout() {
-            this.closeConfirmation()
-            this.$store.dispatch("saveUsername", '');
-            this.$store.dispatch("savePassword", '');
-            this.$store.dispatch("saveUserId", '');
-            this.$store.dispatch("logOut");
-            axios.post('/auth/logout')
-            .catch((err) => {
-                console.log("Error: ", err);
-            });
-            this.$router.push("/");
-            this.$toast.add({severity:'success', summary: 'Successful', detail: 'Cierre de sesión correcto', life: 3000});
         }
     },
 }
