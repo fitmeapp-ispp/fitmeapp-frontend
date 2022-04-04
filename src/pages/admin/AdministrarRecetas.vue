@@ -73,7 +73,7 @@
                     </div>
                     <div class="field">
                         <label for="raciones">Raciones</label>
-                        <InputNumber id="raciones" v-model.trim="recipe.raciones" required="true" autofocus :class="{'p-invalid': submitted && !recipe.nombre}"/>
+                        <InputNumber id="raciones" v-model="recipe.raciones" required="true" :class="{'p-invalid': submitted && !recipe.nombre}"/>
                     </div>
                     <template #footer>
                         <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideRecipeDialog"/>
@@ -134,7 +134,6 @@ export default {
         this.recipe = {};
         this.submitted = false;
         this.recipeDialog = true;
-        console.log(this.recipeDialog);
     },
     hideRecipeDialog() {
         this.submitted = false;
@@ -142,8 +141,14 @@ export default {
     },
     saveRecipe() {
         this.submitted = true;
-        console.log(this.recipe.nombre);
+        console.log(this.recipe);
         //TODO
+        let data = {};
+        data["nombre"]=this.recipe["nombre"];
+        data["raciones"]=this.recipe["raciones"];
+        data["pasos"]=[];
+        data["ingredientes"]=[];
+        axios.post("/recetas", data);
     },
     editRecipe(){ //TODO: Add data arg
         this.recipeDialog = true;
