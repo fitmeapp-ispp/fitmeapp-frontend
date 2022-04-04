@@ -97,12 +97,12 @@ export default {
                 this.$store.dispatch("saveUserId", response.data.userId);
                 this.$store.dispatch("logIn");
                 console.log(response.data);
-                window.location.href = '/';
-                this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
+                window.location.href = '/'; 
             }).catch(err => {
                 console.log("Error: ", err)
                 this.error = err.response.data
             })    
+            this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
         }
     }
 }

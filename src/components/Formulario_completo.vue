@@ -19,7 +19,7 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="fecha">Fecha de Nacimiento*</label>
-						<InputText v-model="user.fecha" required="true" id="fecha" type="date" :class="{'p-invalid': enviado && errorFecha}"/>
+						<InputText v-model="user.fechaNacimiento" required="true" id="fechaNacimiento" type="date" :class="{'p-invalid': enviado && errorFecha}"/>
 						<small class="p-invalid" :key="errorFecha" v-if="enviado && errorFecha">{{this.errorFecha}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
@@ -44,7 +44,7 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="telefono">Teléfono*</label>
-						<InputText v-model="user.telefono" aria-valuenow="" required="true" id="telefono" :class="{'p-invalid': enviado && errorTelefono}"/>
+						<InputNumber v-model="user.telefono" aria-valuenow="" required="true" id="telefono" :class="{'p-invalid': enviado && errorTelefono}"/>
 						<small class="p-invalid" :key="errorTelefono" v-if="enviado && errorTelefono">{{this.errorTelefono}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
@@ -205,6 +205,7 @@
 			//HACER COMPROBACIONES PERTINENTES DE LOS CAMPOS
 			let comprobado = this.comprobarCampos();
 			if(comprobado){
+				this.user.peso_actual = this.user.peso_inicial
 				this.user.sexo = this.user.sexo.name
 				this.user.nivel_actividad = this.user.nivel_actividad.name
 				this.user.dieta_pref = this.user.dieta_pref.name
@@ -215,7 +216,7 @@
 				this.user.grasas_recomendadas = 70;
 				this.user.proteinas_recomendadas = 50;
 				delete this.user.password_confirm
-				this.userService.guardar(this.user)
+				this.userService.guardar(this.userService.actualizarNutrientes(this.user))
 				.then(() => {
 					//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
 					this.$router.push({ name: 'login', params: {mensaje: 'registroRealizado'} });
@@ -250,7 +251,7 @@
 
 			}
 			var fecha = new Date();
-			if(!this.user.fecha || Date.parse(this.user.fecha)>=fecha)
+			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha)
 			{
 				resultado = false;
 				this.errorFecha = 'La fecha es obligatoria y debe ser anterior al día de hoy';
@@ -300,7 +301,8 @@
 				this.errorConfirmPassword = null;
 				
 			}
-			if(!regexEmail.test(this.user.email))
+
+			if(!regexEmail.test(this.user.email) && this.user.email)
 			{
 				resultado = false;
 				this.errorEmail = 'El email no es válido';

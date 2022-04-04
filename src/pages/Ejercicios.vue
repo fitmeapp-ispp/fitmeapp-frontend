@@ -1,80 +1,48 @@
 <template>
-	<div class="grid">			
-
-	<div class="col-12 xl:col-6">
-		<h3>EJERCICIOS RECOMENDADOS DEL DÍA </h3>
-		<div class="col-12">
-			<div class="tabla">
-        <br>
-        <DataTable :value="dataviewValue" :rows="5">
-                      
-          <Column field="name" header="Nombre" :style="{width:'150px'}">
-          
+  <div class="grid justify-content-between">
+    <!-- PARTE IZQUIERDA -->
+    <div class="col-12 lg:col-6 justify-content-center">
+        <div class="col-12">
+          <h3 class="text-center"> EJERCICIOS RECOMENDADOS DEL DÍA </h3>
+        </div>
+        <div class="card col-12">
+        <DataTable  :value="dataviewValue" :rows="7" responsiveLayout="scroll"> 
+  
+          <Column field="name" header="Nombre" :style="{width:'50%'}" >
 						<template #body="{data}">
-              <router-link :to="'/ejercicio/detalles/' + data._id">{{data.name}}</router-link>
+              <router-link :to="'/ejercicio/detalles/' + data._id">
+              <p class="p-flex">{{data.name}}</p>
+              </router-link>
             </template>
-
 					</Column>
-          
-
-          <Column field="muscles" header="Zona muscular" :style="{width:'150px'}">
+          <Column field="muscles" header="Zona muscular" :style="{width:'50%'}">
 						<template #body="{data}" :v-model="muscleList">
-              <span class="text-bold">{{muscleList[data.muscles[0]]}}   
-                <br>{{muscleList[data.muscles[1]]}}
-                <br>{{muscleList[data.muscles[2]]}}
-              </span> 
+                <p class="p-flex text-bold inline" v-for="(musculo,index) in data.muscles" :key="musculo">
+                  <template v-if="index > 0">, </template> 
+                  {{muscleList[musculo]}}
+                </p> 
             </template>
 					</Column>
-
+          <template #empty>
+            <p class="text-center p-flex"> No tiene ninguna recomendación de ejercicios para hoy. </p>
+          </template>
         </DataTable>
-
-        
-			</div>
-		</div>
-	</div>
-	
-	
-	<div class="col-12 xl:col-6">
-		<h3>BUSCADOR DE EJERCICIOS</h3>
-		<div class="col-12">
-      <div class="contenedor">
-				<router-link to= "/ejercicio">
-          <img src="../assets/images/foto.png"/>
-					<div class="texto-centrado"> En esta sección podrás buscar a partir de unos filtros establecidos.</div>
-				</router-link>
-      </div>
-            
+      </div>    
     </div>
-		
-	</div>
-	
+    <!-- PARTE DERECHA -->
+    <div class="grid col-12 lg:col-6 justify-content-center">
+        <div class="col-12">
+          <h3 class="p-flex text-center">BUSCADOR DE EJERCICIOS</h3>
+        </div>
+        <router-link to= "/ejercicio">
+          <img src='../../public/images/buscador_ejercicios.png' alt='Buscador de Ejercicios' class="img-fluid"/>
+        </router-link>
+        <div class="col-12">
+          <h5 class="p-flex text-center">En esta sección podrás buscar a partir de unos filtros establecidos</h5>
+        </div>
+    </div>
 	</div>
 </template>
-
-
-
-<style>
-
-.contenedor{
-    position: relative;
-    display: inline-block;
-    text-align: center;
-}
-
-.texto-centrado{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-	color:rgb(0, 0, 0);
-	background-color: rgb(202, 211, 203);
-	opacity: .8;
-	font-weight: bold;
-	font-size: large;
-}
-</style>
-
-
 <script>
 import axios from "axios"
 
@@ -110,18 +78,25 @@ export default {
   methods: {
     
     fetchItems(){
-          let uri = '/ejercicios';
-          axios.get(uri).then((response) => {
-          this.dataviewValue = response.data;
-          console.log(this.dataviewValue);
+          let uri = '/ejercicios/recomendacion';
+          axios.get(uri)
+          .then((response) => {
+            this.dataviewValue = response.data;
           });
     },
     exercise_url(url){
         return url._id;
-    }
-
-    
-
+    },
   },
 };
 </script>
+
+<style>
+.p-galleria .p-galleria-thumbnail-container{
+  display: none;
+}
+.img-fluid{
+  width:100%;
+  height: auto;
+}
+</style>

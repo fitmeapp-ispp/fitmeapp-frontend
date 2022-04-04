@@ -17,7 +17,7 @@ const routes = [
         component: Dashboard,
     },
     {
-        path: '/comidas',
+        path: '/comidas/:tipo',
         name: 'comidas',
         component: Comidas,
     },
@@ -30,11 +30,6 @@ const routes = [
         path: '/perfil',
         name: 'perfil',
         component: Perfil,
-    },
-    {
-        path: '/crud',
-        name: 'crud',
-        component: () => import('./pages/CrudDemo.vue')
     },
     {
         path: '/login',

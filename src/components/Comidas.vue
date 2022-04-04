@@ -2,38 +2,58 @@
 	<div class="grid">
 		<div class="col-12">
 			<div class="card mb-3 col-12">
-				<div class="formgroup-inline justify-content-between align-items-between ">
-					<div class="field text-center mt-3">
-							<h1 style="color:#256029;">{{ $store.state.tipo }}</h1>
+				<div class="formgroup-inline justify-content-around align-items-between ">
+					<div class="field formgroup-inline mt-3 mr-0">
+							<div class="field" v-if="tipo == 'Desayuno'">
+								<Button class="p-button-text" :disabled="true"/>
+							</div>
+							<div class="field" v-if="tipo == 'Almuerzo'">	
+								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Desayuno')"/>
+							</div>
+							<div class="field" v-if="tipo == 'Cena'">	
+								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
+							</div>
+							<div class="field mb-0">
+								<h2 class="text-center mt-1" style="color:#256029;">{{ tipo }}</h2>
+							</div>
+                            <div class="field" v-if="tipo == 'Desayuno'">
+                            <Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
+							</div>
+							<div class="field" v-if="tipo == 'Almuerzo'">
+							<Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Cena')"/>
+							</div>
+							<div class="field" v-if="tipo == 'Cena'">
+								<Button class="p-button-text" :disabled="true"/>
+							</div>
 					</div>
 					<div class="field formgroup-inline justify-content-center">
-						<div class="field">
+						<div class="field ml-3">
 							<label class="col-12 text-center">Kcalorías</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-orange-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida.kcal_100g }} Kcal /{{ kcal_recomendadas }} Kcal</label>
+							<label class="col-12 text-center">{{ dia.kcalIngeridas }} Kcal /{{ dia.kcalRec }} Kcal</label>
 						</div>
-						<div class="field">
+						<div class="field field ml-3">
 							<label class="col-12 text-center">Proteínas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-purple-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida["proteinas_100g"] }} g /{{ proteinas_recomendadas }} g</label>
+							<label class="col-12 text-center">{{ dia.proteinasIngeridas }} g /{{ dia.proteinasRec }} g</label>
 						</div>
-						<div class="field">
+						<div class="field field ml-3">
 							<label class="col-12 text-center">Carbohidratos</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-cyan-500 h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida.carbohidratos_100g }} g / {{ carbohidratos_recomendados }} g</label>
+							<label class="col-12 text-center">{{ dia.carbIngeridas }} g / {{ dia.carbRec }} g</label>
 						</div>
-						<div class="field">
+						<div class="field field ml-3">
 							<label class="col-12 text-center">Grasas</label>
 							<div class="surface-300 border-round overflow-hidden" style="height:10px">
 								<div class="bg-yellow-400 h-full"  v-bind:style="'width:' + ratioGrasa + '%'"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dataviewValueComida.grasa_100g }} g /{{ grasas_recomendadas }} g</label>
+							<label class="col-12 text-center">{{ dia.grasasIngeridas }} g /{{ dia.grasasRec }} g</label>
 						</div>
 					</div>
 					<div class="field mt-4 justify-content-center">
@@ -50,10 +70,13 @@
 								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()"/>
 							</div>
 							<div class="field">
-								<Button label="Recientes" @click="recientes()" />
+								<Button label="Recientes" icon="pi pi-clock" @click="recientes()" />
 							</div>
 							<div class="field">
-								<Button label="Creados" class="p-button-success" @click="creados()"/>
+								<Button label="Creados" icon="pi pi-pencil" class="p-button-success" @click="creados()"/>
+							</div>
+							<div class="field">
+								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
 							</div>
 						</div>
 						<div class="mt-1">
@@ -69,9 +92,12 @@
 									<div class="product-item">
 										<div class="product-item-content">
 											<h4 class="mb-1">{{slotProps.data.alimento.nombre}}</h4>
-											<h6 class="mt-0 mb-3">Kcal: {{slotProps.data.alimento.kcal_100g}}g. Cantidad: {{slotProps.data.cantidad}}g</h6>
+											
+												{{slotProps.data.alimento.kcal_100g}} kcal/100g. Cantidad:
+												<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus/>
+												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
 											<div>
-												<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data.alimento._id )" />
+												<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
 											</div>
 										</div>
 									</div>
@@ -88,19 +114,20 @@
 			<!-- Comienza la tabla con los alimentos-->
 			<div class="col-12">
 				<div class="card">
-					<DataView :value="dataviewValue" :layout="layout" :paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField">
+					<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
+						:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
 						<template #header>
-							<div class="grid grid-nogutter">
-								<div class="col-4 text-left">
+							<div class="grid formgroup-inline justify-content-between ">
+								<div class="field">
 									<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
 								</div>
-								<div class="col-4 text-center">
+								<div class="field">
 									<span class="p-input-icon-left mb-2">
 										<i class="pi pi-search" />
-										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="enterClicked()" id="BuscadorComidas"/>
+										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
 									</span>
 								</div>
-								<div class="col-4 text-right">
+								<div class="field">
 									<DataViewLayoutOptions v-model="layout" />
 								</div>
 							</div>
@@ -112,10 +139,10 @@
 										style="width: 100%; display: block;" id="imagen-busqueda"/>
 									<div class="flex-1 text-center md:text-left">
 										<div class="font-bold text-2xl" style="color:#256029;">
-											{{ slotProps.data.nombre }}
+											{{ slotProps.data.nombre }} 
 										</div>
 										<div class="mb-3" style="color:#256029;">
-											Kcal {{ slotProps.data.kcal_100g }} g
+											{{ slotProps.data.kcal_100g }} kcal
 										</div>
 										<div class="mb-3" style="color:#256029;">
 											Grasas {{ slotProps.data.grasa_100g }} g
@@ -129,7 +156,7 @@
 									</div>
 									<div class=" flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0" 
 											v-if="slotProps.data.verificado">
-										<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+										<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
 									</div>
 								</div>
 							</div>
@@ -145,20 +172,20 @@
 											</div>
 											<div class="col-8 text-left">
 												<div class="text-2xl font-bold">
-													{{ slotProps.data.nombre }}
+													{{ slotProps.data.nombre }} ({{slotProps.data.calculadora}}g)
 												</div>
 												<div class="mb-3"></div>
 												<div class="mb-3">
-													Kcal {{ slotProps.data.kcal_100g }} g
+													{{ slotProps.data.kcal_100g.toFixed(2) }} kcal
 												</div>
 												<div class="mb-3">
-													Grasas {{ slotProps.data.grasa_100g }} g
+													Grasas {{ slotProps.data.grasa_100g.toFixed(2) }} g
 												</div>
 												<div class="mb-3">
-													Carbohidratos {{ slotProps.data.carbohidratos_100g }} g
+													Carbohidratos {{ slotProps.data.carbohidratos_100g.toFixed(2) }} g
 												</div>
 												<div class="mb-3">
-													Proteínas {{ slotProps.data.proteinas_100g }} g
+													Proteínas {{ slotProps.data.proteinas_100g.toFixed(2) }} g
 												</div>
 											</div>
 										</div>
@@ -166,7 +193,7 @@
 									<div class="flex align-items-center justify-content-between"
 											v-if="slotProps.data.verificado">
 										<div></div>
-										<Button icon="pi pi-check" class="p-button-success p-button-icon-only p-button-rounded"></Button>
+										<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
 									</div>
 								</div>
 							</div>
@@ -195,7 +222,7 @@
 									gramos de alimento al registro diario de hoy
 								</div>
 								<div class="field mt-3">
-									<Button class="p-button" @click="anyadirConsumicion(alimento._id)">
+									<Button class="p-button" @click="anyadirConsumicion(alimento._id,null)">
 										<span class="p-button-label">Añadir</span>
 									</Button>
 								</div>
@@ -212,53 +239,53 @@
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Kcal:</b> {{ alimento.kcal_100g }} Kcal
+										{{ alimento.kcal_100g.toFixed(2) }} Kcal
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex align-self-center">
-										<b>Proteinas:</b> {{ alimento.proteinas_100g }} g
+										<b>Proteinas:</b> {{ alimento.proteinas_100g.toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Carbohidratos:</b> {{ alimento.carbohidratos_100g }} g de
-										los cuales <b>azúcares: </b>{{ alimento.azucares_100g }} g
+										<b>Carbohidratos:</b> {{ alimento.carbohidratos_100g.toFixed(2) }} g de
+										los cuales <b>azúcares: </b>{{ alimento.azucares_100g.toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Grasas:</b> {{ alimento.grasa_100g }} g de las cuales
-										<b>saturadas: </b>{{ alimento['grasas-std_100g'] }} g
+										<b>Grasas:</b> {{ alimento.grasa_100g.toFixed(2) }} g de las cuales
+										<b>saturadas: </b>{{ alimento['grasas-std_100g'].toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
-									<h5 class="p-flex"><b>Sal:</b> {{ alimento.sal_100g }} g</h5>
+									<h5 class="p-flex"><b>Sal:</b> {{ alimento.sal_100g.toFixed(2) }} g</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Sodio:</b> {{ alimento.sodio_100g }} g
+										<b>Sodio:</b> {{ alimento.sodio_100g.toFixed(2) }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Fibra:</b> {{ alimento.fibra_100g }} g
+										<b>Fibra:</b> {{ alimento.fibra_100g.toFixed(2) }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Colesterol:</b> {{ alimento.colesterol_100g }} g
+										<b>Colesterol:</b> {{ alimento.colesterol_100g.toFixed(2) }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Potasio:</b> {{ alimento.potasio_100g }} g
+										<b>Potasio:</b> {{ alimento.potasio_100g.toFixed(2) }} g
 									</h5>
 								</div>
 							</div>
@@ -289,9 +316,10 @@
 	export default {
 		data() {
 			return {
+				tipo: "",
+				dia: {},
 				alimentoDialog: false,
 				carruselVacio: false,
-				dataviewValue: {},
 				dataviewValueCarrusel: {},
 				dataUserView: {},
 				kcal_recomendadas: 0,
@@ -304,7 +332,6 @@
 				ratioGrasa: 0,
 				dataviewValueComida: {'kcal_100g':0,'proteinas_100g':0,'carbohidratos_100g':0,'grasa_100g':0},
 				layout: 'grid',
-				filtroAlergeno:null,
 				cantidad: null,
 				sortKey: null,
 				sortOrder: null,
@@ -313,7 +340,7 @@
 					{label: 'Mayor a menor número de Kcal', value: '!kcal_100g'},
 					{label: 'Menor a mayor número de kcal', value: 'kcal_100g'},
 					{label: 'Alfabéticamente', value: 'nombre'},
-					{label: 'Alfabéticamente inverso', value: 'nombre'},
+					{label: 'Alfabéticamente inverso', value: '!nombre'},
 				],
 				alergenosSel2: [],
 				selector_alergenos2: [
@@ -364,112 +391,185 @@
 						numVisible: 1,
 						numScroll: 1
 					}
-				]
+				],
+				dataviewValue: null,
+				totalRecords: 0,
+				lazyParams: {},
+				isRecientes: false,
+				isFavoritos: false,
+				isCreados: false,
 			}
 		},
 		alimentoService: null,
 		created(){
 			this.alimentoService = new AlimentoService();
-			this.dataviewValueComida = [{'kcal_100g':0},{'proteinas_100g':0},{'carbohidratos_100g':0},{'grasa_100g':0}];
+			//this.dataviewValueCarrusel = [{'alimento': {"nombre": ""}}];
 		},
 		mounted() {
+			this.lazyParams = {
+				pagina: 0,
+				sort: [], //2 items: sortField y sortOrder (Ejemplo: Nombre,-1 ==> Ordenar por nombre inversamente)
+				filters: ''
+			};
 			this.fetchItems();
-			this.userKcal();
+			
 		},
 		methods: {
-			enterClicked(){
-				this.alimentoService.getBuscador(document.getElementById('BuscadorComidas').value).then(data => this.dataviewValue = data);
+			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
+			fetchItems(){
+				if (this.isRecientes === true){
+					this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+					});
+				}else if (this.isFavoritos === true){
+					this.alimentoService.getFavoritos(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+				});
+				}else if (this.isCreados === true){
+					this.alimentoService.getCreados(this.$store.state.username, this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+					});
+				}else{
+					this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
+					.then(data => {
+						this.totalRecords = data.total;
+						this.dataviewValue = data.resultado;
+						this.obtenerDatosDia(); 
+					});
+				}
 			},
-			ratios(){
-				this.ratiokcal = Math.round(this.dataviewValueComida.kcal_100g / this.kcal_recomendadas * 100);
-				console.log(this.kcal_recomendadas)
-				console.log(this.ratiokcal)
-				if (this.ratiokcal>100) this.ratiokcal = 100;
-				console.log(this.ratiokcal);
-				this.ratioProteina = Math.round(this.dataviewValueComida.proteinas_100g  / this.proteinas_recomendadas * 100);
-				if (this.ratioProteina>100) this.ratioProteina = 100;
-				console.log(this.ratioProteina);
-				this.ratioCarbohidrato = Math.round(this.dataviewValueComida.carbohidratos_100g / this.carbohidratos_recomendados * 100);
-				if (this.ratioCarbohidrato>100) this.ratioCarbohidrato = 100;
-				console.log(this.ratioCarbohidrato);
-				this.ratioGrasa = Math.round(this.dataviewValueComida.grasa_100g /  this.grasas_recomendadas * 100);
-				if (this.ratioGrasa>100) this.ratioGrasa = 100;
-				console.log(this.ratioGrasa);
+			onPage(event){
+				this.lazyParams.pagina = event.page;
+				this.fetchItems();	
 			},
 			alergenos(){
-				this.alimentoService.getNoAlergeno(this.alergenosSel2).then(data =>{ this.dataviewValue = data});
-			},
-			comidaCarrusel(){
-				this.alimentoService.getComida(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username)
-				.then(data =>{ 
-					this.dataviewValueComida = data
-					this.dataviewValueComida.kcal_100g = this.dataviewValueComida.kcal_100g.toFixed(2)
-					this.dataviewValueComida.proteinas_100g = this.dataviewValueComida.proteinas_100g.toFixed(2)
-					this.dataviewValueComida.carbohidratos_100g = this.dataviewValueComida.carbohidratos_100g.toFixed(2)
-					this.dataviewValueComida.grasa_100g = this.dataviewValueComida.grasa_100g.toFixed(2)
-					this.ratios()
-					this.carrousel()
-				});
-			},
-			carrousel(){
-				this.alimentoService.getCarrusel(this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username)
-				.then(data =>{ 
-					this.dataviewValueCarrusel = data
-					this.carruselVacio = data.length > 0
-				});
-			},
-			
-			userKcal(){
-				this.alimentoService.getUserKcak(this.$store.state.username)
-				.then(data =>{
-					this.dataUserView = data
-					this.comidaCarrusel();
-					this.kcal_recomendadas = (this.dataUserView.kcal_recomendadas/3).toFixed(2)
-					this.carbohidratos_recomendados = (this.dataUserView.carbohidratos_recomendados/3).toFixed(2)
-					this.proteinas_recomendadas = (this.dataUserView.proteinas_recomendadas/3).toFixed(2)
-					this.grasas_recomendadas = (this.dataUserView.grasas_recomendadas/3).toFixed(2)
-				});
-			},
-			fetchItems(){
-				this.alimentoService.getAlimentos().then(data => this.dataviewValue = data);
-			},
-			favoritos(){
-				this.alimentoService.getFavoritos(this.$store.state.username).then(data => this.dataviewValue = data);
-			},
-			recientes(){
-				this.alimentoService.getRecientes(this.$store.state.username).then(data => this.dataviewValue = data);
-			},
-			creados(){
-				this.alimentoService.getCreados(this.$store.state.username).then(data => this.dataviewValue = data);
-			},
-			eliminarDelCarrusel(alimentoId){
-				this.alimentoService.deleteFromCarrusel(alimentoId,this.$store.state.tipo,this.$store.state.fecha,this.$store.state.username).then(this.userKcal());
+				this.lazyParams.filters = this.alergenosSel2.code;
+				this.fetchItems();
 			},
 			onSortChange(event){
-				const value = event.value.value;
-				const sortValue = event.value;
+				let value = event.value.value;
 				if (value.indexOf('!') === 0) {
-					this.sortOrder = -1;
-					this.sortField = value.substring(1, value.length);
-					this.sortKey = sortValue;
+					let sortField = value.substring(1, value.length)
+					this.lazyParams.sort = [sortField,'-1']
 				}
 				else {
-					this.sortOrder = 1;
-					this.sortField = value;
-					this.sortKey = sortValue;
+					this.lazyParams.sort = [value,'1']
 				}
+				this.fetchItems();
+			},
+			limpiarFiltros(){
+				this.lazyParams = {
+					pagina: 0,
+					sort: [], 
+					filters: ''
+				};
+				this.isCreados = false;
+				this.isRecientes = false;
+				this.isFavoritos = false;
+				this.alergenosSel2 = [];
+				this.sortKey = null,
+				this.sortOrder = null,
+				this.sortField = null,
+				this.fetchItems();
+			},
+			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
+			obtenerDatosDia(){
+				this.tipo = this.$route.params.tipo
+				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
+				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
+				if(this.tipo != "Cena"){
+					this.dia.carbRec = (this.dia.carbRec/2).toFixed(2)
+				}else{
+					this.dia.carbRec = 0
+				}
+					
+				this.dia.proteinasRec = (this.dia.proteinasRec/3).toFixed(2)
+				this.dia.grasasRec = (this.dia.grasasRec/3).toFixed(2)
+				this.ratios();
+				
+				this.carruselVacio = this.dia.consumiciones[0]._id 
+				
+				if (this.carruselVacio){
+					this.dataviewValueCarrusel = this.dia.consumiciones
+				}
+
+				this.dia.kcalIngeridas = this.dia.kcalIngeridas.toFixed(2)
+				this.dia.proteinasIngeridas = this.dia.proteinasIngeridas.toFixed(2)
+				this.dia.grasasIngeridas = this.dia.grasasIngeridas.toFixed(2)
+				this.dia.carbIngeridas = this.dia.carbIngeridas.toFixed(2)
+				
+				for (var i = 0; i< this.dataviewValue.length; i++){
+					var min = 0
+					var g_kcal = Math.round((this.dia.kcalRec - this.dia.kcalIngeridas)*100/this.dataviewValue[i].kcal_100g)
+					var g_proteinas = Math.round((this.dia.proteinasRec - this.dia.proteinasIngeridas)*100/this.dataviewValue[i].proteinas_100g)
+					var g_grasas = Math.round((this.dia.grasasRec - this.dia.grasasIngeridas)*100/this.dataviewValue[i].grasa_100g)
+					var g_carb = Math.round((this.dia.carbRec - this.dia.carbIngeridas)*100/this.dataviewValue[i].carbohidratos_100g)
+					this.dataviewValue[i].calculadora = Math.max(min,Math.min(g_kcal,g_proteinas,g_grasas,g_carb))
+				}
+				
+
+				});
+				
+			},
+			ratios(){
+				this.ratiokcal = Math.round(this.dia.kcalIngeridas / this.dia.kcalRec * 100);
+				if (this.ratiokcal>100) this.ratiokcal = 100;
+				this.ratioProteina = Math.round(this.dia.proteinasIngeridas  / this.dia.proteinasRec * 100);
+				if (this.ratioProteina>100) this.ratioProteina = 100;
+				this.ratioCarbohidrato = Math.round(this.dia.carbIngeridas / this.dia.carbRec * 100);
+				if (this.ratioCarbohidrato>100) this.ratioCarbohidrato = 100;
+				this.ratioGrasa = Math.round(this.dia.grasasIngeridas /  this.dia.grasasRec * 100);
+				if (this.ratioGrasa>100) this.ratioGrasa = 100;
+			},
+			favoritos(){
+				this.isCreados = false;
+				this.isRecientes = false;
+				this.isFavoritos = true;
+				this.fetchItems();
+			},
+			recientes(){
+				console.log(this.dataviewValueCarrusel)
+				this.isCreados = false;
+				this.isRecientes = true;
+				this.isFavoritos = false;
+				this.fetchItems();
+			},
+			creados(){
+				this.isCreados = true;
+				this.isRecientes = false;
+				this.isFavoritos = false;
+				this.fetchItems();
+			},
+			eliminarDelCarrusel(consumicionId){
+				this.alimentoService.deleteFromCarrusel(consumicionId,this.dia.tipo,this.dia._id).then(() => {this.obtenerDatosDia()});
 			},
 			detallesAlimento(alimento) {
 				this.alimento = alimento;
 				this.alimentoDialog = true;
 			},
-			anyadirConsumicion(alimentoId){
-				this.alimentoService.anyadirACarrusel(alimentoId,this.cantidad,this.dataviewValueComida)
-				.then(() => {this.userKcal()
-					this.alimentoService.nuevaConsumicion(alimentoId,this.$store.state.username);
+			anyadirConsumicion(alimentoId, cantidad){
+				if (cantidad == null){
+					cantidad = this.cantidad
+				}
+
+				this.alimentoService.anyadirACarrusel(alimentoId,cantidad,this.dia._id,this.dia.tipo)
+				.then(() => {this.obtenerDatosDia()
 					this.cantidad = 0;
 					this.alimentoDialog = false
 				});
+			},
+			anyadirADataViewCarrusel(alimentoId){
+				this.alimentoService.getAlimento(alimentoId).then(data => {
+					this.dataviewValueCarrusel.push({alimento: data, cantidad: 0, fecha: this.dia.fecha, usuario: this.dia.usuario})
+					this.alimentoDialog = false
+				})
+				
 			},
 			obtenerAlergenos(alergenosAlimento){
 				let imagenesAlergenos = [];
@@ -482,6 +582,9 @@
 				}
 				return imagenesAlergenos;
 			},
+			cambiarTipo(tipo){
+				location.href ='/comidas/'+tipo
+			}
 		}
 	}
 </script>
