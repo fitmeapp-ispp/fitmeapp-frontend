@@ -14,11 +14,6 @@
                 </router-link>
             </li>
             <li class="mt-3">
-            <router-link to="/comidas">
-                <h1 class="color">COMIDAS</h1>
-            </router-link>
-            </li>
-            <li class="mt-3">
             <router-link to="/ejercicios">
                 <h1 class="color">EJERCICIOS </h1>
             </router-link>
@@ -59,9 +54,6 @@
             <div>
                 <router-link to="/" @click="visibleLeft=false">
                     <h1 class="color">INICIO</h1>
-                </router-link>
-                <router-link to="/comidas" @click="visibleLeft=false">
-                    <h1 class="color">COMIDAS</h1>
                 </router-link>
                 <router-link to="/ejercicios" @click="visibleLeft=false">
                     <h1 class="color">EJERCICIOS </h1>

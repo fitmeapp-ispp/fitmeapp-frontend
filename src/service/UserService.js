@@ -87,7 +87,14 @@ export default class AlimentoService {
         
             return edad;
         }
+
     }
 
-    
+    getSuscripcion(userId){
+        axios.get(`/users/suscripcion/${userId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
 }
