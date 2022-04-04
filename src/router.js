@@ -17,7 +17,7 @@ const routes = [
         component: Dashboard,
     },
     {
-        path: '/comidas',
+        path: '/comidas/:tipo',
         name: 'comidas',
         component: Comidas,
     },
@@ -71,6 +71,11 @@ const routes = [
         name: 'ejercicios',
         component: () => import('./pages/Ejercicios.vue')
     },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('./components/Formulario_completo.vue')
+    },
 ];
 
 const router = createRouter({
@@ -79,7 +84,7 @@ const router = createRouter({
   })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/login'];
+    const publicPages = ['/', '/login','/register'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
 

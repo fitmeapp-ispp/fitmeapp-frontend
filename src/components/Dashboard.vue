@@ -33,7 +33,7 @@
                                 <label class="col-12 text-center">{{grasasDesayuno}}/{{grasas_recomendadas}}g</label>
                             </div>
                         </div>
-                        <router-link to="/comidas" class="mt-1">
+                        <router-link to="/comidas/Desayuno" class="mt-1">
                             <Button label="Añadir desayuno" class="p-button-outlined p-button-secondary"/>
                         </router-link>
                     </div>
@@ -81,7 +81,7 @@
                                 <label class="col-12 text-center">{{grasasAlmuerzo}}/{{grasas_recomendadas}}g</label>
                             </div>
                         </div>
-                        <router-link to="/comidas" class="mt-1">
+                        <router-link to="/comidas/Almuerzo" class="mt-1">
                             <Button label="Añadir almuerzo" class="p-button-outlined p-button-secondary"/>
                         </router-link>
                     </div>
@@ -131,7 +131,7 @@
                                 <label class="col-12 text-center">{{grasasCena}}/{{grasas_recomendadas}}g</label>
                             </div>
                         </div>
-                        <router-link to="/comidas" class="mt-1">
+                        <router-link to="/comidas/Cena" class="mt-1">
                             <Button label="Añadir cena" class="p-button-outlined p-button-secondary"/>
                         </router-link>
                     </div>

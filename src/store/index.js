@@ -10,11 +10,17 @@ export default createStore({
     userId: '',
     loggedIn: false,
     fecha: '19-3-2022',
-    tipo: 'Cena'
+    tipo: 'Almuerzo'
   },
   mutations: {
     saveUsername(state, username){
       state.username = username;
+    },
+    saveTipo(state, tipo){
+      state.tipo = tipo;
+    },
+    saveFecha(state, fecha){
+      state.fecha = fecha;
     },
     savePassword(state, password){
       state.password = password;
@@ -36,6 +42,12 @@ export default createStore({
   actions: {
     saveUsername({commit}, username){
       commit("saveUsername", username);
+    },
+    saveTipo({commit}, tipo){
+      commit("saveTipo", tipo);
+    },
+    saveFecha({commit}, fecha){
+      commit("saveFecha", fecha);
     },
     savePassword({commit}, password){
       commit("savePassword", password);

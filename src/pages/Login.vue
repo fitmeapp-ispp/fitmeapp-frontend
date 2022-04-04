@@ -29,7 +29,9 @@
 
         <div class="grid">
           <Button type="button" icon="pi pi-check" label="Iniciar sesión" class="p-button-info mt-4 mr-2" @click="signIn()" style="background-color:#1da750;"/>
-          <Button type="button" icon="pi pi-check" label="Registrarse" class="p-button-info mt-4 ml-2" @click="signUp()" style="background-color:#1da750;"/>
+          <router-link to="/register">
+          <Button type="button" icon="pi pi-check" label="Registrarse" class="p-button-info mt-4 ml-2" style="background-color:#1da750;"/>
+          </router-link>
         </div>
       </div>
     </div>
