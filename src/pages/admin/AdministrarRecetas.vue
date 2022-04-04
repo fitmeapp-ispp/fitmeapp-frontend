@@ -77,7 +77,8 @@
                     </div>
                     <template #footer>
                         <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideRecipeDialog"/>
-                        <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveRecipe" />
+                        <Button label="Crear" icon="pi pi-check" class="p-button-text" @click="saveRecipe" v-if="this.editing==false"/>
+                        <Button label="Editar" icon="pi pi-check" class="p-button-text" @click="putRecipe" v-if="this.editing==true"/>
                     </template>
                 </Dialog>
                 <!-- confirmacion para borrar -->
@@ -109,6 +110,7 @@ export default {
             recipeDialog: false,
             selectedRecipes: null,
             deleteRecipeDialog: false,
+            editing: false,
         };
     },
     mounted() {
@@ -138,6 +140,8 @@ export default {
     hideRecipeDialog() {
         this.submitted = false;
         this.recipeDialog = false;
+        this.editing = false;
+        this.recipe={};
     },
     saveRecipe() {
         this.submitted = true;
@@ -149,9 +153,26 @@ export default {
         data["pasos"]=[];
         data["ingredientes"]=[];
         axios.post("/recetas", data);
+        this.recipeDialog = false;
+        this.recipe={};
+        this.editing = false;
     },
-    editRecipe(){ //TODO: Add data arg
+    editRecipe(recipe){ //TODO: Add data arg
         this.recipeDialog = true;
+        this.recipe = recipe;
+        this.editing = true;
+    },
+    putRecipe() {
+        this.editing = false;
+        this.recipeDialog = false;
+        //TODO
+        let data = {};
+        data["nombre"]=this.recipe["nombre"];
+        data["raciones"]=this.recipe["raciones"];
+        data["pasos"]=[];
+        data["ingredientes"]=[];
+        axios.post("/recetas/"+(this.recipe["_id"]), data);
+        this.recipe={};
     },
     confirmDeleteRecipe(recipe) {
         this.recipe = {...recipe};
