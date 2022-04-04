@@ -75,11 +75,12 @@ export default {
             this.$store.dispatch("savePassword", '');
             this.$store.dispatch("saveUserId", '');
             this.$store.dispatch("logOut");
-            axios.post('/auth/logout').catch((err) => {
-                console.log("Error: ", err)
+            axios.post('/auth/logout')
+            .catch((err) => {
+                console.log("Error: ", err);
             });
+            this.$router.push("/");
             this.$toast.add({severity:'success', summary: 'Successful', detail: 'Cierre de sesión correcto', life: 3000});
-            this.overlayMenuItems = [{label: 'Log in', icon: 'pi pi-sign-in', command: () => {window.location = "/login"}}];
         }
     },
 }

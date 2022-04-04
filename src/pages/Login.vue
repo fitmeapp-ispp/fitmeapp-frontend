@@ -1,10 +1,9 @@
 <template>
 <div>
 <Toast position="bottom-right"/>
-    <!-- EL USUARIO ES JOSE Y LA CONTRASEÑA ES JOSE -->
 
-  <div class="grid" style="justify-content: center;">
-    <div class="col-4">
+  <div class="grid">
+    <div class="col-4 flex md:col-12 justify-content-center">
 			<div class="card">
 				<h2>Inicio sesión/Registro</h2>
 
@@ -28,8 +27,8 @@
         <small class="p-error" v-if="submitted && error.message === 'Missing credentials'">{{error.message}}</small>
 
         <div class="grid">
-          <Button type="button" icon="pi pi-check" label="Iniciar sesión" class="p-button-info mt-4 mr-2" @click="signIn()" style="background-color:#1da750;"/>
-          <router-link to="/register">
+          <Button type="button" icon="pi pi-check" label="Iniciar sesión" class="p-button-info mt-4 mr-2 col-6" @click="signIn()" style="background-color:#1da750;"/>
+          <router-link to="/register" class="col-6">
           <Button type="button" icon="pi pi-check" label="Registrarse" class="p-button-info mt-4 ml-2" style="background-color:#1da750;"/>
           </router-link>
         </div>
@@ -98,11 +97,12 @@ export default {
                 this.$store.dispatch("logIn");
                 console.log(response.data);
                 window.location.href = '/';
-                this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
             }).catch(err => {
                 console.log("Error: ", err)
                 this.error = err.response.data
             })    
+
+            this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
         }
     }
 }
