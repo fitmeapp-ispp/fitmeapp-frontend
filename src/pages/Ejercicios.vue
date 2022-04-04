@@ -80,7 +80,7 @@ export default {
   methods: {
     
     fetchItems(){
-          this.ejecucionService.getRecomendados().then(data => {this.dataviewValue = data
+          this.ejecucionService.getRecomendados(this.$store.state.username).then(data => {this.dataviewValue = data
                     console.log(this.dataviewValue);
           });
     },
