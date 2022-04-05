@@ -194,12 +194,10 @@
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="text-right font-bold" v-if="favoritosList.includes(slotProps.data._id)">
-										<Button icon="pi pi-star" class="p-button-rounded  p-button-warning mr-2 mb-2" @click="deleteAFavoritos(slotProps.data._id)" />
-									</div>
-									<div class="text-right font-bold" v-else>
-										<Button icon="pi pi-star" class="p-button-rounded p-button-outlined p-button-warning mr-2 mb-2" @click="anyadirAFavoritos(slotProps.data._id)" />
+									</div>							
+									<div class="text-right font-bold">
+										
+										<Button icon="pi pi-star" :id="slotProps.data._id" class="p-button-rounded p-button-warning mr-2 mb-2" :class="{'p-button-outlined': !this.favoritosList.includes(slotProps.data._id)}" @click="funcionFavoritos(slotProps.data._id);" />
 									</div>
 								</div>
 							</div>
@@ -429,39 +427,39 @@
 		methods: {
 			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			fetchItems(){
-				this.$forceUpdate();
 				if (this.isRecientes === true){
 					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
-
 						this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
 						.then(data => {
 							this.totalRecords = data.total;
 							this.dataviewValue = data.resultado;
+							this.obtenerDatosDia(); 
 						});
 					});
 				}else if (this.isFavoritos === true){
 					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
-
 						this.alimentoService.getFavoritos(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value,this.favoritosList)
 						.then(data => {
 							this.totalRecords = data.total;
 							this.dataviewValue = data.resultado;
+							this.obtenerDatosDia(); 
 						});
 					})
 				}else if (this.isCreados === true){
 					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
-							
 						this.alimentoService.getCreados(this.$store.state.username, this.lazyParams, document.getElementById('BuscadorComidas').value)
 						.then(data => {
 							this.totalRecords = data.total;
 							this.dataviewValue = data.resultado;
+							this.obtenerDatosDia(); 
 						});
 
 					})
 				}else{
+					
 					this.userService.getFavoritos(this.$store.state.userId).then(data => {
 							this.favoritosList = data
-							this.$forceUpdate();
+							
 						this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
 						.then(data => {
 							this.totalRecords = data.total;
@@ -470,7 +468,7 @@
 							
 						});
 
-					})
+					})	
 				}
 			},
 			onPage(event){
@@ -510,7 +508,7 @@
 			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			obtenerDatosDia(){
 
-			
+				console.log(this.favoritosList)
 
 				this.tipo = this.$route.params.tipo
 				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
@@ -545,7 +543,6 @@
 					var g_carb = Math.round((this.dia.carbRec - this.dia.carbIngeridas)*100/this.dataviewValue[i].carbohidratos_100g)
 					this.dataviewValue[i].calculadora = Math.max(min,Math.min(g_kcal,g_proteinas,g_grasas,g_carb))
 				}
-				this.$forceUpdate();
 				});
 				
 			},
@@ -616,13 +613,30 @@
 			cambiarTipo(tipo){
 				location.href ='/comidas/'+tipo
 			},
-			anyadirAFavoritos(alimentoId){
-				this.userService.postFavoritos(this.$store.state.userId,alimentoId)
-				.then(this.fetchItems());
+			funcionFavoritos(alimentoId){
+				if(!this.favoritosList.includes(alimentoId)){
+					this.favoritosList.push(alimentoId)
+					//this.$forceUpdate();
+					console.log(document.getElementById(alimentoId).className)
+					document.getElementById(alimentoId).className = document.getElementById(alimentoId).className.replace("p-button-outlined","");
+
+					this.userService.postFavoritos(this.$store.state.userId,alimentoId)
+				}else{
+					this.favoritosList = this.favoritosList.filter(e => e != alimentoId)
+					//this.$forceUpdate();
+					console.log(document.getElementById(alimentoId))
+					document.getElementById(alimentoId).className += " p-button-outlined";
+					
+					this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
+				}
+				
+				
 			},
 			deleteAFavoritos(alimentoId){
+				this.favoritosList = this.favoritosList.filter(e => e != alimentoId)
+				this.$forceUpdate();
+				document.getElementById(alimentoId).className += " p-button-outlined";
 				this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
-				.then(this.fetchItems());
 			}
 		}
 	}
