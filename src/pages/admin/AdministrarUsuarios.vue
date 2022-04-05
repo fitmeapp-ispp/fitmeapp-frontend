@@ -283,13 +283,14 @@ export default {
 		},
 		saveUser() {
 			this.submitted = true;
-      console.log("usuario: ", this.user)
-			if (this.user.nombre) {
+			if (this.user.username) {
 			if (this.user._id) {
+				//DICE QUE SE MODIFICA PERO NO SE REFLEJA
 				this.user[this.findIndexById(this.user._id)] = this.user;
 				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario Actualizado', life: 3000});
 				}
 				else {
+					//HAY QUE ACTUALIZAR PARA VERLO, SINO SALE EN BLANCO
 					axios.post('/users', this.user).then(()=>{this.users.push(this.user)});
 					this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario Creado', life: 3000});
 				}
@@ -308,8 +309,7 @@ export default {
 		deleteUser() {
 			this.users = this.users.filter(val => val._id !== this.user._id);
 			this.deleteUserDialog = false;
-			this.user = {};
-      //axios.delete('/users/', this.user._id);
+			axios.delete('/users/' + this.user._id);
 			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario eliminado', life: 3000});
 		},
 		findIndexById(id) {
@@ -331,7 +331,9 @@ export default {
 		deleteSelectedUsers() {
 			this.users = this.users.filter(val => !this.selectedUsers.includes(val));
 			this.deleteUsersDialog = false;
-			this.selectedUsers = null;
+			//this.selectedUsers = null;
+			//ERROR AL BORRAR DEL BACK VARIOS, SOLO SE BORRAN EN FRONT TEMPORALMENTE
+			axios.delete('/users/' + this.selectedUsers._id);
 			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuarios eliminados', life: 3000});
 		},
 		initFilters() {

@@ -13,4 +13,12 @@ export default class UserService{
     saveUser(user){
         return axios.post('/users/', user);
     }
+
+    deleteUser(userID){
+        return axios.delete(`/users/${userID}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
 }
