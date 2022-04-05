@@ -28,4 +28,8 @@ export default class ExerciseService {
         });
     }
 
+    guardarEjercicio(ejercicio){
+        return axios.post('/exercise/', ejercicio);
+    }
+
 }
