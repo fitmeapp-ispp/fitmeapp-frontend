@@ -87,6 +87,7 @@
                     <div class="field">
 						<label for="marca">Marca*</label>
 						<InputText id="marca" v-model="alimento.marca" required="true" autofocus :class="{'p-invalid': this.submitted && !alimento.marca}" />
+                        <small class="p-invalid" v-if="this.submitted && errorMarca">{{this.errorMarca}}</small>
                     </div>
                     <div class="field">
 						<label for="kcal">Energía* (Kcal)</label>
@@ -105,8 +106,8 @@
                     </div>
 					<div class="field">
 						<label for="grasasStd">Grasas saturadas* (g)</label>
-						<InputNumber id="grasasStd" mode="decimal" :min="0" v-model="alimento.grasas_std_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': this.submitted && !alimento.grasas_std_100g}"/>
-						<small class="p-invalid" v-if="this.submitted && !alimento.grasas_std_100g">Debe indicar si lleva grasas saturadas.</small>
+						<InputNumber id="grasasStd" mode="decimal" :min="0" v-model="alimento['grasas-std_100g']" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': this.submitted && !alimento['grasas-std_100g']}"/>
+						<small class="p-invalid" v-if="this.submitted && !alimento['grasas-std_100g']">Debe indicar si lleva grasas saturadas.</small>
 					</div>
                     <div class="field">
 						<label for="carbs">Carbohidratos* (g)</label>
@@ -123,6 +124,10 @@
 						<InputNumber id="sodio" mode="decimal" :min="0" v-model="alimento.sodio_100g" :maxFractionDigits="2"/>
                     </div>
                     <div class="field">
+						<label for="sal">Sal (g)</label>
+						<InputNumber id="sal" mode="decimal" :min="0" v-model="alimento.sal_100g" :maxFractionDigits="2"/>
+                    </div>
+                    <div class="field">
 						<label for="name2">Fibra (g)</label>
 						<InputNumber id="name2" mode="decimal" :min="0" v-model="alimento.fibra_100g" :maxFractionDigits="2"/>
                     </div>
@@ -134,6 +139,7 @@
 						<label for="pot">Potasio (g)</label>
 						<InputNumber id="pot" mode="decimal" :min="0" v-model="alimento.potasio_100g" :maxFractionDigits="2"/>
                     </div>
+                    <!--Alergenos-->
                     <div class="field">
 						<label for="alergenos">Alérgenos</label>
 						<MultiSelect v-model="alergenosSel" :options="selector_alergenos" optionLabel="Alérgenos" placeholder="Seleccione los alérgenos" :filter="true">
@@ -253,6 +259,7 @@ export default {
     saveAlimento() {
         this.submitted = true;
         let comprobado = this.comprobarCampos();
+        console.log(comprobado);
         if (comprobado) {
             let alergenosString = this.getAlergenosString();
             this.alimento["alergenos"]=alergenosString;
@@ -281,7 +288,7 @@ export default {
             resultado = false;
             this.errorMarca = 'La marca solo puede tener letras';
         }
-        if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento.grasas_std_100g 
+        if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento['grasas-std_100g'] 
             || !this.alimento.carbohidratos_100g || !this.alimento.azucares_100g || !this.alimento.sal_100g){
             resultado = false;
             console.log("Faltan datos alimenticios");
@@ -297,16 +304,16 @@ export default {
         this.editing = false;
         this.alimentoDialog = false;
         let correcto = this.comprobarCampos();
-        console.log(correcto);
         if (correcto) {
-            console.log("FFFFF");
             let alergenosString = this.getAlergenosString();
             this.alimento["alergenos"]=alergenosString;
             this.alimento["verificado"]=true;
             this.alimento["codigo_barra"]="";
             this.alimento["url"]="";
             let data = {...this.alimento};
-            axios.post("/alimentos/"+(this.alimento["_id"]), data);
+            let id = (this.alimento["_id"]).split("").join("");
+            console.log(data);
+            axios.put("/alimentos/"+id, data);
             this.alimento={};
             this.alergenosSel= [];
         }
