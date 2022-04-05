@@ -97,4 +97,28 @@ export default class AlimentoService {
             console.log('error' + e);
         });
     }
+
+    getFavoritos(userId){
+        return axios.get(`/users/favoritos/${userId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });            
+    }
+
+    postFavoritos(userId, alimentoId){
+        return axios.post(`users/favoritos/${userId}/${alimentoId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });         
+    }
+
+    deleteFavoritos(userId, alimentoId){
+        return axios.delete(`users/favoritos/${userId}/${alimentoId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });         
+    }
 }

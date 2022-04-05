@@ -56,13 +56,14 @@ export default class AlimentoService {
         });
     }
 
-    getFavoritos(username,lazyParams, buscador){
+    getFavoritos(username,lazyParams, buscador, alimentoIds){
         return axios.get(`/alimentos/favoritos/${username}`, {
             params:{
                 pagina: lazyParams.pagina,
                 ordenar: lazyParams.sort,
                 buscador: buscador,
-                alergeno: lazyParams.filters
+                alergeno: lazyParams.filters,
+                alimentoIds: alimentoIds
             }
         })
         .then((response) => 
@@ -103,7 +104,10 @@ export default class AlimentoService {
     }
 
     guardarAlimento(alimento){
-        return axios.post('/alimentos/', alimento);
+        return axios.post('/alimentos', alimento).then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
     }
 
     deleteFromCarrusel(consumicionId, tipo, diaId){
