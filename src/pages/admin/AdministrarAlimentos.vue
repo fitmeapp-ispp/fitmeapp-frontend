@@ -13,7 +13,10 @@
                             </div>
                         </template>
                     </Toolbar>
-                    <DataTable ref="dt" :value="dataviewValue" dataKey="_id" :paginator="true" :rows="10" :filters="filters" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} alimentos">
+                    
+                    <DataTable ref="dt" :value="dataviewValue" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
+							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} alimentos" responsiveLayout="scroll">
                         <template #header>
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                                 
@@ -24,55 +27,55 @@
                             </div>
                         </template>
                     
-                        <Column field="alimento" header="Alimento" :style="{width:'100px'}" :sortable=true>
+                        <Column field="alimento" header="Alimento" :sortable="true" headerStyle="width:20%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Alimento</span>
                                 {{slotProps.data.nombre}}
                             </template>
                         </Column>
-                        <Column field="kcal" header="Kcal" :style="{width:'100px'}" :sortable=true>
+                        <Column field="kcal" header="Kcal" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Kcal</span>
                                 {{slotProps.data.kcal_100g}}
                             </template>
                         </Column>
-                        <Column field="grasas" header="Grasas" :style="{width:'100px'}" :sortable=true>
+                        <Column field="grasas" header="Grasas" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Grasas</span>
                                 {{slotProps.data.grasa_100g}}
                             </template>
                         </Column>
-                        <Column field="carbs" header="Carbohidratos" :style="{width:'100px'}" :sortable=true>
+                        <Column field="carbs" header="Carbohidratos" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Carbohidratos</span>
                                 {{slotProps.data.carbohidratos_100g}}
                             </template>
                         </Column>
-                        <Column field="azucar" header="Azúcares" :style="{width:'100px'}" :sortable=true>
+                        <Column field="azucar" header="Azúcares" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Azúcares</span>
                                 {{slotProps.data.azucares_100g}}
                             </template>
                         </Column>
-                        <Column field="protes" header="Proteínas" :style="{width:'100px'}" :sortable=true>
+                        <Column field="protes" header="Proteínas" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Proteínas</span>
                                 {{slotProps.data.proteinas_100g}}
                             </template>
                         </Column>
-                        <Column field="sal" header="Sal" :style="{width:'100px'}" :sortable=true>
+                        <Column field="sal" header="Sal" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Sal</span>
                                 {{slotProps.data.sal_100g}}
                             </template>
                         </Column>
-                        <Column field="fibra" header="Fibra" :style="{width:'100px'}" :sortable=true>
+                        <Column field="fibra" header="Fibra" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Fibra</span>
                                 {{slotProps.data.fibra_100g}}
                             </template>
                         </Column>
-                        <Column field="colesterol" header="Colesterol" :style="{width:'100px'}" :sortable=true>
+                        <Column field="colesterol" header="Colesterol" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Colesterol</span>
                                 {{slotProps.data.colesterol_100g}}
@@ -225,13 +228,15 @@ export default {
 			],
         };
     },
-    mounted() {
-        this.fetchItems();
-    },
     created() {
         this.initFilters();
     },
-  methods: {
+    
+    mounted() {
+        this.fetchItems();
+    },
+    
+    methods: {
     fetchItems(){
         let uri = '/alimentos';
         axios.get(uri).then((response) => {
@@ -344,7 +349,7 @@ export default {
     },
     exportCSV() {
         this.$refs.dt.exportCSV();
-    },
-  },
+    }
+  }
 };
 </script>
