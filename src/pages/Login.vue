@@ -128,6 +128,7 @@ export default {
                 console.log("Error: ", err)
                 this.error = err.response.data
             })    
+            this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
         }
     },
 }

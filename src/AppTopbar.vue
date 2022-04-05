@@ -27,7 +27,6 @@
             <i class="pi pi-user"></i>
             </button>
             <Menu ref="menu" :model="overlayMenuItems" :popup="true"/>
-
             
 
             <Dialog header="Confirmación" v-model:visible="displayConfirmation" :style="{width: '350px'}" :modal="true">
@@ -124,15 +123,23 @@ export default {
 }
 </script>
 <style>
+
     /* font-size: 2em; margin:15px; */
     .color{
         padding: 2%;
-        margin:15px;
+        margin-top: 0.5em;
         color:white;
         line-height: 2;
     }
     .color:hover {
         color: black;
+    }
+    span.color{
+        transition: 0.5s;
+        color:white;
+    }
+    span.color:hover{
+        color:black;
     }
     .p-sidebar-left {
         background-color:rgb(22 163 74) ;
