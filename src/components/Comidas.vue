@@ -79,33 +79,30 @@
 								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
 							</div>
 						</div>
-						<div class="mt-1">
-							<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
+					</div>
+				</div>
+				<div v-show="carruselVacio">
+					<div class="col-12 ">
+						<div class="card">
+							<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :circular="false" :responsiveOptions="responsiveOptions">
+									<template #item="slotProps">
+										<div class="product-item">
+											<div class="product-item-content">
+												<h4 class="mb-1">{{slotProps.data.alimento.nombre}}</h4>
+												
+													{{slotProps.data.alimento.kcal_100g}} kcal/100g. Cantidad:
+													<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus/>
+													<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
+												<div>
+													<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
+												</div>
+											</div>
+										</div>
+									</template>
+							</Carousel>
 						</div>
 					</div>
 				</div>
-				<div v-show=carruselVacio>
-				<div class="col-12 ">
-					<div class="card">
-						<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :circular="false" :responsiveOptions="responsiveOptions">
-								<template #item="slotProps">
-									<div class="product-item">
-										<div class="product-item-content">
-											<h4 class="mb-1">{{slotProps.data.alimento.nombre}}</h4>
-											
-												{{slotProps.data.alimento.kcal_100g}} kcal/100g. Cantidad:
-												<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus/>
-												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
-											<div>
-												<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
-											</div>
-										</div>
-									</div>
-								</template>
-						</Carousel>
-					</div>
-				</div>
-			</div>
 			</div>
 		</div>
 		<!-- Fin del header-->
@@ -326,7 +323,6 @@
 				dia: {},
 				alimentoDialog: false,
 				carruselVacio: false,
-				dataviewValueCarrusel: {},
 				dataUserView: {},
 				kcal_recomendadas: 0,
 				carbohidratos_recomendados: 0,
@@ -404,6 +400,7 @@
 				isRecientes: false,
 				isFavoritos: false,
 				isCreados: false,
+				dataviewValueCarrusel: [{'alimento': {'nombre': "nombre"}}]
 			}
 		},
 		alimentoService: null,
@@ -412,8 +409,7 @@
 		created(){
 			this.alimentoService = new AlimentoService();
 			this.userService = new UserService();
-			
-			//this.dataviewValueCarrusel = [{'alimento': {"nombre": ""}}];
+
 		},
 		mounted() {
 			this.lazyParams = {
@@ -507,8 +503,6 @@
 			},
 			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			obtenerDatosDia(){
-
-				console.log(this.favoritosList)
 
 				this.tipo = this.$route.params.tipo
 				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
@@ -617,14 +611,12 @@
 				if(!this.favoritosList.includes(alimentoId)){
 					this.favoritosList.push(alimentoId)
 					//this.$forceUpdate();
-					console.log(document.getElementById(alimentoId).className)
 					document.getElementById(alimentoId).className = document.getElementById(alimentoId).className.replace("p-button-outlined","");
 
 					this.userService.postFavoritos(this.$store.state.userId,alimentoId)
 				}else{
 					this.favoritosList = this.favoritosList.filter(e => e != alimentoId)
 					//this.$forceUpdate();
-					console.log(document.getElementById(alimentoId))
 					document.getElementById(alimentoId).className += " p-button-outlined";
 					
 					this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
