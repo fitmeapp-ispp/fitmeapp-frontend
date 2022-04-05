@@ -75,6 +75,43 @@
                         <label for="raciones">Raciones</label>
                         <InputNumber id="raciones" v-model="recipe.raciones" required="true" :class="{'p-invalid': submitted && !recipe.nombre}"/>
                     </div>
+				<div class="p-fluid formgrid grid">
+					<div class="field col-12 md:col-6">
+                        <div class="card text-center" style="background-color:#4CD07D; color:white; font-size:x-large">
+                            Ingredientes
+                        </div>
+                        <div class="p-fluid formgrid grid" v-for="(ingrediente,indiceIngredientes) in ingredientes" :key="indiceIngredientes">
+                            <div class="field col-12 md:col-7">
+                                <InputText id="ingrediente" v-model="ingrediente.ingrediente" placeholder="Ingrediente" required="true" autofocus :class="{'p-invalid': this.submitted && !ingrediente.ingrediente}" />
+                            </div>
+                            <div class="field col-12 md:col-5">
+                                <InputText id="cantidad" v-model="ingrediente.cantidad" placeholder="Cantidad" required="true" autofocus :class="{'p-invalid': this.submitted && !cantidad}" />
+                            </div>
+                            <div class="field col-12 md:col-10 md:col-offset-1">
+                                <Button class="p-button-success"  @click="anyadirIngrediente(indiceIngredientes)" v-show="indiceIngredientes == ingredientes.length-1">
+                                    <span class="p-button-label">Añadir</span>
+                                </Button>
+                            </div>
+                        </div>
+                        
+					</div>
+					<div class="field col-12 md:col-6">
+                        <div class="card text-center" style="background-color:#4CD07D; color:white; font-size:x-large">
+                            Pasos
+                        </div>
+
+                        <div class="formgrid grid justify-content-center" v-for="(paso,indicePasos) in pasos" :key="indicePasos">
+                            <div class="field col-12">
+                                <InputText id="pasos" v-model="paso.paso" placeholder="Añada un paso" required="true" autofocus :class="{'p-invalid': this.submitted && !paso.paso}" />
+                            </div>
+                            <div class="field col-12 md:col-10 md:col-offset-1">
+                                <Button class="p-button-success" @click="anyadirPaso(indicePasos)" v-show="indicePasos == pasos.length-1">
+                                    <span class="p-button-label">Añadir</span>
+                                </Button>
+                            </div>
+                        </div>
+					</div>
+				</div>
                     <template #footer>
                         <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideRecipeDialog"/>
                         <Button label="Crear" icon="pi pi-check" class="p-button-text" @click="saveRecipe" v-if="this.editing==false"/>
@@ -107,6 +144,13 @@ export default {
             dataviewValue: null,
             submitted: false,
             recipe: {},
+            ingredientes: [{
+                ingrediente: '',
+                cantidad: ''
+            }],
+            pasos: [{
+                paso: ''
+            }],
             recipeDialog: false,
             selectedRecipes: null,
             deleteRecipeDialog: false,
@@ -134,6 +178,8 @@ export default {
     },
     newRecipe() {
         this.recipe = {};
+        this.ingredientes= [{ingrediente: '',cantidad: ''}];
+        this.pasos= [{paso: ''}];
         this.submitted = false;
         this.recipeDialog = true;
     },
@@ -142,25 +188,36 @@ export default {
         this.recipeDialog = false;
         this.editing = false;
         this.recipe={};
+        this.ingredientes= [{ingrediente: '',cantidad: ''}];
+        this.pasos= [{paso: ''}];
     },
     saveRecipe() {
         this.submitted = true;
         console.log(this.recipe);
-        //TODO
         let data = {};
         data["nombre"]=this.recipe["nombre"];
         data["raciones"]=this.recipe["raciones"];
-        data["pasos"]=[];
-        data["ingredientes"]=[];
+        data["pasos"]=this.pasos;
+        data["ingredientes"]=this.ingredientes;
         axios.post("/recetas", data);
         this.recipeDialog = false;
         this.recipe={};
+        this.ingredientes= [{ingrediente: '',cantidad: ''}];
+        this.pasos= [{paso: ''}];
         this.editing = false;
     },
-    editRecipe(recipe){ //TODO: Add data arg
+    editRecipe(recipe){ 
         this.recipeDialog = true;
         this.recipe = recipe;
         this.editing = true;
+        this.ingredientes = [];
+        this.recipe.ingredientes.forEach(element => 
+            this.ingredientes.push({ingrediente:element.ingrediente,cantidad:element.cantidad})
+        );
+        this.pasos = [];
+        this.recipe.pasos.forEach(element => 
+            this.pasos.push({paso:element})
+        );
     },
     putRecipe() {
         this.editing = false;
@@ -170,9 +227,14 @@ export default {
         data["nombre"]=this.recipe["nombre"];
         data["raciones"]=this.recipe["raciones"];
         data["pasos"]=[];
-        data["ingredientes"]=[];
+        this.recipe.pasos.forEach(element => 
+            data["pasos"].push({paso:element})
+        );
+        data["ingredientes"]=this.ingredientes;
         axios.post("/recetas/"+(this.recipe["_id"]), data);
         this.recipe={};
+        this.ingredientes= [{ingrediente: '',cantidad: ''}];
+        this.pasos= [{paso: ''}];
     },
     confirmDeleteRecipe(recipe) {
         this.recipe = {...recipe};
@@ -181,9 +243,23 @@ export default {
     deleteRecipe() {
         this.dataviewValue = this.dataviewValue.filter(val => val._id !== this.recipe._id);
         this.deleteRecipeDialog = false;
-        console.log(this.dataviewValue); //TODO Delete in database and in dataviewvalue
+        let id = this.recipe._id.split('').join(''); //Clone string
+        axios.delete("/recetas/"+id);
         this.recipe = {};
+        this.ingredientes= [{ingrediente: '',cantidad: ''}];
+        this.pasos= [{paso: ''}];
         this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
+    },
+    anyadirIngrediente(){
+        this.ingredientes.push({ 
+            ingrediente: '',
+            cantidad:''
+        });
+    },
+    anyadirPaso(){
+        this.pasos.push({ 
+            paso: ''
+        });
     },
   },
 };
