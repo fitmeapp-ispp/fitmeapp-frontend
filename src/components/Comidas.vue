@@ -423,6 +423,7 @@
 		methods: {
 			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			fetchItems(){
+				console.log("hola")
 				if (this.isRecientes === true){
 					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
 						this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
@@ -617,9 +618,18 @@
 				}else{
 					this.favoritosList = this.favoritosList.filter(e => e != alimentoId)
 					//this.$forceUpdate();
-					document.getElementById(alimentoId).className += " p-button-outlined";
+					if(!this.isFavoritos){
+						document.getElementById(alimentoId).className += " p-button-outlined";
+					}
 					
-					this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
+					
+					this.userService.deleteFavoritos(this.$store.state.userId,alimentoId).then(()=>{
+						if(this.isFavoritos){
+							this.fetchItems();
+						}
+					})
+
+					
 				}
 				
 				
