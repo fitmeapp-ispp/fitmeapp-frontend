@@ -423,7 +423,7 @@
 		methods: {
 			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			fetchItems(){
-				console.log("hola")
+
 				if (this.isRecientes === true){
 					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
 						this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
