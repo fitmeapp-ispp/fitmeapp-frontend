@@ -7,19 +7,25 @@
         </div>
         <div class="card col-12">
         <DataTable  :value="dataviewValue" :rows="7" responsiveLayout="scroll"> 
-  
           <Column field="name" header="Nombre" :style="{width:'50%'}" >
 						<template #body="{data}">
-              <router-link :to="'/ejercicio/detalles/' + data._id">
-              <p class="p-flex">{{data.name}}</p>
+              <router-link :to="'/ejercicio/detalles/' + data.ejercicioDetalles[0]._id">
+                <p class="p-flex text-center text-bold inline">{{data.ejercicioDetalles[0].name}}</p>
               </router-link>
             </template>
 					</Column>
           <Column field="muscles" header="Zona muscular" :style="{width:'50%'}">
 						<template #body="{data}" :v-model="muscleList">
-                <p class="p-flex text-bold inline" v-for="(musculo,index) in data.muscles" :key="musculo">
+                <p class="p-flex text-center text-bold inline" v-for="(musculo,index) in data.ejercicioDetalles[0].muscles" :key="musculo">
                   <template v-if="index > 0">, </template> 
                   {{muscleList[musculo]}}
+                </p> 
+            </template>
+					</Column>
+          <Column field="done" header="Realizado" :style="{width:'50%'}">
+						<template #body="{data}">
+                <p v-if="data.hecho === true"  class="text-center">
+                  <i class="pi text-green-500 pi-check" style="transform: scale(1.5);"/>
                 </p> 
             </template>
 					</Column>
@@ -44,48 +50,41 @@
 	</div>
 </template>
 <script>
-import axios from "axios"
+import ExerciseService from '../service/ExerciseService';
 
 export default {
   data() {
     return {
-      muscleList: [
-        "",
-        "Biceps brachii",
-        "Anterior deltoid",
-        "Serratus anterior",
-        "Pectoralis major",
-        "Triceps brachii",
-        "Rectus abdominis",
-        "Gastrocnemius",
-        "Gluteus maximus",
-        "Trapezius",
-        "Quadriceps femoris",
-        "Biceps femoris",
-        "Latissimus dorsi",
-        "Brachialis",
-        "Obliquus externus abdominis",
-        "Soleus"
-      ],
-      dataviewValue: null
+      muscleList: {
+        0: "",
+        1:"Biceps brachii",
+        2:"Anterior deltoid",
+        3:"Serratus anterior",
+        4:"Pectoralis major",
+        5:"Triceps brachii",
+        6:"Rectus abdominis",
+        7:"Gastrocnemius",
+        8:"Gluteus maximus",
+        9:"Trapezius",
+        10:"Quadriceps femoris",
+        11:"Biceps femoris",
+        12:"Latissimus dorsi",
+        13:"Brachialis",
+        14:"Obliquus externus abdominis",
+        15:"Soleus"
+      },
+      dataviewValue: null,
     };
   },
-
-  mounted() {
+  exerciseService: null,
+  created(){
+    this.exerciseService = new ExerciseService();
     this.fetchItems();
   },
-
   methods: {
-    
     fetchItems(){
-          let uri = '/ejercicios/recomendacion';
-          axios.get(uri)
-          .then((response) => {
-            this.dataviewValue = response.data;
-          });
-    },
-    exercise_url(url){
-        return url._id;
+      this.exerciseService.getRecomendaciones(this.$store.state.userId)
+                          .then(data => this.dataviewValue = data);
     },
   },
 };
