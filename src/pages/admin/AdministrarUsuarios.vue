@@ -76,13 +76,13 @@
                 <!-- crear nuevo/editar -->
 			<Dialog v-model:visible="userDialog" :style="{width: '500px'}" header="Detalles de Usuario" :modal="true" class="p-fluid">					
 		<div class="field">
-					<label for="nombre">Nombre</label>
-					<InputText id="nombre" v-model.trim="user.nombre"/>
+					<label for="name">Nombre</label>
+					<InputText id="name" v-model.trim="user.name"/>
 				</div>
 
 		<div class="field">
-					<label for="apellidos">Apellidos</label>
-					<InputText id="apellidos" v-model.trim="user.apellidos"/>
+					<label for="familyName">Apellidos</label>
+					<InputText id="familyName" v-model.trim="user.familyName"/>
 				</div>
 
 				<div class="field">
@@ -103,8 +103,8 @@
 				</div>
 
 		<div class="field">
-					<label for="telefono">Teléfono</label>
-					<InputText id="telefono" v-model="user.telefono"/>
+					<label for="phoneNumber">Teléfono</label>
+					<InputText id="phoneNumber" v-model="user.phoneNumber"/>
 				</div>
 
 		<div class="field">
@@ -133,13 +133,13 @@
 				</div>
 
 		<div class="field">
-					<label for="altura">Altura</label>
-					<InputText id="altura" v-model="user.altura"/>
+					<label for="height">Altura</label>
+					<InputText id="height" v-model="user.height"/>
 				</div>
 
 		<div class="field">
-					<label for="peso_inicial">Peso Inicial</label>
-					<InputText id="peso_inicial" v-model="user.peso_inicial"/>
+					<label for="currentWeight">Peso Inicial</label>
+					<InputText id="currentWeight" v-model="user.currentWeight"/>
 				</div>
 
 		<div class="field">
@@ -148,8 +148,8 @@
 				</div>
 
 		<div class="field">
-					<label for="objetivo_peso">Peso Objetivo</label>
-					<InputText id="objetivo_peso" v-model="user.objetivo_peso"/>
+					<label for="goalWeight">Peso Objetivo</label>
+					<InputText id="goalWeight" v-model="user.goalWeight"/>
 				</div>
 
 		<div class="field">
@@ -261,7 +261,7 @@ export default {
           let uri = '/users';
           axios.get(uri).then((response) => {
           this.users = response.data;
-          console.log(this.users);
+          //console.log(this.users);
           });
         },
 		openNew() {
@@ -276,25 +276,27 @@ export default {
 		saveUser() {
 			this.submitted = true;
 			if (this.user.username) {
+			//Put
 			if (this.user._id) {
-				this.users = this.users.filter(val => val._id !== this.user._id);
 				this.deleteUserDialog = false;
-				axios.delete('/users/' + this.user._id);
-				//HAY QUE ACTUALIZAR PARA VERLO, SINO SALE EN BLANCO
-				axios.post('/users', this.user).then(()=>{this.users.push(this.user)});
+				let data = {...this.user}
+				let id = this.user._id.split("").join("");
+				axios.put("/users/" + id, data);
 				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario Actualizado', life: 3000});
-				}
-				else {
-					//HAY QUE ACTUALIZAR PARA VERLO, SINO SALE EN BLANCO
-					axios.post('/users', this.user).then(()=>{this.users.push(this.user)});
-					this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario Creado', life: 3000});
-				}
-				this.userDialog = false;
-				this.user = {};
+			}
+			//Create
+			else {
+				//HAY QUE ACTUALIZAR PARA VERLO, SINO SALE EN BLANCO
+				axios.post('/users', this.user);
+				this.users.push(this.user)
+				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario Creado', life: 3000});
+			}
+			this.userDialog = false;
+			this.user = {};
 			}
 		},
 		editUser(user) {
-			this.user = {...user};
+			this.user = user;
 			this.userDialog = true;
 		},
 		confirmDeleteUser(user) {
@@ -302,9 +304,10 @@ export default {
 			this.deleteUserDialog = true;
 		},
 		deleteUser() {
-			this.users = this.users.filter(val => val._id !== this.user._id);
 			this.deleteUserDialog = false;
-			axios.delete('/users/' + this.user._id);
+			let id = this.user._id.split("").join("");
+			axios.delete('/users/' + id);
+			this.users = this.users.filter(val => val._id !== this.user._id);
 			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario eliminado', life: 3000});
 		},
 		findIndexById(id) {
