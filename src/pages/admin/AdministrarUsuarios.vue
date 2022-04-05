@@ -286,7 +286,6 @@ export default {
 			}
 			//Create
 			else {
-				//HAY QUE ACTUALIZAR PARA VERLO, SINO SALE EN BLANCO
 				axios.post('/users', this.user);
 				this.users.push(this.user)
 				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Usuario Creado', life: 3000});
@@ -304,6 +303,7 @@ export default {
 			this.deleteUserDialog = true;
 		},
 		deleteUser() {
+			//HAY QUE DARLE A ELIMINAR DOS VECES
 			this.deleteUserDialog = false;
 			let id = this.user._id.split("").join("");
 			axios.delete('/users/' + id);
