@@ -27,55 +27,55 @@
                             </div>
                         </template>
                     
-                        <Column field="alimento" header="Alimento" :sortable="true" headerStyle="width:20%;">
+                        <Column field="nombre" header="Alimento" :sortable="true" headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Alimento</span>
                                 {{slotProps.data.nombre}}
                             </template>
                         </Column>
-                        <Column field="kcal" header="Kcal" :sortable="true" headerStyle="width:5%;">
+                        <Column field="kcal_100g" header="Kcal" :sortable="true" headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Kcal</span>
                                 {{slotProps.data.kcal_100g}}
                             </template>
                         </Column>
-                        <Column field="grasas" header="Grasas" :sortable="true" headerStyle="width:5%;">
+                        <Column field="grasa_100g" header="Grasas" :sortable="true" headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Grasas</span>
                                 {{slotProps.data.grasa_100g}}
                             </template>
                         </Column>
-                        <Column field="carbs" header="Carbohidratos" :sortable="true" headerStyle="width:5%;">
+                        <Column field="carbohidratos_100g" header="Carbohidratos" :sortable="true" headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Carbohidratos</span>
                                 {{slotProps.data.carbohidratos_100g}}
                             </template>
                         </Column>
-                        <Column field="azucar" header="Azúcares" :sortable="true" headerStyle="width:5%;">
+                        <Column field="azucares_100g" header="Azúcares" :sortable="true" headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Azúcares</span>
                                 {{slotProps.data.azucares_100g}}
                             </template>
                         </Column>
-                        <Column field="protes" header="Proteínas" :sortable="true" headerStyle="width:5%;">
+                        <Column field="proteinas_100g" header="Proteínas" :sortable="true" headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Proteínas</span>
                                 {{slotProps.data.proteinas_100g}}
                             </template>
                         </Column>
-                        <Column field="sal" header="Sal" :sortable="true" headerStyle="width:5%;">
+                        <Column field="sal_100g" header="Sal" :sortable="true" headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Sal</span>
                                 {{slotProps.data.sal_100g}}
                             </template>
                         </Column>
-                        <Column field="fibra" header="Fibra" :sortable="true" headerStyle="width:5%;">
+                        <Column field="fibra_100g" header="Fibra" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Fibra</span>
                                 {{slotProps.data.fibra_100g}}
                             </template>
                         </Column>
-                        <Column field="colesterol" header="Colesterol" :sortable="true" headerStyle="width:5%;">
+                        <Column field="colesterol_100g" header="Colesterol" :sortable="true" headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Colesterol</span>
                                 {{slotProps.data.colesterol_100g}}
