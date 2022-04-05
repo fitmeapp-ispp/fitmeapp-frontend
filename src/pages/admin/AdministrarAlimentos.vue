@@ -13,7 +13,17 @@
                             </div>
                         </template>
                     </Toolbar>
-                    <DataTable :value="dataviewValue" dataKey="_id" :paginator="true" :rows="10" :filters="filters" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} recetas">
+                    <DataTable ref="dt" :value="dataviewValue" dataKey="_id" :paginator="true" :rows="10" :filters="filters" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} alimentos">
+                        <template #header>
+                            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                                
+                                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                                    <i class="pi pi-search" />
+                                    <InputText v-model="filters['global'].value" placeholder="Buscar..." />
+                                </span>
+                            </div>
+                        </template>
+                    
                         <Column field="alimento" header="Alimento" :style="{width:'100px'}" :sortable=true>
                             <template #body="slotProps">
                             <span class="p-column-title">Alimento</span>
@@ -331,6 +341,9 @@ export default {
         this.alergenosSel= [];
         this.deleteAlimentoDialog=false;
         this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
+    },
+    exportCSV() {
+        this.$refs.dt.exportCSV();
     },
   },
 };

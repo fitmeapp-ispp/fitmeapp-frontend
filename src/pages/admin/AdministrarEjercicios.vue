@@ -253,7 +253,7 @@ export default {
 	methods: {
 
         fetchItems(){
-          let uri = '/ejercicios';
+          let uri = '/exercise';
           axios.get(uri).then((response) => {
           this.exercises = response.data;
           console.log(this.exercises);
@@ -271,18 +271,29 @@ export default {
 		},
 		saveExercise() {
 			this.submitted = true;
-			if (this.exercise.name.trim()) {
+			if (this.exercise.name) {
 			if (this.exercise._id) {
 				
 				this.exercise.equipment = this.exercise.equipment.value ? this.exercise.equipment.value: this.exercise.equipment;
-				this.exercise[this.findIndexById(this.exercise._id)] = this.exercise;
-				
+				let data = {...this.exercise};
+				let id = (this.exercise["_id"]).split("").join("");
+				axios.put("/exercise/"+id, data);
 				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Actualizado', life: 3000});
 				}
 				else {
 					//this.exercise.image = 'exercise-placeholder.svg';
 					this.exercise.equipment = this.exercise.equipment ? this.exercise.equipment.value : 'none (bodyweight exercise)';
-					this.exercise.push(this.exercise);
+					this.exercises.push(this.exercise);
+					let data = {...this.exercise};
+					data["images"] = [];
+					data["exercise_base"] = 0;
+					data["status"] = "";
+					data["creation_date"] = "";
+					data["language"] = 0;
+					data["license"] = 0;
+					data["license_author"] = "";
+					data["variations"] = [];
+					axios.post("/exercise", data);
 					this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Creado', life: 3000});
 				}
 				this.exerciseDialog = false;
@@ -299,7 +310,9 @@ export default {
 			this.deleteExerciseDialog = true;
 		},
 		deleteExercise() {
+			let id = this.exercise._id.split('').join(''); //Clone string
 			this.exercises = this.exercises.filter(val => val._id !== this.exercise._id);
+			axios.delete("/exercise/"+id);
 			this.deleteExerciseDialog = false;
 			this.exercise = {};
 			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio eliminado', life: 3000});
