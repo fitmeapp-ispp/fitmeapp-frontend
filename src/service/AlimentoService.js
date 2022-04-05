@@ -104,7 +104,10 @@ export default class AlimentoService {
     }
 
     guardarAlimento(alimento){
-        return axios.post('/alimentos/', alimento);
+        return axios.post('/alimentos', alimento).then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
     }
 
     deleteFromCarrusel(consumicionId, tipo, diaId){

@@ -198,7 +198,7 @@ export default {
 					this.alimentoService.guardarAlimento(this.alimento)
 					.then(() => {
 						//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
-						this.$router.push({ name: 'comidas', params: {mensaje: 'alimentoInsertado'} });
+						this.$router.push({ path: '/comidas/Almuerzo', params: {mensaje: 'alimentoInsertado'} });
 					})
 					.catch((e)=>{
 						//SI OCURRE ALGÚN FALLO AL INSERTAR EN LA BD, MOSTRAR
@@ -235,7 +235,7 @@ export default {
 		},
 		volver()
 		{
-			this.$router.push('/comidas');
+			this.$router.push('/comidas/Almuerzo');
 		}
 	}
 }
