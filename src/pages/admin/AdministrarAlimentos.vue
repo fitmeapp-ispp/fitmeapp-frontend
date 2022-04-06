@@ -14,17 +14,18 @@
                         </template>
                     </Toolbar>
 
-                    <DataTable ref="dt" :value="dataviewValue" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
-							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} alimentos" responsiveLayout="scroll">
+                    <DataTable ref="dt" :value="dataviewValue" dataKey="_id" :paginator="true" :rows="9" :totalRecords="totalRecords" :lazy="true"
+							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} alimentos" responsiveLayout="scroll" @page="onPage($event)">
                         <template #header>
-                            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                                
-                                <span class="block mt-2 md:mt-0 p-input-icon-left">
-                                    <i class="pi pi-search" />
-                                    <InputText v-model="filters['global'].value" placeholder="Buscar..." />
-                                </span>
-                            </div>
+                            <div class="grid formgroup-inline justify-content-between ">
+								<div class="field">
+									<span class="p-input-icon-left mb-2">
+										<i class="pi pi-search" />
+										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
+									</span>
+								</div>
+							</div>
                         </template>
                     
                         <Column field="nombre" header="Alimento" :sortable="true" headerStyle="width:10%;">
@@ -201,7 +202,7 @@
 
 <script>
 import axios from "axios"
-import {FilterMatchMode} from 'primevue/api';
+import AlimentoService from "../../service/AlimentoService";
 export default {
     data() {
         return {
@@ -229,25 +230,33 @@ export default {
 				{name: 'Altramuces', code: 'altramuces'},
 				{name: 'Moluscos', code: 'moluscos'}
 			],
+            lazyParams: {},
         };
     },
+    alimentoService: null,
     created() {
-        this.initFilters();
+        this.alimentoService = new AlimentoService();
     },
     
     mounted() {
+        this.lazyParams = {
+            pagina: 0,
+            sort: [], //2 items: sortField y sortOrder (Ejemplo: Nombre,-1 ==> Ordenar por nombre inversamente)
+            filters: ''
+        };
         this.fetchItems();
     },
     methods: {
         fetchItems() {
-            axios.get("/alimentos").then((response) => {
-                this.dataviewValue = response.data.resultado;
+            this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
+            .then(data => {
+                this.totalRecords = data.total;
+                this.dataviewValue = data.resultado; 
             });
         },
-        initFilters() {
-            this.filters = {
-                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-            }
+        onPage(event){
+            this.lazyParams.pagina = event.page;
+            this.fetchItems();	
         },
         newAlimento() {
             this.alimento = {};
