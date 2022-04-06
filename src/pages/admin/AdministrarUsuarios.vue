@@ -201,7 +201,6 @@ export default {
 		},
 		saveUser() {
 			this.submitted = true;
-      console.log("usuario: ", this.user)
 			if (this.user.nombre) {
 			if (this.user._id) {
 				this.user[this.findIndexById(this.user._id)] = this.user;
