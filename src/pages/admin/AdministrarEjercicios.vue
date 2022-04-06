@@ -61,7 +61,7 @@
 					<Column field="muscle" header="Músculos principales" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span v-for="muscleId, index of slotProps.data.muscles" :key="muscleId">
-								{{muscleList[muscleId - 1]}}
+								{{muscleList[muscleId - 1].name}}
 								<span v-if="index < slotProps.data.muscles.length - 1">; </span>
 							</span>
 						</template>
@@ -70,7 +70,7 @@
 					<Column field="muscle" header="Músculos secundarios" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span v-for="muscleId, index of slotProps.data.muscles_secondary" :key="muscleId">
-								{{muscleList[muscleId - 1]}}
+								{{muscleList[muscleId - 1].name}}
 								<span v-if="index < slotProps.data.muscles_secondary.length - 1">; </span>
 							</span>
 						</template>
@@ -79,8 +79,8 @@
                     <Column field="equipment" header="Material" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span v-for="equipmentId, index of slotProps.data.equipment" :key="equipmentId">
-								{{equipmentList[equipmentId - 1]}}
-								<span v-if="index < slotProps.data.muscles.length - 1">; </span>
+								{{equipmentList[equipmentId - 1].name}}
+								<span v-if="index < slotProps.data.equipment.length - 1">; </span>
 							</span>
 						</template>
 					</Column>
@@ -111,10 +111,10 @@
 
                     <div class="field">
                         <label for="muscles" class="mb-3">Músculo principal</label>
-                        <MultiSelect id="muscles" v-model="exercise.muscles" :options="muscleList" placeholder="Escoja músculos">
+                        <MultiSelect id="muscles" v-model="exercise.muscles" :options="muscleList" optionLabel="name" optionValue="id" placeholder="Escoja músculos">
                             <template #value="slotProps">
 								<span v-for="muscleId, index of slotProps.value" :key="muscleId">
-									{{muscleList[muscleId - 1]}}
+									{{muscleList[muscleId - 1].name}}
 									<span v-if="index < slotProps.value.length - 1">; </span>
 								</span>
 
@@ -125,7 +125,7 @@
                             
                             <template #option="slotProps">
                                 <div class="flex align-items-center">
-                                    <div>{{slotProps.option}}</div>
+                                    <div>{{slotProps.option.name}}</div>
                                 </div>
                             </template>
                         </MultiSelect>
@@ -133,14 +133,14 @@
 
 					<div class="field">
                         <label for="muscles_secondary" class="mb-3">Músculo secundario</label>
-                        <MultiSelect id="muscles_secondary" v-model="exercise.muscles_secondary" :options="muscleList" placeholder="Escoja músculos">
+                        <MultiSelect id="muscles_secondary" v-model="exercise.muscles_secondary" :options="muscleList" optionLabel="name" optionValue="id" placeholder="Escoja músculos">
                             <template #value="slotProps">
 
 								<span v-for="muscleId, index of slotProps.value" :key="muscleId">
-									{{muscleList[muscleId - 1]}}
+									{{muscleList[muscleId - 1].name}}
 									<span v-if="index < slotProps.value.length - 1">; </span>
 								</span>
-								
+
                                 <template v-if="!slotProps.value || slotProps.value.length === 0">
                                     <div class="p-1">Selecciona músculos</div>
                                 </template>
@@ -148,18 +148,19 @@
                             
                             <template #option="slotProps">
                                 <div class="flex align-items-center">
-                                    <div>{{slotProps.option}}</div>
+                                    <div>{{slotProps.option.name}}</div>
                                 </div>
                             </template>
                         </MultiSelect>
                     </div>
 
 					<div class="field">
+
                         <label for="equipment" class="mb-3">Materiales</label>
-                        <MultiSelect id="equipment" v-model="exercise.equipment" :options="equipmentList" placeholder="Escoja materiales">
+                        <MultiSelect id="equipment" v-model="exercise.equipment" :options="equipmentList" optionLabel="name" optionValue="id" placeholder="Escoja materiales">
                             <template #value="slotProps">
 								<span v-for="equipmentId, index of slotProps.value" :key="equipmentId">
-									{{equipmentList[equipmentId - 1]}}
+									<span>{{equipmentList[equipmentId - 1].name}}</span>
 									<span v-if="index < slotProps.value.length - 1">; </span>
 								</span>
 
@@ -170,7 +171,7 @@
                             
                             <template #option="slotProps">
                                 <div class="flex align-items-center">
-                                    <div>{{slotProps.option}}</div>
+                                    <div>{{slotProps.option.name}}</div>
                                 </div>
                             </template>
                         </MultiSelect>
@@ -243,21 +244,21 @@ export default {
 			submitted: false,
 			sinImagen: sinImagen,
             muscleList: [
-                "Biceps brachii",
-                "Anterior deltoid",
-                "Serratus anterior",
-                "Pectoralis major",
-                "Triceps brachii",
-                "Rectus abdominis",
-                "Gastrocnemius",
-                "Gluteus maximus",
-                "Trapezius",
-                "Quadriceps femoris",
-                "Biceps femoris",
-                "Latissimus dorsi",
-                "Brachialis",
-                "Obliquus externus abdominis",
-                "Soleus"
+                {name: "Biceps brachii", id: 1},
+                {name: "Anterior deltoid", id: 2},
+                {name: "Serratus anterior", id: 3},
+                {name: "Pectoralis major", id: 4},
+                {name: "Triceps brachii", id: 5},
+                {name: "Rectus abdominis", id: 6},
+                {name: "Gastrocnemius", id: 7},
+                {name: "Gluteus maximus", id: 8},
+                {name: "Trapezius", id: 9},
+                {name: "Quadriceps femoris", id: 10},
+                {name: "Biceps femoris", id: 11},
+                {name: "Latissimus dorsi", id: 12},
+                {name: "Brachialis", id: 13},
+                {name: "Obliquus externus abdominis", id: 14},
+                {name: "Soleus", id: 15},
             ],
 			gruposMusculares: [
 				"Arms",
@@ -270,16 +271,16 @@ export default {
 				"All"
 			],
             equipmentList: [
-                "Barbell",
-                "SZ-Bar",
-                "Dumbbell",
-                "Gym mat",
-                "Swiss Ball",
-                "Pull-up bar",
-                "none (bodyweight exercise)",
-                "Bench",
-                "Incline bench",
-                "Kettlebell"
+                {name: "Barbell", id: 1},
+                {name: "SZ-Bar", id: 2},
+                {name: "Dumbbell", id: 3},
+                {name: "Gym mat", id: 4},
+                {name: "Swiss Ball", id: 5},
+                {name: "Pull-up bar", id: 6},
+                {name: "none (bodyweight exercise)", id: 7},
+                {name: "Bench", id: 8},
+                {name: "Incline bench", id: 9},
+                {name: "Kettlebell",  id: 10}
             ],
 		}
 	},
@@ -294,11 +295,9 @@ export default {
 	},
 	methods: {
         fetchItems(){
-          let uri = '/ejercicios';
-          axios.get(uri).then((response) => {
-          this.exercises = response.data;
-          console.log(this.exercises);
-          });
+			axios.get("/ejercicios").then((response) => {
+				this.exercises = response.data;
+			});
         },
 		openNew() {
 			this.exercise = {};
@@ -313,26 +312,6 @@ export default {
 			this.submitted = true;
 			if (this.exercise.name) {
 
-				let musclesIdList = []
-				let muscles_secondaryIdList = []
-				let equipmentIdList = []
-
-				for (let muscle of this.exercise.muscles) {
-					musclesIdList.push(this.muscleList.indexOf(muscle) + 1)
-				}
-
-				for (let muscle of this.exercise.muscles_secondary) {
-					muscles_secondaryIdList.push(this.muscleList.indexOf(muscle) + 1)
-				}
-
-				for (let equipment of this.exercise.equipment) {
-					equipmentIdList.push(this.equipmentList.indexOf(equipment) + 1)
-				}
-
-				this.exercise.muscles = musclesIdList
-				this.exercise.muscles_secondary = muscles_secondaryIdList
-				this.exercise.equipment = equipmentIdList
-
 				// Para el sprint 3
 				// this.exercise.category = gruposMusculares.indexOf(this.exercise.category) + 8
 
@@ -340,7 +319,7 @@ export default {
 					//Actualizar
 					this.exerciseService.actualizarEjercicio(this.exercise)
 					.then((res) => {
-						this.exercises[this.exercises.indexOf(this.exercise)] = res.data
+						this.exercises[this.exercise._id] = res.data
 						this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Actualizado', life: 3000});
 						this.exercise = {};
 					})
@@ -371,9 +350,7 @@ export default {
 		},
 
 		editExercise(exercise) {
-			console.log("Ejercicio: ", exercise)
 			this.exercise = exercise;
-			console.log("this.exercise: ", this.exercise)
 			this.exerciseDialog = true;
 		},
 		confirmDeleteExercise(exercise) {
