@@ -142,4 +142,8 @@ export default class UserService {
             console.log('error' + e);
         });
     }
+
+    savePeso(peso, userId, diaId){
+        return axios.put('/users/' + peso+"/"+ userId+ "/"+diaId);
+    }
 }

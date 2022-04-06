@@ -16,21 +16,21 @@
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsDesayuno + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{carbsDesayuno}}/{{carbohidratos_recomendados}}g</label>
+                                <label class="col-12 text-center">{{Math.round((carbsDesayuno + Number.EPSILON) * 100) / 100}}/{{ Math.round((dia.carbRec/2 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protDesayuno + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{protDesayuno}}/{{proteinas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((protDesayuno + Number.EPSILON) * 100) / 100}}/{{  Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasDesayuno + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{grasasDesayuno}}/{{grasas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((grasasDesayuno + Number.EPSILON) * 100) / 100 }}/{{ Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                         </div>
                         <router-link to="/comidas/Desayuno" class="mt-1">
@@ -64,21 +64,21 @@
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsAlmuerzo + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{carbsAlmuerzo}}/{{carbohidratos_recomendados}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((carbsAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{ Math.round((dia.carbRec/3 + Number.EPSILON) * 100) / 100 }}g</label>
                             </div>
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protAlmuerzo + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{protAlmuerzo}}/{{proteinas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((protAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasAlmuerzo + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{grasasAlmuerzo}}/{{grasas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((grasasAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                         </div>
                         <router-link to="/comidas/Almuerzo" class="mt-1">
@@ -114,21 +114,21 @@
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsCena + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{carbsCena}}/{{carbohidratos_recomendados}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((carbsCena + Number.EPSILON) * 100) / 100  }}/0g</label>
                             </div>
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protCena + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{protCena}}/{{proteinas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((protCena + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasCena + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{grasasCena}}/{{grasas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((grasasCena + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                         </div>
                         <router-link to="/comidas/Cena" class="mt-1">
@@ -213,7 +213,9 @@
                     <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
                             <Tag class="col-12 text-center" value="Peso actual:"  style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
-                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
+                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
+                             @focusout="savePeso()" />
                         </div>
                     </div>
                 
@@ -251,7 +253,9 @@
                 comidasCena: {},
                 arrayPesos: {},
                 pesoObjetivo: 0,
-
+                carbohidratos_recomendados: 0,
+                proteinas_recomendadas: 0,
+                grasas_recomendadas: 0,
                 carbsDesayuno: 0,
                 protDesayuno: 0,
                 grasasDesayuno: 0,
@@ -325,6 +329,7 @@
         },
         methods: {
             obtenerDatosHome(){
+
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
 
@@ -350,6 +355,7 @@
                     var sumCarbs = this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena;
                     var sumProt = this.protDesayuno + this.protAlmuerzo + this.protCena;
                     var sumGrasas = this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena;
+
                     this.pieData = {
                         labels: ['Carbohidratos', 'Proteínas', 'Grasas'],
                         datasets: [
@@ -452,6 +458,8 @@
                         }
                     }
                 });
+            },savePeso(){
+                this.userService.savePeso(this.pesoActual, this.$store.state.userId, this.dia._id);
             }
         }
     }
