@@ -8,24 +8,25 @@
         </div>
 
         <ul class="layout-topbar-menu hidden lg:flex origin-top align-items-center justify-content-left">
-            <li class="mt-3">
+            <li class="mt-3 ml-8">
                 <router-link to="/">
                     <h1 class="color">INICIO</h1>
                 </router-link>
             </li>
-            <li class="mt-3">
+            <li class="mt-3 ml-8">
             <router-link to="/ejercicios">
                 <h1 class="color">EJERCICIOS </h1>
             </router-link>
             </li>
-            <li class="mt-3">
+            <li class="mt-3 ml-8">
             <router-link to="/perfil">
                 <h1 class="color">PERFIL </h1>
             </router-link>
             </li>
-            <button class="p-link layout-topbar-button" v-if="$store.state.username" @click="toggleMenu">
+            <button class="p-link layout-topbar-button ml-8" v-if="$store.state.username" @click="toggleMenu">
             <i class="pi pi-user"></i>
             </button>
+            
             <Menu ref="menu" :model="overlayMenuItems" :popup="true"/>
             
 
