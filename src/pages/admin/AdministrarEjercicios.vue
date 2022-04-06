@@ -29,42 +29,63 @@
 						</div>
 					</template>
                     
-					<Column field="name" header="Nombre" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+					<Column field="name" header="Nombre" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span class="p-column-title">Nombre</span>
 							{{slotProps.data.name}}
 						</template>
 					</Column>
                     
-                    <!-- arreglar imagen
 					<Column header="Imagen" headerStyle="width:20%; min-width:10rem;">
 						<template #body="slotProps">
-							<span class="p-column-title">Imagen</span>
-							<img :src="'images/exercise/' + slotProps.data.image" :alt="slotProps.data.image" class="shadow-2" width="100" />
+							<!-- <img :src="'images/exercise/' + slotProps.data.image" :alt="slotProps.data.image" class="shadow-2" width="100" /> -->
+						
+						<Galleria :value="slotProps.data.images" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="750" containerStyle="max-width: 400px; margin: auto">
+							<template #item="slotProps2">
+								<img :src="slotProps2.item" style="display: block;" class="imagenEjercicio"/>
+							</template>
+						</Galleria>
+
+						<img :src="sinImagen" v-if="slotProps.data.images.length === 0" style="display:block;background-color:#E0E0E0;border-radius:20px;border-style:solid;" 
+							class="imagenEjercicio" containerStyle="max-width: 800px; margin: auto"/>
+						
 						</template>
 					</Column>
-                    -->
 				
-					<Column field="muscle" header="Zona muscular" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+					<Column field="category" header="Zona muscular" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
-							<span class="p-column-title">Zona Muscular</span>
-							{{muscleList[slotProps.data.muscles[0]]}}
-                            <br>{{muscleList[slotProps.data.muscles[1]]}}
-                            <br>{{muscleList[slotProps.data.muscles[2]]}}
+							<span>{{gruposMusculares[slotProps.data.category - 8]}}</span>
 						</template>
 					</Column>
 
-                    <Column field="equipment" header="Material" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+					<Column field="muscle" header="Músculos principales" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
-							<span class="p-column-title">Material</span>
-							{{equipmentList[slotProps.data.equipment[0]]}}
+							<span v-for="muscleId, index of slotProps.data.muscles" :key="muscleId">
+								{{muscleList[muscleId - 1]}}
+								<span v-if="index < slotProps.data.muscles.length - 1">; </span>
+							</span>
 						</template>
 					</Column>
-                    
-					
 
-                    <!-- acciones -->
-					<Column headerStyle="min-width:10rem;">
+					<Column field="muscle" header="Músculos secundarios" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+						<template #body="slotProps">
+							<span v-for="muscleId, index of slotProps.data.muscles_secondary" :key="muscleId">
+								{{muscleList[muscleId - 1]}}
+								<span v-if="index < slotProps.data.muscles_secondary.length - 1">; </span>
+							</span>
+						</template>
+					</Column>
+
+                    <Column field="equipment" header="Material" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+						<template #body="slotProps">
+							<span v-for="equipmentId, index of slotProps.data.equipment" :key="equipmentId">
+								{{equipmentList[equipmentId - 1]}}
+								<span v-if="index < slotProps.data.muscles.length - 1">; </span>
+							</span>
+						</template>
+					</Column>
+
+					<Column header="Acciones" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<Button icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="editExercise(slotProps.data)" />
 							<Button icon="pi pi-trash" class="p-button-rounded p-button-danger mt-2" @click="confirmDeleteExercise(slotProps.data)" />
@@ -89,9 +110,14 @@
 					</div>
 
                     <div class="field">
-                        <label for="muscles" class="mb-3">Zona muscular</label>
+                        <label for="muscles" class="mb-3">Músculo principal</label>
                         <MultiSelect id="muscles" v-model="exercise.muscles" :options="muscleList" placeholder="Escoja músculos">
                             <template #value="slotProps">
+								<span v-for="muscleId, index of slotProps.value" :key="muscleId">
+									{{muscleList[muscleId - 1]}}
+									<span v-if="index < slotProps.value.length - 1">; </span>
+								</span>
+
                                 <template v-if="!slotProps.value || slotProps.value.length === 0">
                                     <div class="p-1">Selecciona músculos</div>
                                 </template>
@@ -105,54 +131,51 @@
                         </MultiSelect>
                     </div>
 
+					<div class="field">
+                        <label for="muscles_secondary" class="mb-3">Músculo secundario</label>
+                        <MultiSelect id="muscles_secondary" v-model="exercise.muscles_secondary" :options="muscleList" placeholder="Escoja músculos">
+                            <template #value="slotProps">
 
-					<div class="field" >
-						<label class="mb-3">Material</label>
-						<div class="formgrid grid">
-							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment1" name="equipment" value=1 v-model="Barbell" />
-                                <label for="equipment1">Barbell</label>
-							</div>
-							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment2" name="equipment" value=2 v-model="SZ_Bar" />
-								<label for="equipment2">SZ-Bar</label>
-							</div>
-							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment3" name="equipment" value=3 v-model="Dumbbell" />
-								<label for="equipment3">Dumbbell</label>
-							</div>
-							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment4" name="equipment" value=4 v-model="Gym_mat" />
-								<label for="equipment4">Gym mat</label>
-							</div>
-                            <div class="field-radiobutton col-6">
-								<RadioButton id="equipment5" name="equipment" value=5 v-model="Swiss_Ball" />
-								<label for="equipment5">Swiss Ball</label>
-							</div>
-                            <div class="field-radiobutton col-6">
-								<RadioButton id="equipment6" name="equipment" value=6 v-model="Pull_up_bar" />
-								<label for="equipment6">Pull-up bar</label>
-							</div>
-                            <div class="field-radiobutton col-6">
-								<RadioButton id="equipment7" name="equipment" value=7 v-model="bodyweight_exercise" />
-								<label for="equipment7">none (bodyweight exercise)</label>
-							</div>
-                            <div class="field-radiobutton col-6">
-								<RadioButton id="equipment8" name="equipment" value=8 v-model="Bench" />
-								<label for="equipment8">Bench</label>
-							</div>
-                            <div class="field-radiobutton col-6">
-								<RadioButton id="equipment9" name="equipment" value=9 v-model="Incline_bench" />
-								<label for="equipment9">Incline bench</label>
-							</div>
-                            <div class="field-radiobutton col-6">
-								<RadioButton id="equipment10" name="equipment" value=10 v-model="Kettlebell" />
-								<label for="equipment10">Kettlebell</label>
-							</div>
-						</div>
-					</div>
+								<span v-for="muscleId, index of slotProps.value" :key="muscleId">
+									{{muscleList[muscleId - 1]}}
+									<span v-if="index < slotProps.value.length - 1">; </span>
+								</span>
+								
+                                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                    <div class="p-1">Selecciona músculos</div>
+                                </template>
+                            </template>
+                            
+                            <template #option="slotProps">
+                                <div class="flex align-items-center">
+                                    <div>{{slotProps.option}}</div>
+                                </div>
+                            </template>
+                        </MultiSelect>
+                    </div>
 
-					
+					<div class="field">
+                        <label for="equipment" class="mb-3">Materiales</label>
+                        <MultiSelect id="equipment" v-model="exercise.equipment" :options="equipmentList" placeholder="Escoja materiales">
+                            <template #value="slotProps">
+								<span v-for="equipmentId, index of slotProps.value" :key="equipmentId">
+									{{equipmentList[equipmentId - 1]}}
+									<span v-if="index < slotProps.value.length - 1">; </span>
+								</span>
+
+                                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                    <div class="p-1">Selecciona materiales</div>
+                                </template>
+                            </template>
+                            
+                            <template #option="slotProps">
+                                <div class="flex align-items-center">
+                                    <div>{{slotProps.option}}</div>
+                                </div>
+                            </template>
+                        </MultiSelect>
+                    </div>
+
 					<template #footer>
 						<Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog"/>
 						<Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveExercise" />
@@ -192,6 +215,8 @@
 import axios from "axios"
 import {FilterMatchMode} from 'primevue/api';
 import ExerciseService from '../../service/ExerciseService';
+import sinImagen from '../../../public/images/sin_imagen_ejercicio.png';
+
 export default {
 	data() {
 		return {
@@ -213,8 +238,8 @@ export default {
 			selectedExercises: null,
 			filters: {},
 			submitted: false,
+			sinImagen: sinImagen,
             muscleList: [
-                "",
                 "Biceps brachii",
                 "Anterior deltoid",
                 "Serratus anterior",
@@ -231,9 +256,17 @@ export default {
                 "Obliquus externus abdominis",
                 "Soleus"
             ],
-
+			gruposMusculares: [
+				"Arms",
+				"Legs",
+				"Abs",
+				"Chest",
+				"Back",
+				"Shoulders",
+				"Calves",
+				"All"
+			],
             equipmentList: [
-                "",
                 "Barbell",
                 "SZ-Bar",
                 "Dumbbell",
@@ -245,7 +278,6 @@ export default {
                 "Incline bench",
                 "Kettlebell"
             ],
-		
 		}
 	},
 	exerciseService: null,
@@ -258,15 +290,13 @@ export default {
         this.fetchItems();
 	},
 	methods: {
-
         fetchItems(){
-          let uri = '/exercise';
-          axios.get(uri).then((response) => {
-          this.exercises = response.data;
-          console.log(this.exercises);
-          });
+			let uri = '/exercise';
+			axios.get(uri).then((response) => {
+			this.exercises = response.data;
+			console.log(this.exercises);
+			});
         },
-
 		openNew() {
 			this.exercise = {};
 			this.submitted = false;
@@ -279,54 +309,43 @@ export default {
 		saveExercise() {
 			this.submitted = true;
 			if (this.exercise.name) {
-			
-			//Establecer equipamiento
-			var equipment = [];
-			if(this.Barbell){
-				equipment.push(this.Barbell);
-			}
-			if(this.SZ_Bar){
-				equipment.push(this.SZ_Bar);
-			}
-			if(this.Dumbbell){
-				equipment.push(this.Dumbbell);
-			}
-			if(this.Gym_mat){
-				equipment.push(this.Gym_mat);
-			}
-			if(this.Swiss_Ball){
-				equipment.push(this.Swiss_Ball);
-			}
-			if(this.Pull_up_bar){
-				equipment.push(this.Pull_up_bar);
-			}
-			if(this.bodyweight_exercise){
-				equipment.push(this.bodyweight_exercise);
-			}
-			if(this.Bench){
-				equipment.push(this.Bench);
-			}
-			if(this.Incline_bench){
-				equipment.push(this.Incline_bench);
-			}
-			if(this.Kettlebell){
-				equipment.push(this.Kettlebell);
-			}
-			if(equipment.length<1){
-				equipment.push('none (bodyweight exercise)');
-			}
-			this.exercise.equipment = equipment;
 
-			//Actualizar
-			if (this.exercise._id) {
-				
-				this.exercise["_id"] = (this.exercise["_id"]).split("").join("");
-				this.exerciseService.actualizarEjercicio(this.exercise);
-				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Actualizado', life: 3000});
+				let musclesIdList = []
+				let muscles_secondaryIdList = []
+				let equipmentIdList = []
+
+				for (let muscle of this.exercise.muscles) {
+					musclesIdList.push(this.muscleList.indexOf(muscle) + 1)
 				}
 
-				//Crear
-				else {
+				for (let muscle of this.exercise.muscles_secondary) {
+					muscles_secondaryIdList.push(this.muscleList.indexOf(muscle) + 1)
+				}
+
+				for (let equipment of this.exercise.equipment) {
+					equipmentIdList.push(this.equipmentList.indexOf(equipment) + 1)
+				}
+
+				this.exercise.muscles = musclesIdList
+				this.exercise.muscles_secondary = muscles_secondaryIdList
+				this.exercise.equipment = equipmentIdList
+
+				// Para el sprint 3
+				// this.exercise.category = gruposMusculares.indexOf(this.exercise.category) + 8
+
+				if (this.exercise._id) {
+					//Actualizar
+					this.exerciseService.actualizarEjercicio(this.exercise)
+					.then((res) => {
+						this.exercises[this.exercises.indexOf(this.exercise)] = res.data
+						this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Actualizado', life: 3000});
+						this.exercise = {};
+					})
+					.catch(error => {
+						console.log("Error: ", error)
+					});
+				} else {
+					//Crear
 					this.exercise.images = [];
 					this.exercise_base = 0;
 					this.exercise.status = "";
@@ -336,17 +355,22 @@ export default {
 					this.exercise.license_author = "";
 					this.exercise.variations = [];
 					this.exercise.status = "";
-					console.log(this.exercise);
-					this.exerciseService.guardarEjercicio(this.exercise);
-					this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Creado', life: 3000});
+
+					this.exerciseService.guardarEjercicio(this.exercise).then((res) => {
+						this.exercises.push(res.data)
+						this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Creado', life: 3000});
+						this.exercise = {};
+					});
 				}
+
 				this.exerciseDialog = false;
-				this.exercise = {};
 			}
 		},
 
 		editExercise(exercise) {
-			this.exercise = {...exercise};
+			console.log("Ejercicio: ", exercise)
+			this.exercise = exercise;
+			console.log("this.exercise: ", this.exercise)
 			this.exerciseDialog = true;
 		},
 		confirmDeleteExercise(exercise) {
