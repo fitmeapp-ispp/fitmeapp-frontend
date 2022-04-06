@@ -192,6 +192,9 @@
 				</Dialog>
             </div>
         </div>
+        <div class="col-12">
+            <Button label="Volver" class="p-button-success col-12" @click="volver" />
+        </div>  
     </div>
 </template>
 
@@ -354,7 +357,10 @@ export default {
         },
         exportCSV() {
             this.$refs.dt.exportCSV();
-        }
+        },
+        volver(){
+			this.$router.push('/administrar')
+		}
     }
 };
 </script>
