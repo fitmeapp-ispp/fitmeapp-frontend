@@ -3,8 +3,7 @@
 		<div class="col-12">
 
 			<div class="card">
-				<h4 class="m-0">ADMINISTRAR USUARIOS</h4>
-				<br>
+				<h4>ADMINISTRAR USUARIOS</h4>
 				<Toast/>
 				
 				<Toolbar class="mb-4">
@@ -56,13 +55,6 @@
 					</template>
 				</Column>
                     
-
-		<Column field="isTestUser" header="Usuario Piloto" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-					<template #body="slotProps">
-						<span class="p-column-title">Usuario Piloto</span>
-						{{slotProps.data.isTestUser}}
-					</template>
-				</Column>
 
 				<!-- acciones -->
 				<Column headerStyle="min-width:10rem;">
@@ -118,8 +110,8 @@
 				</div>
 
 		<div class="field">
-					<label for="fecha">Fecha</label>
-					<InputText id="fecha" v-model="user.fecha"/>
+					<label for="fechaNacimiento">Fecha de nacimiento</label>
+					<InputText id="fecha" v-model="user.fechaNacimiento"/>
 				</div>
 
 		<div class="field">
@@ -258,11 +250,14 @@ export default {
 	},
 	methods: {
         fetchItems(){
-          let uri = '/users';
-          axios.get(uri).then((response) => {
-          this.users = response.data;
-          //console.log(this.users);
-          });
+			axios.get("/users", {
+				params: {
+					userId: this.$store.state.userId
+				}
+			})
+			.then((response) => {
+				this.users = response.data;
+			});
         },
 		openNew() {
 			this.user = {};
