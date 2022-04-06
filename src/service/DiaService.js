@@ -27,7 +27,7 @@ export default class DiaService{
     }
 
     getPesosSemana(username, fecha){
-        return axios.get(`/dia/${username}/${fecha}/pesos`, {
+        return axios.get(`/dia/pesosDeLaSemana/${username}/${fecha}`, {
             params:{
                 username: username
             }

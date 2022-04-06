@@ -157,10 +157,28 @@
         <!-- PARTE DERECHA -->
        <div class="col-12 lg:col-6">
             <div class="grid card col-12  justify-content-between">
-                <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
-                    <Knob class="grid justify-content-center align-item-center mt-1 text-fluid" id="graficoPasos" :strokeWidth="5"  v-model="porcentajePasos" :valueTemplate="pasos + ' pasos'" :size="250" valueColor="#1da750" />
+                <div class="col-12 md:col-5" >
+                    <div class="grid justify-content-around align-items-center">
+                        <div class="text-center mb-5" style="height:40%;">
+                            <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
+                        </div>
+                        <div class="text-center mb-5" style="height:30%;">
+                            <div class="surface-300 border-round mb-5 overflow-hidden w-14rem lg:w20-rem" style="height:20px">
+                                <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
+                            </div>
+                        </div>
+                        <div class="text-center mb-5" style="height:30%;">
+                            <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
+                        </div>
+                    </div>
                 </div>
+                <!-- <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
+                    <div class="surface-300 border-round mb-2 overflow-hidden w-10rem lg:w-8rem" style="height:20px">
+                                    <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
+                    </div>
+                    <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
+                </div> -->
 
                 <div class= "grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenes"> <!--Si no hay ejercicios realizados no muestra esta sección-->
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
@@ -187,7 +205,7 @@
             <div class="card grid card col-12 p-fluid">
                 <div class="card col-12 md:col-12">
                     <div class="text-center">
-                        <Tag class="col-12 text-center" value="Peso objetivo: 74.5" style="font-size:2.75rem; font-weight:800; background:#1da750;"></Tag>
+                        <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Peso objetivo: {{pesoObjetivo}} kg</Tag>
                     </div>
                 </div>
                 
@@ -195,7 +213,7 @@
                     <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
                             <Tag class="col-12 text-center" value="Peso actual:"  style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
-                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></InputNumber>
+                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
                         </div>
                     </div>
                 
@@ -219,6 +237,7 @@
 
 <script>
     import DiaService from "../service/DiaService";
+    import UserService from "../service/UserService";
 
     export default {
         data() {
@@ -230,6 +249,8 @@
                 comidasDesayuno: {},
                 comidasAlmuerzo: {},
                 comidasCena: {},
+                arrayPesos: {},
+                pesoObjetivo: 0,
 
                 carbsDesayuno: 0,
                 protDesayuno: 0,
@@ -242,7 +263,6 @@
                 grasasCena: 0,
                 
                 pasosRecomendados:5000,
-                porcentajePasos:71,
                 pasos: 0,
 
                 pesoActual: 76.5,
@@ -283,44 +303,25 @@
                         }
                     }
                 },
-                lineData: { //CAMBIAR
-                    labels: ['04/03', '05/03', '06/03', '07/03', '08/03', '09/03', 'Ayer'],
-                    datasets: [
-                        {
-                            label: 'Peso registrado',
-                            data: [79.0, 78.0, 78.0, 77.5, 77.0, 77.0, 76.5],
-                            fill: false,
-                            backgroundColor: '#2f4860',
-                            borderColor: '#2f4860',
-                            tension: .4
-                        },
-                        {
-                            label: 'Peso objetivo',
-                            data: [74.5, 74.5, 74.5, 74.5, 74.5, 74.5, 74.5],
-                            fill: false,
-                            backgroundColor: '#00bb7e',
-                            borderColor: '#00bb7e',
-                            tension: .4
-                        }
-                    ],
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                },
+                lineData: {},
+                
                 lineOptions: null,
-                diaService: null
+                diaService: null,
+                userService: null
             }
         },
         created(){
             this.diaService = new DiaService();
+            this.userService = new UserService();
         },
         mounted(){ // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
             //this.pasos = this.pasosRecomendados * this.porcentajePasos / 100;
+            this.getPesoObjetivo();
             this.obtenerDatosHome();
             this.obtenerDesayuno();
             this.obtenerAlmuerzo();
             this.obtenerCena();
+            this.obtenerPesos();
         },
         methods: {
             obtenerDatosHome(){
@@ -360,6 +361,14 @@
                         ]
                     }
                 });
+            },
+
+            getPesoObjetivo(){
+                this.user = this.$store.state.username;
+
+                this.userService.getUser(this.user).then(data =>{
+                    this.pesoObjetivo = data.objetivo_peso;
+                })
             },
 
             obtenerDesayuno(){
@@ -408,8 +417,42 @@
                     this.imagenesCena = arrayAux;
                     console.log(arrayAux);
                 })
-            }
+            },
 
+            obtenerPesos(){
+                this.user = this.$store.state.username;
+                this.fecha = this.$store.state.fechaHome;
+
+                this.diaService.getPesosSemana(this.user,this.fecha).then(data =>{
+
+                    this.lineData = {
+                            
+                        labels: data.dias,
+                        datasets: [
+                            {
+                                label: 'Peso registrado',
+                                data: data.pesos,
+                                fill: false,
+                                backgroundColor: '#2f4860',
+                                borderColor: '#2f4860',
+                                tension: .4
+                            },
+                            {
+                                label: 'Peso objetivo',
+                                data: Array(data.dias.length).fill(this.pesoObjetivo),
+                                fill: false,
+                                backgroundColor: '#00bb7e',
+                                borderColor: '#00bb7e',
+                                tension: .4
+                            }
+                        ],
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    }
+                });
+            }
         }
     }
 </script>
