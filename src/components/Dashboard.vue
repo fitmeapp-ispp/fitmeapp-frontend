@@ -156,8 +156,8 @@
         </div>
         <!-- PARTE DERECHA -->
        <div class="col-12 lg:col-6">
-            <div class="grid card col-12  justify-content-center">
-               <!--  <div class="col-12 md:col-5" >
+         <!--   <div class="grid card col-12  justify-content-center">
+                <div class="col-12 md:col-5" >
                     <div class="grid justify-content-around align-items-center">
                         <div class="text-center mb-5" style="height:40%;">
                             <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
@@ -178,9 +178,9 @@
                                     <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
                     </div>
                     <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
-                </div> -->
+                </div> 
 
-                <div class= "grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenes"> <!--Si no hay ejercicios realizados no muestra esta sección-->
+                <div class= "grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenes"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="200px" class="grid justify-content-center align-item-center mt-2 ml-1">
                         <template #item="slotProps">
@@ -200,7 +200,7 @@
                         <Button label="Añadir ejercicio" class="p-button-outlined p-button-secondary col-12"/>
                     </router-link>
                 </div>
-            </div>
+            </div> -->
 
             <div class="card grid card col-12 p-fluid">
                 <div class="card col-12 md:col-12">
