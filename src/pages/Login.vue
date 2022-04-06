@@ -114,21 +114,7 @@ export default {
             })    
         },
         signUp() {
-            this.submitted = true
-            this.$store.dispatch("saveUsername", this.username);
-            this.$store.dispatch("savePassword", this.password);
-            
-            axios.post('/auth/register', {username: this.username, password: this.password})
-            .then((response ) => {
-                this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
-                this.$store.dispatch("saveUserId", response.data.userId);
-                this.$store.dispatch("logIn");
-                window.location.href = '/';
-            }).catch(err => {
-                console.log("Error: ", err)
-                this.error = err.response.data
-            })    
-            this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
+            this.$router.push({name:'register'});
         }
     },
 }
