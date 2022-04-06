@@ -283,6 +283,7 @@ export default {
             this.alimento["url"]="";
             let data = {...this.alimento};
             axios.post("/alimentos", data);
+            this.dataviewValue.push(this.data);
             this.alimentoDialog = false;
             this.alimento={};
             this.alergenosSel= [];
