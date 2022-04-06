@@ -187,6 +187,9 @@
 				</Dialog>
 			</div>
 		</div>
+		<div class="col-12">
+            <Button label="Volver" class="p-button-success col-12" @click="volver" />
+        </div>  
 	</div>
 
 </template>
@@ -253,7 +256,7 @@ export default {
 	methods: {
 
         fetchItems(){
-          let uri = '/exercise';
+          let uri = '/ejercicios';
           axios.get(uri).then((response) => {
           this.exercises = response.data;
           console.log(this.exercises);
@@ -343,7 +346,10 @@ export default {
             this.filters = {
                 'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
-        }
+        },
+		volver(){
+			this.$router.push('/administrar')
+		}
 	}
 }
 </script>

@@ -94,6 +94,9 @@
 				</Dialog>
             </div>
         </div>
+        <div class="col-12">
+            <Button label="Volver" class="p-button-success col-12" @click="volver" />
+        </div>  
     </div>
 </template>
 
@@ -185,6 +188,9 @@ export default {
         this.recipe = {};
         this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
     },
+    volver(){
+        this.$router.push('/administrar')
+    }
   },
 };
 </script>

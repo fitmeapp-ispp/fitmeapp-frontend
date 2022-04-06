@@ -156,8 +156,8 @@
         </div>
         <!-- PARTE DERECHA -->
        <div class="col-12 lg:col-6">
-            <div class="grid card col-12  justify-content-between">
-                <div class="col-12 md:col-5" >
+            <div class="grid card col-12  justify-content-center">
+               <!--  <div class="col-12 md:col-5" >
                     <div class="grid justify-content-around align-items-center">
                         <div class="text-center mb-5" style="height:40%;">
                             <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
@@ -172,7 +172,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
+                <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
                     <div class="surface-300 border-round mb-2 overflow-hidden w-10rem lg:w-8rem" style="height:20px">
                                     <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
