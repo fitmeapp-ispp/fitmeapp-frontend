@@ -14,6 +14,16 @@ export default class UserService {
         return axios.post('/users/', user);
     }
 
+    
+    getSuscripcion(userId){
+        return axios.get(`/users/suscripcion/${userId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+
     getUser(username){
         return axios.get(`/users/${username}`)
         .then((response) => response.data)
@@ -101,15 +111,6 @@ export default class UserService {
         }
 
     }
-
-    getSuscripcion(userId){
-        axios.get(`/users/suscripcion/${userId}`)
-        .then((response) => response.data)
-        .catch((e)=>{
-            console.log('error' + e);
-        });
-    }
-
     getFavoritos(userId){
         return axios.get(`/users/favoritos/${userId}`)
         .then((response) => response.data)

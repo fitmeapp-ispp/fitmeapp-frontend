@@ -140,7 +140,7 @@ export default {
     },
     watch: {   
         $route() {
-            if (this.$route.fullPath === "/login") {
+            if (this.$route.fullPath === "/login" || this.$route.fullPath === "/register") {
                 document.getElementById("navbar").style = "display:none; position: absolute"
             } else {
                 document.getElementById("navbar").style = ""
