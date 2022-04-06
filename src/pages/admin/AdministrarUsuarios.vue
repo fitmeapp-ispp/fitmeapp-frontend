@@ -77,12 +77,12 @@
 			<Dialog v-model:visible="userDialog" :style="{width: '500px'}" header="Detalles de Usuario" :modal="true" class="p-fluid">					
 		<div class="field">
 					<label for="name">Nombre</label>
-					<InputText id="name" v-model.trim="user.name"/>
+					<InputText id="name" v-model.trim="user.nombre"/>
 				</div>
 
 		<div class="field">
 					<label for="familyName">Apellidos</label>
-					<InputText id="familyName" v-model.trim="user.familyName"/>
+					<InputText id="familyName" v-model.trim="user.apellidos"/>
 				</div>
 
 				<div class="field">
@@ -104,7 +104,7 @@
 
 		<div class="field">
 					<label for="phoneNumber">Teléfono</label>
-					<InputText id="phoneNumber" v-model="user.phoneNumber"/>
+					<InputNumber id="phoneNumber" v-model="user.telefono"/>
 				</div>
 
 		<div class="field">
@@ -124,7 +124,7 @@
 
 		<div class="field">
 					<label for="pasos">Pasos</label>
-					<InputText id="pasos" v-model="user.pasos"/>
+					<InputNumber id="pasos" v-model="user.pasos"/>
 				</div>
 
 		<div class="field">
@@ -134,12 +134,12 @@
 
 		<div class="field">
 					<label for="height">Altura</label>
-					<InputText id="height" v-model="user.height"/>
+					<InputNumber id="height" v-model="user.altura"/>
 				</div>
 
 		<div class="field">
 					<label for="currentWeight">Peso Inicial</label>
-					<InputText id="currentWeight" v-model="user.currentWeight"/>
+					<InputNumber id="currentWeight" v-model="user.peso_actual"/>
 				</div>
 
 		<div class="field">
@@ -149,12 +149,12 @@
 
 		<div class="field">
 					<label for="goalWeight">Peso Objetivo</label>
-					<InputText id="goalWeight" v-model="user.goalWeight"/>
+					<InputNumber id="goalWeight" v-model="user.objetivo_peso"/>
 				</div>
 
 		<div class="field">
 					<label for="objetivo_semanal">Objetivo Semanal</label>
-					<InputText id="objetivo_semanal" v-model="user.objetivo_semanal"/>
+					<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal"/>
 				</div>
 
 		<div class="field">
@@ -174,22 +174,22 @@
 
 		<div class="field">
 					<label for="carbohidratos_recomendados">Carbohidratos Recomendados</label>
-					<InputText id="carbohidratos_recomendados" v-model="user.carbohidratos_recomendados"/>
+					<InputNumber id="carbohidratos_recomendados" v-model="user.carbohidratos_recomendados"/>
 				</div>
 
 		<div class="field">
 					<label for="grasas_recomendadas">Grasas Recomendadas</label>
-					<InputText id="grasas_recomendadas" v-model="user.grasas_recomendadas"/>
+					<InputNumber id="grasas_recomendadas" v-model="user.grasas_recomendadas"/>
 				</div>
 
 		<div class="field">
 					<label for="proteinas_recomendadas">Proteínas Recomendadas</label>
-					<InputText id="proteinas_recomendadas" v-model="user.proteinas_recomendadas"/>
+					<InputNumber id="proteinas_recomendadas" v-model="user.proteinas_recomendadas"/>
 				</div>
 
 		<div class="field">
 					<label for="kcal_recomendadas">Kcal Recomendadas</label>
-					<InputText id="kcal_recomendadas" v-model="user.kcal_recomendadas"/>
+					<InputNumber id="kcal_recomendadas" v-model="user.kcal_recomendadas"/>
 				</div>
 
 
