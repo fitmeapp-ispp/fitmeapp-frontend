@@ -2,8 +2,16 @@ import axios from 'axios';
 
 export default class AlimentoService {
 
-    getAlimentos(){
-        return axios.get('/alimentos')
+    getAlimentos(lazyParams, buscador){
+        
+        return axios.get('/alimentos', {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters
+            }
+        })
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -18,20 +26,51 @@ export default class AlimentoService {
         });
     }
 
-    getNoAlergeno(alergeno) {
-		return axios.request(`/alimentos/alergenos/`+alergeno)
+    getCreados(username,lazyParams, buscador) {
+		return axios.get(`/alimentos/creados/${username}`, {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters
+            }
+        })
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
     }
 
-    getCreados(username) {
-		return axios.get(`/alimentos/creados/`+username)
+    getRecientes(userId,lazyParams, buscador){
+        return axios.get(`/alimentos/recientes/${userId}`, {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters
+            }
+        })
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
+    }
+
+    getFavoritos(username,lazyParams, buscador, alimentoIds){
+        return axios.get(`/alimentos/favoritos/${username}`, {
+            params:{
+                pagina: lazyParams.pagina,
+                ordenar: lazyParams.sort,
+                buscador: buscador,
+                alergeno: lazyParams.filters,
+                alimentoIds: alimentoIds
+            }
+        })
+        .then((response) => 
+				response.data)
+                .catch((e)=>{
+                    console.log('error' + e);
+                });
     }
 
     getComida(tipo,fecha,username){
@@ -50,36 +89,9 @@ export default class AlimentoService {
             console.log('error' + e);
         });
     }
- 
-    getFavoritos(username){
-        return axios.get(`/alimentos/favoritos/`+ username)
-        .then((response) => 
-				response.data)
-                .catch((e)=>{
-                    console.log('error' + e);
-                });
-    }
 
     getUserKcak(username){
-        return axios.get(`/users/`+ username)
-        .then((response) => 
-				response.data)
-                .catch((e)=>{
-                    console.log('error' + e);
-                });
-    }
-
-    getBuscador(valor){
-        return axios.get(`/alimentos/buscador/`+ valor)
-        .then((response) => 
-				response.data)
-                .catch((e)=>{
-                    console.log('error' + e);
-                });
-    }
-
-    getRecientes(valor){
-        return axios.get(`/alimentos/recientes/`+ valor)
+        return axios.get(`/users/${username}`)
         .then((response) => 
 				response.data)
                 .catch((e)=>{
@@ -92,19 +104,22 @@ export default class AlimentoService {
     }
 
     guardarAlimento(alimento){
-        return axios.post('/alimentos/', alimento);
+        return axios.post('/alimentos', alimento).then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
     }
 
-    deleteFromCarrusel(alimentoId, tipo, fecha,username){
-        return axios.delete(`/comidas/carrusel/${alimentoId}/${tipo}/${fecha}/${username}`)
+    deleteFromCarrusel(consumicionId, tipo, diaId){
+        return axios.delete(`/comidas/carrusel/${consumicionId}/${diaId}/${tipo}`)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
     }
 
-    anyadirACarrusel(alimentoId,cantidad, body){
-        return axios.post(`/comidas/add/${alimentoId}/${cantidad}`,body)
+    anyadirACarrusel(alimentoId,cantidad, diaId,tipo){
+        return axios.post(`/comidas/add/${alimentoId}/${cantidad}/${diaId}/${tipo}`,)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -114,6 +129,33 @@ export default class AlimentoService {
     nuevaConsumicion(alimentoId, username){
         return axios.post(`/alimentos/newConsumption/${alimentoId}/${username}`)
         .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    crearConsumicion(){
+        return axios.post(`/consumicion`, {usuario: "6244d94635c17b47d527f178", alimento: "623240e3997148f56622accd", cantidad: 100})
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    crearDia(){
+        return axios.post(`/dia`, {usuario: "6244d94635c17b47d527f178", pesoActual: 60, pasosObjetivo: 10000,
+         consumicionesDesayuno: ["624742a89bdea6b9c0ff554d"],
+         consumicionesAlmuerzo: [], consumicionesCena: [], kcalRec:640, proteinasRec:100,carbRec:100,grasasRec:100})
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    getDia(tipo){
+        return axios.get(`/comidas/${tipo}/`+"2022-04-01T19:01:28.616+00:00"+"/6244d94635c17b47d527f178")
+        .then((response) => 
+			response.data)
         .catch((e)=>{
             console.log('error' + e);
         });

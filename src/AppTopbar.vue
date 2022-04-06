@@ -3,21 +3,17 @@
     <div class="layout-topbar bg-green-600">
             <router-link to="/" class="layout-topbar-logo">
             <img alt="Logo" :src="topbarImage()" />
-            <span>FitMeApp</span>
+            <span class="color">FitMeApp</span>
             </router-link>
-        <div class="hidden lg:flex ">
-            <span style="font-size: 2em; padding-left: 5%"></span>
+        <div class="hidden lg:flex ml-auto">
             <router-link to="/">
-                <H1 class="color">INICIO</H1>
-            </router-link>
-            <router-link to="/comidas">
-                <H1 class="color">COMIDAS</H1>
+                <H1 class="color ml-8">INICIO</H1>
             </router-link>
             <router-link to="/ejercicios">
-                <H1 class="color">EJERCICIOS </H1>
+                <H1 class="color ml-8">EJERCICIOS</H1>
             </router-link>
             <router-link to="/perfil">
-                <H1 class="color">PERFIL </H1>
+                <H1 class="color ml-8">PERFIL</H1>
             </router-link>
         </div>
 
@@ -28,14 +24,8 @@
  
     
         <Sidebar v-model:visible="visibleLeft" :baseZIndex="1000">
-            <br>
-            <br>
-            <br>
             <router-link to="/" @click="visibleLeft=false">
                 <H1 class="color">INICIO</H1>
-            </router-link>
-            <router-link to="/comidas" @click="visibleLeft=false">
-                <H1 class="color">COMIDAS</H1>
             </router-link>
             <router-link to="/ejercicios" @click="visibleLeft=false">
                 <H1 class="color">EJERCICIOS </H1>
@@ -78,14 +68,21 @@ export default {
 }
 </script>
 <style>
-    /* font-size: 2em; margin:15px; */
     H1.color{
         padding: 2%;
-        margin:15px;
+        margin-top: 0.5em;
         color:white;
+        transition: 0.5s;
     }
     H1.color:hover {
         color: black;
+    }
+    span.color{
+        transition: 0.5s;
+        color:white;
+    }
+    span.color:hover{
+        color:black;
     }
     .p-sidebar-left {
         
