@@ -9,6 +9,7 @@ import Comidas from './components/Comidas.vue';
 import Perfil from './components/Perfil.vue';
 const Login = () => import("./pages/Login.vue");
 import store from './store'
+import axios from 'axios';
 
 const routes = [
     {
@@ -109,28 +110,38 @@ const router = createRouter({
     routes
   })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const adminPages = ['/administrar','/administrar/usuarios','/administrar/ejercicios','/administrar/recetas','/administrar/alimentos'];
     const publicPages = ['/login','/register'];
-  
+
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
     const adminRequired = adminPages.includes(to.path);
 
-    // trying to access a restricted page + not logged in
-    // redirect to login page
-    if (authRequired && !loggedIn) {
+    if (!authRequired) {
+        next()
+    } else if (authRequired && !loggedIn || adminRequired && !loggedIn) {
         next('/login');
     } else {
-        next();
+        let isAdmin = await axios.get("users/isAdmin", {
+            params: {
+                userId: store.state.userId
+            }
+        })
+
+        if (isAdmin.data === true && !adminRequired) {
+            next("/administrar")
+        } else if (isAdmin.data === true && adminRequired) {
+            next()
+        } else {
+            if (adminRequired) {
+                next("/")
+            } else {
+                next()
+            }
+        }
     }
 
-    //darle un par de vueltas
-    if (adminRequired && !loggedIn) {
-        next('/login');
-    } else {
-        next();
-    }
 });
 
 export default router;
