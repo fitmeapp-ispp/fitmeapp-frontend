@@ -34,7 +34,7 @@
                             <!-- <a class="font-medium no-underline ml-2 text-right cursor-pointer text-900">¿Has olvidado la contraseña?</a> -->
                         </div>
 
-                        <small class="p-error" v-if="submitted && error.message === 'Missing credentials'">Algunos campos están en blanco!</small>
+                        <small class="p-error" v-if="submitted && error.message === 'Missing credentials'">¡Algunos campos están en blanco!</small>
 
                         <div class="flex justify-content-around mt-5">
                         <Button type="button" icon="pi pi-check" label="Iniciar sesión" class="p-3 text-xl text-900 col-5" 
