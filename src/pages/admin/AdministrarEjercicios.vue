@@ -108,47 +108,48 @@
                         </MultiSelect>
                     </div>
 
+
 					<div class="field" >
 						<label class="mb-3">Material</label>
 						<div class="formgrid grid">
 							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment1" name="equipment" value=1 v-model="Barbell" />
-								<label for="equipment2">Barbell</label>
+								<RadioButton id="equipment1" name="equipment" value="Barbell" v-model="exercise.equipment" />
+								<label for="equipment1">Barbell</label>
 							</div>
 							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment2" name="equipment" value=2 v-model="SZ_Bar" />
+								<RadioButton id="equipment2" name="equipment" value="SZ-Bar" v-model="exercise.equipment" />
 								<label for="equipment2">SZ-Bar</label>
 							</div>
 							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment3" name="equipment" value=3 v-model="Dumbbell" />
+								<RadioButton id="equipment3" name="equipment" value="Dumbbell" v-model="exercise.equipment" />
 								<label for="equipment3">Dumbbell</label>
 							</div>
 							<div class="field-radiobutton col-6">
-								<RadioButton id="equipment4" name="equipment" value=4 v-model="Gym_mat" />
+								<RadioButton id="equipment4" name="equipment" value="Gym mat" v-model="exercise.equipment" />
 								<label for="equipment4">Gym mat</label>
 							</div>
                             <div class="field-radiobutton col-6">
-								<RadioButton id="equipment5" name="equipment" value=5 v-model="Swiss_Ball" />
+								<RadioButton id="equipment5" name="equipment" value="Swiss Ball" v-model="exercise.equipment" />
 								<label for="equipment5">Swiss Ball</label>
 							</div>
                             <div class="field-radiobutton col-6">
-								<RadioButton id="equipment6" name="equipment" value=6 v-model="Pull_up_bar" />
+								<RadioButton id="equipment6" name="equipment" value="Pull-up bar" v-model="exercise.equipment" />
 								<label for="equipment6">Pull-up bar</label>
 							</div>
                             <div class="field-radiobutton col-6">
-								<RadioButton id="equipment7" name="equipment" value=7 v-model="bodyweight_exercise" />
+								<RadioButton id="equipment7" name="equipment" value="none (bodyweight exercise)" v-model="exercise.equipment" />
 								<label for="equipment7">none (bodyweight exercise)</label>
 							</div>
                             <div class="field-radiobutton col-6">
-								<RadioButton id="equipment8" name="equipment" value=8 v-model="Bench" />
+								<RadioButton id="equipment8" name="equipment" value="Bench" v-model="exercise.equipment" />
 								<label for="equipment8">Bench</label>
 							</div>
                             <div class="field-radiobutton col-6">
-								<RadioButton id="equipment9" name="equipment" value=9 v-model="Incline_bench" />
+								<RadioButton id="equipment9" name="equipment" value="Incline bench" v-model="exercise.equipment" />
 								<label for="equipment9">Incline bench</label>
 							</div>
                             <div class="field-radiobutton col-6">
-								<RadioButton id="equipment10" name="equipment" value=10 v-model="Kettlebell" />
+								<RadioButton id="equipment10" name="equipment" value="Kettlebell" v-model="exercise.equipment" />
 								<label for="equipment10">Kettlebell</label>
 							</div>
 						</div>
@@ -197,16 +198,6 @@ import ExerciseService from '../../service/ExerciseService';
 export default {
 	data() {
 		return {
-			Barbell: null,
-			SZ_Bar: null,
-			Dumbbell: null,
-			Gym_mat: null,
-			Swiss_Ball: null,
-			Pull_up_bar: null,
-			bodyweight_exercise: null,
-			Bench: null,
-			Incline_bench: null,
-			Kettlebell: null,
 			exercises: null,
 			exerciseDialog: false,
 			deleteExerciseDialog: false,
@@ -262,10 +253,10 @@ export default {
 	methods: {
 
         fetchItems(){
-          let uri = '/ejercicios';
+          let uri = '/exercise';
           axios.get(uri).then((response) => {
           this.exercises = response.data;
-          //console.log(this.exercises);
+          console.log(this.exercises);
           });
         },
 
@@ -280,54 +271,29 @@ export default {
 		},
 		saveExercise() {
 			this.submitted = true;
-			if (this.exercise.name.trim()) {
+			if (this.exercise.name) {
 			if (this.exercise._id) {
 				
 				this.exercise.equipment = this.exercise.equipment.value ? this.exercise.equipment.value: this.exercise.equipment;
-				this.exercise[this.findIndexById(this.exercise._id)] = this.exercise;
-				
+				let data = {...this.exercise};
+				let id = (this.exercise["_id"]).split("").join("");
+				axios.put("/exercise/"+id, data);
 				this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Actualizado', life: 3000});
 				}
 				else {
 					//this.exercise.image = 'exercise-placeholder.svg';
-					//this.exercise.push(this.exercise);
-					var equipment = [];
-					if(this.Barbell){
-						equipment.push(this.Barbell);
-					}
-					if(this.SZ_Bar){
-						equipment.push(this.SZ_Bar);
-					}
-					if(this.Dumbbell){
-						equipment.push(this.Dumbbell);
-					}
-					if(this.Gym_mat){
-						equipment.push(this.Gym_mat);
-					}
-					if(this.Swiss_Ball){
-						equipment.push(this.Swiss_Ball);
-					}
-					if(this.Pull_up_bar){
-						equipment.push(this.Pull_up_bar);
-					}
-					if(this.bodyweight_exercise){
-						equipment.push(this.bodyweight_exercise);
-					}
-					if(this.Bench){
-						equipment.push(this.Bench);
-					}
-					if(this.Incline_bench){
-						equipment.push(this.Incline_bench);
-					}
-					if(this.Kettlebell){
-						equipment.push(this.Kettlebell);
-					}
-					if(equipment.length<1){
-						equipment.push('none (bodyweight exercise)');
-					}
-					this.exercise.equipment = equipment;
-					console.log(this.exercise);
-					this.exerciseService.guardarEjercicio(this.exercise);
+					this.exercise.equipment = this.exercise.equipment ? this.exercise.equipment.value : 'none (bodyweight exercise)';
+					this.exercises.push(this.exercise);
+					let data = {...this.exercise};
+					data["images"] = [];
+					data["exercise_base"] = 0;
+					data["status"] = "";
+					data["creation_date"] = "";
+					data["language"] = 0;
+					data["license"] = 0;
+					data["license_author"] = "";
+					data["variations"] = [];
+					axios.post("/exercise", data);
 					this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio Creado', life: 3000});
 				}
 				this.exerciseDialog = false;
@@ -344,7 +310,9 @@ export default {
 			this.deleteExerciseDialog = true;
 		},
 		deleteExercise() {
+			let id = this.exercise._id.split('').join(''); //Clone string
 			this.exercises = this.exercises.filter(val => val._id !== this.exercise._id);
+			axios.delete("/exercise/"+id);
 			this.deleteExerciseDialog = false;
 			this.exercise = {};
 			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio eliminado', life: 3000});
