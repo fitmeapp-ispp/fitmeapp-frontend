@@ -11,7 +11,6 @@
 					<template v-slot:start>
 						<div class="my-2">
 							<Button label="Añadir" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-							<Button label="Eliminar" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedExercises || !selectedExercises.length" />
 						</div>
 					</template>
 					
@@ -29,8 +28,6 @@
                             </span>
 						</div>
 					</template>
-
-					<Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
                     
 					<Column field="name" header="Nombre" :sortable="true" headerStyle="width:20%; min-width:10rem;">
 						<template #body="slotProps">
