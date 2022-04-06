@@ -8,6 +8,7 @@
             <div class="col-12 field m-0">
               <h1 class="text-center" style="color:#256029;">Ejercicios</h1>
             </div>
+            <!--
             <div class="field formgroup-inline justify-content-center align-items-center m-0">
               <div class="field mt-2">
                 <span class="p-input-icon-left">
@@ -32,7 +33,7 @@
                   </template>
                 </MultiSelect>
               </div>
-            </div>
+            </div> -->
           </div>
         </template>
         <template #grid="slotProps">
