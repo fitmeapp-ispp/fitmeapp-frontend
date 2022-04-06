@@ -13,7 +13,7 @@
                             </div>
                         </template>
                     </Toolbar>
-                    
+
                     <DataTable ref="dt" :value="dataviewValue" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
 							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} alimentos" responsiveLayout="scroll">
@@ -94,7 +94,7 @@
                 <Dialog v-model:visible="alimentoDialog" :style="{width: '500px'}" header="Detalles de Receta" :modal="true" class="p-fluid">					
                     <div class="field">
 						<label for="nombre">Nombre*</label>
-						<InputText id="nombre" v-model.trim="alimento.nombre" required="true" autofocus :class="{'p-invalid': submitted && errorNombre}" />
+						<InputText id="nombre" v-model="alimento.nombre" required="true" autofocus :class="{'p-invalid': submitted && errorNombre}" />
 						<small class="p-invalid" v-if="this.submitted && errorNombre">{{this.errorNombre}}</small>
                     </div>
                     <div class="field">
@@ -235,122 +235,126 @@ export default {
     mounted() {
         this.fetchItems();
     },
-    
     methods: {
-    fetchItems(){
-        let uri = '/alimentos';
-        axios.get(uri).then((response) => {
-        this.dataviewValue = response.data;
-            console.log(this.dataviewValue);
-        });
-    },
-    initFilters() {
-        this.filters = {
-            'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-        }
-    },
-    newAlimento() {
-        this.alimento = {};
-        this.submitted = false;
-        this.alimentoDialog = true;
-    },
-    hideAlimentoDialog() {
-        this.submitted = false;
-        this.alimentoDialog = false;
-        this.editing = false;
-        this.alimento={};
-        this.alergenosSel= [];
-    },
-    getAlergenosString() {
-        let alergenos = [];
-        if(this.alergenosSel.length > 0){
-            for(let alergeno of this.alergenosSel){
-                alergenos.push(alergeno.code);
+        fetchItems() {
+            axios.get("/alimentos").then((response) => {
+                this.dataviewValue = response.data.resultado;
+            });
+        },
+        initFilters() {
+            this.filters = {
+                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
             }
-            return alergenos.join(",");
-        }
-        return "";
-    },
-    saveAlimento() {
-        this.submitted = true;
-        let comprobado = this.comprobarCampos();
-        console.log(comprobado);
-        if (comprobado) {
-            let alergenosString = this.getAlergenosString();
-            this.alimento["alergenos"]=alergenosString;
-            this.alimento["verificado"]=true;
-            this.alimento["codigo_barra"]="";
-            this.alimento["url"]="";
-            let data = {...this.alimento};
-            axios.post("/alimentos", data);
-            this.dataviewValue.push(this.data);
+        },
+        newAlimento() {
+            this.alimento = {};
+            this.submitted = false;
+            this.alimentoDialog = true;
+        },
+        hideAlimentoDialog() {
+            this.submitted = false;
             this.alimentoDialog = false;
-            this.alimento={};
-            this.alergenosSel= [];
             this.editing = false;
-        }
-    },
-    comprobarCampos()
-    {
-        let regexLetras = /^[A-zÀ-ÿ ]+$/;
-        let resultado = true;
-        if(!this.alimento.nombre || !regexLetras.test(this.alimento.nombre))
-        {
-            resultado = false;
-            this.errorNombre = 'El nombre solo puede tener letras';
-        } 
-        if (!this.alimento.marca || !regexLetras.test(this.alimento.marca))
-        {
-            resultado = false;
-            this.errorMarca = 'La marca solo puede tener letras';
-        }
-        if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento['grasas-std_100g'] 
-            || !this.alimento.carbohidratos_100g || !this.alimento.azucares_100g || !this.alimento.sal_100g){
-            resultado = false;
-            console.log("Faltan datos alimenticios");
-        }
-        return resultado;
-    },
-    editAlimento(alimento){
-        this.alimentoDialog = true;
-        this.alimento = alimento;
-        this.editing = true;
-    },
-    putAlimento() {
-        this.editing = false;
-        this.alimentoDialog = false;
-        let correcto = this.comprobarCampos();
-        if (correcto) {
-            let alergenosString = this.getAlergenosString();
-            this.alimento["alergenos"]=alergenosString;
-            this.alimento["verificado"]=true;
-            this.alimento["codigo_barra"]="";
-            this.alimento["url"]="";
-            let data = {...this.alimento};
-            let id = (this.alimento["_id"]).split("").join("");
-            console.log(data);
-            axios.put("/alimentos/"+id, data);
-            this.alimento={};
+            this.alimento = {};
+            this.alergenosSel = [];
+        },
+        getAlergenosString() {
+            let alergenos = [];
+            if(this.alergenosSel.length > 0){
+                for(let alergeno of this.alergenosSel){
+                    alergenos.push(alergeno.code);
+                }
+                return alergenos.join(",");
+            }
+            return "";
+        },
+        saveAlimento() {
+            this.submitted = true;
+            let comprobado = this.comprobarCampos();
+            console.log("Campos verificados: ", comprobado);
+            
+            if (comprobado) {
+                let alergenosString = this.getAlergenosString();
+                this.alimento["alergenos"] = alergenosString;
+                this.alimento["verificado"] = true;
+                this.alimento["codigo_barra"] = "";
+                this.alimento["url"] = "";
+
+                axios.post("/alimentos", this.alimento).then((res) => {
+                    this.alimento = {};
+                    this.dataviewValue.push(res.data);
+                })
+                .catch(error => {
+                    console.log("Error: ", error)
+                });
+
+                this.alimentoDialog = false;
+                this.alergenosSel = [];
+                this.editing = false;
+            }
+        },
+        comprobarCampos() {
+            let regexLetras = /^[A-zÀ-ÿ ]+$/;
+            let resultado = true;
+
+            if(!this.alimento.nombre || !regexLetras.test(this.alimento.nombre)) {
+                resultado = false;
+                this.errorNombre = 'El nombre solo puede tener letras';
+            } 
+            
+            if (!this.alimento.marca || !regexLetras.test(this.alimento.marca)) {
+                resultado = false;
+                this.errorMarca = 'La marca solo puede tener letras';
+            }
+
+            if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento['grasas-std_100g'] 
+                || !this.alimento.carbohidratos_100g || !this.alimento.azucares_100g || !this.alimento.sal_100g){
+                resultado = false;
+                console.log("Faltan datos alimenticios");
+            }
+
+            return resultado;
+        },
+        editAlimento(alimento) {
+            this.alimentoDialog = true;
+            this.alimento = alimento;
+            this.editing = true;
+        },
+        putAlimento() {
+            this.editing = false;
+            this.alimentoDialog = false;
+            let correcto = this.comprobarCampos();
+            if (correcto) {
+                let alergenosString = this.getAlergenosString();
+                this.alimento["alergenos"]=alergenosString;
+                this.alimento["verificado"]=true;
+                this.alimento["codigo_barra"]="";
+                this.alimento["url"]="";
+                let data = {...this.alimento};
+                let id = (this.alimento["_id"]).split("").join("");
+                console.log(data);
+                axios.put("/alimentos/"+id, data);
+                this.alimento={};
+                this.alergenosSel= [];
+            }
+        },
+        confirmDeleteAlimento(alimento) {
+            this.alimento = {...alimento};
+            this.deleteAlimentoDialog=true;
+        },
+        deleteAlimento() {
+            this.dataviewValue = this.dataviewValue.filter(val => val._id !== this.alimento._id);
+            let id = this.alimento._id.split('').join(''); //Clone string
+            axios.delete("/alimentos/"+id);
+            this.deletealimentoDialog = false;
+            this.alimento = {};
             this.alergenosSel= [];
+            this.deleteAlimentoDialog=false;
+            this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
+        },
+        exportCSV() {
+            this.$refs.dt.exportCSV();
         }
-    },
-    confirmDeleteAlimento(alimento) {
-        this.alimento = {...alimento};
-        this.deleteAlimentoDialog=true;
-    },
-    deleteAlimento() {
-        this.dataviewValue = this.dataviewValue.filter(val => val._id !== this.alimento._id);
-        let id = this.alimento._id.split('').join(''); //Clone string
-        axios.delete("/alimentos/"+id);
-        this.deletealimentoDialog = false;
-        this.alimento = {};
-        this.alergenosSel= [];
-        this.deleteAlimentoDialog=false;
-        this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
-    },
-    exportCSV() {
-        this.$refs.dt.exportCSV();
     }
-  }
 };
 </script>
