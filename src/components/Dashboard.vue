@@ -14,7 +14,7 @@
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
-                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
+                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsDesayuno + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{carbsDesayuno}}/{{carbohidratos_recomendados}}g</label>
                             </div>
@@ -43,10 +43,10 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2" width="100"/>
+                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
-                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                           
+                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
-                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
+                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsAlmuerzo + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{carbsAlmuerzo}}/{{carbohidratos_recomendados}}g</label>
                             </div>
@@ -91,10 +91,10 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2" width="100"/>
+                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
-                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                           
+                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
-                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + 50 + '%'"> </div>
+                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsCena + '%'"> </div>
                                 </div>
                                 <label class="col-12 text-center">{{carbsCena}}/{{carbohidratos_recomendados}}g</label>
                             </div>
@@ -141,10 +141,10 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image-2" width="100"/>
+                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
-                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data.nombre}}</h4>                                           
+                                            <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
                                         </div>
                                     </div>
                                 </div>
@@ -218,114 +218,200 @@
 </template>
 
 <script>
+    import DiaService from "../service/DiaService";
 
-export default {
-	data() {
-		return {
-            carbsDesayuno: 150,
-            protDesayuno: 26,
-            grasasDesayuno: 9,
-            carbsAlmuerzo: 324,
-            protAlmuerzo: 44,
-            grasasAlmuerzo: 13,
-            carbsCena: 70,
-            protCena: 6,
-            grasasCena: 4,
-            imagenes: [{
-                    url: "https://cdn-icons-png.flaticon.com/512/2780/2780119.png",
-                    nombre: "Ejercicio 1"
-                },
-                {   url: "https://cdn-icons-png.flaticon.com/512/10/10699.png",
-                    nombre: "Ejercicio 2"
-                }
-            ],
-            imagenesDesayuno: [{
-                    url: "https://www.coosur.com/uploads/todoSobreAceite/Pan_aceite_de_oliva800.jpg",
-                    nombre: "Tostada con aceite"
-                },
-                {   url: "https://www.semana.com/resizer/PgBjXiUVPcInqFVT_VMAD3MVy8g=/1200x675/filters:format(jpg):quality(50)//cloudfront-us-east-1.images.arcpublishing.com/semana/UM4AUXGP25H6NM6CS7UENR32DQ.jpg",
-                    nombre: "Manzana verde"
-                }
-            ],
-            imagenesAlmuerzo: [{
-                    url: "https://www.cocinacaserayfacil.net/wp-content/uploads/2018/07/macarrones-con-tomate-y-atun.jpg",
-                    nombre: "Macarrones con tomate y atún"
-                },
-                {   url: "https://libbys.es/wordpress/wp-content/uploads/2019/01/platanofresa.jpg",
-                    nombre: "Fresas con plátano"
-                }
-            ],
-            imagenesCena: [{
-                    url: "https://www.antojoentucocina.com/wp-content/uploads/2022/02/sopa-fideos-2-1024x683.jpg",
-                    nombre: "Sopa con fideos"
-                }
-            ],
-            type:"doughnut",
-			pieData: {
-				labels: ['Carbohidratos', 'Proteínas', 'Grasas'],
-				datasets: [
-					{
-						data: [300, 50, 100],
-						backgroundColor: ["#a855f7","#06b6d4","#eec137"],
-                        hoverBackgroundColor: ["#a855f7","#06b6d4","#eec137"],
-					}
-				]
-			},
-			options: {
-                responsive: true,
-                aspectRatio: 3.5,
-                align:"center",
-                cutout:'70%',
-                plugins:{
-                    legend: {
-                        display: true,
-                        position: 'right',
-                        labels: {
-                            boxWidth: 20,
-                            boxHeight: 20,
-                            padding: 15,
-                            font:{
-                                size:18.3,
-                                style:"normal"
+    export default {
+        data() {
+            return {
+                dia: {},
+                fecha: "",
+                user: "",
+                tipo: "",
+                comidasDesayuno: {},
+                comidasAlmuerzo: {},
+                comidasCena: {},
+
+                carbsDesayuno: 0,
+                protDesayuno: 0,
+                grasasDesayuno: 0,
+                carbsAlmuerzo: 0,
+                protAlmuerzo: 0,
+                grasasAlmuerzo: 0,
+                carbsCena: 0,
+                protCena: 0,
+                grasasCena: 0,
+                
+                pasosRecomendados:5000,
+                porcentajePasos:71,
+                pasos: 0,
+
+                pesoActual: 76.5,
+                pesoDeAyer: 77.0,
+
+                imagenes: [{
+                        url: "https://cdn-icons-png.flaticon.com/512/2780/2780119.png",
+                        nombre: "Ejercicio 1"
+                    },
+                    {   url: "https://cdn-icons-png.flaticon.com/512/10/10699.png",
+                        nombre: "Ejercicio 2"
+                    }
+                ],
+                imagenesDesayuno: [],
+                imagenesAlmuerzo: [],
+                imagenesCena: [],
+
+                type:"doughnut",
+                pieData: {},
+                options: {
+                    responsive: true,
+                    aspectRatio: 3.5,
+                    align:"center",
+                    cutout:'70%',
+                    plugins:{
+                        legend: {
+                            display: true,
+                            position: 'right',
+                            labels: {
+                                boxWidth: 20,
+                                boxHeight: 20,
+                                padding: 15,
+                                font:{
+                                    size:18.3,
+                                    style:"normal"
+                                }
                             }
                         }
                     }
-                }
+                },
+                lineData: { //CAMBIAR
+                    labels: ['04/03', '05/03', '06/03', '07/03', '08/03', '09/03', 'Ayer'],
+                    datasets: [
+                        {
+                            label: 'Peso registrado',
+                            data: [79.0, 78.0, 78.0, 77.5, 77.0, 77.0, 76.5],
+                            fill: false,
+                            backgroundColor: '#2f4860',
+                            borderColor: '#2f4860',
+                            tension: .4
+                        },
+                        {
+                            label: 'Peso objetivo',
+                            data: [74.5, 74.5, 74.5, 74.5, 74.5, 74.5, 74.5],
+                            fill: false,
+                            backgroundColor: '#00bb7e',
+                            borderColor: '#00bb7e',
+                            tension: .4
+                        }
+                    ],
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                },
+                lineOptions: null,
+                diaService: null
+            }
+        },
+        created(){
+            this.diaService = new DiaService();
+        },
+        mounted(){ // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
+            //this.pasos = this.pasosRecomendados * this.porcentajePasos / 100;
+            this.obtenerDatosHome();
+            this.obtenerDesayuno();
+            this.obtenerAlmuerzo();
+            this.obtenerCena();
+        },
+        methods: {
+            obtenerDatosHome(){
+                this.user = this.$store.state.username;
+                this.fecha = this.$store.state.fechaHome;
+
+                this.diaService.getDatosDia(this.user,this.fecha).then(data =>{
+                    this.dia = data,
+                    
+                    this.pesoActual = this.dia.pesoActual;
+                    this.pasosRecomendados = this.dia.pasosObjetivo;
+                    this.pasos = this.dia.pasosRealizados;
+
+                    this.carbsDesayuno = this.dia.carbIngeridasDesayuno;
+                    this.protDesayuno = this.dia.proteinasIngeridasDesayuno;
+                    this.grasasDesayuno = this.dia.grasasIngeridasDesayuno;
+
+                    this.carbsAlmuerzo = this.dia.carbIngeridasAlmuerzo;
+                    this.protAlmuerzo = this.dia.proteinasIngeridasAlmuerzo;
+                    this.grasasAlmuerzo = this.dia.grasasIngeridasAlmuerzo;
+                    
+                    this.carbsCena = this.dia.carbIngeridasCena;
+                    this.protCena = this.dia.proteinasIngeridasCena;
+                    this.grasasCena = this.dia.grasasIngeridasCena;
+
+                    var sumCarbs = this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena;
+                    var sumProt = this.protDesayuno + this.protAlmuerzo + this.protCena;
+                    var sumGrasas = this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena;
+                    this.pieData = {
+                        labels: ['Carbohidratos', 'Proteínas', 'Grasas'],
+                        datasets: [
+                            {
+                                data: [sumCarbs, sumProt, sumGrasas],
+                                backgroundColor: ["#a855f7","#06b6d4","#eec137"],
+                                hoverBackgroundColor: ["#a855f7","#06b6d4","#eec137"],
+                            }
+                        ]
+                    }
+                });
             },
-            pasosRecomendados:5000,
-            porcentajePasos:71,
-            pasos:3550,
-            pesoActual: 76.5,
-            pesoDeAyer: 77.0,
-            lineData: {
-				labels: ['04/03', '05/03', '06/03', '07/03', '08/03', '09/03', 'Ayer'],
-				datasets: [
-					{
-						label: 'Peso registrado',
-						data: [79.0, 78.0, 78.0, 77.5, 77.0, 77.0, 76.5],
-						fill: false,
-						backgroundColor: '#2f4860',
-						borderColor: '#2f4860',
-						tension: .4
-					},
-					{
-						label: 'Peso objetivo',
-						data: [74.5, 74.5, 74.5, 74.5, 74.5, 74.5, 74.5],
-						fill: false,
-						backgroundColor: '#00bb7e',
-						borderColor: '#00bb7e',
-						tension: .4
-					}
-				],
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-			},
-			lineOptions: null
-		}
+
+            obtenerDesayuno(){
+                this.user = this.$store.state.username;
+                this.fecha = this.$store.state.fechaHome;
+                this.tipo = "Desayuno";
+
+                this.diaService.getAlimentosDia(this.user,this.fecha,this.tipo).then(data =>{
+                    this.comidasDesayuno = data;
+                    var arrayAux = [];
+                    for(var i = 0; i<this.comidasDesayuno.length; i++){
+                        arrayAux.push(this.comidasDesayuno[i]);
+                    }
+                    this.imagenesDesayuno = arrayAux;
+                    console.log(arrayAux);
+                })
+            },
+
+            obtenerAlmuerzo(){
+                this.user = this.$store.state.username;
+                this.fecha = this.$store.state.fechaHome;
+                this.tipo = "Almuerzo";
+
+                this.diaService.getAlimentosDia(this.user,this.fecha,this.tipo).then(data =>{
+                    this.comidasAlmuerzo = data;
+                    var arrayAux = [];
+                    for(var i = 0; i<this.comidasAlmuerzo.length; i++){
+                        arrayAux.push(this.comidasAlmuerzo[i]);
+                    }
+                    this.imagenesAlmuerzo = arrayAux;
+                    console.log(arrayAux);
+                })
+            },
+
+            obtenerCena(){
+                this.user = this.$store.state.username;
+                this.fecha = this.$store.state.fechaHome;
+                this.tipo = "Cena";
+
+                this.diaService.getAlimentosDia(this.user,this.fecha,this.tipo).then(data =>{
+                    this.comidasCena = data;
+                    var arrayAux = [];
+                    for(var i = 0; i<this.comidasCena.length; i++){
+                        arrayAux.push(this.comidasCena[i]);
+                    }
+                    this.imagenesCena = arrayAux;
+                    console.log(arrayAux);
+                })
+            }
+
+        }
     }
-}
 </script>
 <style>
 
