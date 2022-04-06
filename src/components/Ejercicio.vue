@@ -16,7 +16,7 @@
                 </span>
               </div>
               <div class="field mt-2">
-                <Dropdown v-model="filtroGrupoMuscular" :options="gruposMusculares" optionLabel="Grupo muscular" optionValue="grupoMusc" placeholder="Grupo muscular"/>
+                <Dropdown v-model="filtroGrupoMuscular" :options="gruposMusculares" optionLabel="nombre" optionValue="nombre" placeholder="Grupo muscular"/>
               </div>
               <div class="field mt-1">
                 <MultiSelect v-model="filtroMaterial" :options="materiales" optionLabel="Material" optionValue="material" placeholder="Escoja materiales">

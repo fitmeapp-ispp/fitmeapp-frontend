@@ -14,6 +14,16 @@ export default class UserService {
         return axios.post('/users/', user);
     }
 
+    
+    getSuscripcion(userId){
+        return axios.get(`/users/suscripcion/${userId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+
     getUser(username){
         return axios.get(`/users/${username}`)
         .then((response) => response.data)
@@ -99,8 +109,8 @@ export default class UserService {
         
             return edad;
         }
-    }
 
+    }
     getFavoritos(userId){
         return axios.get(`/users/favoritos/${userId}`)
         .then((response) => response.data)
@@ -124,5 +134,12 @@ export default class UserService {
             console.log('error' + e);
         });         
     }
-    
+  
+    deleteUser(userID){
+        return axios.delete(`/users/${userID}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
 }
