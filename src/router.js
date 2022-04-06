@@ -17,7 +17,7 @@ const routes = [
         component: Dashboard,
     },
     {
-        path: '/comidas',
+        path: '/comidas/:tipo',
         name: 'comidas',
         component: Comidas,
     },
@@ -30,11 +30,6 @@ const routes = [
         path: '/perfil',
         name: 'perfil',
         component: Perfil,
-    },
-    {
-        path: '/crud',
-        name: 'crud',
-        component: () => import('./pages/CrudDemo.vue')
     },
     {
         path: '/login',
@@ -76,6 +71,37 @@ const routes = [
         name: 'ejercicios',
         component: () => import('./pages/Ejercicios.vue')
     },
+    {
+        path: '/administrar',
+        name: 'administrar',
+        component: () => import('./pages/admin/PanelAdministracion.vue'),
+    },
+    {
+        path: '/administrar_usuarios',
+        name: 'administrar_usuarios',
+        component: () => import('./pages/admin/AdministrarUsuarios.vue')
+    },
+    {
+        path: '/administrar_ejercicios',
+        name: 'administrar_ejercicios',
+        component: () => import('./pages/admin/AdministrarEjercicios.vue')
+    },
+    {
+        path: '/administrar_recetas',
+        name: 'administrar_recetas',
+        component: () => import('./pages/admin/AdministrarRecetas.vue')
+    },
+    {
+        path: '/administrar_alimentos',
+        name: 'administrar_alimentos',
+        component: () => import('./pages/admin/AdministrarAlimentos.vue')
+    },
+    
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('./components/Formulario_completo.vue')
+    },
 ];
 
 const router = createRouter({
@@ -84,13 +110,23 @@ const router = createRouter({
   })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/login'];
+    const adminPages = ['/administrar','administrar_usuarios','administrar_ejercicios','administrar_recetas','administrar_alimentos'];
+    const publicPages = ['/login','/register'];
+  
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
+    const adminRequired = adminPages.includes(to.path);
 
     // trying to access a restricted page + not logged in
     // redirect to login page
     if (authRequired && !loggedIn) {
+        next('/login');
+    } else {
+        next();
+    }
+
+    //darle un par de vueltas
+    if (adminRequired && !loggedIn) {
         next('/login');
     } else {
         next();
