@@ -42,4 +42,12 @@ export default class ExerciseService {
         });
     }
 
+    guardarEjercicio(ejercicio){
+        return axios.post('/ejercicios/', ejercicio);
+    }
+
+    actualizarEjercicio(ejercicio){
+        return axios.put('/ejercicios/' + ejercicio._id, ejercicio);
+    }
+
 }
