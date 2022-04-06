@@ -32,4 +32,8 @@ export default class ExerciseService {
         return axios.post('/exercise/', ejercicio);
     }
 
+    actualizarEjercicio(ejercicio){
+        return axios.put('/exercise/' + ejercicio._id, ejercicio);
+    }
+
 }
