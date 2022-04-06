@@ -2,8 +2,16 @@ import axios from 'axios';
 
 export default class ExerciseService {
 
-    saveExercise(exercise){ 
+    saveExercise(exercise) { 
         return axios.post('/ejercicio_ejecuciones/', exercise)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    getExercises() {
+        return axios.get('/ejercicios')
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
