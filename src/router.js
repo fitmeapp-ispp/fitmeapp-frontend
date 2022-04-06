@@ -32,11 +32,6 @@ const routes = [
         component: Perfil,
     },
     {
-        path: '/crud',
-        name: 'crud',
-        component: () => import('./pages/CrudDemo.vue')
-    },
-    {
         path: '/login',
         name: 'login',
         component: Login

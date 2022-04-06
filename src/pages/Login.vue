@@ -36,11 +36,11 @@
 
                         <small class="p-error" v-if="submitted && error.message === 'Missing credentials'">¡Algunos campos están en blanco!</small>
 
-                        <div class="flex justify-content-around mt-5">
-                        <Button type="button" icon="pi pi-check" label="Iniciar sesión" class="p-3 text-xl text-900 col-5" 
-                        @click="signIn()" style="background-color:var(--surface-card)"/>
-                        <Button type="button" icon="pi pi-user-plus" label="Registrarse" class="p-3 text-xl text-900 col-5" 
-                        @click="signUp()" style="background-color:var(--surface-card)" />
+                        <div class="grid justify-content-around mt-5">
+                            <Button type="button" icon="pi pi-check" label="Iniciar sesión" class="p-3 text-xl text-900 col-12 md:col-5 mt-2" 
+                            @click="signIn()" style="background-color:var(--surface-card)"/>
+                            <Button type="button" icon="pi pi-user-plus" label="Registrarse" class="p-3 text-xl text-900 col-12 md:col-5 mt-2" 
+                            @click="signUp()" style="background-color:var(--surface-card)" />
                         </div>
 
                     </div>
@@ -128,6 +128,7 @@ export default {
                 console.log("Error: ", err)
                 this.error = err.response.data
             })    
+            this.$toast.add({severity:'success', summary: 'Successful', detail: 'Registro realizado correctamente', life: 3000});
         }
     },
 }

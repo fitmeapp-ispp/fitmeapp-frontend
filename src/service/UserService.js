@@ -33,14 +33,14 @@ export default class AlimentoService {
         
 
         if (user.sexo == "Masculino"){
-            tmb = 66 + (13.7 * user.peso_actual) + (5 * user.altura) - (6.75 * calcularEdad(user.fecha))
+            tmb = 66 + (13.7 * user.peso_actual) + (5 * user.altura) - (6.75 * calcularEdad(user.fechaNacimiento))
             tmb *= corrector_actividad  
             if(user.objetivo == "Perder peso" || user.objetivo == "Aumentar masa muscular"){
                 tmb += user.objetivo_semanal * 1000
 
             }
         }else{
-            tmb = 665 + (9.6 * user.peso_actual) + (1.8 * user.altura) - (4.7 * calcularEdad(user.fecha))
+            tmb = 665 + (9.6 * user.peso_actual) + (1.8 * user.altura) - (4.7 * calcularEdad(user.fechaNacimiento))
             tmb *= corrector_actividad  
             if(user.objetivo == "Perder peso" || user.objetivo == "Aumentar masa muscular"){
                 tmb += user.objetivo_semanal * 1600
@@ -75,9 +75,9 @@ export default class AlimentoService {
 
         return user
 
-        function calcularEdad(fecha) {
+        function calcularEdad(fechaNacimiento) {
             var hoy = new Date();
-            var cumpleanos = new Date(fecha);
+            var cumpleanos = new Date(fechaNacimiento);
             var edad = hoy.getFullYear() - cumpleanos.getFullYear();
             var m = hoy.getMonth() - cumpleanos.getMonth();
         
@@ -87,7 +87,38 @@ export default class AlimentoService {
         
             return edad;
         }
+
     }
 
-    
+    getSuscripcion(userId){
+        axios.get(`/users/suscripcion/${userId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    getFavoritos(userId){
+        return axios.get(`/users/favoritos/${userId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });            
+    }
+
+    postFavoritos(userId, alimentoId){
+        return axios.post(`users/favoritos/${userId}/${alimentoId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });         
+    }
+
+    deleteFavoritos(userId, alimentoId){
+        return axios.delete(`users/favoritos/${userId}/${alimentoId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });         
+    }
 }
