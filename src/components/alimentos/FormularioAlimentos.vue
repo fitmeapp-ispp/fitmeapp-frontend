@@ -12,12 +12,12 @@
 					<div class="field col-12 md:col-6">
 						<label for="nombre">Nombre*</label>
 						<InputText id="nombre" v-model.trim="alimento.nombre" required="true" autofocus :class="{'p-invalid': enviado && errorNombre}" />
-						<small class="p-invalid" v-if="enviado && errorNombre">{{this.errorNombre}}</small>
+						<small class="p-invalid" :key="errorNombre" v-if="enviado && errorNombre">{{this.errorNombre}}</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="marca">Marca*</label>
 						<InputText id="marca" v-model="alimento.marca" required="true" autofocus :class="{'p-invalid': enviado && errorMarca}" />
-						<small class="p-invalid" v-if="enviado && errorMarca">{{this.errorMarca}}</small>
+						<small class="p-invalid" :key="errorMarca" v-if="enviado && errorMarca">{{this.errorMarca}}</small>
 					</div>
 				</div>
 
@@ -198,7 +198,7 @@ export default {
 					this.alimentoService.guardarAlimento(this.alimento)
 					.then(() => {
 						//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
-						this.$router.push({ name: 'comidas', params: {mensaje: 'alimentoInsertado'} });
+						this.$router.push({ path: '/comidas/Almuerzo', params: {mensaje: 'alimentoInsertado'} });
 					})
 					.catch((e)=>{
 						//SI OCURRE ALGÚN FALLO AL INSERTAR EN LA BD, MOSTRAR
@@ -216,21 +216,26 @@ export default {
 			{
 				resultado = false;
 				this.errorNombre = 'El nombre solo puede tener letras';
-			} 
+			}else{
+				this.errorNombre = "";
+			}
 			if (!this.alimento.marca || !regexLetras.test(this.alimento.marca))
 			{
 				resultado = false;
 				this.errorMarca = 'La marca solo puede tener letras';
+			}else{
+				this.errorMarca = "";
 			}
 			if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento.grasas_std_100g 
 				|| !this.alimento.carbohidratos_100g || !this.alimento.azucares_100g || !this.alimento.sal_100g){
 				resultado = false;
 			}
+			this.$forceUpdate();
 			return resultado;
 		},
 		volver()
 		{
-			this.$router.push('/comidas');
+			this.$router.push('/comidas/Almuerzo');
 		}
 	}
 }
