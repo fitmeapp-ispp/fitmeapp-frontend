@@ -1,4 +1,25 @@
 <template>
+    <div class="grid col-12 align-items-center justify-content-center">
+        <span v-if="$store.state.loggedIn"><h1>Conectado como {{$store.state.username}}</h1></span>
+    </div>
+    <div class="grid col-12 align-items-center justify-content-center">
+        <button class="p-button p-component mr-2 mb-2" v-if="$store.state.username" @click="toggleMenu" style="background-color: #4CD07D;">
+            <h1> DESLOGUEATE</h1>
+        </button>
+    </div>
+
+    <br>
+    <br>
+    <div class="grid col-12 align-items-center justify-content-center">
+        <router-link to="/administrar">
+        <button class="p-button p-component mr-2 mb-2" style="background-color: #9c9c9c;">
+            <h4> ADMINISTRAR DATOS</h4>
+        </button>
+        </router-link>
+    </div>
+
+
+    <Menu ref="menu" :model="overlayMenuItems" :popup="true" />
 
     <div class="grid justify-content-center align-items-center">
         <div class="col-12 text-center mb-6">
