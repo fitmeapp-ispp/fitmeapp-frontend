@@ -3,7 +3,7 @@
         <div>
             <router-link to="/" class="layout-topbar-logo mr-0">
                 <img alt="Logo" :src="topbarImage()" />
-                <span>FitMeApp</span>
+                <span style="color:white;">FitMeApp</span>
             </router-link>
         </div>
 
@@ -26,7 +26,6 @@
             <button class="p-link layout-topbar-button ml-8" v-if="$store.state.username" @click="toggleMenu">
             <i class="pi pi-user"></i>
             </button>
-            
             <Menu ref="menu" :model="overlayMenuItems" :popup="true"/>
             
 

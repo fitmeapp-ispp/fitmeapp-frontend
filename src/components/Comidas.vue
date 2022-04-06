@@ -178,16 +178,17 @@
 												</div>
 												<div class="mb-3"></div>
 												<div class="mb-3">
-													{{ slotProps.data.kcal_100g.toFixed(2) }} kcal
+													
+													{{ Math.round((slotProps.data.kcal_100g + Number.EPSILON) * 100) / 100 }} kcal
 												</div>
 												<div class="mb-3">
-													Grasas {{ slotProps.data.grasa_100g.toFixed(2) }} g
+													Grasas {{ Math.round((slotProps.data.grasa_100g + Number.EPSILON) * 100) / 100 }} g
 												</div>
 												<div class="mb-3">
-													Carbohidratos {{ slotProps.data.carbohidratos_100g.toFixed(2) }} g
+													Carbohidratos {{ Math.round((slotProps.data.carbohidratos_100g + Number.EPSILON) * 100) / 100 }} g
 												</div>
 												<div class="mb-3">
-													Proteínas {{ slotProps.data.proteinas_100g.toFixed(2) }} g
+													Proteínas {{ Math.round((slotProps.data.proteinas_100g + Number.EPSILON) * 100) / 100 }} g
 												</div>
 											</div>
 										</div>
@@ -240,53 +241,53 @@
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										{{ alimento.kcal_100g.toFixed(2) }} Kcal
+										{{ Math.round((alimento.kcal_100g + Number.EPSILON) * 100) / 100 }} Kcal
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex align-self-center">
-										<b>Proteinas:</b> {{ alimento.proteinas_100g.toFixed(2) }} g
+										<b>Proteinas:</b> {{ Math.round((alimento.proteinas_100g + Number.EPSILON) * 100) / 100 }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Carbohidratos:</b> {{ alimento.carbohidratos_100g.toFixed(2) }} g de
-										los cuales <b>azúcares: </b>{{ alimento.azucares_100g.toFixed(2) }} g
+										<b>Carbohidratos:</b> {{ Math.round((alimento.carbohidratos_100g + Number.EPSILON) * 100) / 100 }} g de
+										los cuales <b>azúcares: </b>{{Math.round((alimento.azucares_100g + Number.EPSILON) * 100) / 100 }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Grasas:</b> {{ alimento.grasa_100g.toFixed(2) }} g de las cuales
-										<b>saturadas: </b>{{ alimento['grasas-std_100g'].toFixed(2) }} g
+										<b>Grasas:</b> {{ Math.round((alimento.grasa_100g + Number.EPSILON) * 100) / 100 }} g de las cuales
+										<b>saturadas: </b>{{ Math.round((alimento['grasas-std_100g'] + Number.EPSILON) * 100) / 100 }} g
 									</h5>
 								</div>
 							</div>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
-									<h5 class="p-flex"><b>Sal:</b> {{ alimento.sal_100g.toFixed(2) }} g</h5>
+									<h5 class="p-flex"><b>Sal:</b> {{ Math.round((alimento.sal_100g + Number.EPSILON) * 100) / 100 }} g</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Sodio:</b> {{ alimento.sodio_100g.toFixed(2) }} g
+										<b>Sodio:</b> {{ Math.round((alimento.sodio_100g + Number.EPSILON) * 100) / 100 }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Fibra:</b> {{ alimento.fibra_100g.toFixed(2) }} g
+										<b>Fibra:</b> {{ Math.round((alimento.fibra_100g + Number.EPSILON) * 100) / 100 }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Colesterol:</b> {{ alimento.colesterol_100g.toFixed(2) }} g
+										<b>Colesterol:</b> {{ Math.round((alimento.colesterol_100g + Number.EPSILON) * 100) / 100 }} g
 									</h5>
 								</div>
 								<div class="field">
 									<h5 class="p-flex">
-										<b>Potasio:</b> {{ alimento.potasio_100g.toFixed(2) }} g
+										<b>Potasio:</b> {{ Math.round((alimento.potasio_100g+ Number.EPSILON) * 100) / 100 }} g
 									</h5>
 								</div>
 							</div>
@@ -506,7 +507,9 @@
 			obtenerDatosDia(){
 
 				this.tipo = this.$route.params.tipo
-				this.alimentoService.getDia(this.tipo).then(data =>{this.dia = data,
+				this.alimentoService.getDia(this.$store.state.userId, this.tipo).then(data =>{this.dia = data,
+
+				console.log(this.dia)
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
 				if(this.tipo != "Cena"){
 					this.dia.carbRec = (this.dia.carbRec/2).toFixed(2)

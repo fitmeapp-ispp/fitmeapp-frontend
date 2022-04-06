@@ -16,21 +16,21 @@
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsDesayuno + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{carbsDesayuno}}/{{carbohidratos_recomendados}}g</label>
+                                <label class="col-12 text-center">{{Math.round((carbsDesayuno + Number.EPSILON) * 100) / 100}}/{{ Math.round((dia.carbRec/2 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protDesayuno + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{protDesayuno}}/{{proteinas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((protDesayuno + Number.EPSILON) * 100) / 100}}/{{  Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasDesayuno + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{grasasDesayuno}}/{{grasas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((grasasDesayuno + Number.EPSILON) * 100) / 100 }}/{{ Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                         </div>
                         <router-link to="/comidas/Desayuno" class="mt-1">
@@ -64,21 +64,21 @@
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsAlmuerzo + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{carbsAlmuerzo}}/{{carbohidratos_recomendados}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((carbsAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{ Math.round((dia.carbRec/3 + Number.EPSILON) * 100) / 100 }}g</label>
                             </div>
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protAlmuerzo + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{protAlmuerzo}}/{{proteinas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((protAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasAlmuerzo + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{grasasAlmuerzo}}/{{grasas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((grasasAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                         </div>
                         <router-link to="/comidas/Almuerzo" class="mt-1">
@@ -114,21 +114,21 @@
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-purple-500 h-full"  v-bind:style="'width:' + carbsCena + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{carbsCena}}/{{carbohidratos_recomendados}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((carbsCena + Number.EPSILON) * 100) / 100  }}/0g</label>
                             </div>
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + protCena + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{protCena}}/{{proteinas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((protCena + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
                                 <div class="surface-300 border-round overflow-hidden w-10rem lg:w-8rem" style="height:10px">
                                     <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + grasasCena + '%'"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{grasasCena}}/{{grasas_recomendadas}}g</label>
+                                <label class="col-12 text-center">{{ Math.round((grasasCena + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}}g</label>
                             </div>
                         </div>
                         <router-link to="/comidas/Cena" class="mt-1">
@@ -156,7 +156,7 @@
         </div>
         <!-- PARTE DERECHA -->
        <div class="col-12 lg:col-6">
-            <div class="grid card col-12  justify-content-between">
+         <!--   <div class="grid card col-12  justify-content-center">
                 <div class="col-12 md:col-5" >
                     <div class="grid justify-content-around align-items-center">
                         <div class="text-center mb-5" style="height:40%;">
@@ -172,15 +172,15 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
+                <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
                     <div class="surface-300 border-round mb-2 overflow-hidden w-10rem lg:w-8rem" style="height:20px">
                                     <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
                     </div>
                     <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
-                </div> -->
+                </div> 
 
-                <div class= "grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenes"> <!--Si no hay ejercicios realizados no muestra esta sección-->
+                <div class= "grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenes"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="200px" class="grid justify-content-center align-item-center mt-2 ml-1">
                         <template #item="slotProps">
@@ -200,7 +200,7 @@
                         <Button label="Añadir ejercicio" class="p-button-outlined p-button-secondary col-12"/>
                     </router-link>
                 </div>
-            </div>
+            </div> -->
 
             <div class="card grid card col-12 p-fluid">
                 <div class="card col-12 md:col-12">
@@ -213,7 +213,9 @@
                     <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
                             <Tag class="col-12 text-center" value="Peso actual:"  style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
-                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
+                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
+                             @focusout="savePeso()" />
                         </div>
                     </div>
                 
@@ -251,7 +253,9 @@
                 comidasCena: {},
                 arrayPesos: {},
                 pesoObjetivo: 0,
-
+                carbohidratos_recomendados: 0,
+                proteinas_recomendadas: 0,
+                grasas_recomendadas: 0,
                 carbsDesayuno: 0,
                 protDesayuno: 0,
                 grasasDesayuno: 0,
@@ -325,6 +329,7 @@
         },
         methods: {
             obtenerDatosHome(){
+
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
 
@@ -350,6 +355,7 @@
                     var sumCarbs = this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena;
                     var sumProt = this.protDesayuno + this.protAlmuerzo + this.protCena;
                     var sumGrasas = this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena;
+
                     this.pieData = {
                         labels: ['Carbohidratos', 'Proteínas', 'Grasas'],
                         datasets: [
@@ -452,6 +458,8 @@
                         }
                     }
                 });
+            },savePeso(){
+                this.userService.savePeso(this.pesoActual, this.$store.state.userId, this.dia._id);
             }
         }
     }

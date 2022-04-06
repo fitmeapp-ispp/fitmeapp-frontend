@@ -152,8 +152,8 @@ export default class AlimentoService {
         });
     }
 
-    getDia(tipo){
-        return axios.get(`/comidas/${tipo}/`+"2022-04-01T19:01:28.616+00:00"+"/6244d94635c17b47d527f178")
+    getDia(userId,tipo){
+        return axios.get(`/comidas/${tipo}/`+"2022-04-01T19:01:28.616+00:00"+"/"+userId)
         .then((response) => 
 			response.data)
         .catch((e)=>{
