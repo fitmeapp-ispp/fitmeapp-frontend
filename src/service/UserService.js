@@ -99,6 +99,15 @@ export default class UserService {
         
             return edad;
         }
+
+    }
+
+    getSuscripcion(userId){
+        axios.get(`/users/suscripcion/${userId}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
     }
 
     getFavoritos(userId){
@@ -124,8 +133,7 @@ export default class UserService {
             console.log('error' + e);
         });         
     }
-    
-
+  
     deleteUser(userID){
         return axios.delete(`/users/${userID}`)
         .then((response) => response.data)

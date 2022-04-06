@@ -111,7 +111,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const adminPages = ['/administrar','administrar_usuarios','administrar_ejercicios','administrar_recetas','administrar_alimentos'];
-    const publicPages = ['/', '/login','/register'];
+    const publicPages = ['/login','/register'];
+  
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
     const adminRequired = adminPages.includes(to.path);

@@ -1,6 +1,6 @@
 <template>
     <div :class="containerClass" @click="onWrapperClick">
-        <AppTopBar @menu-toggle="onMenuToggle" />
+        <AppTopBar @menu-toggle="onMenuToggle" id="navbar" />
         <SupportButton />
         <div class="layout-main-container">
             <div class="layout-main">
@@ -140,11 +140,11 @@ export default {
     },
     watch: {   
         $route() {
-            /* if (this.$route.fullPath === "/login") {
-                document.getElementById("navbar").style="display:none"
-            }else{
-                document.getElementById("navbar").style=""
-            } */
+            if (this.$route.fullPath === "/login") {
+                document.getElementById("navbar").style = "display:none; position: absolute"
+            } else {
+                document.getElementById("navbar").style = ""
+            }
             this.menuActive = false;
             this.$toast.removeAllGroups();
         }
