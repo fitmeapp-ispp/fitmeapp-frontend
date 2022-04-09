@@ -15,10 +15,9 @@
             </template>
 					</Column>
           <Column field="muscles" header="Zona muscular" :style="{width:'50%'}">
-						<template #body="{data}" :v-model="muscleList">
-                <p class="p-flex text-center text-bold inline" v-for="(musculo,index) in data.ejercicioDetalles[0].muscles" :key="musculo">
-                  <template v-if="index > 0">, </template> 
-                  {{muscleList[musculo]}}
+						<template #body="{data}" :v-model="zonaMuscular">
+                <p class="p-flex text-center text-bold inline">
+                  {{zonaMuscular[data.ejercicioDetalles[0].category]}}
                 </p> 
             </template>
 					</Column>
@@ -55,23 +54,15 @@ import ExerciseService from '../service/ExerciseService';
 export default {
   data() {
     return {
-      muscleList: {
+      zonaMuscular: {
         0: "",
-        1:"Biceps brachii",
-        2:"Anterior deltoid",
-        3:"Serratus anterior",
-        4:"Pectoralis major",
-        5:"Triceps brachii",
-        6:"Rectus abdominis",
-        7:"Gastrocnemius",
-        8:"Gluteus maximus",
-        9:"Trapezius",
-        10:"Quadriceps femoris",
-        11:"Biceps femoris",
-        12:"Latissimus dorsi",
-        13:"Brachialis",
-        14:"Obliquus externus abdominis",
-        15:"Soleus"
+        8:"Brazos",
+        9:"Piernas",
+        10:"Abdominales",
+        11:"Pecho",
+        12:"Espalda",
+        13:"Hombros",
+        14:"Gemelos"
       },
       dataviewValue: null,
     };
