@@ -5,11 +5,12 @@ import createPersistedState from "vuex-persistedstate";
 export default createStore({
   plugins: [createPersistedState()],
   state: {
-    username: 'jose',
+    username: 'jose00',
     password: '',
     userId: '',
     loggedIn: false,
     fecha: '19-3-2022',
+    fechaHome: '2022-04-01',
     tipo: 'Almuerzo'
   },
   mutations: {
@@ -21,6 +22,9 @@ export default createStore({
     },
     saveFecha(state, fecha){
       state.fecha = fecha;
+    },
+    saveFechaHome(state, fechaHome){
+      state.fechaHome = fechaHome;
     },
     savePassword(state, password){
       state.password = password;

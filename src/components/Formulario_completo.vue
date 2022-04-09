@@ -44,7 +44,7 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="telefono">Teléfono*</label>
-						<InputNumber v-model="user.telefono" aria-valuenow="" required="true" id="telefono" :class="{'p-invalid': enviado && errorTelefono}"/>
+						<InputNumber v-model="user.telefono" aria-valuenow="" required="true" id="telefono" :class="{'p-invalid': enviado && errorTelefono}" :useGrouping="false"/>
 						<small class="p-invalid" :key="errorTelefono" v-if="enviado && errorTelefono">{{this.errorTelefono}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
