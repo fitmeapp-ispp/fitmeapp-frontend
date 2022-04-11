@@ -52,18 +52,28 @@
                     <div class="col-12 lg:col-6">
                       <p class="text-center font-bold">Grupo muscular: </p>
                       <hr class="border-900">
-                      <ul>
+                      <ul v-if="slotProps.data.category.length > 0">
                         <li>
-                          {{ slotProps.data.category[0]}} 
+                          {{ slotProps.data.category[0].name}} 
+                        </li>
+                      </ul>
+                      <ul v-else>
+                        <li>
+                          <p>No hay datos disponibles</p>
                         </li>
                       </ul>
                     </div>
                     <div class="col-12 lg:col-6"> 
                       <p class="text-center font-bold">Material: </p>
                       <hr class="border-900">
-                      <ul>
+                      <ul v-if="slotProps.data.equipment.length > 0">
                         <li v-for="material in slotProps.data.equipment" :key="material">
-                          <p> {{material}} </p>
+                          <p> {{material.name}} </p>
+                        </li>
+                      </ul>
+                      <ul v-else>
+                        <li>
+                          <p class="text-center">No hay datos disponibles</p>
                         </li>
                       </ul>
                     </div>
@@ -80,7 +90,10 @@
                             class="imagenEjercicio" containerStyle="max-width: 800px; margin: auto"/>
                     </div>
                     <div class="col-6 flex justify-content-center align-items-center">
-                      <div class="imagenMusculo" :style="'background-image:' + slotProps.data.musclesImage + '; background-repeat-x: no-repeat; background-repeat-y: no-repeat;'">
+                      <div class="imagenMusculo" :style="'background-image:url('+sinMusculoImagen+');'" v-if="slotProps.data.muscles.length === 0">
+                        <img :src="sinMusculoImagen" style="visibility: hidden" />
+                      </div>
+                      <div v-else class="imagenMusculo" :style="'background-image:' + slotProps.data.muscleImage + '; background-repeat-x: no-repeat; background-repeat-y: no-repeat;'">
                         <img src="https://wger.de/static/images/muscles/muscular_system_front.svg" style="visibility: hidden" />
                       </div>
                     </div>
@@ -98,6 +111,7 @@
 <script>
 import sinMusculoImagen from '../../public/images/sin_musculo_ejercicio.png';
 import sinImagen from '../../public/images/sin_imagen_ejercicio.png';
+import ExerciseService from '../service/ExerciseService';
 
 export default {
   data() {
@@ -134,6 +148,10 @@ export default {
       lazyParams: {},
     };
   },
+  exerciseService: null,
+  created(){
+    this.exerciseService = new ExerciseService();
+  },
   mounted(){
     this.lazyParams = {
 				pagina: 0,
@@ -144,69 +162,25 @@ export default {
 	},
   methods: {
     fetchItems() {
-      this.axios.get("/ejercicio", {
-            params:{
-                pagina: this.lazyParams.pagina,
-                zonaMuscular: this.lazyParams.filterMusc,
-                materiales: this.lazyParams.filterMat,
-                buscador: this.filtroNombreEjercicio,
-            }
-        }).then((response) => {
-          this.totalRecords = response.data.total;
-          this.ejercicios = response.data.resultado;
-          for (let ejercicio of this.ejercicios) {
-            let arrayPromesas = []
-            let arrayIdMusculosPrincipales = ejercicio["muscles"];
-            let arrayIdMusculosSecundarios = ejercicio["muscles_secondary"];
-            let musclesUrls = []
-            if (arrayIdMusculosPrincipales.length > 0) {
-              this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles = []
-              this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles_secondary = []
-              for (let idMusculoPrincipal of arrayIdMusculosPrincipales) {
-                let promesaMusculoPrincipal = this.axios.get("/musculo/"+idMusculoPrincipal).then((res) => {
-                  this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles.push(res.data)
-                  musclesUrls.push("url(https://wger.de" + res.data.image_url_main + ")")
-                });
-                arrayPromesas.push(promesaMusculoPrincipal)
+      this.exerciseService.buscarEjercicios(this.filtroNombreEjercicio, this.lazyParams)
+      .then(data => {
+        this.totalRecords = data.total;
+        this.ejercicios = data.resultado;
+        for (let ejercicio of this.ejercicios){
+            let musclesUrls = [];
+            if (ejercicio.muscles){
+              for (let principal of ejercicio.muscles){
+                    musclesUrls.push("url(https://wger.de" + principal.image_url_main + ")");
               }
-              
-              for (let idMusculoSecundario of arrayIdMusculosSecundarios) {
-                let promesaMusculoSecundario = this.axios.get("/musculo/"+idMusculoSecundario).then((res) => {
-                  this.ejercicios[this.ejercicios.indexOf(ejercicio)].muscles_secondary.push(res.data)
-                  musclesUrls.push("url(https://wger.de" + res.data.image_url_secondary + ")")
-                });
-                arrayPromesas.push(promesaMusculoSecundario)
+              if(ejercicio.muscles_secondary){
+                for (let secundario of ejercicio.muscles){
+                  musclesUrls.push("url(https://wger.de" + secundario.image_url_secondary + ")");
+                }
               }
-              Promise.all(arrayPromesas).then(() => {
-                this.ejercicios[this.ejercicios.indexOf(ejercicio)].musclesImage = musclesUrls.join() + ",url(https://wger.de/static/images/muscles/muscular_system_front.svg)"
-              })
-            } else {
-              this.ejercicios[this.ejercicios.indexOf(ejercicio)].musclesImage = "url("+sinMusculoImagen+")"
             }
-            let arrayIdMMateriales = ejercicio["equipment"];
-            if (arrayIdMMateriales.length > 0) {
-              this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = []
-              
-              for (let idMaterial of arrayIdMMateriales) {
-                this.axios.get("/material/"+idMaterial).then((res) => {
-                  this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment.push(res.data.name)
-                });
-              }
-            } else {
-              this.ejercicios[this.ejercicios.indexOf(ejercicio)].equipment = ["No hay datos disponibles"]
-            }
-            let arrayIdMusclegrup = ejercicio["category"];
-            if (arrayIdMusclegrup > 0) {
-              this.ejercicios.category = [];
-              this.axios.get("/categoria/"+arrayIdMusclegrup).then((res) => {
-                this.ejercicios[this.ejercicios.indexOf(ejercicio)].category=[res.data.name];
-              });
-            } else {
-              this.ejercicios.category = ["No hay datos disponibles"]
-            }
-            this.ejerciciosFiltrados = this.ejercicios
-          }
-      })
+            ejercicio.muscleImage = musclesUrls.join()+",url(https://wger.de/static/images/muscles/muscular_system_front.svg)";
+        }
+      });
     },
     onPage(event){
       this.lazyParams.pagina = event.page;
