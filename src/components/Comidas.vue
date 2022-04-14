@@ -78,6 +78,9 @@
 							<div class="field">
 								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
 							</div>
+							<div class="field">
+								<Button label="Calculadora" class="p-button-warning" @click="calculadora()"/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -316,6 +319,7 @@
 <script>
 	import AlimentoService from "../service/AlimentoService";
 	import UserService from "../service/UserService";
+	require("dotenv").config();
 	export default {
 		data() {
 			return {
@@ -642,6 +646,11 @@
 				this.$forceUpdate();
 				document.getElementById(alimentoId).className += " p-button-outlined";
 				this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
+			},
+			calculadora(){
+				const url=process.env.VUE_APP_CALCULADORA
+				console.log("Comidas.vue:"+url)
+				this.alimentoService.calculadora({},{})
 			}
 		}
 	}
