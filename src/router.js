@@ -9,6 +9,7 @@ import Comidas from './components/Comidas.vue';
 import Perfil from './components/Perfil.vue';
 const Login = () => import("./pages/Login.vue");
 import store from './store'
+import axios from 'axios';
 
 const routes = [
     {
@@ -30,11 +31,6 @@ const routes = [
         path: '/perfil',
         name: 'perfil',
         component: Perfil,
-    },
-    {
-        path: '/crud',
-        name: 'crud',
-        component: () => import('./pages/CrudDemo.vue')
     },
     {
         path: '/login',
@@ -77,6 +73,32 @@ const routes = [
         component: () => import('./pages/Ejercicios.vue')
     },
     {
+        path: '/administrar',
+        name: 'administrar',
+        component: () => import('./pages/admin/PanelAdministracion.vue'),
+    },
+    {
+        path: '/administrar/usuarios',
+        name: 'administrar_usuarios',
+        component: () => import('./pages/admin/AdministrarUsuarios.vue')
+    },
+    {
+        path: '/administrar/ejercicios',
+        name: 'administrar_ejercicios',
+        component: () => import('./pages/admin/AdministrarEjercicios.vue')
+    },
+    {
+        path: '/administrar/recetas',
+        name: 'administrar_recetas',
+        component: () => import('./pages/admin/AdministrarRecetas.vue')
+    },
+    {
+        path: '/administrar/alimentos',
+        name: 'administrar_alimentos',
+        component: () => import('./pages/admin/AdministrarAlimentos.vue')
+    },
+    
+    {
         path: '/register',
         name: 'register',
         component: () => import('./components/Formulario_completo.vue')
@@ -88,18 +110,38 @@ const router = createRouter({
     routes
   })
 
-router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/login','/register'];
+router.beforeEach(async (to, from, next) => {
+    const adminPages = ['/administrar','/administrar/usuarios','/administrar/ejercicios','/administrar/recetas','/administrar/alimentos'];
+    const publicPages = ['/login','/register'];
+
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
+    const adminRequired = adminPages.includes(to.path);
 
-    // trying to access a restricted page + not logged in
-    // redirect to login page
-    if (authRequired && !loggedIn) {
+    if (!authRequired) {
+        next()
+    } else if (authRequired && !loggedIn || adminRequired && !loggedIn) {
         next('/login');
     } else {
-        next();
+        let isAdmin = await axios.get("users/isAdmin", {
+            params: {
+                userId: store.state.userId
+            }
+        })
+
+        if (isAdmin.data === true && !adminRequired) {
+            next("/administrar")
+        } else if (isAdmin.data === true && adminRequired) {
+            next()
+        } else {
+            if (adminRequired) {
+                next("/")
+            } else {
+                next()
+            }
+        }
     }
+
 });
 
 export default router;
