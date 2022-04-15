@@ -87,17 +87,23 @@
 				<div v-show="carruselVacio">
 					<div class="col-12 ">
 						<div class="card">
-							<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :circular="false" :responsiveOptions="responsiveOptions">
+							<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :responsiveOptions="responsiveOptions">
 									<template #item="slotProps">
 										<div class="product-item">
 											<div class="product-item-content">
-												<h4 class="mb-1">{{slotProps.data.alimento.nombre}}</h4>
 												
-													{{slotProps.data.alimento.kcal_100g}} kcal/100g. Cantidad:
-													<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" :min="0" :maxFractionDigits="2" autofocus/>
+												<h4 class="mb-1"> <i :class="{'pi text-blue-500 pi-lock-open mr-3': slotProps.data.calculadora, 
+												'pi text-blue-500 pi-lock mr-3':!slotProps.data.calculadora}"></i> 
+												
+												{{slotProps.data.alimento.nombre}}</h4>
+												
+													{{Math.round((slotProps.data.alimento.kcal_100g + Number.EPSILON) * 100) / 100}} kcal/100g. Cantidad:
+													<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" 
+													:min="0" :maxFractionDigits="2" autofocus/>
 													<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
 												<div>
-													<Button label="Quitar" class="p-button-success" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
+													<Button  v-if="!slotProps.data.calculadora" @click="aCalculadora(slotProps.data._id,slotProps.data.alimento._id)" label="A calculadora" class=" mr-2 p-button-warning" />
+													<Button label="Quitar" class="p-button-danger" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
 												</div>
 											</div>
 										</div>
@@ -195,10 +201,16 @@
 												</div>
 											</div>
 										</div>
-									</div>							
-									<div class="text-right font-bold">
-										
-										<Button icon="pi pi-star" :id="slotProps.data._id" class="p-button-rounded p-button-warning mr-2 mb-2" :class="{'p-button-outlined': !this.favoritosList.includes(slotProps.data._id)}" @click="funcionFavoritos(slotProps.data._id);" />
+									</div>
+									<div class="grid grid-nogutter">		
+										<div class="text-left font-bold col-6">
+											
+											<Button icon="pi pi-plus" :id="slotProps.data._id" class="p-button-rounded p-button-primary mr-2 mb-2" @click="anyadirADataViewCarrusel(slotProps.data._id, false);" />
+										</div>					
+										<div class="text-right font-bold col-6">
+											
+											<Button icon="pi pi-star" :id="slotProps.data._id" class="p-button-rounded p-button-warning mr-2 mb-2" :class="{'p-button-outlined': !this.favoritosList.includes(slotProps.data._id)}" @click="funcionFavoritos(slotProps.data._id);" />
+										</div>
 									</div>
 								</div>
 							</div>
@@ -384,17 +396,17 @@
 				},
 				responsiveOptions: [
 					{
-						breakpoint: '1024px',
+						breakpoint: '1460px',
 						numVisible: 3,
 						numScroll: 3
 					},
 					{
-						breakpoint: '600px',
+						breakpoint: '1080px',
 						numVisible: 2,
 						numScroll: 2
 					},
 					{
-						breakpoint: '480px',
+						breakpoint: '820px',
 						numVisible: 1,
 						numScroll: 1
 					}
@@ -414,7 +426,7 @@
 		created(){
 			this.alimentoService = new AlimentoService();
 			this.userService = new UserService();
-
+			this.inicio();
 		},
 		mounted() {
 			this.lazyParams = {
@@ -426,6 +438,12 @@
 			
 		},
 		methods: {
+			inicio(){
+				this.alimentoService.getDia(this.$store.state.userId, this.$route.params.tipo).then(data =>{this.dia = data
+				this.alimentoService.limpiarCarrusel(this.$store.state.userId,this.dia._id,this.$route.params.tipo)
+				});
+				this.fetchItems();
+			},
 			//EMPIEZA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			fetchItems(){
 
@@ -513,7 +531,6 @@
 				this.tipo = this.$route.params.tipo
 				this.alimentoService.getDia(this.$store.state.userId, this.tipo).then(data =>{this.dia = data,
 
-				console.log(this.dia)
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
 				if(this.tipo != "Cena"){
 					this.dia.carbRec = (this.dia.carbRec/2).toFixed(2)
@@ -587,18 +604,32 @@
 				if (cantidad == null){
 					cantidad = this.cantidad
 				}
-
-				this.alimentoService.anyadirACarrusel(alimentoId,cantidad,this.dia._id,this.dia.tipo)
-				.then(() => {this.obtenerDatosDia()
+				
+				this.alimentoService.anyadirACarrusel(alimentoId,cantidad,this.dia._id,this.dia.tipo, false)
+				.then(() => {
+					this.obtenerDatosDia()
 					this.cantidad = 0;
-					this.alimentoDialog = false
+					this.alimentoDialog = false	
+					
 				});
 			},
-			anyadirADataViewCarrusel(alimentoId){
-				this.alimentoService.getAlimento(alimentoId).then(data => {
-					this.dataviewValueCarrusel.push({alimento: data, cantidad: 0, fecha: this.dia.fecha, usuario: this.dia.usuario})
-					this.alimentoDialog = false
-				})
+			anyadirADataViewCarrusel(alimentoId,aCalcular){
+				
+				if(!this.dataviewValueCarrusel.map(x=>x.alimento._id).includes(alimentoId) || aCalcular){
+
+				
+					this.alimentoService.anyadirACarrusel(alimentoId,0,this.dia._id,this.dia.tipo, true)
+					.then(() => {
+						this.obtenerDatosDia()
+						this.cantidad = 0;
+						this.alimentoDialog = false	
+						
+					});
+
+				}
+				
+			},aCalculadora(consumicionId,alimentoId){
+				this.alimentoService.deleteFromCarrusel(consumicionId,this.dia.tipo,this.dia._id).then(() => {this.anyadirADataViewCarrusel(alimentoId, true);});
 				
 			},
 			obtenerAlergenos(alergenosAlimento){
@@ -648,9 +679,35 @@
 				this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
 			},
 			calculadora(){
-				const url=process.env.VUE_APP_CALCULADORA
-				console.log("Comidas.vue:"+url)
-				this.alimentoService.calculadora({},{})
+				var alimentosACalcuar = this.dataviewValueCarrusel.filter(x=>x.calculadora).map(x=>x.alimento)
+				var alimentosFijos = this.dataviewValueCarrusel.filter(x=>!x.calculadora)
+				var kcalRecCalculadora = this.dia.kcalRec
+				var carbRecCalculadora = this.dia.carbRec
+				var proteinasRecCalculadora = this.dia.proteinasRec
+				var grasasRecCalculadora = this.dia.grasasRec
+				if (alimentosFijos.length > 0){
+					for (var i=0; i<alimentosFijos.length;i++){
+						kcalRecCalculadora -= alimentosFijos[i].cantidad * alimentosFijos[i].alimento.kcal_100g/100
+						carbRecCalculadora -= alimentosFijos[i].cantidad * alimentosFijos[i].alimento.carbohidratos_100g/100
+						proteinasRecCalculadora -= alimentosFijos[i].cantidad * alimentosFijos[i].alimento.proteinas_100g/100
+						grasasRecCalculadora -= alimentosFijos[i].cantidad * alimentosFijos[i].alimento.grasa_100g/100
+					}
+				}
+
+				this.alimentoService.calculadora(alimentosACalcuar,{"kcal_100g":kcalRecCalculadora,
+				"carbohidratos_100g":carbRecCalculadora, "proteinas_100g":proteinasRecCalculadora, "grasa_100g":grasasRecCalculadora}).then(data=>{
+					
+					async function recargaDatos(service,dia,alimentosACalcuar){
+						for (var j=0; j<data.length;j++){
+						
+							await service.anyadirACarrusel(alimentosACalcuar[j]._id,data[j],dia._id,dia.tipo, false);
+						}
+						
+					}
+					
+					recargaDatos(this.alimentoService,this.dia,alimentosACalcuar).then(()=>{this.fetchItems()});
+
+				})
 			}
 		}
 	}
