@@ -18,30 +18,39 @@
                 </div>
                 <div class="col-12 lg:col-3">
                     <div class="grid">
-                        <div class="card col-12 text-center border-1 surface-border">
-                            <div class="text-900 font-medium text-xl">Grupos musculares</div>
-                            <li v-for="item in dataviewValue.muscles" :key="item.message">
-                                {{ muscleList[item] }}
-                            </li>
-                            <li v-for="item in dataviewValue.muscles_secondary" :key="item.message">
-                                {{ muscleList[item] }}
-                            </li>
+                        <div class="card col-12 border-1 surface-border">
+                            <div class="text-900 font-medium text-xl text-center">Grupos musculares</div>
+                            <ul>
+                                <li class="mt-3 font-bold" v-for="item in dataviewValue.muscles" :key="item.message">
+                                    {{ muscleList[item] }}
+                                </li>
+                            </ul>
+                            <ul>
+                                <li v-for="item in dataviewValue.muscles_secondary" :key="item.message">
+                                    {{ muscleList[item] }}
+                                </li>
+                            </ul>
+                            <p v-if="dataviewValue.muscles.length === 0" class="mt-3 text-center">
+                                No hay datos disponibles
+                            </p>
                         </div>
-                        <div class="card col-12 text-center border-1 surface-border">
-                            <div class="text-900 font-medium text-xl">Material</div>
-                            <li v-for="item in dataviewValue.equipment" :key="item.message">
-                                {{ equipmentList[item] }}
-                            </li>
-                            <p v-if="dataviewValue.equipment.length === 0">
+                        <div class="card col-12 border-1 surface-border">
+                            <div class="text-900 font-medium text-xl text-center">Material</div>
+                            <ul>
+                                <li class="mt-3 text-center" v-for="item in dataviewValue.equipment" :key="item.message">
+                                    {{ equipmentList[item] }}
+                                </li>
+                            </ul>
+                            <p v-if="dataviewValue.equipment.length === 0"  class="mt-3 text-center">
                                 Este ejercicio no necesita materiales
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="card col-12 lg:col-4 text-justify border-1 surface-border">
-                    <div class="text-900 font-medium text-xl">Descripción</div>
-                        <p class="p-flex">{{dataviewValue.description}}</p>
-                        <p class="p-flex text-center" v-if="!dataviewValue.description">
+                    <div class="text-900 font-medium text-xl text-center">Descripción</div>
+                        <p class="p-flex mt-3">{{dataviewValue.description}}</p>
+                        <p class="p-flex text-center mt-3" v-if="!dataviewValue.description" >
                             Sin descripción
                         </p> 
                 </div>
@@ -156,8 +165,8 @@ export default {
                 }
         },
         created(){
-                this.exerciseService = new ExerciseService();
-                this.fetchExercise();
+            this.exerciseService = new ExerciseService();
+            this.fetchExercise();
         },
         methods: {
             fetchExercise(){

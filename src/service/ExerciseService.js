@@ -50,4 +50,19 @@ export default class ExerciseService {
         return axios.put('/ejercicios/' + ejercicio._id, ejercicio);
     }
 
+    buscarEjercicios(buscador, lazyParams){
+        return axios.get('/ejercicio', {
+            params:{
+                pagina: lazyParams.pagina,
+                zonaMuscular: lazyParams.filterMusc,
+                materiales: lazyParams.filterMat,
+                buscador: buscador,
+            }
+        })
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
 }
