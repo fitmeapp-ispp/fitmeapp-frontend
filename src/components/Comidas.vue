@@ -4,6 +4,7 @@
 			<div class="card mb-3 col-12">
 				<div class="formgroup-inline justify-content-around align-items-between ">
 					<div class="field formgroup-inline mt-3 mr-0">
+						<Toast/>
 							<div class="field" v-if="tipo == 'Desayuno'">
 								<Button class="p-button-text" :disabled="true"/>
 							</div>
@@ -78,9 +79,17 @@
 							<div class="field">
 								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
 							</div>
-							<div class="field">
-								<Button label="Calculadora" class="p-button-warning" @click="calculadora()"/>
+						</div>
+						<div class="formgroup-inline justify-content-center mt-2">
+							<div class="text-left field">
+								<Button label="Calculadora" class=" text-left p-button-warning" @click="calculadora()"/>
 							</div>
+							<div class="text-left field">
+								<Button icon="pi pi-info-circle" class=" text-left p-button-info" @click="infocalculadora()"/>
+							</div>
+						</div>
+						<div class="mt-1">
+							<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
 						</div>
 					</div>
 				</div>
@@ -205,7 +214,7 @@
 									<div class="grid grid-nogutter">		
 										<div class="text-left font-bold col-6">
 											
-											<Button icon="pi pi-plus" :id="slotProps.data._id" class="p-button-rounded p-button-primary mr-2 mb-2" @click="anyadirADataViewCarrusel(slotProps.data._id, false);" />
+											<Button icon="pi pi-plus" class="p-button-rounded p-button-primary mr-2 mb-2" @click="anyadirADataViewCarrusel(slotProps.data._id, false);" />
 										</div>					
 										<div class="text-right font-bold col-6">
 											
@@ -323,6 +332,86 @@
 				</div>
 			</Dialog>
 			<!-- Fin detalles-->
+
+			<Dialog v-model:visible="infoDialog" header="Información sobre el funcionamiento de la Calculadora" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%">
+				<div class="container">
+					<div class="grid justify-content-center mb-3">
+						<div class="bg-gray-300 card field col-10">
+							<div class="formgroup-inline align-content-center justify-content-center">
+								<span>
+									Para indicar que alimentos han sido consumidos en cada comida, disponemos de un carrusel donde apareceran todos los alimentos que marquemos,
+									así como un campo donde se podrá modificar la cantidad de ese alimento que se va a consumir. Para el correcto funcionamiento de la calculadora
+									será necesario indicar un mínimo de 3 alimento a calcular. 
+									
+									Aunque todos los alimentos se añadan al carrusel, no todos tiene porque ser calculados,
+									es decir; es posible que el cliente quiera fijar la cantidad a comer de ciertos alimentos. Es por ello que hay dos formas de añadir alimentos al carrusel,
+									Una pulsando el botón + en las tarjetas de alimentos directamente, el cual si lo pulsamos se añadirá el alimento en formato a calcular. Y, también;
+									entrando en el detalle de un alimento encontraremos un campo a rellenar con los gramos a los que queremos fijar ese alimento. Independiente de cual
+									sea la forma elegida para hacerlo en el carrusel, habrá siempre, un botón para quitar el alimento del carrusel y uno para guardar el alimento, que será
+									necesario pulsarlo si se modifican los gramos del alimento, en el caso de que el alimento estuviera en formato calculadora, al guardarlo se fijará
+									ese alimento. Para aquellos alimentos que estén fijados, aparecerá además un botón "A calcular", lo cual hará que ese alimento deje de estar fijo,
+									y se incluya entre los alimentos a calcular.
+
+									Una vez hayamos hecho nuestra selección de alimentos fijos y no; podremos pulsar el botón "Calculadora", una vez finalizado el cálculo, se actualizar
+									los datos, se fijarán en el carrusel y se actualizarán las barras superiores de los macronutrientes, que la calculadora buscará que se diferencien lo
+									menos posible de los macronutrientes recomendados.
+								</span>
+
+							</div>
+						</div>
+
+						<div class="bg-gray-300 card field col-10">
+							<div class="formgroup-inline align-content-center justify-content-center">
+								<span>
+									Para indicar que alimentos han sido consumidos en cada comida, disponemos de un carrusel donde apareceran todos los alimentos que marquemos,
+									así como un campo donde se podrá modificar la cantidad de ese alimento que se va a consumir. Para el correcto funcionamiento de la calculadora
+									será necesario indicar un mínimo de 3 alimento a calcular. 
+									
+									Aunque todos los alimentos se añadan al carrusel, no todos tiene porque ser calculados,
+									es decir; es posible que el cliente quiera fijar la cantidad a comer de ciertos alimentos. Es por ello que hay dos formas de añadir alimentos al carrusel,
+									Una pulsando el botón + en las tarjetas de alimentos directamente, el cual si lo pulsamos se añadirá el alimento en formato a calcular. Y, también;
+									entrando en el detalle de un alimento encontraremos un campo a rellenar con los gramos a los que queremos fijar ese alimento. Independiente de cual
+									sea la forma elegida para hacerlo en el carrusel, habrá siempre, un botón para quitar el alimento del carrusel y uno para guardar el alimento, que será
+									necesario pulsarlo si se modifican los gramos del alimento, en el caso de que el alimento estuviera en formato calculadora, al guardarlo se fijará
+									ese alimento. Para aquellos alimentos que estén fijados, aparecerá además un botón "A calcular", lo cual hará que ese alimento deje de estar fijo,
+									y se incluya entre los alimentos a calcular.
+
+									Una vez hayamos hecho nuestra selección de alimentos fijos y no; podremos pulsar el botón "Calculadora", una vez finalizado el cálculo, se actualizar
+									los datos, se fijarán en el carrusel y se actualizarán las barras superiores de los macronutrientes, que la calculadora buscará que se diferencien lo
+									menos posible de los macronutrientes recomendados.
+								</span>
+
+							</div>
+						</div>
+
+						<div class="bg-gray-300 card field col-10">
+							<div class="formgroup-inline align-content-center justify-content-center">
+								<span>
+									Para indicar que alimentos han sido consumidos en cada comida, disponemos de un carrusel donde apareceran todos los alimentos que marquemos,
+									así como un campo donde se podrá modificar la cantidad de ese alimento que se va a consumir. Para el correcto funcionamiento de la calculadora
+									será necesario indicar un mínimo de 3 alimento a calcular. 
+									
+									Aunque todos los alimentos se añadan al carrusel, no todos tiene porque ser calculados,
+									es decir; es posible que el cliente quiera fijar la cantidad a comer de ciertos alimentos. Es por ello que hay dos formas de añadir alimentos al carrusel,
+									Una pulsando el botón + en las tarjetas de alimentos directamente, el cual si lo pulsamos se añadirá el alimento en formato a calcular. Y, también;
+									entrando en el detalle de un alimento encontraremos un campo a rellenar con los gramos a los que queremos fijar ese alimento. Independiente de cual
+									sea la forma elegida para hacerlo en el carrusel, habrá siempre, un botón para quitar el alimento del carrusel y uno para guardar el alimento, que será
+									necesario pulsarlo si se modifican los gramos del alimento, en el caso de que el alimento estuviera en formato calculadora, al guardarlo se fijará
+									ese alimento. Para aquellos alimentos que estén fijados, aparecerá además un botón "A calcular", lo cual hará que ese alimento deje de estar fijo,
+									y se incluya entre los alimentos a calcular.
+
+									Una vez hayamos hecho nuestra selección de alimentos fijos y no; podremos pulsar el botón "Calculadora", una vez finalizado el cálculo, se actualizar
+									los datos, se fijarán en el carrusel y se actualizarán las barras superiores de los macronutrientes, que la calculadora buscará que se diferencien lo
+									menos posible de los macronutrientes recomendados.
+								</span>
+
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</Dialog>
+
 		</div>
 		<!-- Fin cuerpo-->
 	</div> 
@@ -339,6 +428,7 @@
 				tipo: "",
 				dia: {},
 				alimentoDialog: false,
+				infoDialog: false,
 				carruselVacio: false,
 				dataUserView: {},
 				kcal_recomendadas: 0,
@@ -600,6 +690,9 @@
 				this.alimento = alimento;
 				this.alimentoDialog = true;
 			},
+			infocalculadora(){
+				this.infoDialog = true;
+			},
 			anyadirConsumicion(alimentoId, cantidad){
 				if (cantidad == null){
 					cantidad = this.cantidad
@@ -679,6 +772,7 @@
 				this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
 			},
 			calculadora(){
+
 				var alimentosACalcuar = this.dataviewValueCarrusel.filter(x=>x.calculadora).map(x=>x.alimento)
 				var alimentosFijos = this.dataviewValueCarrusel.filter(x=>!x.calculadora)
 				var kcalRecCalculadora = this.dia.kcalRec
@@ -695,7 +789,7 @@
 				}
 
 				this.alimentoService.calculadora(alimentosACalcuar,{"kcal_100g":kcalRecCalculadora,
-				"carbohidratos_100g":carbRecCalculadora, "proteinas_100g":proteinasRecCalculadora, "grasa_100g":grasasRecCalculadora}).then(data=>{
+				"carbohidratos_100g":carbRecCalculadora, "proteinas_100g":proteinasRecCalculadora, "grasa_100g":grasasRecCalculadora},this.$toast).then(data=>{
 					
 					async function recargaDatos(service,dia,alimentosACalcuar){
 						for (var j=0; j<data.length;j++){
@@ -708,6 +802,7 @@
 					recargaDatos(this.alimentoService,this.dia,alimentosACalcuar).then(()=>{this.fetchItems()});
 
 				})
+
 			}
 		}
 	}

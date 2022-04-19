@@ -153,7 +153,7 @@ export default class AlimentoService {
         });
     }
 
-    calculadora(alimentos, macronutrientes){
+    calculadora(alimentos, macronutrientes,toast){
         const url=process.env.VUE_APP_CALCULADORA
         var json = {
             "alimentos":alimentos,
@@ -167,8 +167,8 @@ export default class AlimentoService {
             "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
         })
         .then((response) => response.data)
-        .catch((e)=>{
-            console.log('error' + e);
+        .catch(()=>{
+            toast.add({severity:'warn', summary: 'Calculadora', detail: 'Seleccione un mímino de 3 alimentos a calcular', life: 3000});
         });
     }
 
