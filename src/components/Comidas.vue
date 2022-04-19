@@ -339,72 +339,58 @@
 						<div class="bg-gray-300 card field col-10">
 							<div class="formgroup-inline align-content-center justify-content-center">
 								<span>
-									Para indicar que alimentos han sido consumidos en cada comida, disponemos de un carrusel donde apareceran todos los alimentos que marquemos,
-									así como un campo donde se podrá modificar la cantidad de ese alimento que se va a consumir. Para el correcto funcionamiento de la calculadora
-									será necesario indicar un mínimo de 3 alimento a calcular. 
-									
-									Aunque todos los alimentos se añadan al carrusel, no todos tiene porque ser calculados,
-									es decir; es posible que el cliente quiera fijar la cantidad a comer de ciertos alimentos. Es por ello que hay dos formas de añadir alimentos al carrusel,
-									Una pulsando el botón + en las tarjetas de alimentos directamente, el cual si lo pulsamos se añadirá el alimento en formato a calcular. Y, también;
-									entrando en el detalle de un alimento encontraremos un campo a rellenar con los gramos a los que queremos fijar ese alimento. Independiente de cual
-									sea la forma elegida para hacerlo en el carrusel, habrá siempre, un botón para quitar el alimento del carrusel y uno para guardar el alimento, que será
-									necesario pulsarlo si se modifican los gramos del alimento, en el caso de que el alimento estuviera en formato calculadora, al guardarlo se fijará
-									ese alimento. Para aquellos alimentos que estén fijados, aparecerá además un botón "A calcular", lo cual hará que ese alimento deje de estar fijo,
-									y se incluya entre los alimentos a calcular.
-
-									Una vez hayamos hecho nuestra selección de alimentos fijos y no; podremos pulsar el botón "Calculadora", una vez finalizado el cálculo, se actualizar
-									los datos, se fijarán en el carrusel y se actualizarán las barras superiores de los macronutrientes, que la calculadora buscará que se diferencien lo
-									menos posible de los macronutrientes recomendados.
+									Para indicar qué alimentos han sido consumidos en cada comida, disponemos de un carrusel donde aparecerán todos los alimentos que marquemos,
+									así como un campo donde se podrá modificar la cantidad de ese alimento que se ha tomado. Para el correcto funcionamiento de la calculadora
+									será necesario indicar un mínimo de 3 alimentos.  Aunque todos los alimentos se añadan al carrusel, no todos tiene porque ser calculados, es decir,
+									es posible que el cliente quiera fijar la cantidad a comer de ciertos alimentos.
 								</span>
 
 							</div>
 						</div>
-
+						<br>
 						<div class="bg-gray-300 card field col-10">
 							<div class="formgroup-inline align-content-center justify-content-center">
 								<span>
-									Para indicar que alimentos han sido consumidos en cada comida, disponemos de un carrusel donde apareceran todos los alimentos que marquemos,
-									así como un campo donde se podrá modificar la cantidad de ese alimento que se va a consumir. Para el correcto funcionamiento de la calculadora
-									será necesario indicar un mínimo de 3 alimento a calcular. 
-									
-									Aunque todos los alimentos se añadan al carrusel, no todos tiene porque ser calculados,
-									es decir; es posible que el cliente quiera fijar la cantidad a comer de ciertos alimentos. Es por ello que hay dos formas de añadir alimentos al carrusel,
-									Una pulsando el botón + en las tarjetas de alimentos directamente, el cual si lo pulsamos se añadirá el alimento en formato a calcular. Y, también;
-									entrando en el detalle de un alimento encontraremos un campo a rellenar con los gramos a los que queremos fijar ese alimento. Independiente de cual
-									sea la forma elegida para hacerlo en el carrusel, habrá siempre, un botón para quitar el alimento del carrusel y uno para guardar el alimento, que será
-									necesario pulsarlo si se modifican los gramos del alimento, en el caso de que el alimento estuviera en formato calculadora, al guardarlo se fijará
-									ese alimento. Para aquellos alimentos que estén fijados, aparecerá además un botón "A calcular", lo cual hará que ese alimento deje de estar fijo,
-									y se incluya entre los alimentos a calcular.
-
-									Una vez hayamos hecho nuestra selección de alimentos fijos y no; podremos pulsar el botón "Calculadora", una vez finalizado el cálculo, se actualizar
-									los datos, se fijarán en el carrusel y se actualizarán las barras superiores de los macronutrientes, que la calculadora buscará que se diferencien lo
-									menos posible de los macronutrientes recomendados.
+									Tenemos dos formas de añadir alimentos al carrusel: 
 								</span>
+								<ol>
+									<li>Pulsando el botón + en las tarjetas del alimento deseado.</li>
+
+									<li>Entrando en el detalle de un alimento: encontraremos un campo a rellenar con los gramos 
+										a los que queremos fijar ese alimento.</li>
+								</ol> 
 
 							</div>
 						</div>
-
+						<br>
 						<div class="bg-gray-300 card field col-10">
 							<div class="formgroup-inline align-content-center justify-content-center">
 								<span>
-									Para indicar que alimentos han sido consumidos en cada comida, disponemos de un carrusel donde apareceran todos los alimentos que marquemos,
-									así como un campo donde se podrá modificar la cantidad de ese alimento que se va a consumir. Para el correcto funcionamiento de la calculadora
-									será necesario indicar un mínimo de 3 alimento a calcular. 
-									
-									Aunque todos los alimentos se añadan al carrusel, no todos tiene porque ser calculados,
-									es decir; es posible que el cliente quiera fijar la cantidad a comer de ciertos alimentos. Es por ello que hay dos formas de añadir alimentos al carrusel,
-									Una pulsando el botón + en las tarjetas de alimentos directamente, el cual si lo pulsamos se añadirá el alimento en formato a calcular. Y, también;
-									entrando en el detalle de un alimento encontraremos un campo a rellenar con los gramos a los que queremos fijar ese alimento. Independiente de cual
-									sea la forma elegida para hacerlo en el carrusel, habrá siempre, un botón para quitar el alimento del carrusel y uno para guardar el alimento, que será
-									necesario pulsarlo si se modifican los gramos del alimento, en el caso de que el alimento estuviera en formato calculadora, al guardarlo se fijará
-									ese alimento. Para aquellos alimentos que estén fijados, aparecerá además un botón "A calcular", lo cual hará que ese alimento deje de estar fijo,
-									y se incluya entre los alimentos a calcular.
-
-									Una vez hayamos hecho nuestra selección de alimentos fijos y no; podremos pulsar el botón "Calculadora", una vez finalizado el cálculo, se actualizar
-									los datos, se fijarán en el carrusel y se actualizarán las barras superiores de los macronutrientes, que la calculadora buscará que se diferencien lo
-									menos posible de los macronutrientes recomendados.
+									En el carrusel tenemos 3 botones:
 								</span>
+								<ol>
+									<li>“Quitar”: Para eliminar un alimento del carrusel, es decir, borrar la consumición. </li>
 
+									<li> “Guardar”:  nos permitirá almacenar el cambio de cantidades o fijar sus cantidades.</li>
+
+									<li> "A calculadora": nos permite entrar en “Modo calculadora”, 
+										que nos permite cambiar las cantidades de todos los alimentos para que se calculen las propiedades.</li>
+								</ol> 
+								<img src='https://i.imgur.com/SnyNZ62.png' alt='Captura de la aplicación'>
+							</div>
+						</div>
+						<div class="bg-gray-300 card field col-10">
+							<div class="formgroup-inline align-content-center justify-content-center">
+								<span>
+									Para aquellos alimentos que estén fijados, aparecerá además un botón "A calcular", lo cual hará 
+									que ese alimento deje de estar fijo, y se incluya entre los alimentos a calcular.
+								</span>
+								<span>
+									Una vez hayamos hecho nuestra selección de alimentos fijos, podremos pulsar el botón. 
+									Una vez finalizado el cálculo, se actualizan los datos. Se fijarán en el carrusel y se actualizarán los
+									indicadores de macronutrientes, que la calculadora buscará orientar a nuestro objetivo.
+								</span>
+								<img src='https://i.imgur.com/oFPc6VX.png' alt='Captura de la aplicación'>
 							</div>
 						</div>
 						
