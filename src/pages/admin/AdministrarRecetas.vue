@@ -9,44 +9,45 @@
                     <Toolbar class="mb-4">
                         <template v-slot:start>
                             <div class="my-2">
-                                <Button label="Añadir" icon="pi pi-plus" class="p-button-success mr-2" @click="newRecipe" />
+                                <Button label="Añadir" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
                             </div>
                         </template>
                     </Toolbar>
 
-                    <DataTable :value="dataviewValue" dataKey="_id" :paginator="true" :rows="10" :filters="filters" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} recetas">
-                        <!--Buscador-->
-                        <template #header>
-                            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                                
-                                <span class="block mt-2 md:mt-0 p-input-icon-left">
-                                    <i class="pi pi-search" />
-                                    <InputText v-model="filters['global'].value" placeholder="Buscar..." />
-                                </span>
-                            </div>
-                        </template>
+                    <DataTable ref="dt" :value="dataviewValue"  dataKey="_id" :paginator="true" :rows="10" :filters="filters"
+							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} recetas" responsiveLayout="scroll">
+					<template #header>
+						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+							
+							<span class="block mt-2 md:mt-0 p-input-icon-left">
+                                <i class="pi pi-search" />
+                                <InputText v-model="filters['global'].value" placeholder="Buscar..." />
+                            </span>
+						</div>
+					</template>
                         
-                        <Column field="receta" header="Receta" :style="{width:'100px'}" :sortable=true>
+                        <Column field="nombre" header="Receta" :sortable=true headerStyle="width:15%; min-width:10rem;">
                             <template #body="slotProps">
                             <span class="p-column-title">Receta</span>
                             {{slotProps.data.nombre}}
                             </template>
                         </Column>
-                        <Column field="raciones" header="Raciones" :style="{width:'100px'}" :sortable=true>
+                        <Column field="raciones" header="Raciones" :sortable=true headerStyle="width:10%; min-width:10rem;">
                             <template #body="slotProps">
                             <span class="p-column-title">Raciones</span>
                             {{slotProps.data.raciones}}
                             </template>
                         </Column>
-                        <Column field="ingredientes" header="Ingredientes" :style="{width:'100px'}">
+                        <Column field="ingredientes" header="Ingredientes" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <span class="p-column-title">Ingredientes</span>
-                                <template v-for="ingredientesItem in slotProps.data.ingredientes">
-                                    {{ingredientesItem.ingrediente}}: {{ingredientesItem.cantidad}}, 
+                                <template v-for="ingredientesItem in slotProps.data.ingredientes" v-bind:key="ingredientesItem">
+                                    <li>{{ingredientesItem.ingrediente}}: {{ingredientesItem.cantidad}} </li>
                                 </template>
                             </template>
                         </Column>
-                        <Column field="pasos" header="Pasos" :style="{width:'100px'}">
+                        <Column field="pasos" header="Pasos" headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                             <span class="p-column-title">Pasos</span>
                                 <ul>
@@ -57,7 +58,7 @@
                             </template>
                         </Column>
                         <!-- acciones -->
-                        <Column headerStyle="min-width:10rem;">
+                        <Column headerStyle="width:20%; min-width:10rem;">
                             <template #body="slotProps">
                                 <Button icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="editRecipe(slotProps.data)" />
                                 <Button icon="pi pi-trash" class="p-button-rounded p-button-danger mt-2" @click="confirmDeleteRecipe(slotProps.data)" />
@@ -65,6 +66,7 @@
                         </Column>
                     </DataTable>
                 </div>
+
                 <!--Create-->
                 <Dialog v-model:visible="recipeDialog" :style="{width: '500px'}" header="Detalles de Receta" :modal="true" class="p-fluid">					
                     <div class="field">
@@ -114,7 +116,7 @@
 				</div>
                     <template #footer>
                         <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideRecipeDialog"/>
-                        <Button label="Crear" icon="pi pi-check" class="p-button-text" @click="saveRecipe" v-if="this.editing==false"/>
+                        <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveReceta" v-if="this.editing==false"/>
                         <Button label="Editar" icon="pi pi-check" class="p-button-text" @click="putRecipe" v-if="this.editing==true"/>
                     </template>
                 </Dialog>
@@ -131,12 +133,16 @@
 				</Dialog>
             </div>
         </div>
+        <div class="col-12">
+            <Button label="Volver" class="p-button-success col-12" @click="volver" />
+        </div>  
     </div>
 </template>
 
 <script>
 import axios from "axios"
 import {FilterMatchMode} from 'primevue/api';
+import RecetaService from '../../service/RecetaService';
 export default {
     data() {
         return {
@@ -157,20 +163,62 @@ export default {
             editing: false,
         };
     },
-    mounted() {
-        this.fetchItems();
-    },
     created() {
+        this.recetaService = new RecetaService();
         this.initFilters();
     },
-  methods: {
-    fetchItems(){
-          let uri = '/recetas';
-          axios.get(uri).then((response) => {
-            this.dataviewValue = response.data;
-            console.log(this.dataviewValue);
-          });
+    mounted() {
+        this.fetchItems();
+        this.recetaService.getRecetas().then(data => this.recipe = data);
     },
+    
+    methods: {
+    fetchItems(){
+			axios.get("/recetas", {
+				params: {
+					recetaId: this.$store.state.recetaId
+				}
+			})
+			.then((response) => {
+				this.dataviewValue = response.data;
+			});
+    },
+
+    openNew() {
+        this.recipe = {};
+        this.submitted = false;
+        this.recipeDialog = true;
+	},
+
+    hideDialog() {
+			this.recipeDialog = false;
+			this.submitted = false;
+	},
+
+    saveReceta() {
+        this.submitted = true;
+        if (this.recipe.nombre) {
+        //Put
+        if (this.recipe._id) {
+            this.deleteRecipeDialog = false;
+            let data = {...this.recipe}
+            let id = this.recipe._id.split("").join("");
+            axios.put("/recetas/" + id, data);
+            this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta Actualizada', life: 3000});
+        }
+        //Create
+        else {
+            axios.post('/recetas', this.recipe);
+            this.dataviewValue.push(this.recipe)
+            this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta Creada', life: 3000});
+        }
+        this.recipeDialog = false;
+        this.recipe = {};
+        }
+    },
+
+	
+        
     initFilters() {
         this.filters = {
             'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
@@ -191,6 +239,8 @@ export default {
         this.ingredientes= [{ingrediente: '',cantidad: ''}];
         this.pasos= [{paso: ''}];
     },
+
+    /*
     saveRecipe() {
         this.submitted = true;
         console.log(this.recipe);
@@ -206,6 +256,13 @@ export default {
         this.pasos= [{paso: ''}];
         this.editing = false;
     },
+    */
+
+    editRecipe(recipe) {
+		this.recipe = recipe;
+		this.recipeDialog = true;
+	},
+    /*
     editRecipe(recipe){ 
         this.recipeDialog = true;
         this.recipe = recipe;
@@ -219,6 +276,7 @@ export default {
             this.pasos.push({paso:element})
         );
     },
+    */
     putRecipe() {
         this.editing = false;
         this.recipeDialog = false;
@@ -241,14 +299,11 @@ export default {
         this.deleteRecipeDialog=true;
     },
     deleteRecipe() {
-        this.dataviewValue = this.dataviewValue.filter(val => val._id !== this.recipe._id);
         this.deleteRecipeDialog = false;
-        let id = this.recipe._id.split('').join(''); //Clone string
-        axios.delete("/recetas/"+id);
-        this.recipe = {};
-        this.ingredientes= [{ingrediente: '',cantidad: ''}];
-        this.pasos= [{paso: ''}];
-        this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
+			let id = this.recipe._id.split("").join("");
+			axios.delete('/recetas/' + id);
+			this.dataviewValue = this.dataviewValue.filter(val => val._id !== this.recipe._id);
+			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
     },
     anyadirIngrediente(){
         this.ingredientes.push({ 
@@ -261,6 +316,22 @@ export default {
             paso: ''
         });
     },
+    findIndexById(id) {
+        let index = -1;
+        for (let i = 0; i < this.dataviewValue.length; i++) {
+            if (this.dataviewValue[i]._id === id) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    },
+    exportCSV() {
+		this.$refs.dt.exportCSV();
+	},
+    volver(){
+        this.$router.push('/administrar')
+    }
   },
 };
 </script>
