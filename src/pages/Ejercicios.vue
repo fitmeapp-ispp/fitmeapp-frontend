@@ -6,7 +6,7 @@
           <h3 class="text-center"> EJERCICIOS RECOMENDADOS DEL DÍA </h3>
         </div>
         <div class="card col-12">
-        <DataTable  :value="dataviewValue" :rows="7" responsiveLayout="scroll"> 
+        <DataTable v-if="dataviewValue.length > 0 && dataviewValue[0].ejercicioDetalles" :value="dataviewValue" :rows="7" responsiveLayout="scroll"> 
           <Column field="name" header="Nombre" :style="{width:'50%'}" >
 						<template #body="{data}">
               <router-link :to="'/ejercicio/detalles/' + data.ejercicioDetalles[0]._id">
@@ -64,7 +64,7 @@ export default {
         13:"Hombros",
         14:"Gemelos"
       },
-      dataviewValue: null,
+      dataviewValue: {},
     };
   },
   exerciseService: null,
@@ -75,7 +75,9 @@ export default {
   methods: {
     fetchItems(){
       this.exerciseService.getRecomendaciones(this.$store.state.userId)
-                          .then(data => this.dataviewValue = data);
+      .then(res => {
+        this.dataviewValue = res.data
+      });
     },
   },
 };

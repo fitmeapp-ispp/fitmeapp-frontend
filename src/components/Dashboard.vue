@@ -43,7 +43,7 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
+                                            <img :src="slotProps.data[1]" :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
                                             <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
@@ -91,7 +91,7 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
+                                            <img :src="slotProps.data[1]" :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
                                             <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
@@ -141,7 +141,7 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
+                                            <img :src="slotProps.data[1]" :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
                                             <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
@@ -154,40 +154,46 @@
                 </div>
             </div>
         </div>
+
         <!-- PARTE DERECHA -->
+
+        
+        
        <div class="col-12 lg:col-6">
-         <!--   <div class="grid card col-12  justify-content-center">
-                <div class="col-12 md:col-5" >
-                    <div class="grid justify-content-around align-items-center">
-                        <div class="text-center mb-5" style="height:40%;">
-                            <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
-                        </div>
-                        <div class="text-center mb-5" style="height:30%;">
-                            <div class="surface-300 border-round mb-5 overflow-hidden w-14rem lg:w20-rem" style="height:20px">
-                                <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
-                            </div>
-                        </div>
-                        <div class="text-center mb-5" style="height:30%;">
-                            <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
+           <div class="grid card col-12 p-fluid justify-content-center align-items-start">
+
+                <div class="grid col-12 lg:col-6 align-content-center justify-content-center mr-2">
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Pasos</Tag>
+                    
+                    <div class="my-2 text-center">
+                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" />
+                        <h3 class="mt-0" v-if="porcentajePasos >= 100">Objetivo conseguido!</h3>
+                    </div>
+
+                    <div class="card flex justify-content-center align-items-center">
+                        <div class="text-center">
+                            <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
+                            <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                            incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0" />
                         </div>
                     </div>
-                </div>
-                <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
-                    <div class="surface-300 border-round mb-2 overflow-hidden w-10rem lg:w-8rem" style="height:20px">
-                                    <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
+                
+                    <div class="card flex justify-content-center align-items-center">
+                        <div class="text-center">
+                            <Tag class="col-12 mb-2 text-center" value="Pasos recomendados" style="font-size:1.25rem; font-weight:800; background:#1da750"></Tag>
+                            <InputNumber v-model="pasosRecomendados" :disabled="true"/>
+                        </div>
                     </div>
-                    <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
                 </div> 
 
-                <div class= "grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenes"> 
+                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
-                    <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="200px" class="grid justify-content-center align-item-center mt-2 ml-1">
+                    <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="210px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
                             <div class="product-item">
                                 <div class="product-item-content">
                                     <div class="mb-3">
-                                        <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image"/>
+                                        <img :src="slotProps.data.url" :alt="slotProps.data.nombre" class="product-image"/>
                                     </div>
                                     <div>
                                         <h4 class="mb-1">{{slotProps.data.nombre}}</h4>                                            
@@ -196,13 +202,18 @@
                             </div>
                         </template>
                     </Carousel>
-                    <router-link to="/ejercicios" class="mt-1 col-12">
+                    <router-link to="/ejercicios" class="mt-1 col-9 text-center">
                         <Button label="Añadir ejercicio" class="p-button-outlined p-button-secondary col-12"/>
+                        <div class="mt-2 text-center" v-if="round(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena) > dia.kcalRec">
+                            <h4>¡Has consumido más kcal de las recomendadas!</h4>
+                            <!-- <img alt="Alerta calorías" :src="imagenBalanza()" width="150" /> -->
+                        </div>
                     </router-link>
                 </div>
-            </div> -->
 
-            <div class="card grid card col-12 p-fluid">
+            </div>
+
+            <div class="card grid col-12 p-fluid">
                 <div class="card col-12 md:col-12">
                     <div class="text-center">
                         <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Peso objetivo: {{pesoObjetivo}} kg</Tag>
@@ -212,17 +223,17 @@
                 <div class="col-12 md:col-5" >
                     <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
-                            <Tag class="col-12 text-center" value="Peso actual:"  style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
                             <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                              incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
-                             @focusout="savePeso()" />
+                             @focusout="savePeso()" suffix=" kg"/>
                         </div>
                     </div>
                 
                     <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
-                            <Tag value="Peso de ayer:" style="font-size:1.25rem; font-weight:800; background:#1da750; margin-bottom:0.5rem"></Tag>
-                            <InputNumber v-model="pesoDeAyer" :step="0.5" :disabled="true"></InputNumber>
+                            <Tag class="col-12 mb-2 text-center" value="Peso de ayer" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
+                            <InputNumber v-model="pesoDeAyer" :disabled="true" suffix=" kg"/>
                         </div>
                     </div>
                 </div>
@@ -231,7 +242,6 @@
                     <h5 class="text-center"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
                     <Chart type="line" :data="lineData" :options="lineOptions" />
                 </div>
-                
             </div>
         </div>
 	</div>
@@ -240,6 +250,7 @@
 <script>
     import DiaService from "../service/DiaService";
     import UserService from "../service/UserService";
+    import ExerciseService from "../service/ExerciseService";
 
     export default {
         data() {
@@ -272,14 +283,7 @@
                 pesoActual: 76.5,
                 pesoDeAyer: 77.0,
 
-                imagenes: [{
-                        url: "https://cdn-icons-png.flaticon.com/512/2780/2780119.png",
-                        nombre: "Ejercicio 1"
-                    },
-                    {   url: "https://cdn-icons-png.flaticon.com/512/10/10699.png",
-                        nombre: "Ejercicio 2"
-                    }
-                ],
+                imagenesEjercicios: [],
                 imagenesDesayuno: [],
                 imagenesAlmuerzo: [],
                 imagenesCena: [],
@@ -311,21 +315,56 @@
                 
                 lineOptions: null,
                 diaService: null,
-                userService: null
+                userService: null,
+                exerciseService: null,
             }
         },
-        created(){
-            this.diaService = new DiaService();
-            this.userService = new UserService();
+        computed: {
+            porcentajePasos() {
+                let res = this.round(this.pasos/this.pasosRecomendados*100)
+                return res >= 100 ? 100 : this.round(this.pasos/this.pasosRecomendados*100)
+            },
+            colorProgresoPasos() {
+                let porcentaje = this.porcentajePasos
+                if (porcentaje < 34)
+                    return "red"
+                else if (porcentaje < 67)
+                    return "orange"
+                else if (porcentaje < 100)
+                    return "var(--green-500)"
+                else
+                    return "green"
+            }
         },
-        mounted(){ // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
+        created() {
+            this.diaService = new DiaService()
+            this.userService = new UserService()
+            this.exerciseService = new ExerciseService()
+        },
+        mounted() { // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
             //this.pasos = this.pasosRecomendados * this.porcentajePasos / 100;
-            this.getPesoObjetivo();
-            this.obtenerDatosHome();
+            this.getPesoObjetivo()
+            this.obtenerDatosHome()
+            this.getEjecucionesEjercicio()
         },
         methods: {
+            imagenBalanza() {
+                return '/images/icono_balanza.png';
+            },
+            imagen_ejecucion_alta() {
+                return '/images/ejecucion_alta.png';
+            },
+            imagen_ejecucion_media() {
+                return '/images/ejecucion_media.png';
+            },
+            imagen_ejecucion_baja() {
+                return '/images/ejecucion_baja.png';
+            },
+            round(num) {
+                return Math.round((num + Number.EPSILON) * 100) / 100
+            },
             obtenerDatosHome(){
-
+                
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
 
@@ -390,7 +429,6 @@
                         arrayAux.push(this.comidasDesayuno[i]);
                     }
                     this.imagenesDesayuno = arrayAux;
-                    console.log(arrayAux);
                 })
             },
 
@@ -406,7 +444,6 @@
                         arrayAux.push(this.comidasAlmuerzo[i]);
                     }
                     this.imagenesAlmuerzo = arrayAux;
-                    console.log(arrayAux);
                 })
             },
 
@@ -422,7 +459,6 @@
                         arrayAux.push(this.comidasCena[i]);
                     }
                     this.imagenesCena = arrayAux;
-                    console.log(arrayAux);
                 })
             },
 
@@ -459,24 +495,37 @@
                         }
                     }
                 });
-            },savePeso(){
+            },
+            savePeso(){
                 this.userService.savePeso(this.pesoActual, this.$store.state.userId, this.dia._id);
+            },
+            async getEjecucionesEjercicio() {
+                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-20")//this.$store.state.fechaHome)
+                this.ejecucionesEjercicio = ejecuciones.data
+
+                for (let ejecucion of ejecuciones.data) {
+                    let ejercicio = await this.exerciseService.getExerciseById(ejecucion.ejercicio)
+                    switch (ejecucion.intensidad) {
+                        case "Alta":
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_alta(), nombre: ejercicio.data.name})
+                            break
+                        case "Media":
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_media(), nombre: ejercicio.data.name})
+                            break
+                        case "Baja":
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_baja(), nombre: ejercicio.data.name})
+                            break
+                    }
+                }
             }
         }
     }
 </script>
 <style>
 
-    .p-knob {
-        width: 100%;
-        height: 100%;
-    }
-
     .p-knob-text {
         font: bolder;
-        font-size:13.2px !important;
-        position: relative !important;
-        bottom: 50px
+        font-size:16px !important;
     }
 
     .product-item .product-item-content {
@@ -498,8 +547,8 @@
     }
 
     @media only screen and (max-width: 1600px) {
-        .textoImagen{
-                    display: none;
+        .textoImagen {
+            display: none;
         }
     }
 </style>
