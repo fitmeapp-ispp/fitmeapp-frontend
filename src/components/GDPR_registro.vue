@@ -1,4 +1,5 @@
 <template>
+<div class="card">
 <h1>Aviso legal</h1>
 <p>
 Javier Gutiérrez Falcón, provisto con NIF/CIF 29545802W, dirección calle Colombia 14, no puede asumir ninguna responsabilidad derivada del uso incorrecto, inapropiado o ilícito de la información aparecida en la página de Internet de enlace a fitmeapp.
@@ -28,8 +29,8 @@ Asimismo, para acceder a algunos de los servicios que MissClickCompany ofrece a 
 Nuestros servicios cuentan con una buena y eficiente seguridad, pero en caso de que se produjera un filtrado indeseado de los datos, se notificará a través de las diferentes redes sociales de FitMeApp (FitmeappS) y a través del correo electrónico personal cumplimentado en la aplicación.
 </p>
 
-	<Button label="Volver" style="background-color:#1DA750; color:white;" @click="volver"/>
-    
+<Button label="Volver" style="background-color:#1DA750; color:white;" @click="volver"/>
+</div>    
 </template>
 
 <script>
