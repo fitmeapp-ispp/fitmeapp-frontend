@@ -1,8 +1,8 @@
 <template>
 	<div class="layout-footer">
-		<img alt="Logo" :src="footerImage()" height="20" class="mr-2" />
-		by
-		<span class="font-medium ml-2">PrimeVue</span>
+		<router-link to="/GDPR">
+                <p style="color:gray; font-size: 1.5em;">Aviso legal</p>
+        </router-link>
 	</div>
 </template>
 

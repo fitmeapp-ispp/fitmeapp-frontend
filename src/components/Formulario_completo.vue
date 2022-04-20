@@ -97,6 +97,11 @@
 						<InputNumber id="pasos" v-model="user.pasos" required="true" :class="{'p-invalid': enviado && errorPasos}"/>
 						<small class="p-invalid" :key="errorPasos" v-if="enviado && errorPasos">{{this.errorPasos}}</small>
 					</div>
+					<div class="field col-12 md:col-4">
+						<input type="checkbox" id="condicionesLegales"/>
+							<label for="condicionesLegales">He leído y acepto las <router-link to="/condiciones">condiciones legales</router-link></label>
+						<small class="p-invalid" :key="errorCondiciones" v-if="enviado && errorCondiciones">{{this.errorCondiciones}}</small>
+					</div>
 				</div>
 			</div>
 			<div class="p-fluid formgrid grid">
@@ -157,6 +162,7 @@
 					{name: 'Baja en grasas', code: 'baja_grasas'}
 				],
 				dieta_pref: null,
+				condicionesAceptadas: null,
 				errorNombre: null,
 				errorApellido: null,
 				errorFecha: null,
@@ -172,6 +178,7 @@
 				errorAltura: null,
 				errorDieta: null,
 				errorActividad: null,
+				errorCondiciones: null,
 				errorSigue: false
 			}
 		},
@@ -444,6 +451,14 @@
 
 			}else{
 				this.errorPasos = null;
+				
+			}
+			const condicionesCheck = document.getElementById("condicionesLegales");
+			if(condicionesCheck.checked==false){
+				resultado = false;
+				this.errorCondiciones = 'Debe leer y aceptar las condiciones legales';
+			}else{
+				this.errorCondiciones = null;
 				
 			}
 			this.$forceUpdate();

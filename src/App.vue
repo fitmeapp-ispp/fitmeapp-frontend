@@ -18,7 +18,7 @@
 
 <script>
 import AppTopBar from './AppTopbar.vue';
-/* import AppFooter from './AppFooter.vue'; */
+import AppFooter from './AppFooter.vue';
 import SupportButton from "./components/SupportButton.vue";
 export default {
     emits: ['change-theme'],
@@ -246,7 +246,7 @@ export default {
     components: {
         "SupportButton": SupportButton,
         'AppTopBar': AppTopBar,
-        /* 'AppFooter': AppFooter, */
+        'AppFooter': AppFooter,
     }
 }
 </script>
