@@ -80,14 +80,14 @@
             <h1 style="color:#256029;">Ejercicios similares</h1>
         </div>
         <div class="col-12">
-            <DataView :value="related_exercises" layout="grid" :totalRecords="3" :rows="1">
+            <DataView v-if="relatedExercises" :value="relatedExercises" layout="grid" :totalRecords="3" :rows="1">
                 <template #grid="slotProps1">
                     <div class="col-12 lg:col-4 md:col-6">
                         <div class="grid card m-3 border-1 surface-border">
                             <div class="col-12 lg:col-8">
                                 <h5 class="p-flex" style="color:#256029;">{{slotProps1.data.name}}</h5>
                             </div>
-                            <Button label="Detalles" class="p-button-success mb-2 col-12 lg:col-4"  @click="recargar(slotProps1.data._id)"/>
+                            <Button label="Detalles" class="p-button-success mb-2 col-12 lg:col-4" @click="recargar(slotProps1.data._id)"/>
                             <div class="col-12 flex justify-content-center align-items-center">
                                 <Galleria :value="slotProps1.data.images" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="750" containerStyle="max-width: 800px; margin: auto">
                                     <template #item="slotProps2">
@@ -106,12 +106,12 @@
 </template>
 
 <style>
-        h1 {
-            font-size: 30px;
-        }
-        .lado_derecho {
-            float: right;
-        }
+    h1 {
+        font-size: 30px;
+    }
+    .lado_derecho {
+        float: right;
+    }
 </style>
 
 <script>
@@ -122,9 +122,9 @@ export default {
     data() {
         return {
             nivelesDificultad: [
-            {name: "Baja", code: "Baja"},
-            {name: "Media", code: "Media"},
-            {name: "Alta", code: "Alta"}
+                {name: "Baja", code: "Baja"},
+                {name: "Media", code: "Media"},
+                {name: "Alta", code: "Alta"}
             ],
             equipmentList: [
                 "Barbell",
@@ -157,7 +157,7 @@ export default {
             ],
             exerciseService: null,
             dataviewValue: null,
-            related_exercises: {},
+            relatedExercises: [],
             sinImagen: sinImagen,
             intensidad: null,
             minutos: 0,
@@ -169,12 +169,12 @@ export default {
         this.fetchExercise();
     },
     methods: {
-        fetchExercise(){
-            this.exerciseService.getExerciseById(this.$route.params.ejercicioId)
-            .then(data => {
-                this.dataviewValue = data;
-                this.exerciseService.getExerciseByMuscle(data.muscles[0]).then(data => this.related_exercises = data);
-            });
+        async fetchExercise(){
+            let exercise = await this.exerciseService.getExerciseById(this.$route.params.ejercicioId)
+            exercise = exercise.data
+            this.dataviewValue = exercise;
+            let relatedExercises = await this.exerciseService.getExerciseByMuscle(exercise.muscles[0])
+            this.relatedExercises = relatedExercises
         },
         saveExercise(){
             if (this.intensidad && this.minutos > 0) {
