@@ -18,7 +18,7 @@
 
 <script>
 import AppTopBar from './AppTopbar.vue';
-/* import AppFooter from './AppFooter.vue'; */
+import AppFooter from './AppFooter.vue';
 import SupportButton from "./components/SupportButton.vue";
 export default {
     emits: ['change-theme'],
@@ -140,7 +140,7 @@ export default {
     },
     watch: {   
         $route() {
-            if (this.$route.fullPath === "/login" || this.$route.fullPath === "/register" || this.$route.fullPath.match(/^(\/administrar)/gm)) {
+            if (this.$route.fullPath === "/login" || this.$route.fullPath === "/register" || this.$route.fullPath === "/condiciones" || this.$route.fullPath.match(/^(\/administrar)/gm)) {
                 document.getElementById("navbar").style = "display:none; position: absolute"
             } else {
                 document.getElementById("navbar").style = ""
@@ -246,7 +246,7 @@ export default {
     components: {
         "SupportButton": SupportButton,
         'AppTopBar': AppTopBar,
-        /* 'AppFooter': AppFooter, */
+        'AppFooter': AppFooter,
     }
 }
 </script>

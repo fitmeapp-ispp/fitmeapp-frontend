@@ -103,6 +103,16 @@ const routes = [
         name: 'register',
         component: () => import('./components/Formulario_completo.vue')
     },
+    {
+        path: '/GDPR',
+        name: 'GDPR',
+        component: () => import('./components/GDPR.vue')
+    },
+    {
+        path: '/condiciones',
+        name: 'condiciones',
+        component: () => import('./components/GDPR_registro.vue')
+    },
 ];
 
 const router = createRouter({
@@ -112,7 +122,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     const adminPages = ['/administrar','/administrar/usuarios','/administrar/ejercicios','/administrar/recetas','/administrar/alimentos'];
-    const publicPages = ['/login','/register'];
+    const publicPages = ['/login','/register','/condiciones'];
 
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;
