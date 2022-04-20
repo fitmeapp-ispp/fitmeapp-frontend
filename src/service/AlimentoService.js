@@ -3,13 +3,13 @@ import axios from 'axios';
 export default class AlimentoService {
 
     getAlimentos(lazyParams, buscador){
-        
+        console.log(lazyParams.filters);
         return axios.get('/alimentos', {
             params:{
                 pagina: lazyParams.pagina,
+                alergeno: lazyParams.filters,
                 ordenar: lazyParams.sort,
                 buscador: buscador,
-                alergeno: lazyParams.filters
             }
         })
         .then((response) => response.data)

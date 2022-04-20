@@ -114,15 +114,18 @@
 					<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
 						:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
 						<template #header>
-							<div class="grid formgroup-inline justify-content-between ">
+							<div class="grid formgroup-inline justify-content-between mt-2">
 								<div class="field">
 									<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
 								</div>
 								<div class="field">
-									<span class="p-input-icon-left mb-2">
+									<span class="p-input-icon-left">
 										<i class="pi pi-search" />
 										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
 									</span>
+								</div>
+								<div class="field">
+									<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
 								</div>
 								<div class="field">
 									<DataViewLayoutOptions v-model="layout" />
@@ -294,7 +297,7 @@
 							<div class="formgroup-inline row flex justify-content-around">
 								<div class="field" v-for="alergeno of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
 									<span class="p-image p-component p-image-preview-container">
-										<img :src="'images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
+										<img :src="'/images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
 									</span>
 								</div>
 							</div>
@@ -341,20 +344,20 @@
 				],
 				alergenosSel2: [],
 				selector_alergenos2: [
-					{name: 'Gluten', code: 'gluten'},
-					{name: 'Crustáceos', code: 'crustaceos'},
-					{name: 'Huevos', code: 'huevos'},
-					{name: 'Pescado', code: 'pescado'},
-					{name: 'Cacahuetes', code: 'cacahuetes'},
-					{name: 'Soja', code: 'soja'},
-					{name: 'Leche', code: 'leche'},
-					{name: 'Frutos de cáscara', code: 'frutos_de_cascara'},
-					{name: 'Apio', code: 'apio'},
-					{name: 'Mostaza', code: 'mostaza'},
-					{name: 'Granos de Sésamo', code: 'Sesamo'},
-					{name: 'Dióxido de azufre y sulfitos', code: 'azufre_sulfitos'},
-					{name: 'Altramuces', code: 'altramuces'},
-					{name: 'Moluscos', code: 'moluscos'}
+					{name: 'Gluten', code: '(gluten)'},
+					{name: 'Crustáceos', code: '(crustaceans|crustaceos)'},
+					{name: 'Huevos', code: '(eggs|huevos)'},
+					{name: 'Pescado', code: '(fish|pescado)'},
+					{name: 'Cacahuetes', code: '(peanuts|cacahuetes)'},
+					{name: 'Soja', code: '(soybeans|soja)'},
+					{name: 'Leche', code: '(milk|leche)'},
+					{name: 'Frutos de cáscara', code: '(nuts|frutos)'},
+					{name: 'Apio', code: '(celery|apio)'},
+					{name: 'Mostaza', code: '(mustard|mostaza)'},
+					{name: 'Granos de Sésamo', code: '(sesame|sesamo)'},
+					{name: 'Dióxido de azufre y sulfitos', code: '(sulphites|sulfitos)'},
+					{name: 'Altramuces', code: '(lupins|altramuces)'},
+					{name: 'Moluscos', code: '(molluscs|moluscos)'}
 				],
 				dctAlergenos: {
 					'gluten': /(gluten)/,
@@ -433,11 +436,18 @@
 						this.dataviewValue = data.resultado;
 					});
 				}else{
-					this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
-					.then(data => {
-						this.totalRecords = data.total;
-						this.dataviewValue = data.resultado;
-					});
+					this.userService.getFavoritos(this.$store.state.userId).then(data => {
+							this.favoritosList = data
+							
+						this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
+						.then(data => {
+							this.totalRecords = data.total;
+							this.dataviewValue = data.resultado;
+							this.obtenerDatosDia(); 
+							
+						});
+
+					})	
 				}
 			},
 			onPage(event){
