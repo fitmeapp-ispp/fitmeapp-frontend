@@ -100,7 +100,8 @@
 					<div class="field col-12 md:col-4">
 						<input type="checkbox" id="condicionesLegales"/>
 							<label for="condicionesLegales">He leído y acepto las <router-link to="/condiciones">condiciones legales</router-link></label>
-						<small class="p-invalid" :key="errorCondiciones" v-if="enviado && errorCondiciones">{{this.errorCondiciones}}</small>
+						<br>
+						<small class="p-invalid" style="color:red" :key="errorCondiciones" v-if="enviado && errorCondiciones">{{this.errorCondiciones}}</small>
 					</div>
 				</div>
 			</div>
