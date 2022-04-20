@@ -69,17 +69,17 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="peso_inicial">Peso inicial*</label>
-						<InputNumber id="peso_inicial" v-model="user.peso_inicial" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorPesoInicial}" @change="cambioObjetivo()"/>
+						<InputNumber id="peso_inicial" v-model="user.peso_inicial" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" suffix=" kg" placeholder="kg" :class="{'p-invalid': enviado && errorPesoInicial}" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorPesoInicial" v-if="enviado && errorAltura">{{this.errorPesoInicial}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="objetivo_peso">Objetivo de peso</label>
-						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled" @change="cambioObjetivo()"/>
+						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorObjetivoPeso" v-if="enviado && errorObjetivoPeso">{{this.errorObjetivoPeso}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="objetivo_semanal">Objetivo semanal</label>
-						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
+						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
 						<small class="p-invalid" :key="errorObjetivoSemanal" v-if="enviado && errorObjetivoSemanal">{{this.errorObjetivoSemanal}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
@@ -94,7 +94,7 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="pasos">Objetivo de pasos diarios</label>
-						<InputNumber id="pasos" v-model="user.pasos" required="true" :class="{'p-invalid': enviado && errorPasos}"/>
+						<InputNumber id="pasos" v-model="user.pasos" required="true" :class="{'p-invalid': enviado && errorPasos}" suffix=" pasos"/>
 						<small class="p-invalid" :key="errorPasos" v-if="enviado && errorPasos">{{this.errorPasos}}</small>
 					</div>
 				</div>
