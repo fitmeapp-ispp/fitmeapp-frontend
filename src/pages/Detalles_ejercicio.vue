@@ -64,13 +64,6 @@
                     <label for="minutos">Minutos*: </label>
                     <InputNumber id="minutos" mode="decimal" :min="0" v-model="minutos" showButtons decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"/>
                 </div>
-                <div class="field" v-if="dataviewValue.equipment.length > 0">
-                    <label for="peso">Peso (Kg): </label>
-                    <InputNumber id="peso" mode="decimal" :min="0" v-model="peso" showButtons :maxFractionDigits="2" :step="0.5" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"/>
-                </div>
-                <div class="field">
-                    
-                </div>
                 <div class="field">
                     <Button label="Marcar como realizado" class="p-button-success" @click="saveExercise"/>
                 </div>
@@ -161,7 +154,6 @@ export default {
             sinImagen: sinImagen,
             intensidad: null,
             minutos: 0,
-            peso: 0,
         }
     },
     created(){
@@ -182,7 +174,6 @@ export default {
                 exercise.intensidad = this.intensidad.code;
                 exercise.minutos = this.minutos;
                 exercise.ejercicio = this.dataviewValue._id;
-                exercise.peso = this.peso;
                 exercise.usuario = this.$store.state.userId;
 
                 this.exerciseService.saveExercise(exercise)
