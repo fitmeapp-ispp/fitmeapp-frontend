@@ -13,7 +13,6 @@ export default class UserService {
     saveUser(user) {
         return axios.post('/users/', user);
     }
-
     
     getSuscripcion(userId){
         return axios.get(`/users/suscripcion/${userId}`)
@@ -22,7 +21,6 @@ export default class UserService {
             console.log('error' + e);
         });
     }
-
 
     getUser(username){
         return axios.get(`/users/${username}`)
@@ -52,14 +50,12 @@ export default class UserService {
         }else if(user.nivel_actividad == "Ejercicio muy fuerte"){
             corrector_actividad = 1.9
         }
-        
 
         if (user.sexo == "Masculino"){
             tmb = 66 + (13.7 * user.peso_actual) + (5 * user.altura) - (6.75 * calcularEdad(user.fechaNacimiento))
             tmb *= corrector_actividad  
             if(user.objetivo == "Perder peso" || user.objetivo == "Aumentar masa muscular"){
                 tmb += user.objetivo_semanal * 1000
-
             }
         }else{
             tmb = 665 + (9.6 * user.peso_actual) + (1.8 * user.altura) - (4.7 * calcularEdad(user.fechaNacimiento))
@@ -75,8 +71,6 @@ export default class UserService {
             user.kcal_recomendadas = 1200
         }
 
-        
-        
         if(user.dieta_pref == "Estándar"){
             user.carbohidratos_recomendados = user.kcal_recomendadas * 0.5
             user.proteinas_recomendadas = user.kcal_recomendadas * 0.2
@@ -109,8 +103,8 @@ export default class UserService {
         
             return edad;
         }
-
     }
+
     getFavoritos(userId){
         return axios.get(`/users/favoritos/${userId}`)
         .then((response) => response.data)
@@ -144,6 +138,10 @@ export default class UserService {
     }
 
     savePeso(peso, userId, diaId){
-        return axios.put('/users/' + peso+"/"+ userId+ "/"+diaId);
+        return axios.put('/users/peso/' + peso+"/"+ userId+ "/"+diaId);
+    }
+
+    savePasos(pasos, diaId){
+        return axios.put('/users/pasos/' + pasos+"/"+diaId);
     }
 }

@@ -173,8 +173,9 @@
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
                             <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                            <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
-                            incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0" />
+                            <InputNumber v-model="pasosRealizados" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                            incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
+                            @focusout="savePasos()" />
                         </div>
                     </div>
                 
@@ -225,8 +226,8 @@
                         <div class="text-center">
                             <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
                             <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
-                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
-                             @focusout="savePeso()" suffix=" kg"/>
+                            incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
+                            @focusout="savePeso()" suffix=" kg"/>
                         </div>
                     </div>
                 
@@ -278,7 +279,7 @@
                 grasasCena: 0,
                 
                 pasosRecomendados:5000,
-                pasos: 0,
+                pasosRealizados: 0,
 
                 pesoActual: 76.5,
                 pesoDeAyer: 77.0,
@@ -321,8 +322,8 @@
         },
         computed: {
             porcentajePasos() {
-                let res = this.round(this.pasos/this.pasosRecomendados*100)
-                return res >= 100 ? 100 : this.round(this.pasos/this.pasosRecomendados*100)
+                let res = this.round(this.pasosRealizados/this.pasosRecomendados*100)
+                return res >= 100 ? 100 : this.round(this.pasosRealizados/this.pasosRecomendados*100)
             },
             colorProgresoPasos() {
                 let porcentaje = this.porcentajePasos
@@ -373,7 +374,7 @@
                     
                     this.pesoActual = this.dia.pesoActual;
                     this.pasosRecomendados = this.dia.pasosObjetivo;
-                    this.pasos = this.dia.pasosRealizados;
+                    this.pasosRealizados = this.dia.pasosRealizados;
 
                     this.carbsDesayuno = this.dia.carbIngeridasDesayuno;
                     this.protDesayuno = this.dia.proteinasIngeridasDesayuno;
@@ -496,8 +497,11 @@
                     }
                 });
             },
-            savePeso(){
+            savePeso() {
                 this.userService.savePeso(this.pesoActual, this.$store.state.userId, this.dia._id);
+            },
+            savePasos() {
+                this.userService.savePasos(this.pasosRealizados, this.dia._id);
             },
             async getEjecucionesEjercicio() {
                 let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-20")//this.$store.state.fechaHome)
