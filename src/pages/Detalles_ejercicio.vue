@@ -1,5 +1,5 @@
 <template>
-	<div class="grid">
+	<div class="grid" v-if="dataviewValue">
         <Toast/>
         <div class="grid card col-12">
             <div class="col-12 lg:col-11 md:col-11">
@@ -119,89 +119,89 @@ import ExerciseService from '../service/ExerciseService';
 import sinImagen from '../../public/images/sin_imagen_ejercicio.png';
 
 export default {
-        data() {
-                return {
-                    nivelesDificultad: [
-					{name: "Baja", code: "Baja"},
-					{name: "Media", code: "Media"},
-					{name: "Alta", code: "Alta"}
-                    ],
-                    equipmentList: [
-                        "Barbell",
-                        "SZ-Bar",
-                        "Dumbbell",
-                        "Gym mat",
-                        "Swiss Ball",
-                        "Pull-up bar",
-                        "none (bodyweight exercise)",
-                        "Bench",
-                        "Incline bench",
-                        "Kettlebell"
-                    ],
-                    muscleList: [
-                        "Biceps brachii",
-                        "Anterior deltoid",
-                        "Serratus anterior",
-                        "Pectoralis major",
-                        "Triceps brachii",
-                        "Rectus abdominis",
-                        "Gastrocnemius",
-                        "Gluteus maximus",
-                        "Trapezius",
-                        "Quadriceps femoris",
-                        "Biceps femoris",
-                        "Latissimus dorsi",
-                        "Brachialis",
-                        "Obliquus externus abdominis",
-                        "Soleus"
-                    ],
-                    exerciseService: null,
-                    dataviewValue: null,
-                    related_exercises: {},
-                    sinImagen: sinImagen,
-                    intensidad: null,
-                    minutos: 0,
-                    peso: 0,
-                }
-        },
-        created(){
-            this.exerciseService = new ExerciseService();
-            this.fetchExercise();
-        },
-        methods: {
-            fetchExercise(){
-                this.exerciseService.getExerciseById(this.$route.params.ejercicioId)
-                .then(data => {
-                    this.dataviewValue = data;
-                    this.exerciseService.getExerciseByMuscle(data.muscles[0]).then(data => this.related_exercises = data);
-                });
-            },
-            saveExercise(){
-                if (this.intensidad && this.minutos > 0) {
-                    let exercise = {};
-                    exercise.intensidad = this.intensidad.code;
-                    exercise.minutos = this.minutos;
-                    exercise.ejercicio = this.dataviewValue._id;
-                    exercise.peso = this.peso;
-                    exercise.usuario = this.$store.state.userId;
-
-                    this.exerciseService.saveExercise(exercise)
-                    .then(() => {
-                        this.$toast.add({severity:'success', summary: 'Éxito', detail: 'El ejercicio se ha añadido a la lista de realizados.', life: 3000})
-                        this.$router.push({ name: 'ejercicios'});
-                    })
-                    .catch(() => this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Lo sentimos, ocurrió un fallo al guardar su ejercicio realizado.', life: 3000}));
-                } else {
-                    this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Debe seleccionar una intensidad y el tiempo que se ha ejercitado.', life: 3000});
-                }
-            },
-            goBack(){
-                this.$router.push('/ejercicios/'); 
-            },
-            recargar(id){
-                location.href = "/ejercicio/detalles/"+id;
-            },
+    data() {
+        return {
+            nivelesDificultad: [
+            {name: "Baja", code: "Baja"},
+            {name: "Media", code: "Media"},
+            {name: "Alta", code: "Alta"}
+            ],
+            equipmentList: [
+                "Barbell",
+                "SZ-Bar",
+                "Dumbbell",
+                "Gym mat",
+                "Swiss Ball",
+                "Pull-up bar",
+                "none (bodyweight exercise)",
+                "Bench",
+                "Incline bench",
+                "Kettlebell"
+            ],
+            muscleList: [
+                "Biceps brachii",
+                "Anterior deltoid",
+                "Serratus anterior",
+                "Pectoralis major",
+                "Triceps brachii",
+                "Rectus abdominis",
+                "Gastrocnemius",
+                "Gluteus maximus",
+                "Trapezius",
+                "Quadriceps femoris",
+                "Biceps femoris",
+                "Latissimus dorsi",
+                "Brachialis",
+                "Obliquus externus abdominis",
+                "Soleus"
+            ],
+            exerciseService: null,
+            dataviewValue: null,
+            related_exercises: {},
+            sinImagen: sinImagen,
+            intensidad: null,
+            minutos: 0,
+            peso: 0,
         }
+    },
+    created(){
+        this.exerciseService = new ExerciseService();
+        this.fetchExercise();
+    },
+    methods: {
+        fetchExercise(){
+            this.exerciseService.getExerciseById(this.$route.params.ejercicioId)
+            .then(data => {
+                this.dataviewValue = data;
+                this.exerciseService.getExerciseByMuscle(data.muscles[0]).then(data => this.related_exercises = data);
+            });
+        },
+        saveExercise(){
+            if (this.intensidad && this.minutos > 0) {
+                let exercise = {};
+                exercise.intensidad = this.intensidad.code;
+                exercise.minutos = this.minutos;
+                exercise.ejercicio = this.dataviewValue._id;
+                exercise.peso = this.peso;
+                exercise.usuario = this.$store.state.userId;
+
+                this.exerciseService.saveExercise(exercise)
+                .then(() => {
+                    this.$toast.add({severity:'success', summary: 'Éxito', detail: 'El ejercicio se ha añadido a la lista de realizados.', life: 3000})
+                    this.$router.push({ name: 'ejercicios'});
+                })
+                .catch(() => this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Lo sentimos, ocurrió un fallo al guardar su ejercicio realizado.', life: 3000}));
+            } else {
+                this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Debe seleccionar una intensidad y el tiempo que se ha ejercitado.', life: 3000});
+            }
+        },
+        goBack(){
+            this.$router.push('/ejercicios/'); 
+        },
+        recargar(id){
+            location.href = "/ejercicio/detalles/"+id;
+        },
+    }
 }
 </script>
 
