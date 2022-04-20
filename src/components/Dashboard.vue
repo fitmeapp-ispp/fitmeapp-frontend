@@ -156,6 +156,8 @@
         </div>
 
         <!-- PARTE DERECHA -->
+
+        
         
        <div class="col-12 lg:col-6">
            <div class="grid card col-12 p-fluid justify-content-center align-items-start">

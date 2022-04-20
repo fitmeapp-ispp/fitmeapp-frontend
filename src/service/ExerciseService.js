@@ -4,7 +4,6 @@ export default class ExerciseService {
 
     saveExercise(exercise) { 
         return axios.post('/ejercicio_ejecuciones/', exercise)
-        .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
@@ -12,7 +11,6 @@ export default class ExerciseService {
 
     getExercises() {
         return axios.get('/ejercicios')
-        .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
@@ -28,7 +26,6 @@ export default class ExerciseService {
 
     getExerciseById(id){
         return axios.get(`/ejercicio/${id}`)
-        .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
@@ -36,7 +33,6 @@ export default class ExerciseService {
     
     getRecomendaciones(userId){
         return axios.get(`ejercicio_ejecuciones/recomendacion/${userId}`)
-        .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
         });
