@@ -1,5 +1,19 @@
 <template>
 	<div class="grid">
+        <!-- BANNER CONSULTA POR DIAS -->
+        <div class="col-12 lg:col-12">
+            <div class="card flex">
+                <div class="col-4 lg:col-4" align="left"> 
+                    <Button icon="pi pi-angle-left" class="p-button-rounded p-button-success p-button-outlined" />
+                </div>
+                <div class="col-4 lg:col-4" align="center"> 
+                    <Calendar id="buttonbar" v-model="date6" :showButtonBar="true" :showIcon="true" :locale="es"/>
+                </div>
+                <div class="col-4 lg:col-4" align="right"> 
+                    <Button icon="pi pi-angle-right" class="p-button-rounded p-button-success p-button-outlined" />
+                </div>
+            </div>
+        </div>
         <!-- PARTE IZQUIERDA -->
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
@@ -522,6 +536,34 @@
     }
 </script>
 <style>
+
+    .p-button {
+        color: #ffffff;
+        background: #1da750;
+        border: 1px solid #ced4da;
+    }
+
+    .p-button:enabled:hover {
+        background: #1da750;
+        color: #ffffff;
+        border-color: #343a40;
+    }
+
+    .p-button.p-button-text {
+        background-color: transparent;
+        color: #1da750;
+        border-color: transparent;
+    }
+
+    .p-button.p-button-text:enabled:hover {
+        background: #1da750;
+        color: #ffffff;
+        border-color: #343a40;
+    }
+
+    .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+        background-color: #1da750;
+    }
 
     .p-knob-text {
         font: bolder;
