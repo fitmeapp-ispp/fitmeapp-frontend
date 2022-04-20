@@ -30,6 +30,13 @@ export default class ExerciseService {
             console.log('error' + e);
         });
     }
+
+    getEjecuciones(userId, fecha){
+        return axios.get(`ejercicio_ejecuciones/done/${userId}/${fecha}`)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
     
     getRecomendaciones(userId){
         return axios.get(`ejercicio_ejecuciones/recomendacion/${userId}`)

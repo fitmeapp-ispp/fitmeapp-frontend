@@ -43,7 +43,7 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
+                                            <img :src="slotProps.data[1]" :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
                                             <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
@@ -91,7 +91,7 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
+                                            <img :src="slotProps.data[1]" :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
                                             <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
@@ -141,7 +141,7 @@
                                 <div class="product-item">
                                     <div class="product-item-content flex align-items-stretch">
                                         <div class="mb-3">
-                                            <img :src=slotProps.data[1] :alt="slotProps.data[0]" class="product-image-2" width="100"/>
+                                            <img :src="slotProps.data[1]" :alt="slotProps.data[0]" class="product-image-2" width="100"/>
                                         </div>
                                         <div>
                                             <h4 class="mb-1 textoImagen" style="margin-right:1em">{{slotProps.data[0]}}</h4>                                           
@@ -161,21 +161,6 @@
         
        <div class="col-12 lg:col-6">
            <div class="grid card col-12 p-fluid justify-content-center align-items-start">
-                <!-- <div class="col-12 md:col-5" >
-                    <div class="grid justify-content-around align-items-center">
-                        <div class="text-center mb-5" style="height:40%;">
-                            <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">{{pasosRecomendados}} pasos recomendados</Tag>
-                        </div>
-                        <div class="text-center mb-5" style="height:30%;">
-                            <div class="surface-300 border-round mb-5 overflow-hidden w-14rem lg:w20-rem" style="height:20px">
-                                <div class="bg-green-500 h-full"  v-bind:style="'width:' + (pasos/pasosRecomendados)*100 + '%'"> </div>
-                            </div>
-                        </div>
-                        <div class="text-center mb-5" style="height:30%;">
-                            <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"></InputNumber>
-                        </div>
-                    </div>
-                </div> -->
 
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center mr-2">
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Pasos</Tag>
@@ -201,14 +186,14 @@
                     </div>
                 </div> 
 
-                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenes"> 
+                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
-                    <Carousel :value="imagenes" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="210px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
+                    <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="210px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
                             <div class="product-item">
                                 <div class="product-item-content">
                                     <div class="mb-3">
-                                        <img :src=slotProps.data.url :alt="slotProps.data.nombre" class="product-image"/>
+                                        <img :src="slotProps.data.url" :alt="slotProps.data.nombre" class="product-image"/>
                                     </div>
                                     <div>
                                         <h4 class="mb-1">{{slotProps.data.nombre}}</h4>                                            
@@ -265,6 +250,7 @@
 <script>
     import DiaService from "../service/DiaService";
     import UserService from "../service/UserService";
+    import ExerciseService from "../service/ExerciseService";
 
     export default {
         data() {
@@ -297,14 +283,7 @@
                 pesoActual: 76.5,
                 pesoDeAyer: 77.0,
 
-                imagenes: [{
-                        url: "https://cdn-icons-png.flaticon.com/512/2780/2780119.png",
-                        nombre: "Ejercicio 1"
-                    },
-                    {   url: "https://cdn-icons-png.flaticon.com/512/10/10699.png",
-                        nombre: "Ejercicio 2"
-                    }
-                ],
+                imagenesEjercicios: [],
                 imagenesDesayuno: [],
                 imagenesAlmuerzo: [],
                 imagenesCena: [],
@@ -336,15 +315,16 @@
                 
                 lineOptions: null,
                 diaService: null,
-                userService: null
+                userService: null,
+                exerciseService: null,
             }
         },
         computed: {
-            porcentajePasos(){
+            porcentajePasos() {
                 let res = this.round(this.pasos/this.pasosRecomendados*100)
                 return res >= 100 ? 100 : this.round(this.pasos/this.pasosRecomendados*100)
             },
-            colorProgresoPasos(){
+            colorProgresoPasos() {
                 let porcentaje = this.porcentajePasos
                 if (porcentaje < 34)
                     return "red"
@@ -356,24 +336,35 @@
                     return "green"
             }
         },
-        created(){
-            this.diaService = new DiaService();
-            this.userService = new UserService();
+        created() {
+            this.diaService = new DiaService()
+            this.userService = new UserService()
+            this.exerciseService = new ExerciseService()
         },
-        mounted(){ // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
+        mounted() { // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
             //this.pasos = this.pasosRecomendados * this.porcentajePasos / 100;
-            this.getPesoObjetivo();
-            this.obtenerDatosHome();
+            this.getPesoObjetivo()
+            this.obtenerDatosHome()
+            this.getEjecucionesEjercicio()
         },
         methods: {
             imagenBalanza() {
                 return '/images/icono_balanza.png';
-            },   
+            },
+            imagen_ejecucion_alta() {
+                return '/images/ejecucion_alta.png';
+            },
+            imagen_ejecucion_media() {
+                return '/images/ejecucion_media.png';
+            },
+            imagen_ejecucion_baja() {
+                return '/images/ejecucion_baja.png';
+            },
             round(num) {
                 return Math.round((num + Number.EPSILON) * 100) / 100
             },
             obtenerDatosHome(){
-
+                
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
 
@@ -438,7 +429,6 @@
                         arrayAux.push(this.comidasDesayuno[i]);
                     }
                     this.imagenesDesayuno = arrayAux;
-                    console.log(arrayAux);
                 })
             },
 
@@ -454,7 +444,6 @@
                         arrayAux.push(this.comidasAlmuerzo[i]);
                     }
                     this.imagenesAlmuerzo = arrayAux;
-                    console.log(arrayAux);
                 })
             },
 
@@ -470,7 +459,6 @@
                         arrayAux.push(this.comidasCena[i]);
                     }
                     this.imagenesCena = arrayAux;
-                    console.log(arrayAux);
                 })
             },
 
@@ -510,6 +498,25 @@
             },
             savePeso(){
                 this.userService.savePeso(this.pesoActual, this.$store.state.userId, this.dia._id);
+            },
+            async getEjecucionesEjercicio() {
+                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-20")//this.$store.state.fechaHome)
+                this.ejecucionesEjercicio = ejecuciones.data
+
+                for (let ejecucion of ejecuciones.data) {
+                    let ejercicio = await this.exerciseService.getExerciseById(ejecucion.ejercicio)
+                    switch (ejecucion.intensidad) {
+                        case "Alta":
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_alta(), nombre: ejercicio.data.name})
+                            break
+                        case "Media":
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_media(), nombre: ejercicio.data.name})
+                            break
+                        case "Baja":
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_baja(), nombre: ejercicio.data.name})
+                            break
+                    }
+                }
             }
         }
     }
