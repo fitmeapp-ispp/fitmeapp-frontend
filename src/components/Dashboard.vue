@@ -322,10 +322,6 @@
             //this.pasos = this.pasosRecomendados * this.porcentajePasos / 100;
             this.getPesoObjetivo();
             this.obtenerDatosHome();
-            this.obtenerDesayuno();
-            this.obtenerAlmuerzo();
-            this.obtenerCena();
-            this.obtenerPesos();
         },
         methods: {
             obtenerDatosHome(){
@@ -366,6 +362,11 @@
                             }
                         ]
                     }
+
+                    this.obtenerDesayuno();
+                    this.obtenerAlmuerzo();
+                    this.obtenerCena();
+                    this.obtenerPesos();
                 });
             },
 
