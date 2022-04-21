@@ -33,6 +33,7 @@
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
+
                                 <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
                                     <div class="h-full"  v-bind:style="'width:' + (carbsDesayuno/(dia.carbRec/2))*100 + '%'" id="carbIngeridos"> </div>
                                 </div>
@@ -57,6 +58,7 @@
                         </div>
                     </div>
                     <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-if="imagenesDesayuno.length > 0">
+
                         <Galleria class="col-12" :value="imagenesDesayuno" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
                             <template #item="slotProps" class="flex flex-column">
                                 <div class="flex justify-content-center" style="height:120px;">
@@ -91,6 +93,7 @@
                         <div class="formgroup-inline align-content-center justify-content-around">
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">KCalorías</label>
+
                                 <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
                                     <div class="h-full" v-bind:style="'width:' + (dia.kcalIngeridasAlmuerzo/(dia.kcalRec/3))*100 + '%'" id="kcalIngeridos"> </div>
                                 </div>
