@@ -16,8 +16,8 @@
                 </div>
             </div>
             <template #footer>
-                <Button label="Cancelar" icon="pi pi-times" @click="closeResponsive"  style="background-color:#1DA750; color:white;" />
-                <Button label="Enviar" icon="pi pi-check" @click="enviarIssue" autofocus  style="background-color:#1DA750; color:white;"/>
+                <Button label="Cancelar" icon="pi pi-times" @click="closeResponsive" autofocus style="background-color:#1DA750; color:white;" />
+                <Button label="Enviar" icon="pi pi-check" @click="enviarIssue"  style="background-color:#1DA750; color:white;"/>
             </template>
         </Dialog>
         </div>
