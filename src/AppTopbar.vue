@@ -24,7 +24,7 @@
             </router-link>
             </li>
             <button class="p-link layout-topbar-button ml-8" v-if="$store.state.username" @click="toggleMenu">
-            <i class="pi pi-user"></i>
+                <i class="pi pi-user"></i>
             </button>
             <Menu ref="menu" :model="overlayMenuItems" :popup="true"/>
             
@@ -41,7 +41,7 @@
             </Dialog>
         </ul>
         <div>
-            <button class="p-link layout-topbar-menu-button layout-topbar-button mr-3" v-if="$store.state.username" @click="toggleMenu">
+            <button class="p-link layout-topbar-menu-button layout-topbar-button mr-3" id="btUsuario" v-if="$store.state.username" @click="toggleMenu">
                 <i class="pi pi-user"></i>
             </button>
             <button class="p-link layout-topbar-menu-button layout-topbar-button" @click="visibleLeft=true">
@@ -63,6 +63,11 @@
             </div>
             <div align="center">
                 <img alt="Logo" :src="topbarImage()"/>
+            </div>
+            <div class="flex p-sidebar-bottom align-items-end justify-content-end">
+                <button class="p-link mr-3" id="btUsuario2" v-if="$store.state.username" @click="toggleMenu" style="">
+                    <i class="pi pi-user"></i>
+                </button>
             </div>
         </Sidebar>
     </div>  
@@ -143,5 +148,35 @@ export default {
     }
     .p-sidebar-left {
         background-color:rgb(22 163 74) ;
+    }
+    #btUsuario2{
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        color: var(--green-600);
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        background-color: var(--surface-a);
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    #btUsuario2:hover{
+        color: var(--surface-a);
+        background-color: var(--green-600);
+    }
+    @media only screen and (max-width: 294px) {
+        #btUsuario{
+            display: none;
+        }
+    }
+    @media only screen and (min-width: 294px) {
+        #btUsuario2{
+            display: none;
+        }
     }
 </style>
