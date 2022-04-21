@@ -3,46 +3,63 @@
         <!-- PARTE IZQUIERDA -->
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
-                <Chart type="doughnut" :data="pieData" :options="pieOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
-
+                <div class="flex col-9 md:col-3 lg:col-3 mr-0 mb-0 text-center aling-content-center justify-content-center flex-column">
+                    <label class="col-12">KCalorías consumidas</label>
+                    <div class="border-round overflow-hidden w-18.5rem" style="height:20px;" id="barraKcal">
+                        <div class="h-full"  v-bind:style="'width:' + (round(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)/(dia.kcalRec))*100 + '%'" id="kcalIngeridos"> </div>
+                    </div>
+                    <label class="col-12">{{Math.trunc(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)}}/{{ Math.trunc((dia.kcalRec))}} kcal</label>
+                </div>
+                <div class="flex col-9 md:col-4 lg:col-4 mr-0 mb-0 text-center aling-content-center justify-content-center flex-column">
+                    <Chart type="doughnut" :data="pieData" :options="lightOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
+                </div>
+                <div class="flex col-9 md:col-3 lg:col-3 mr-0 mb-0 text-center aling-content-center justify-content-center flex-column">
+                    <label class="col-12">KCalorías quemadas</label>
+                    <div class="surface-300 border-round overflow-hidden w-18.5rem" style="height:20px">
+                        <div class="h-full"  v-bind:style="'width:' + (round(kcalQuemadas)/(round(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)))*100 + '%'" id="kcalQuemadas"> </div>
+                    </div>
+                    <label class="col-12">{{Math.trunc(kcalQuemadas)}}/{{ Math.trunc((dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena))}} kcal</label>
+                </div>
                 <div class="grid card col-12 align-content-center justify-content-center mt-3">
                     <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Desayuno</Tag>
                     <div class="p-fluid col-12 lg:col-8 md:col-8"> 
                         <div class="formgroup-inline align-content-center justify-content-around">
                             <div class="field ml-2 mr-0 mb-0 text-center">
                                 <label class="col-12">KCalorías</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="h-full"  v-bind:style="'width:' + (dia.kcalIngeridasDesayuno/(dia.kcalRec/3))*100 + '%'+';background-color:red;'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
+                                    <div class="h-full"  v-bind:style="'width:' + (dia.kcalIngeridasDesayuno/(dia.kcalRec/3))*100 + '%'" id="kcalIngeridos"> </div>
                                 </div>
                                 <label class="col-12">{{Math.trunc(dia.kcalIngeridasDesayuno)}}/{{ Math.trunc((dia.kcalRec/3))}} kcal</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + (carbsDesayuno/(dia.carbRec/2))*100 + '%'"> </div>
+
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
+                                    <div class="h-full"  v-bind:style="'width:' + (carbsDesayuno/(dia.carbRec/2))*100 + '%'" id="carbIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{Math.round((carbsDesayuno + Number.EPSILON) * 100) / 100}}/{{ Math.round((dia.carbRec/2 + Number.EPSILON) * 100) / 100}} g</label>
+                                <label class="col-12 text-center">{{Math.trunc(carbsDesayuno)}}/{{ Math.trunc(dia.carbRec/2)}} g</label>
                             </div>
                         </div>
                         <div class="formgroup-inline align-content-center justify-content-around">
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + (protDesayuno/(dia.proteinasRec/3))*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
+                                    <div class="h-full"  v-bind:style="'width:' + (protDesayuno/(dia.proteinasRec/3))*100 + '%'" id="protIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((protDesayuno + Number.EPSILON) * 100) / 100}}/{{  Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(protDesayuno)}}/{{  Math.trunc(dia.proteinasRec/3)}} g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + (grasasDesayuno/(dia.grasasRec/3))*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
+                                    <div class="h-full"  v-bind:style="'width:' + (grasasDesayuno/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((grasasDesayuno + Number.EPSILON) * 100) / 100 }}/{{ Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(grasasDesayuno)}}/{{ Math.trunc(dia.grasasRec/3)}} g</label>
                             </div>
                         </div>
                     </div>
                     <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-if="imagenesDesayuno.length > 0">
-                        <Galleria :value="imagenesDesayuno" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
+
+                        <Galleria class="col-12" :value="imagenesDesayuno" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
                             <template #item="slotProps" class="flex flex-column">
                                 <div class="flex justify-content-center" style="height:120px;">
                                     <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
@@ -76,33 +93,34 @@
                         <div class="formgroup-inline align-content-center justify-content-around">
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">KCalorías</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="h-full" v-bind:style="'width:' + (dia.kcalIngeridasAlmuerzo/(dia.kcalRec/3))*100 + '%'+';background-color:red;'"> </div>
+
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
+                                    <div class="h-full" v-bind:style="'width:' + (dia.kcalIngeridasAlmuerzo/(dia.kcalRec/3))*100 + '%'" id="kcalIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{Math.round((dia.kcalIngeridasAlmuerzo + Number.EPSILON) * 100) / 100}}/{{ Math.round((dia.kcalRec/3 + Number.EPSILON) * 100) / 100}} kcal</label>
+                                <label class="col-12 text-center">{{Math.trunc(dia.kcalIngeridasAlmuerzo)}}/{{ Math.trunc(dia.kcalRec/3) }} kcal</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + (carbsAlmuerzo/(dia.carbRec/2))*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
+                                    <div class="h-full"  v-bind:style="'width:' + (carbsAlmuerzo/(dia.carbRec/2))*100 + '%'" id="carbIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((carbsAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{ Math.round((dia.carbRec/2 + Number.EPSILON) * 100) / 100 }} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(carbsAlmuerzo)}}/{{ Math.trunc(dia.carbRec)}} g</label>
                             </div>
                         </div>
                         <div class="formgroup-inline align-content-center justify-content-around">
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + (protAlmuerzo/(dia.proteinasRec/3))*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
+                                    <div class="h-full"  v-bind:style="'width:' + (protAlmuerzo/(dia.proteinasRec/3))*100 + '%'" id="protIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((protAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(protAlmuerzo)}}/{{Math.trunc(dia.proteinasRec/3)}} g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + (grasasAlmuerzo/(dia.grasasRec/3))*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
+                                    <div class="h-full"  v-bind:style="'width:' + (grasasAlmuerzo/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((grasasAlmuerzo + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(grasasAlmuerzo)}}/{{Math.trunc(dia.grasasRec/3)}} g</label>
                             </div>
                         </div>
                     </div>
@@ -136,38 +154,38 @@
                 </div>
                 <!--Cena-->
                 <div class="grid card col-12 align-content-center justify-content-center">
-                    <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Almuerzo</Tag>
+                    <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Cena</Tag>
                     <div class="p-fluid col-12 lg:col-8 md:col-8"> 
                         <div class="formgroup-inline align-content-center justify-content-around">
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">KCalorías</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="h-full"  v-bind:style="'width:' + (dia.kcalIngeridasCena/(dia.kcalRec/3))*100 + '%'+';background-color:red;'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
+                                    <div class="h-full"  v-bind:style="'width:' + (dia.kcalIngeridasCena/(dia.kcalRec/3))*100 + '%'" id="kcalIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{Math.round((dia.kcalIngeridasCena + Number.EPSILON) * 100) / 100}}/{{ Math.round((dia.kcalRec/3 + Number.EPSILON) * 100) / 100}} kcal</label>
+                                <label class="col-12 text-center">{{Math.trunc(dia.kcalIngeridasCena)}}/{{ Math.trunc(dia.kcalRec/3 )}} kcal</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-purple-500 h-full"  v-bind:style="'width:' + (carbsCena)*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
+                                    <div class="h-full"  v-bind:style="'width:' + (carbsCena)*100 + '%'" id="carbIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((carbsCena + Number.EPSILON) * 100) / 100  }}/0g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(carbsCena)}}/0g</label>
                             </div>
                         </div>
                         <div class="formgroup-inline align-content-center justify-content-around">
                             <div class="field ml-2 mr-1 mb-0">
                                 <label class="col-12 text-center">Proteínas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-cyan-500 h-full"  v-bind:style="'width:' + (protCena/(dia.proteinasRec/3))*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
+                                    <div class="h-full"  v-bind:style="'width:' + (protCena/(dia.proteinasRec/3))*100 + '%'" id="protIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((protCena + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.proteinasRec/3 + Number.EPSILON) * 100) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(protCena)}}/{{Math.trunc(dia.proteinasRec/3)}} g</label>
                             </div>
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Grasas</label>
-                                <div class="surface-300 border-round overflow-hidden w-10rem" style="height:10px">
-                                    <div class="bg-yellow-400 h-full"  v-bind:style="'width:' + (grasasCena/(dia.grasasRec/3))*100 + '%'"> </div>
+                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
+                                    <div class="h-full"  v-bind:style="'width:' + (grasasCena/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.round((grasasCena + Number.EPSILON) * 100) / 100 }}/{{Math.round((dia.grasasRec/3 + Number.EPSILON) * 100) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(grasasCena)}}/{{Math.trunc(dia.grasasRec/3 ) / 100}} g</label>
                             </div>
                         </div>
                     </div>
@@ -322,6 +340,7 @@
     import UserService from "../service/UserService";
     import ExerciseService from "../service/ExerciseService";
     import sinEjercicio from "../../public/images/sin_imagen_ejercicio.png";
+    import sinAlimento from "../../public/images/sin_imagen_alimento.png";
 
     export default {
         data() {
@@ -347,7 +366,7 @@
                 carbsCena: 0,
                 protCena: 0,
                 grasasCena: 0,
-                sinConsumicion: [["No se han añadido consumiciones todavía",'https://i.imgur.com/Z8jQBw4.png']],
+                sinConsumicion: [["No se han añadido consumiciones todavía",sinAlimento]],
                 sinEjercicio: [["No se han realizado ejercicios todavía",sinEjercicio]],
                 pasosRecomendados:5000,
                 pasosRealizados: 0,
@@ -359,27 +378,14 @@
                 imagenesDesayuno: [],
                 imagenesAlmuerzo: [],
                 imagenesCena: [],
-
+                
                 type:"doughnut",
                 pieData: {},
-                options: {
+                lightOptions:{
                     responsive: true,
-                    aspectRatio: 3.5,
-                    align:"center",
-                    cutout:'70%',
-                    plugins:{
+                    plugins: {
                         legend: {
-                            display: true,
-                            position: 'right',
-                            labels: {
-                                boxWidth: 20,
-                                boxHeight: 20,
-                                padding: 15,
-                                font:{
-                                    size:18.3,
-                                    style:"normal"
-                                }
-                            }
+                            display: false
                         }
                     }
                 },
@@ -463,13 +469,17 @@
                     var sumProt = this.protDesayuno + this.protAlmuerzo + this.protCena;
                     var sumGrasas = this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena;
 
+                    var restanteCarb = Math.abs(data.carbRec - sumCarbs);
+                    var restanteProt = Math.abs(data.proteinasRec - sumProt);
+                    var restanteGrasas = Math.abs(data.grasasRec - sumGrasas);
+
                     this.pieData = {
-                        labels: ['Carbohidratos', 'Proteínas', 'Grasas'],
+                        labels: ['Carbohidratos consumidos','Carbohidratos restantes', 'Proteínas consumidas','Proteínas restantes', 'Grasas consumidas', 'Grasas restantes'],
                         datasets: [
                             {
-                                data: [sumCarbs, sumProt, sumGrasas],
-                                backgroundColor: ["#a855f7","#06b6d4","#eec137"],
-                                hoverBackgroundColor: ["#a855f7","#06b6d4","#eec137"],
+                                data: [sumCarbs, restanteCarb, sumProt, restanteProt, sumGrasas, restanteGrasas],
+                                backgroundColor: ["#b35a02","#d7a57b","#e30000","rgb(216 169 169)","#eec137","rgb(228 218 190)"],
+                                hoverBackgroundColor: ["#b35a02","#d7a57b","#e30000","rgb(216 169 169)","#eec137","rgb(228 218 190)"],
                             }
                         ]
                     }
@@ -637,4 +647,8 @@
             display: none;
         }
     }
+</style>
+
+<style scoped lang="scss">
+@import "../assets/styles/comidas.scss";
 </style>
