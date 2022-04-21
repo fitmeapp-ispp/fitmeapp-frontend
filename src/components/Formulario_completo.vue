@@ -259,10 +259,10 @@
 
 			}
 			var fecha = new Date();
-			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha)
+			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha || fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()<16)
 			{
 				resultado = false;
-				this.errorFecha = 'La fecha es obligatoria y debe ser anterior al día de hoy';
+				this.errorFecha = 'La fecha es obligatoria, debe ser anterior al día de hoy y debe ser mayor de 16 años';
 
 			}else{
 				this.errorFecha = null;
@@ -355,7 +355,7 @@
 				this.errorObjetivo = null;
 				
 			}
-			if(!this.user.altura || this.user.altura >300 || this.user.altura < 0)
+			if(!this.user.altura || this.user.altura >300 || this.user.altura < 50)
 			{
 				resultado = false;
 				this.errorAltura = 'Altura inválida';
@@ -364,7 +364,7 @@
 				this.errorAltura = null;
 				
 			}
-			if(!this.user.peso_inicial || this.user.peso_inicial >1000 || this.user.peso_inicial < 0)
+			if(!this.user.peso_inicial || this.user.peso_inicial >1000 || this.user.peso_inicial < 30)
 			{
 				resultado = false;
 				this.errorPesoInicial = 'Peso inválido';
