@@ -30,31 +30,31 @@
 					<div class="field formgroup-inline justify-content-center">
 						<div class="field ml-3">
 							<label class="col-12 text-center">Kcalorías</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-orange-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"> </div>
+							<div class="border-round overflow-hidden" style="height:10px" id="barraKcal">
+								<div class="h-full"  v-bind:style="'width:' + ratiokcal + '%'" id="kcalIngeridos"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dia.kcalIngeridas }} Kcal /{{ dia.kcalRec }} Kcal</label>
+							<label class="col-12 text-center">{{ Math.trunc(dia.kcalIngeridas) }} Kcal /{{ Math.trunc(dia.kcalRec) }} Kcal</label>
 						</div>
 						<div class="field field ml-3">
 							<label class="col-12 text-center">Proteínas</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-purple-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"> </div>
+							<div class="border-round overflow-hidden" style="height:10px" id="barraProteinas">
+								<div class="h-full"  v-bind:style="'width:' + ratioProteina + '%'" id="protIngeridos"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dia.proteinasIngeridas }} g /{{ dia.proteinasRec }} g</label>
+							<label class="col-12 text-center">{{ Math.trunc(dia.proteinasIngeridas) }} g /{{ Math.trunc(dia.proteinasRec) }} g</label>
 						</div>
 						<div class="field field ml-3">
 							<label class="col-12 text-center">Carbohidratos</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-cyan-500 h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'"> </div>
+							<div class="border-round overflow-hidden" style="height:10px" id="barraCarb">
+								<div class="h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'" id="carbIngeridos"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dia.carbIngeridas }} g / {{ dia.carbRec }} g</label>
+							<label class="col-12 text-center">{{ Math.trunc(dia.carbIngeridas) }} g / {{ Math.trunc(dia.carbRec) }} g</label>
 						</div>
 						<div class="field field ml-3">
 							<label class="col-12 text-center">Grasas</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-yellow-400 h-full"  v-bind:style="'width:' + ratioGrasa + '%'"> </div>
+							<div class="border-round overflow-hidden" style="height:10px" id="barraGrasas">
+								<div class="h-full"  v-bind:style="'width:' + ratioGrasa + '%'" id="grasasIngeridos"> </div>
 							</div>
-							<label class="col-12 text-center">{{ dia.grasasIngeridas }} g /{{ dia.grasasRec }} g</label>
+							<label class="col-12 text-center">{{ Math.trunc(dia.grasasIngeridas)}} g /{{Math.trunc(dia.grasasRec) }} g</label>
 						</div>
 					</div>
 					<div class="field mt-4 justify-content-center">
