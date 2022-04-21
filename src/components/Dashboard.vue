@@ -3,23 +3,41 @@
         <!-- PARTE IZQUIERDA -->
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
-                <div class="flex col-9 md:col-3 lg:col-3 mr-0 mb-0 text-center aling-content-center justify-content-center flex-column">
-                    <label class="col-12">KCalorías consumidas</label>
-                    <div class="border-round overflow-hidden w-18.5rem" style="height:20px;" id="barraKcal">
-                        <div class="h-full"  v-bind:style="'width:' + (round(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)/(dia.kcalRec))*100 + '%'" id="kcalIngeridos"> </div>
+                <div class="grid card col-12 align-content-center justify-content-center">
+                    <div class="col-6 flex flex-column align-items-center justify-content-between">
+                        <Tag class="col-12" style="font-size:1.75rem; font-weight:600; background:#1da750;">Calorías</Tag>
+                        <div class="col-12 flex justify-content-around">
+                            <div class="col-5 flex flex-column align-items-center">
+                                <h3 class="col-12 flex justify-content-center titulo-calorias">Consumidas</h3>
+                                <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="info" size="xlarge" :value="Math.trunc(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)" />
+                                </div>
+                            </div>
+                            <div class="col-5 flex flex-column align-items-center">
+                                <h3 class="col-12 flex justify-content-center titulo-calorias">Quemadas</h3>
+                                <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="warning" size="xlarge" :value="Math.trunc(kcalQuemadas)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="col-12 flex flex-column align-items-center">
+                                <h3 class="col-12 flex justify-content-center">Restantes</h3>
+                                <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas)" />
+                                </div>
+                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas) == 0">Objetivo conseguido!</h3>
+                            </div>
+                        </div>
                     </div>
-                    <label class="col-12">{{Math.trunc(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)}}/{{ Math.trunc((dia.kcalRec))}} kcal</label>
-                </div>
-                <div class="flex col-9 md:col-4 lg:col-4 mr-0 mb-0 text-center aling-content-center justify-content-center flex-column">
-                    <Chart type="doughnut" :data="pieData" :options="lightOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
-                </div>
-                <div class="flex col-9 md:col-3 lg:col-3 mr-0 mb-0 text-center aling-content-center justify-content-center flex-column">
-                    <label class="col-12">KCalorías quemadas</label>
-                    <div class="surface-300 border-round overflow-hidden w-18.5rem" style="height:20px">
-                        <div class="h-full"  v-bind:style="'width:' + (round(kcalQuemadas)/(round(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)))*100 + '%'" id="kcalQuemadas"> </div>
+                    <div class="col-6 flex flex-column align-items-center">
+                        <Tag class="col-12" style="font-size:1.75rem; font-weight:600; background:#1da750;">Macronutrientes</Tag>
+                        <div class="col-10">
+                            <Chart type="doughnut" :data="pieData" :options="lightOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
+                        </div>
                     </div>
-                    <label class="col-12">{{Math.trunc(kcalQuemadas)}}/{{ Math.trunc((dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena))}} kcal</label>
                 </div>
+
                 <div class="grid card col-12 align-content-center justify-content-center mt-3">
                     <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Desayuno</Tag>
                     <div class="p-fluid col-12 lg:col-8 md:col-8"> 
@@ -221,7 +239,7 @@
         </div>
 
         <!-- PARTE DERECHA -->
-        
+
        <div class="col-12 lg:col-6">
            <div class="grid card col-12 p-fluid justify-content-center align-items-start">
 
@@ -252,17 +270,19 @@
 
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
-                    <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="210px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
+                    <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="240px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
                             <div class="product-item">
-                                <div class="product-item-content">
-                                    <div class="mb-3">
-                                        <img :src="slotProps.data.url" :alt="slotProps.data.nombre" class="product-image"/>
+                                <router-link :to="'/ejercicio/detalles/'+slotProps.data.ejercicio._id">
+                                    <div class="product-item-content">
+                                        <div class="mb-3">
+                                            <img :src="slotProps.data.url" :alt="slotProps.data.nombre" class="product-image"/>
+                                        </div>
+                                        <div>
+                                            <h4 class="mb-1 text-900">{{slotProps.data.nombre}}</h4>   
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 class="mb-1">{{slotProps.data.nombre}}</h4>                                            
-                                    </div>
-                                </div>
+                                </router-link>
                             </div>
                         </template>
                     </Carousel>
@@ -276,7 +296,7 @@
                 </div>
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-else> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
-                    <Carousel :value="sinEjercicio" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="210px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
+                    <Carousel :value="sinEjercicio" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="240px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
                             <div class="product-item">
                                 <div class="product-item-content">
@@ -585,24 +605,31 @@
                 this.userService.savePasos(this.pasosRealizados, this.dia._id);
             },
             async getEjecucionesEjercicio() {
-                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-20")//this.$store.state.fechaHome)
+                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-21")//this.$store.state.fechaHome)
                 this.ejecucionesEjercicio = ejecuciones.data
+
+                let ejercicios = []
                 
                 for (let ejecucion of ejecuciones.data) {
                     this.kcalQuemadas += ejecucion.kcal;
                     let ejercicio = await this.exerciseService.getExerciseById(ejecucion.ejercicio)
+                    
+                    ejercicios.push(ejercicio)
+
                     switch (ejecucion.intensidad) {
                         case "Alta":
-                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_alta(), nombre: ejercicio.data.name})
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_alta(), nombre: ejercicio.data.name, ejercicio: ejercicio.data})
                             break
                         case "Media":
-                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_media(), nombre: ejercicio.data.name})
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_media(), nombre: ejercicio.data.name, ejercicio: ejercicio.data})
                             break
                         case "Baja":
-                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_baja(), nombre: ejercicio.data.name})
+                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_baja(), nombre: ejercicio.data.name, ejercicio: ejercicio.data})
                             break
                     }
                 }
+
+                this.dia.ejercicios = ejercicios
             }
         }
     }
