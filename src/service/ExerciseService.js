@@ -3,7 +3,14 @@ import axios from 'axios';
 export default class ExerciseService {
 
     saveExercise(exercise) { 
-        return axios.post('/ejercicio_ejecuciones/', exercise)
+        return axios.post('/ejercicio_ejecuciones', exercise)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    updateExercise(exercise) { 
+        return axios.put('/ejercicio_ejecuciones/'+exercise._id, exercise)
         .catch((e)=>{
             console.log('error' + e);
         });
@@ -31,11 +38,27 @@ export default class ExerciseService {
         });
     }
 
+    getEjecucion(_id){
+        return axios.get("ejercicio_ejecuciones/"+_id)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
     getEjecuciones(userId, fecha){
         return axios.get(`ejercicio_ejecuciones/done/${userId}/${fecha}`)
         .catch((e)=>{
             console.log('error' + e);
         });
+    }
+
+    async borrarEjecucion(_id) {
+        try {
+            let ejecucionBorrada = await axios.delete("/ejercicio_ejecuciones/"+_id)
+            return ejecucionBorrada.data
+        } catch (error) {
+            console.log("Error: ", error)
+        }
     }
     
     getRecomendaciones(userId){

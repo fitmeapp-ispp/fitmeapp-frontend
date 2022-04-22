@@ -266,23 +266,26 @@
                             <InputNumber v-model="pasosRecomendados" :disabled="true"/>
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
-                    <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="240px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
+                    <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="300px"
+                    class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
                             <div class="product-item">
-                                <router-link :to="'/ejercicio/detalles/'+slotProps.data.ejercicio._id">
-                                    <div class="product-item-content">
+                                <div class="product-item-content">
+                                    <Button icon="pi pi-times" class="p-button-text boton-borrar-ejercicio" 
+                                    @click="confirmDeleteExercises(deleteExerciseIndex = slotProps.index)" v-tooltip.top="'Borrar ejercicio'" />
+                                    <router-link :to="'/ejercicio/detalles/'+slotProps.data.ejercicio._id+'/editar/'+slotProps.data.ejecucion._id" class="link-ejercicio">
                                         <div class="mb-3">
-                                            <img :src="slotProps.data.url" :alt="slotProps.data.nombre" class="product-image"/>
+                                            <img :src="slotProps.data.foto" :alt="slotProps.data.ejercicio.name" class="product-image"/>
                                         </div>
                                         <div>
-                                            <h4 class="mb-1 text-900">{{slotProps.data.nombre}}</h4>   
+                                            <h4 class="mb-1 text-900">{{slotProps.data.ejercicio.name}}</h4>   
                                         </div>
-                                    </div>
-                                </router-link>
+                                    </router-link>
+                                </div>
                             </div>
                         </template>
                     </Carousel>
@@ -353,6 +356,20 @@
             </div>
         </div>
 	</div>
+
+    <!-- Dialogs -->
+
+    <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+        <div class="flex align-items-center justify-content-center">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+            <span v-if="exerciseToDelete">¿Quieres eliminar el ejercicio <b>{{exerciseToDelete.ejercicio.name}}</b>?</span>
+        </div>
+        <template #footer>
+            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteExerciseDialog = false" autofocus />
+            <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise" />
+        </template>
+    </Dialog>
+
 </template>
 
 <script>
@@ -386,8 +403,8 @@
                 carbsCena: 0,
                 protCena: 0,
                 grasasCena: 0,
-                sinConsumicion: [["No se han añadido consumiciones todavía",sinAlimento]],
-                sinEjercicio: [["No se han realizado ejercicios todavía",sinEjercicio]],
+                sinConsumicion: [["No se han añadido consumiciones todavía", sinAlimento]],
+                sinEjercicio: [["No se han realizado ejercicios todavía", sinEjercicio]],
                 pasosRecomendados:5000,
                 pasosRealizados: 0,
 
@@ -409,12 +426,15 @@
                         }
                     }
                 },
+
                 lineData: {},
                 kcalQuemadas: 0,
                 lineOptions: null,
                 diaService: null,
                 userService: null,
                 exerciseService: null,
+                deleteExerciseDialog: false,
+                deleteExerciseIndex: 0,
             }
         },
         computed: {
@@ -460,6 +480,19 @@
             },
             round(num) {
                 return Math.round((num + Number.EPSILON) * 100) / 100
+            },
+            confirmDeleteExercises() {
+                this.deleteExerciseDialog = true
+                this.exerciseToDelete = this.imagenesEjercicios[this.deleteExerciseIndex]
+            },
+            deleteExercise() {
+                try {
+                    this.exerciseService.borrarEjecucion(this.exerciseToDelete.ejecucion._id)
+                    this.imagenesEjercicios.splice(this.deleteExerciseIndex, 1)
+                    this.deleteExerciseDialog = false
+                } catch (error) {
+                    console.log("Error: ", error)
+                }
             },
             obtenerDatosHome(){
                 
@@ -605,7 +638,7 @@
                 this.userService.savePasos(this.pasosRealizados, this.dia._id);
             },
             async getEjecucionesEjercicio() {
-                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-21")//this.$store.state.fechaHome)
+                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-23")//this.$store.state.fechaHome)
                 this.ejecucionesEjercicio = ejecuciones.data
 
                 let ejercicios = []
@@ -618,23 +651,21 @@
 
                     switch (ejecucion.intensidad) {
                         case "Alta":
-                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_alta(), nombre: ejercicio.data.name, ejercicio: ejercicio.data})
+                            this.imagenesEjercicios.push({foto: this.imagen_ejecucion_alta(), ejecucion: ejecucion, ejercicio: ejercicio.data})
                             break
                         case "Media":
-                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_media(), nombre: ejercicio.data.name, ejercicio: ejercicio.data})
+                            this.imagenesEjercicios.push({foto: this.imagen_ejecucion_media(), ejecucion: ejecucion, ejercicio: ejercicio.data})
                             break
                         case "Baja":
-                            this.imagenesEjercicios.push({url: this.imagen_ejecucion_baja(), nombre: ejercicio.data.name, ejercicio: ejercicio.data})
+                            this.imagenesEjercicios.push({foto: this.imagen_ejecucion_baja(), ejecucion: ejecucion, ejercicio: ejercicio.data})
                             break
                     }
                 }
-
-                this.dia.ejercicios = ejercicios
             }
         }
     }
 </script>
-<style>
+<style lang="scss">
 
     .p-knob-text {
         font: bolder;
@@ -664,6 +695,25 @@
 
     .p-galleria-item{
         flex-direction: column;
+    }
+
+    .link-ejercicio {
+        position: relative;
+        top: -20px;
+    }
+
+    .boton-borrar-ejercicio {
+            position: relative;
+            left: 40%;
+            top: -1rem;
+            width: 10% !important;
+            height: 16% !important;
+            color: red !important;
+            border-radius: 100%;
+
+        .pi.pi-times.p-button-icon {
+            font-size: 175%;
+        }
     }
 
     @media only screen and (max-width: 1438px) {

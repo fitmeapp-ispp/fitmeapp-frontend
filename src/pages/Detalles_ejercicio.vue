@@ -1,6 +1,6 @@
 <template>
 	<div class="grid" v-if="dataviewValue">
-        <Toast/>
+        <Toast position="bottom-right"/>
         <div class="grid card col-12">
             <div class="col-12 lg:col-11 md:col-11">
                 <h1 style="color:#256029;">{{dataviewValue.name}}</h1>
@@ -65,7 +65,8 @@
                     <InputNumber id="minutos" mode="decimal" :min="0" v-model="minutos" showButtons decrementButtonClass="p-button-success" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"/>
                 </div>
                 <div class="field">
-                    <Button label="Marcar como realizado" class="p-button-success" @click="saveExercise"/>
+                    <Button label="Marcar como realizado" class="p-button-success" @click="saveExercise()" v-if="!$route.fullPath.includes('editar')"/>
+                    <Button label="Guardar cambios" class="p-button-success" @click="updateExercise()" v-if="$route.fullPath.includes('editar')"/>
                 </div>
             </div>
         </div>
@@ -152,7 +153,7 @@ export default {
             dataviewValue: null,
             relatedExercises: [],
             sinImagen: sinImagen,
-            intensidad: null,
+            intensidad: "",
             minutos: 0,
         }
     },
@@ -167,8 +168,17 @@ export default {
             this.dataviewValue = exercise;
             let relatedExercises = await this.exerciseService.getExerciseByMuscle(exercise.muscles[0])
             this.relatedExercises = relatedExercises
+
+            if (this.$route.fullPath.includes('editar')) {
+                let ejecucion = await this.exerciseService.getEjecucion(this.$route.params.ejecucionId)
+                ejecucion = ejecucion.data
+
+                this.ejecucion = ejecucion
+                this.intensidad = {name: ejecucion.intensidad, code: ejecucion.intensidad}
+                this.minutos = ejecucion.minutos
+            }
         },
-        saveExercise(){
+        saveExercise() {
             if (this.intensidad && this.minutos > 0) {
                 let exercise = {};
                 exercise.intensidad = this.intensidad.code;
@@ -179,7 +189,23 @@ export default {
                 this.exerciseService.saveExercise(exercise)
                 .then(() => {
                     this.$toast.add({severity:'success', summary: 'Éxito', detail: 'El ejercicio se ha añadido a la lista de realizados.', life: 3000})
-                    this.$router.push({ name: 'ejercicios'});
+                    this.$router.push('/');
+                })
+                .catch(() => this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Lo sentimos, ocurrió un fallo al guardar su ejercicio realizado.', life: 3000}));
+            } else {
+                this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Debe seleccionar una intensidad y el tiempo que se ha ejercitado.', life: 3000});
+            }
+        },
+        updateExercise() {
+            if (this.intensidad && this.minutos > 0) {
+                let exercise = this.ejecucion;
+                exercise.intensidad = this.intensidad.code;
+                exercise.minutos = this.minutos;
+
+                this.exerciseService.updateExercise(exercise)
+                .then(() => {
+                    this.$toast.add({severity:'success', summary: 'Éxito', detail: 'El ejercicio se ha añadido a la lista de realizados.', life: 3000})
+                    this.$router.push('/');
                 })
                 .catch(() => this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Lo sentimos, ocurrió un fallo al guardar su ejercicio realizado.', life: 3000}));
             } else {
