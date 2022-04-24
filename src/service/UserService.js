@@ -38,6 +38,14 @@ export default class UserService {
         });
     }
 
+    actualizar(userId,user){
+        return axios.put(`users/${userId}`,user)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
     actualizarNutrientes(user){
         var corrector_actividad = 1.2
         var tmb = 0
