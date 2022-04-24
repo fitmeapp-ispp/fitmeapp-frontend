@@ -4,17 +4,17 @@
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
                 <div class="grid card col-12 align-content-center justify-content-center">
-                    <div class="col-6 flex flex-column align-items-center justify-content-between">
-                        <Tag class="col-12" style="font-size:1.75rem; font-weight:600; background:#1da750;">Calorías</Tag>
-                        <div class="col-12 flex justify-content-around">
-                            <div class="col-5 flex flex-column align-items-center">
-                                <h3 class="col-12 flex justify-content-center titulo-calorias">Consumidas</h3>
+                    <div class="col-12 lg:col-6 flex flex-column align-items-center justify-content-between">
+                        <Tag class="col-12 textoResponsive">Calorías</Tag>
+                        <div class="col-12 grid justify-content-between">
+                            <div class="col-12 lg:col-4 flex flex-column align-items-center">
+                                <h4 class="col-12 flex justify-content-center titulo-calorias">Consumidas</h4>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="info" size="xlarge" :value="Math.trunc(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)" />
                                 </div>
                             </div>
-                            <div class="col-5 flex flex-column align-items-center">
-                                <h3 class="col-12 flex justify-content-center titulo-calorias">Quemadas</h3>
+                            <div class="col-12 lg:col-4 flex flex-column align-items-center">
+                                <h4 class="col-12 flex justify-content-center titulo-calorias">Quemadas</h4>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="warning" size="xlarge" :value="Math.trunc(kcalQuemadas)" />
                                 </div>
@@ -30,10 +30,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 flex flex-column align-items-center">
-                        <Tag class="col-12" style="font-size:1.75rem; font-weight:600; background:#1da750;">Macronutrientes</Tag>
+                    <div class="col-12 lg:col-6 flex flex-column align-items-center">
+                        <Tag class="col-12 textoResponsive">Macronutrientes</Tag>
                         <div class="col-10">
-                            <Chart type="doughnut" :data="pieData" :options="lightOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
+                            <Chart style="max-width:310px; align-content:center;" type="doughnut" :data="pieData" :options="lightOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                                 <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
                                     <div class="h-full"  v-bind:style="'width:' + (carbsAlmuerzo/(dia.carbRec/2))*100 + '%'" id="carbIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.trunc(carbsAlmuerzo)}}/{{ Math.trunc(dia.carbRec)}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(carbsAlmuerzo)}}/{{ Math.trunc(dia.carbRec/2)}} g</label>
                             </div>
                         </div>
                         <div class="formgroup-inline align-content-center justify-content-around">
@@ -203,7 +203,7 @@
                                 <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
                                     <div class="h-full"  v-bind:style="'width:' + (grasasCena/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.trunc(grasasCena)}}/{{Math.trunc(dia.grasasRec/3 ) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(grasasCena)}}/{{Math.trunc(dia.grasasRec/3)}} g</label>
                             </div>
                         </div>
                     </div>
@@ -518,13 +518,13 @@
                     this.protCena = this.dia.proteinasIngeridasCena;
                     this.grasasCena = this.dia.grasasIngeridasCena;
 
-                    var sumCarbs = this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena;
-                    var sumProt = this.protDesayuno + this.protAlmuerzo + this.protCena;
-                    var sumGrasas = this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena;
+                    var sumCarbs = Math.trunc(this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena);
+                    var sumProt = Math.trunc(this.protDesayuno + this.protAlmuerzo + this.protCena);
+                    var sumGrasas = Math.trunc(this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena);
 
-                    var restanteCarb = Math.abs(data.carbRec - sumCarbs);
-                    var restanteProt = Math.abs(data.proteinasRec - sumProt);
-                    var restanteGrasas = Math.abs(data.grasasRec - sumGrasas);
+                    var restanteCarb = Math.trunc(Math.abs(data.carbRec - sumCarbs));
+                    var restanteProt = Math.trunc(Math.abs(data.proteinasRec - sumProt));
+                    var restanteGrasas = Math.trunc(Math.abs(data.grasasRec - sumGrasas));
 
                     this.pieData = {
                         labels: ['Carbohidratos consumidos','Carbohidratos restantes', 'Proteínas consumidas','Proteínas restantes', 'Grasas consumidas', 'Grasas restantes'],
@@ -638,7 +638,7 @@
                 this.userService.savePasos(this.pasosRealizados, this.dia._id);
             },
             async getEjecucionesEjercicio() {
-                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-23")//this.$store.state.fechaHome)
+                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-24")//this.$store.state.fechaHome)
                 this.ejecucionesEjercicio = ejecuciones.data
 
                 let ejercicios = []
@@ -702,6 +702,12 @@
         top: -20px;
     }
 
+    .textoResponsive{
+        font-size:1.75rem; 
+        font-weight:600; 
+        background:#1da750;
+    }
+
     .boton-borrar-ejercicio {
             position: relative;
             left: 40%;
@@ -722,6 +728,18 @@
         }
         .textoImagen {
             display: none;
+        }
+    }
+
+    @media only screen and (max-width: 1168px){
+        .textoResponsive{
+            font-size:1.50rem;
+        }
+    }
+
+    @media only screen and (max-width: 323px){
+        .textoResponsive{
+            font-size:1.10rem;
         }
     }
 </style>
