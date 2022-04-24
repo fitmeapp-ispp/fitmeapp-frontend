@@ -43,6 +43,11 @@ const routes = [
         component: () => import('./pages/Detalles_ejercicio.vue')
     },
     {
+        path: '/ejercicio/detalles/:ejercicioId/editar/:ejecucionId',
+        name: 'Editar_Ejercicio',
+        component: () => import('./pages/Detalles_ejercicio.vue')
+    },
+    {
         path: '/ejercicios',
         name: 'ejercicios',
         component: () => import('./pages/Ejercicios.vue')

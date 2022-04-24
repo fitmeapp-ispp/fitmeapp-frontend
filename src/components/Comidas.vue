@@ -1,98 +1,70 @@
 <template>
+	<div class="box shadow-7 mb-3 col-12" style="position: sticky; top: 70px; z-index: 999; margin: -7rem -4rem; width: 105%; background-color: white;">
+		<div class="formgroup-inline justify-content-around align-items-center">
+			<div class="field formgroup-inline m-0 align-items-center">
+				<Toast/>
+					<div class="" v-if="tipo == 'Desayuno'">
+						<Button class="p-button-text" :disabled="true"/>
+					</div>
+					<div class="" v-if="tipo == 'Almuerzo'">	
+						<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Desayuno')"/>
+					</div>
+					<div class="" v-if="tipo == 'Cena'">	
+						<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
+					</div>
+					<div class="">
+						<h2 class="text-center mt-3" style="color:#256029;">{{ tipo }}</h2>
+					</div>
+					<div v-if="tipo == 'Desayuno'">
+						<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
+					</div>
+					<div v-if="tipo == 'Almuerzo'">
+						<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Cena')"/>
+					</div>
+					<div v-if="tipo == 'Cena'">
+						<Button class="p-button-text" :disabled="true"/>
+					</div>
+			</div>
+			<div class="field formgroup-inline justify-content-center m-0">
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center font-bold text-xl">Kcalorías</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraKcal">
+						<div class="h-full"  v-bind:style="'width:' + ratiokcal + '%'" id="kcalIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.kcalIngeridas) }}/{{ Math.trunc(dia.kcalRec) }} Kcal</label>
+				</div>
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center font-bold text-xl">Proteínas</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraProteinas">
+						<div class="h-full"  v-bind:style="'width:' + ratioProteina + '%'" id="protIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.proteinasIngeridas) }}/{{ Math.trunc(dia.proteinasRec) }} g</label>
+				</div>
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center font-bold text-xl">Carbohidratos</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraCarb">
+						<div class="h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'" id="carbIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.carbIngeridas) }}/{{ Math.trunc(dia.carbRec) }} g</label>
+				</div>
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center font-bold text-xl">Grasas</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraGrasas">
+						<div class="h-full"  v-bind:style="'width:' + ratioGrasa + '%'" id="grasasIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.grasasIngeridas)}}/{{Math.trunc(dia.grasasRec) }} g</label>
+				</div>
+			</div>
+			<div class="field m-0 justify-content-center">
+				<router-link to="/alimentos/form">
+					<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success"/>
+				</router-link>
+			</div>
+		</div>
+	</div>
+	
 	<div class="grid">
-		<div class="col-12">
 			<div class="card mb-3 col-12">
-				<div class="formgroup-inline justify-content-around align-items-between ">
-					<div class="field formgroup-inline mt-3 mr-0">
-						<Toast/>
-							<div class="field" v-if="tipo == 'Desayuno'">
-								<Button class="p-button-text" :disabled="true"/>
-							</div>
-							<div class="field" v-if="tipo == 'Almuerzo'">	
-								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Desayuno')"/>
-							</div>
-							<div class="field" v-if="tipo == 'Cena'">	
-								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
-							</div>
-							<div class="field mb-0">
-								<h2 class="text-center mt-1" style="color:#256029;">{{ tipo }}</h2>
-							</div>
-                            <div class="field" v-if="tipo == 'Desayuno'">
-                            <Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
-							</div>
-							<div class="field" v-if="tipo == 'Almuerzo'">
-							<Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Cena')"/>
-							</div>
-							<div class="field" v-if="tipo == 'Cena'">
-								<Button class="p-button-text" :disabled="true"/>
-							</div>
-					</div>
-					<div class="field formgroup-inline justify-content-center">
-						<div class="field ml-3">
-							<label class="col-12 text-center">Kcalorías</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-orange-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.kcalIngeridas }} Kcal /{{ dia.kcalRec }} Kcal</label>
-						</div>
-						<div class="field field ml-3">
-							<label class="col-12 text-center">Proteínas</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-purple-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.proteinasIngeridas }} g /{{ dia.proteinasRec }} g</label>
-						</div>
-						<div class="field field ml-3">
-							<label class="col-12 text-center">Carbohidratos</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-cyan-500 h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.carbIngeridas }} g / {{ dia.carbRec }} g</label>
-						</div>
-						<div class="field field ml-3">
-							<label class="col-12 text-center">Grasas</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-yellow-400 h-full"  v-bind:style="'width:' + ratioGrasa + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.grasasIngeridas }} g /{{ dia.grasasRec }} g</label>
-						</div>
-					</div>
-					<div class="field mt-4 justify-content-center">
-						<router-link to="/alimentos/form">
-							<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success mr-2"/>
-						</router-link>
-					</div>
-				</div>
-
-				<div class="col-12 card surface-400">
-					<div class="grid justify-content-between">
-						<div class="formgroup-inline justify-content-center mt-2">
-							<div class="field">
-								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()" />
-							</div>
-							<div class="field">
-								<Button label="Recientes" icon="pi pi-clock" @click="recientes()" />
-							</div>
-							<div class="field">
-								<Button label="Creados" icon="pi pi-pencil" class="p-button-success" @click="creados()"/>
-							</div>
-							<div class="field">
-								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
-							</div>
-						</div>
-						<div class="formgroup-inline justify-content-center mt-2">
-							<div class="text-left field">
-								<Button label="Calculadora" class=" text-left p-button-warning" @click="calculadora()"/>
-							</div>
-							<div class="text-left field">
-								<Button icon="pi pi-info-circle" class=" text-left p-button-info" @click="infocalculadora()"/>
-							</div>
-						</div>
-						<div class="mt-1">
-							<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
-						</div>
-					</div>
-				</div>
 				<div v-show="carruselVacio">
 					<div class="col-12 ">
 						<div class="card">
@@ -122,13 +94,41 @@
 					</div>
 				</div>
 			</div>
-		</div>
 		<!-- Fin del header-->
 		<!-- Comienza el cuerpo-->
 		<div class="grid col-12">
 			<!-- Comienza la tabla con los alimentos-->
 			<div class="col-12">
 				<div class="card">
+					<div class="col-12 card surface-400">
+					<div class="grid justify-content-between">
+						<div class="formgroup-inline justify-content-center mt-2">
+							<div class="field">
+								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()" />
+							</div>
+							<div class="field">
+								<Button label="Recientes" icon="pi pi-clock" @click="recientes()" />
+							</div>
+							<div class="field">
+								<Button label="Creados" icon="pi pi-pencil" class="p-button-success" @click="creados()"/>
+							</div>
+							<div class="field">
+								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
+							</div>
+						</div>
+						<div class="formgroup-inline justify-content-center mt-2">
+							<div class="text-left field">
+								<Button label="Calculadora" class=" text-left p-button-warning" @click="calculadora()"/>
+							</div>
+							<div class="text-left field">
+								<Button icon="pi pi-info-circle" class=" text-left p-button-info" @click="infocalculadora()"/>
+							</div>
+						</div>
+						<div class="mt-1">
+							<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
+						</div>
+					</div>
+				</div>
 					<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
 						:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
 						<template #header>
@@ -168,6 +168,9 @@
 										<div class="mb-3" style="color:#256029;">
 											Proteínas {{ slotProps.data.proteinas_100g }} g
 										</div>
+										<div class="mb-3">
+											Cantidad máxima recomendada: {{slotProps.data.calculadora}}g
+										</div>
 									</div>
 									<div class=" flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0" 
 											v-if="slotProps.data.verificado">
@@ -178,7 +181,7 @@
 						</template>
 						<template #grid="slotProps">
 							<div  class="col-12 md:col-4">
-								<div class="card m-3 border-1 surface-border">
+								<div class="card m-3 border-1 surface-border" style="min-height: 92%">
 									<div @click="detallesAlimento(slotProps.data)" class="text-align-center">
 										<div class="grid grid-nogutter alimento-busqueda">
 											<div class="col-4 text-left">
@@ -192,7 +195,7 @@
 													<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
 												</div>
 												<div class="text-2xl mt-2 font-bold">
-													{{ slotProps.data.nombre }} ({{slotProps.data.calculadora}}g) 
+													{{ slotProps.data.nombre }}
 												</div>
 												<div class="mb-3"></div>
 												<div class="mb-3">
@@ -207,6 +210,9 @@
 												</div>
 												<div class="mb-3">
 													Proteínas {{ Math.round((slotProps.data.proteinas_100g + Number.EPSILON) * 100) / 100 }} g
+												</div>
+												<div class="mb-3">
+													Cantidad máxima recomendada: {{slotProps.data.calculadora}}g
 												</div>
 											</div>
 										</div>
