@@ -1,9 +1,14 @@
 <template>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+
 	<div class="grid" v-if="dataviewValue">
         <Toast/>
         <div class="grid card col-12">
             <div class="col-12 lg:col-11 md:col-11">
-                <h1 style="color:#256029;">{{dataviewValue.name}}</h1>
+                <h1 style="color:#256029; font-family: 'Oswald', sans-serif;">{{dataviewValue.name}}</h1>
             </div>
             <Button label="Volver" class="p-button-success mb-3 col-12 lg:col-1 md:col-1" @click="goBack()"/>
             <div class="grid col-12 justify-content-between align-items-center">
@@ -19,7 +24,7 @@
                 <div class="col-12 lg:col-3">
                     <div class="grid">
                         <div class="card col-12 border-1 surface-border">
-                            <div class="text-900 font-medium text-xl text-center">Grupos musculares</div>
+                            <div style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Grupos musculares</div>
                             <ul>
                                 <li class="mt-3 font-bold" v-for="item in dataviewValue.muscles" :key="item.message">
                                     {{ muscleList[item] }}
@@ -30,25 +35,25 @@
                                     {{ muscleList[item] }}
                                 </li>
                             </ul>
-                            <p v-if="dataviewValue.muscles.length === 0" class="mt-3 text-center">
+                            <p v-if="dataviewValue.muscles.length === 0" class="mt-3">
                                 No hay datos disponibles
                             </p>
                         </div>
                         <div class="card col-12 border-1 surface-border">
-                            <div class="text-900 font-medium text-xl text-center">Material</div>
+                            <div style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Material</div>
                             <ul>
-                                <li class="mt-3 text-center" v-for="item in dataviewValue.equipment" :key="item.message">
+                                <li class="mt-3" v-for="item in dataviewValue.equipment" :key="item.message">
                                     {{ equipmentList[item] }}
                                 </li>
                             </ul>
-                            <p v-if="dataviewValue.equipment.length === 0"  class="mt-3 text-center">
+                            <p v-if="dataviewValue.equipment.length === 0"  class="mt-3">
                                 Este ejercicio no necesita materiales
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="card col-12 lg:col-4 text-justify border-1 surface-border">
-                    <div class="text-900 font-medium text-xl text-center">Descripción</div>
+                    <div style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Descripción</div>
                         <p class="p-flex mt-3">{{dataviewValue.description}}</p>
                         <p class="p-flex text-center mt-3" v-if="!dataviewValue.description" >
                             Sin descripción
@@ -70,7 +75,7 @@
             </div>
         </div>
         <div class="col-12">
-            <h1 style="color:#256029;">Ejercicios similares</h1>
+            <h1 style="color:#256029; font-family: 'Oswald', sans-serif;">Ejercicios similares</h1>
         </div>
         <div class="col-12">
             <DataView v-if="relatedExercises" :value="relatedExercises" layout="grid" :totalRecords="3" :rows="1">
@@ -78,7 +83,7 @@
                     <div class="col-12 lg:col-4 md:col-6">
                         <div class="grid card m-3 border-1 surface-border">
                             <div class="col-12 lg:col-8">
-                                <h5 class="p-flex" style="color:#256029;">{{slotProps1.data.name}}</h5>
+                                <h5 class="p-flex" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">{{slotProps1.data.name}}</h5>
                             </div>
                             <Button label="Detalles" class="p-button-success mb-2 col-12 lg:col-4" @click="recargar(slotProps1.data._id)"/>
                             <div class="col-12 flex justify-content-center align-items-center">

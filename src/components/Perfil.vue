@@ -1,7 +1,7 @@
 <template>
     <div class="grid justify-content-center align-items-center">
         <div class="col-12 text-center mb-6">
-            <h1>Plan actual</h1>
+            <h1 style="color:#256029; font-size:300%; font-family: 'Oswald', sans-serif;">Plan actual</h1>
             <div v-if="suscripcion">
                 <img :src="planActual" alt="Plan de suscripción de 1 mes" width="150" />
                 <h3>Finaliza el: {{this.suscripcion.fechaFin}}</h3>
