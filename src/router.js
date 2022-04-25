@@ -7,6 +7,8 @@ import FormularioAlimentos from './components/alimentos/FormularioAlimentos.vue'
 //import SelectorFormularios from './components/alimentos/SelectorFormularios.vue';
 import Comidas from './components/Comidas.vue';
 import Perfil from './components/Perfil.vue';
+import EditarPerfil from './components/EditarPerfil.vue';
+import CambiarContrasena from './components/CambiarContrasena.vue';
 const Login = () => import("./pages/Login.vue");
 import store from './store'
 import axios from 'axios';
@@ -61,6 +63,16 @@ const routes = [
         path: '/alimentos/form',
         name: 'alimentos_form',
         component: FormularioAlimentos
+    },
+    {
+        path: '/editar_perfil',
+        name: 'editar_perfil',
+        component: EditarPerfil
+    },
+    {
+        path: '/cambio_contrasena',
+        name: 'cambio_contrasena',
+        component: CambiarContrasena
     },
 /*     {
         path: '/recetas/form',
