@@ -1,6 +1,7 @@
 <template>
 	<div class="grid">
         <!-- PARTE IZQUIERDA -->
+        {{dia}}
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
                 <div class="grid card col-12 align-content-center justify-content-center">
@@ -16,7 +17,7 @@
                             <div class="col-5 flex flex-column align-items-center">
                                 <h3 class="col-12 flex justify-content-center titulo-calorias">Quemadas</h3>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
-                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="warning" size="xlarge" :value="Math.trunc(kcalQuemadas)" />
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="warning" size="xlarge" :value="Math.trunc(kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
                             </div>
                         </div>
@@ -24,16 +25,16 @@
                             <div class="col-12 flex flex-column align-items-center">
                                 <h3 class="col-12 flex justify-content-center">Restantes</h3>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
-                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas)" />
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
-                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas) == 0">Objetivo conseguido!</h3>
+                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">Objetivo conseguido!</h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 flex flex-column align-items-center">
                         <Tag class="col-12" style="font-size:1.75rem; font-weight:600; background:#1da750;">Macronutrientes</Tag>
                         <div class="col-10">
-                            <Chart type="doughnut" :data="pieData" :options="lightOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
+                            <Chart type="doughnut" :data="pieData" :options="lightOptions" />
                         </div>
                     </div>
                 </div>
@@ -247,23 +248,23 @@
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Pasos</Tag>
                     
                     <div class="my-2 text-center">
-                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" />
+                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly/>
                         <h3 class="mt-0" v-if="porcentajePasos >= 100">Objetivo conseguido!</h3>
                     </div>
 
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
                             <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                            <InputNumber v-model="pasosRealizados" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                            <InputNumber v-model="dia.pasosRealizados" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
-                            @focusout="savePasos()" />
+                            @focusout="actualizarPasos()" inputClass="text-center text-900 text-xl font-medium" />
                         </div>
                     </div>
                 
-                    <div class="card flex justify-content-center align-items-center">
-                        <div class="text-center">
+                    <div class="card flex justify-content-center align-items-center col-12">
+                        <div class="col-12 text-center">
                             <Tag class="col-12 mb-2 text-center" value="Pasos recomendados" style="font-size:1.25rem; font-weight:800; background:#1da750"></Tag>
-                            <InputNumber v-model="pasosRecomendados" :disabled="true"/>
+                            <h5 class="m-0 mt-2">{{dia.pasosObjetivo}}</h5>
                         </div>
                     </div>
                 </div>
@@ -325,31 +326,27 @@
             </div>
 
             <div class="card grid col-12 p-fluid">
-                <div class="card col-12 md:col-12">
-                    <div class="text-center">
-                        <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Peso objetivo: {{pesoObjetivo}} kg</Tag>
+                <div class="col-6">
+                    <div class="card flex justify-content-center align-items-center">
+                        <div class="col-12 text-center">
+                            <Tag class="col-12 mb-2 text-center" value="Peso objetivo" style="font-size:1.25rem; font-weight:800; background:#1da750;" />
+                            <h5 class="m-0 mt-2">{{pesoObjetivo}} kg</h5>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="col-12 md:col-5" >
-                    <div class="card flex justify-content-center align-items-center" style="height:48%;">
+
+                <div class="col-6" >
+                    <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
                             <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                            <InputNumber v-model="dia.pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
-                            @focusout="savePeso()" suffix=" kg"/>
-                        </div>
-                    </div>
-                
-                    <div class="card flex justify-content-center align-items-center" style="height:48%;">
-                        <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Peso de ayer" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                            <InputNumber v-model="pesoDeAyer" :disabled="true" suffix=" kg"/>
+                            @focusout="savePeso()" suffix=" kg" inputClass="text-center text-900 text-xl font-medium" />
                         </div>
                     </div>
                 </div>
                 
-                <div class="card col-12 md:col-7">  
+                <div class="card col-12 md:col-12">  
                     <h5 class="text-center"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
                     <Chart type="line" :data="lineData" :options="lineOptions" />
                 </div>
@@ -382,7 +379,10 @@
     export default {
         data() {
             return {
-                dia: {},
+                dia: {
+                    pasosRealizados: 0,
+                    pasosObjetivo: 0,
+                },
                 fecha: "",
                 user: "",
                 tipo: "",
@@ -405,11 +405,6 @@
                 grasasCena: 0,
                 sinConsumicion: [["No se han añadido consumiciones todavía", sinAlimento]],
                 sinEjercicio: [["No se han realizado ejercicios todavía", sinEjercicio]],
-                pasosRecomendados:5000,
-                pasosRealizados: 0,
-
-                pesoActual: 76.5,
-                pesoDeAyer: 77.0,
 
                 imagenesEjercicios: [],
                 imagenesDesayuno: [],
@@ -429,6 +424,7 @@
 
                 lineData: {},
                 kcalQuemadas: 0,
+                kcalQuemadasPasos: 0,
                 lineOptions: null,
                 diaService: null,
                 userService: null,
@@ -439,8 +435,8 @@
         },
         computed: {
             porcentajePasos() {
-                let res = this.round(this.pasosRealizados/this.pasosRecomendados*100)
-                return res >= 100 ? 100 : this.round(this.pasosRealizados/this.pasosRecomendados*100)
+                let res = this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
+                return res >= 100 ? 100 : this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
             },
             colorProgresoPasos() {
                 let porcentaje = this.porcentajePasos
@@ -459,8 +455,7 @@
             this.userService = new UserService()
             this.exerciseService = new ExerciseService()
         },
-        mounted() { // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
-            //this.pasos = this.pasosRecomendados * this.porcentajePasos / 100;
+        mounted() {
             this.getPesoObjetivo()
             this.obtenerDatosHome()
             this.getEjecucionesEjercicio()
@@ -500,12 +495,8 @@
                 this.fecha = this.$store.state.fechaHome;
 
                 this.diaService.getDatosDia(this.user,this.fecha).then(data =>{
-                    this.dia = data,
+                    this.dia = data
                     
-                    this.pesoActual = this.dia.pesoActual;
-                    this.pasosRecomendados = this.dia.pasosObjetivo;
-                    this.pasosRealizados = this.dia.pasosRealizados;
-
                     this.carbsDesayuno = this.dia.carbIngeridasDesayuno;
                     this.protDesayuno = this.dia.proteinasIngeridasDesayuno;
                     this.grasasDesayuno = this.dia.grasasIngeridasDesayuno;
@@ -522,9 +513,9 @@
                     var sumProt = this.protDesayuno + this.protAlmuerzo + this.protCena;
                     var sumGrasas = this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena;
 
-                    var restanteCarb = Math.abs(data.carbRec - sumCarbs);
-                    var restanteProt = Math.abs(data.proteinasRec - sumProt);
-                    var restanteGrasas = Math.abs(data.grasasRec - sumGrasas);
+                    var restanteCarb = Math.trunc(Math.abs(data.carbRec - sumCarbs));
+                    var restanteProt = Math.trunc(Math.abs(data.proteinasRec - sumProt));
+                    var restanteGrasas = Math.trunc(Math.abs(data.grasasRec - sumGrasas));
 
                     this.pieData = {
                         labels: ['Carbohidratos consumidos','Carbohidratos restantes', 'Proteínas consumidas','Proteínas restantes', 'Grasas consumidas', 'Grasas restantes'],
@@ -544,7 +535,7 @@
                 });
             },
 
-            getPesoObjetivo(){
+            getPesoObjetivo() {
                 this.user = this.$store.state.username;
 
                 this.userService.getUser(this.user).then(data =>{
@@ -552,7 +543,7 @@
                 })
             },
 
-            obtenerDesayuno(){
+            obtenerDesayuno() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
                 this.tipo = "Desayuno";
@@ -567,7 +558,7 @@
                 })
             },
 
-            obtenerAlmuerzo(){
+            obtenerAlmuerzo() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
                 this.tipo = "Almuerzo";
@@ -582,7 +573,7 @@
                 })
             },
 
-            obtenerCena(){
+            obtenerCena() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
                 this.tipo = "Cena";
@@ -597,7 +588,7 @@
                 })
             },
 
-            obtenerPesos(){
+            obtenerPesos() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
 
@@ -632,13 +623,14 @@
                 });
             },
             savePeso() {
-                this.userService.savePeso(this.pesoActual, this.$store.state.userId, this.dia._id);
+                this.userService.savePeso(this.dia.pesoActual, this.$store.state.userId, this.dia._id);
             },
-            savePasos() {
-                this.userService.savePasos(this.pasosRealizados, this.dia._id);
+            actualizarPasos() {
+                this.diaService.actualizarDia(this.dia._id, {pasosRealizados: this.dia.pasosRealizados});
+                this.kcalQuemadasPasos = 350/10000 * this.dia.pasosRealizados
             },
             async getEjecucionesEjercicio() {
-                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-23")//this.$store.state.fechaHome)
+                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, this.$store.state.fechaHome)
                 this.ejecucionesEjercicio = ejecuciones.data
 
                 let ejercicios = []
