@@ -524,7 +524,6 @@
                 this.userService.getUser(this.user).then(data =>{
 
                     let cumpleBool = this.userService.checkIsBirthday(data);
-                    console.log("CUMPLEEEEEEE:"+cumpleBool);
                     if (cumpleBool) {
                         let newUser = this.userService.actualizarNutrientes(data);
                         this.userService.actualizar(data._id, newUser);
