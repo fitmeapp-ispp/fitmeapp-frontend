@@ -15,8 +15,6 @@
             </div>
         </div>
         <!-- PARTE IZQUIERDA -->
-        {{dia}}
-        {{indiceEjercicio}}
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
                 <div class="grid card col-12 align-content-center justify-content-center">
@@ -399,7 +397,7 @@
                     <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
                     <InputNumber v-model="agua" :step="0.125" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
-                            :min="0" :max="2" suffix=" L"/>
+                            :min="0" :max="2" suffix=" L" @focusout="saveAgua()"/>
                 </div>
 
                 
