@@ -38,6 +38,14 @@ export default class UserService {
         });
     }
 
+    actualizar(userId,user){
+        return axios.put(`users/${userId}`,user)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
     actualizarNutrientes(user){
         var corrector_actividad = 1.2
         var tmb = 0
@@ -88,6 +96,11 @@ export default class UserService {
             user.proteinas_recomendadas = user.kcal_recomendadas * 0.2
             user.grasas_recomendadas = user.kcal_recomendadas * 0.25
         }
+
+        user.kcal_recomendadas = Math.trunc(user.kcal_recomendadas)
+        user.carbohidratos_recomendados = Math.trunc(user.carbohidratos_recomendados)
+        user.proteinas_recomendadas = Math.trunc(user.proteinas_recomendadas)
+        user.grasas_recomendadas = Math.trunc(user.grasas_recomendadas)
 
         return user
 
@@ -141,7 +154,7 @@ export default class UserService {
         return axios.put('/users/peso/' + peso+"/"+ userId+ "/"+diaId);
     }
 
-    savePasos(pasos, diaId){
-        return axios.put('/users/pasos/' + pasos+"/"+diaId);
+    saveAgua(agua, diaId){
+        return axios.put('/users/agua/' + agua+"/"+diaId);
     }
 }

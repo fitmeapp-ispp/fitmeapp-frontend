@@ -10,7 +10,6 @@ export default createStore({
     password: '',
     userId: '',
     loggedIn: false,
-    fecha: '19-3-2022',
     fechaHome: moment().format('YYYY-MM-DD'),
     tipo: 'Almuerzo'
   },
@@ -20,9 +19,6 @@ export default createStore({
     },
     saveTipo(state, tipo){
       state.tipo = tipo;
-    },
-    saveFecha(state, fecha){
-      state.fecha = fecha;
     },
     saveFechaHome(state, fechaHome){
       state.fechaHome = fechaHome;
