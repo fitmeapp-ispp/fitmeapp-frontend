@@ -1,22 +1,18 @@
 <template>
 	<div class="grid">
         <!-- BANNER CONSULTA POR DIAS -->
-        <div class="col-12 lg:col-12">
-            <div class="card flex">
-                <div class="col-4 lg:col-4" align="left"> 
-                    <Button icon="pi pi-angle-left" class="p-button-rounded p-button-success p-button-outlined" @click="retrasarDia()"/>
-                </div>
-                <div class="col-4 lg:col-4" align="center"> 
-                    <Calendar id="buttonbar" dateFormat="dd-mm-yy" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()" :showIcon="true" :locale="es" @date-select="cambiarFecha($event)"/>
-                </div>
-                <div class="col-4 lg:col-4" align="right">
-                    <Button icon="pi pi-angle-right" class="p-button-rounded p-button-success p-button-outlined"  @click="avanzarDia()" :disabled="comprobarFecha"/>
-                </div>
+        <div class="box shadow-7 mb-3 col-12 headerDias flex">
+            <div class="col-4 lg:col-4" align="left"> 
+                <Button icon="pi pi-angle-left" class="p-button-rounded p-button-success p-button-outlined" @click="retrasarDia()"/>
+            </div>
+            <div class="col-4 lg:col-4" align="center"> 
+                <Calendar id="buttonbar" dateFormat="dd-mm-yy" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()" :showIcon="true" :locale="es" @date-select="cambiarFecha($event)"/>
+            </div>
+            <div class="col-4 lg:col-4" align="right">
+                <Button icon="pi pi-angle-right" class="p-button-rounded p-button-success p-button-outlined"  @click="avanzarDia()" :disabled="comprobarFecha"/>
             </div>
         </div>
         <!-- PARTE IZQUIERDA -->
-        {{dia}}
-        {{indiceEjercicio}}
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
                 <div class="grid card col-12 align-content-center justify-content-center">
@@ -54,204 +50,91 @@
                     </div>
                 </div>
 
-                <div class="grid card col-12 align-content-center justify-content-center mt-3">
-                    <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Desayuno</Tag>
-                    <div class="p-fluid col-12 lg:col-8 md:col-8"> 
-                        <div class="formgroup-inline align-content-center justify-content-around">
-                            <div class="field ml-2 mr-0 mb-0 text-center">
-                                <label class="col-12">KCalorías</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
-                                    <div class="h-full"  v-bind:style="'width:' + (dia.kcalIngeridasDesayuno/(dia.kcalRec/3))*100 + '%'" id="kcalIngeridos"> </div>
-                                </div>
-                                <label class="col-12">{{Math.trunc(dia.kcalIngeridasDesayuno)}}/{{ Math.trunc((dia.kcalRec/3))}} kcal</label>
-                            </div>
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">Carbohidratos</label>
+                <div class="card col-12 align-content-center justify-content-center mt-3">
+                    <Carousel :value="comidas" :numVisible="1" :numScroll="1">
+                        <template #item="slotProps">  
+                            <div class="grid col-12 align-content-center justify-content-center">
+                                <Tag class="col-11 mb-2" style="font-size:1.75rem; font-weight:600; background:#1da750; ">{{slotProps.data.Tipo}}</Tag>
+                                <div class="p-fluid col-12 lg:col-8 md:col-8 "> 
+                                    <div class="formgroup-inline align-content-center justify-content-around">
+                                        <div class="field ml-2 mr-0 mb-0 text-center">
+                                            <label class="col-12">KCalorías</label>
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.kcal/slotProps.data.kcalRec)*100 + '%'" id="kcalIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12">{{slotProps.data.kcal}}/{{slotProps.data.kcalRec}} kcal</label>
+                                        </div>
+                                        <div class="field ml-2 mr-0 mb-0">
+                                            <label class="col-12 text-center">Carbohidratos</label>
 
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
-                                    <div class="h-full"  v-bind:style="'width:' + (carbsDesayuno/(dia.carbRec/2))*100 + '%'" id="carbIngeridos"> </div>
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.carbs/slotProps.data.carbsRec)*100 + '%'" id="carbIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12 text-center">{{slotProps.data.carbs}}/{{ slotProps.data.carbsRec}} g</label>
+                                        </div>
+                                    </div>
+                                    <div class="formgroup-inline align-content-center justify-content-around">
+                                        <div class="field ml-2 mr-1 mb-0">
+                                            <label class="col-12 text-center">Proteínas</label>
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.prot/slotProps.data.protRec)*100 + '%'" id="protIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12 text-center">{{ slotProps.data.prot }}/{{ slotProps.data.protRec }} g</label>
+                                        </div>
+                                        <div class="field ml-2 mr-0 mb-0">
+                                            <label class="col-12 text-center">Grasas</label>
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.grasas / slotProps.data.grasasRec)*100 + '%'" id="grasasIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12 text-center">{{ slotProps.data.grasas }}/{{ slotProps.data.grasasRec }} g</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <label class="col-12 text-center">{{Math.trunc(carbsDesayuno)}}/{{ Math.trunc(dia.carbRec/2)}} g</label>
+                                <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center">
+                                    <Galleria class="col-12" :value="slotProps.data.imagenes" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
+                                        <template #item="slotProps" class="flex flex-column">
+                                            <div class="flex justify-content-center" style="height:120px;">
+                                                <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
+                                            </div>
+                                            <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
+                                                {{slotProps.item[0]}}
+                                            </div>
+                                        </template>
+                                    </Galleria>
+                                </div>
+                                <router-link :to="'/comidas/' + slotProps.data.Tipo" class="mt-1 col-10">
+                                    <Button :label="'Añadir ' + slotProps.data.Tipo" class="p-button-outlined p-button-secondary col-12"/>
+                                </router-link>
                             </div>
-                        </div>
-                        <div class="formgroup-inline align-content-center justify-content-around">
-                            <div class="field ml-2 mr-1 mb-0">
-                                <label class="col-12 text-center">Proteínas</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
-                                    <div class="h-full"  v-bind:style="'width:' + (protDesayuno/(dia.proteinasRec/3))*100 + '%'" id="protIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(protDesayuno)}}/{{  Math.trunc(dia.proteinasRec/3)}} g</label>
-                            </div>
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">Grasas</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
-                                    <div class="h-full"  v-bind:style="'width:' + (grasasDesayuno/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(grasasDesayuno)}}/{{ Math.trunc(dia.grasasRec/3)}} g</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-if="imagenesDesayuno.length > 0">
-
-                        <Galleria class="col-12" :value="imagenesDesayuno" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
-                            <template #item="slotProps" class="flex flex-column">
-                                <div class="flex justify-content-center" style="height:120px;">
-                                    <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
-                                </div>
-                                <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
-                                    {{slotProps.item[0]}}
-                                </div>
-                            </template>
-                        </Galleria>
-                    </div>
-                    <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-else>
-                        <Galleria :value="sinConsumicion" :numVisible="1" :circular="false" :autoPlay="false" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
-                            <template #item="slotProps" class="flex flex-column">
-                                <div class="flex justify-content-center" style="height:120px;">
-                                    <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
-                                </div>
-                                <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
-                                    {{slotProps.item[0]}}
-                                </div>
-                            </template>
-                        </Galleria>
-                    </div>
-                    <router-link to="/comidas/Desayuno" class="mt-1 col-12">
-                        <Button label="Añadir desayuno" class="p-button-outlined p-button-secondary col-12"/>
-                    </router-link>
-                </div>
-                <!--Almuerzo-->
-                <div class="grid card col-12 align-content-center justify-content-center">
-                    <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Almuerzo</Tag>
-                    <div class="p-fluid col-12 lg:col-8 md:col-8"> 
-                        <div class="formgroup-inline align-content-center justify-content-around">
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">KCalorías</label>
-
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
-                                    <div class="h-full" v-bind:style="'width:' + (dia.kcalIngeridasAlmuerzo/(dia.kcalRec/3))*100 + '%'" id="kcalIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{Math.trunc(dia.kcalIngeridasAlmuerzo)}}/{{ Math.trunc(dia.kcalRec/3) }} kcal</label>
-                            </div>
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
-                                    <div class="h-full"  v-bind:style="'width:' + (carbsAlmuerzo/(dia.carbRec/2))*100 + '%'" id="carbIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(carbsAlmuerzo)}}/{{ Math.trunc(dia.carbRec/2)}} g</label>
-                            </div>
-                        </div>
-                        <div class="formgroup-inline align-content-center justify-content-around">
-                            <div class="field ml-2 mr-1 mb-0">
-                                <label class="col-12 text-center">Proteínas</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
-                                    <div class="h-full"  v-bind:style="'width:' + (protAlmuerzo/(dia.proteinasRec/3))*100 + '%'" id="protIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(protAlmuerzo)}}/{{Math.trunc(dia.proteinasRec/3)}} g</label>
-                            </div>
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">Grasas</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
-                                    <div class="h-full"  v-bind:style="'width:' + (grasasAlmuerzo/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(grasasAlmuerzo)}}/{{Math.trunc(dia.grasasRec/3)}} g</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-if="imagenesAlmuerzo.length > 0">
-                        <Galleria :value="imagenesAlmuerzo" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
-                            <template #item="slotProps" class="flex flex-column">
-                                <div class="flex justify-content-center" style="height:120px;">
-                                    <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
-                                </div>
-                                <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
-                                    {{slotProps.item[0]}}
-                                </div>
-                            </template>
-                        </Galleria>
-                    </div>
-                    <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-else>
-                        <Galleria :value="sinConsumicion" :numVisible="1" :circular="false" :autoPlay="false" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
-                            <template #item="slotProps" class="flex flex-column">
-                                <div class="flex justify-content-center" style="height:120px;">
-                                    <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
-                                </div>
-                                <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
-                                    {{slotProps.item[0]}}
-                                </div>
-                            </template>
-                        </Galleria>
-                    </div>
-                    <router-link to="/comidas/Almuerzo" class="mt-1 col-12">
-                        <Button label="Añadir almuerzo" class="p-button-outlined p-button-secondary col-12"/>
-                    </router-link>
-                </div>
-                <!--Cena-->
-                <div class="grid card col-12 align-content-center justify-content-center">
-                    <Tag class="mr-2 col-12" style="font-size:1.75rem; font-weight:600; background:#1da750; ">Cena</Tag>
-                    <div class="p-fluid col-12 lg:col-8 md:col-8"> 
-                        <div class="formgroup-inline align-content-center justify-content-around">
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">KCalorías</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
-                                    <div class="h-full"  v-bind:style="'width:' + (dia.kcalIngeridasCena/(dia.kcalRec/3))*100 + '%'" id="kcalIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{Math.trunc(dia.kcalIngeridasCena)}}/{{ Math.trunc(dia.kcalRec/3 )}} kcal</label>
-                            </div>
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">Carbohidratos</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
-                                    <div class="h-full"  v-bind:style="'width:' + (carbsCena)*100 + '%'" id="carbIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(carbsCena)}}/0g</label>
-                            </div>
-                        </div>
-                        <div class="formgroup-inline align-content-center justify-content-around">
-                            <div class="field ml-2 mr-1 mb-0">
-                                <label class="col-12 text-center">Proteínas</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
-                                    <div class="h-full"  v-bind:style="'width:' + (protCena/(dia.proteinasRec/3))*100 + '%'" id="protIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(protCena)}}/{{Math.trunc(dia.proteinasRec/3)}} g</label>
-                            </div>
-                            <div class="field ml-2 mr-0 mb-0">
-                                <label class="col-12 text-center">Grasas</label>
-                                <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
-                                    <div class="h-full"  v-bind:style="'width:' + (grasasCena/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
-                                </div>
-                                <label class="col-12 text-center">{{ Math.trunc(grasasCena)}}/{{Math.trunc(dia.grasasRec/3)}} g</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-if="imagenesCena.length > 0">
-                        <Galleria :value="imagenesCena" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
-                            <template #item="slotProps" class="flex flex-column">
-                                <div class="flex justify-content-center" style="height:120px;">
-                                    <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
-                                </div>
-                                <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
-                                    {{slotProps.item[0]}}
-                                </div>
-                            </template>
-                        </Galleria>
-                    </div>
-                    <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center" v-else>
-                        <Galleria :value="sinConsumicion" :numVisible="1" :circular="false" :autoPlay="false" orientation="horizontal" verticalViewPortHeight="300px" style="max-width: 500px; margin-top:1em">
-                            <template #item="slotProps" class="flex flex-column">
-                                <div class="flex justify-content-center" style="height:120px;">
-                                    <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
-                                </div>
-                                <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
-                                    {{slotProps.item[0]}}
-                                </div>
-                            </template>
-                        </Galleria>
-                    </div>
-                    <router-link to="/comidas/Cena" class="mt-1 col-12">
-                        <Button label="Añadir cena" class="p-button-outlined p-button-secondary col-12"/>
-                    </router-link>
+                        </template>
+                    </Carousel>
                 </div>
             </div>
+
+            <!--contador agua-->
+            <div class="card grid col-12 p-fluid justify-content-center">
+                <div class="col-12 md:col-12">
+                    <div class="text-center">
+                    <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Contador de agua</Tag>
+                    </div>
+                </div>
+            
+                <div class="grid justify-content-center align-items-center">
+                    <div class="col-5 field" >
+                        <label class="col-12 text-center">Litros de agua</label>
+                        <ProgressBar :value="(agua/2)*100" style="background-color:rgb(173 218 240)"/>
+                        <label class="col-12 text-center">{{agua}}/2 L</label>
+                    </div>
+
+                    <div class="col-5">
+                        <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
+                        <InputNumber v-model="agua" :step="0.125" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                                incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
+                                :min="0" :max="2" suffix=" L"/>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- PARTE DERECHA -->
@@ -352,7 +235,7 @@
             </div>
 
             <div class="card grid col-12 p-fluid">
-                <div class="col-6">
+                <div class="col-12 lg:col-6">
                     <div class="card flex justify-content-center align-items-center">
                         <div class="col-12 text-center">
                             <Tag class="col-12 mb-2 text-center" value="Peso objetivo" style="font-size:1.25rem; font-weight:800; background:#1da750;" />
@@ -361,7 +244,7 @@
                     </div>
                 </div>
 
-                <div class="col-6" >
+                <div class="col-12 lg:col-6" >
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
                             <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
@@ -377,37 +260,6 @@
                     <Chart type="line" :data="lineData" :options="lineOptions" />
                 </div>
             </div>
-
-            <!--contador agua-->
-             <div class="card grid col-12 p-fluid">
-
-                <div class="card col-12 md:col-12">
-                    <div class="text-center">
-                    <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Contador de agua</Tag>
-                    </div>
-                </div>
-
-                <div class="field ml-2 mr-0 mb-0">
-                    <label class="col-12 text-center">Litros de agua</label>
-                    <div class="border-round overflow-hidden w-20rem" style="height:25px; background:#96DDFF">
-                        <div class="h-full"  v-bind:style="'width:' + agua*100 + '%'" id="agua"> </div>
-                    </div>
-                    <label class="col-12 text-center">{{agua}}/2 L</label>
-                </div>
-                
-                <div class="card col-12 md:col-5">
-                    <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                    <InputNumber v-model="agua" :step="0.125" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
-                            incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
-                            :min="0" :max="2" suffix=" L"/>
-                </div>
-
-                
-                
-                
-            </div>
-
-
 
         </div>
 	</div>
@@ -447,31 +299,51 @@
                 fecha: "",
                 user: "",
                 tipo: "",
-                comidasDesayuno: [],
-                comidasAlmuerzo: [],
-                comidasCena: [],
+                comidas: [
+                    {
+                        Tipo: 'Desayuno',
+                        kcal: 0,
+                        carbs: 0,
+                        prot: 0,
+                        grasas: 0,
+                        kcalRec: 0,
+                        carbsRec: 0,
+                        protRec: 0,
+                        grasasRec: 0,
+                        imagenes: []
+                    },
+                    {
+                        Tipo: 'Almuerzo',
+                        kcal: 0,
+                        carbs: 0,
+                        prot: 0,
+                        grasas: 0,
+                        kcalRec: 0,
+                        carbsRec: 0,
+                        protRec: 0,
+                        grasasRec: 0,
+                        imagenes: []
+                    },
+                    {
+                        Tipo: 'Cena',
+                        kcal: 0,
+                        carbs: 0,
+                        prot: 0,
+                        grasas: 0,
+                        kcalRec: 0,
+                        carbsRec: 0,
+                        protRec: 0,
+                        grasasRec: 0,
+                        imagenes: []
+                    }
+                ],
                 arrayPesos: [],
                 agua: 0,
                 pesoObjetivo: 0,
-                carbohidratos_recomendados: 0,
-                proteinas_recomendadas: 0,
-                grasas_recomendadas: 0,
-                carbsDesayuno: 0,
-                protDesayuno: 0,
-                grasasDesayuno: 0,
-                carbsAlmuerzo: 0,
-                protAlmuerzo: 0,
-                grasasAlmuerzo: 0,
-                carbsCena: 0,
-                protCena: 0,
-                grasasCena: 0,
                 sinConsumicion: [["No se han añadido consumiciones todavía", sinAlimento]],
                 sinEjercicio: [["No se han realizado ejercicios todavía", sinEjercicio]],
 
                 imagenesEjercicios: [],
-                imagenesDesayuno: [],
-                imagenesAlmuerzo: [],
-                imagenesCena: [],
                 
                 type:"doughnut",
                 pieData: {},
@@ -599,24 +471,45 @@
                 this.fecha = this.$store.state.fechaHome;
 
                 this.diaService.getDatosDia(this.user,this.fecha).then(data =>{
-                    this.dia = data
-                    
+                    this.dia = data;
+
                     this.agua = this.dia.agua;
-                    this.carbsDesayuno = this.dia.carbIngeridasDesayuno;
-                    this.protDesayuno = this.dia.proteinasIngeridasDesayuno;
-                    this.grasasDesayuno = this.dia.grasasIngeridasDesayuno;
 
-                    this.carbsAlmuerzo = this.dia.carbIngeridasAlmuerzo;
-                    this.protAlmuerzo = this.dia.proteinasIngeridasAlmuerzo;
-                    this.grasasAlmuerzo = this.dia.grasasIngeridasAlmuerzo;
+                    //DESAYUNO
+                    this.comidas[0].kcal = Math.trunc(data.kcalIngeridasDesayuno);
+                    this.comidas[0].carbs = Math.trunc(data.carbIngeridasDesayuno);
+                    this.comidas[0].prot = Math.trunc(data.proteinasIngeridasDesayuno);
+                    this.comidas[0].grasas = Math.trunc(data.grasasIngeridasDesayuno);
+                    this.comidas[0].kcalRec = Math.trunc(data.kcalRec/3);
+                    this.comidas[0].carbsRec = Math.trunc(data.carbRec/2);
+                    this.comidas[0].protRec = Math.trunc(data.proteinasRec/3);
+                    this.comidas[0].grasasRec = Math.trunc(data.grasasRec/3);
+
+                    //ALMUERZO
+                    this.comidas[1].kcal = Math.trunc(data.kcalIngeridasAlmuerzo);
+                    this.comidas[1].carbs = Math.trunc(data.carbIngeridasAlmuerzo);
+                    this.comidas[1].prot = Math.trunc(data.proteinasIngeridasAlmuerzo);
+                    this.comidas[1].grasas = Math.trunc(data.grasasIngeridasAlmuerzo);
+                    this.comidas[1].kcalRec = Math.trunc(data.kcalRec/3);
+                    this.comidas[1].carbsRec = Math.trunc(data.carbRec/2);
+                    this.comidas[1].protRec = Math.trunc(data.proteinasRec/3);
+                    this.comidas[1].grasasRec = Math.trunc(data.grasasRec/3);
                     
-                    this.carbsCena = this.dia.carbIngeridasCena;
-                    this.protCena = this.dia.proteinasIngeridasCena;
-                    this.grasasCena = this.dia.grasasIngeridasCena;
+                    //CENA
+                    this.comidas[2].kcal = Math.trunc(data.kcalIngeridasCena);
+                    this.comidas[2].carbs = Math.trunc(data.carbIngeridasCena);
+                    this.comidas[2].prot = Math.trunc(data.proteinasIngeridasCena);
+                    this.comidas[2].grasas = Math.trunc(data.grasasIngeridasCena);
+                    this.comidas[2].kcalRec = Math.trunc(data.kcalRec/3);
+                    this.comidas[2].carbsRec = Math.trunc(0);
+                    this.comidas[2].protRec = Math.trunc(data.proteinasRec/3);
+                    this.comidas[2].grasasRec = Math.trunc(data.grasasRec/3);
 
-                    var sumCarbs = Math.trunc(this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena);
-                    var sumProt = Math.trunc(this.protDesayuno + this.protAlmuerzo + this.protCena);
-                    var sumGrasas = Math.trunc(this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena);
+
+                    //DOUGHNUT DATA
+                    var sumCarbs = Math.trunc(data.carbIngeridasDesayuno + data.carbIngeridasAlmuerzo + data.carbIngeridasCena);
+                    var sumProt = Math.trunc(data.proteinasIngeridasDesayuno + data.proteinasIngeridasAlmuerzo + data.proteinasIngeridasCena);
+                    var sumGrasas = Math.trunc(data.grasasIngeridasDesayuno + data.grasasIngeridasAlmuerzo + data.grasasIngeridasCena);
 
                     var restanteCarb = Math.trunc(Math.abs(data.carbRec - sumCarbs));
                     var restanteProt = Math.trunc(Math.abs(data.proteinasRec - sumProt));
@@ -655,11 +548,16 @@
 
                 this.diaService.getAlimentosDia(this.user,this.fecha,this.tipo).then(data =>{
                     this.comidasDesayuno = data;
-                    var arrayAux = [];
-                    for(var i = 0; i<this.comidasDesayuno.length; i++){
-                        arrayAux.push(this.comidasDesayuno[i]);
+                    if (this.comidasDesayuno.length > 0){
+                        var arrayAux = [];
+                        for(var i = 0; i<this.comidasDesayuno.length; i++){
+                            arrayAux.push(this.comidasDesayuno[i]);
+                        }
+                        this.comidas[0].imagenes = arrayAux;
+                    }else{
+                        this.comidas[0].imagenes = this.sinConsumicion;
                     }
-                    this.imagenesDesayuno = arrayAux;
+                    
                 })
             },
 
@@ -670,11 +568,16 @@
 
                 this.diaService.getAlimentosDia(this.user,this.fecha,this.tipo).then(data =>{
                     this.comidasAlmuerzo = data;
-                    var arrayAux = [];
-                    for(var i = 0; i<this.comidasAlmuerzo.length; i++){
-                        arrayAux.push(this.comidasAlmuerzo[i]);
+                    if (this.comidasAlmuerzo.length > 0){
+                        var arrayAux = [];
+                        for(var i = 0; i<this.comidasAlmuerzo.length; i++){
+                            arrayAux.push(this.comidasAlmuerzo[i]);
+                        }
+                        this.comidas[1].imagenes = arrayAux;
+                    }else{
+                        this.comidas[1].imagenes = this.sinConsumicion;
                     }
-                    this.imagenesAlmuerzo = arrayAux;
+                    
                 })
             },
 
@@ -685,11 +588,15 @@
 
                 this.diaService.getAlimentosDia(this.user,this.fecha,this.tipo).then(data =>{
                     this.comidasCena = data;
-                    var arrayAux = [];
-                    for(var i = 0; i<this.comidasCena.length; i++){
-                        arrayAux.push(this.comidasCena[i]);
+                    if (this.comidasCena.length > 0){
+                        var arrayAux = [];
+                        for(var i = 0; i<this.comidasCena.length; i++){
+                            arrayAux.push(this.comidasCena[i]);
+                        }
+                        this.comidas[2].imagenes = arrayAux;
+                    }else{
+                        this.comidas[2].imagenes = this.sinConsumicion;
                     }
-                    this.imagenesCena = arrayAux;
                 })
             },
 
@@ -835,6 +742,18 @@
         font-weight:600; 
         background:#1da750;
     }
+    
+    .headerDias{
+        position: -webkit-sticky;
+        position: sticky;
+        background-color: white;
+        top: 70px;
+        z-index: 999;
+    }
+
+    .p-progressbar .p-progressbar-value{
+        background: #00acff;
+    }
 
     .boton-borrar-ejercicio {
             position: relative;
@@ -860,9 +779,12 @@
     }
 
     @media only screen and (max-width: 650px) {
-        .p-inputtext{
-            display: none;
+        #buttonbar{
+            &.p-inputtext{
+                display: none;
+            }
         }
+        
         .p-calendar.p-calendar-w-btn .p-datepicker-trigger {
             border-top-left-radius: 3px;
             border-bottom-left-radius: 3px;
