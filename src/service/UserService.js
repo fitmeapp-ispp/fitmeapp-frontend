@@ -46,6 +46,19 @@ export default class UserService {
         });
     }
 
+    checkIsBirthday(user) {
+        var hoy = new Date();
+        var cumpleanos = new Date(user.fechaNacimiento);
+        var m = cumpleanos.getMonth()-hoy.getMonth()
+        var d = cumpleanos.getDate()-hoy.getDate()
+        if ((d==0)&&(m==0)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     actualizarNutrientes(user){
         var corrector_actividad = 1.2
         var tmb = 0
