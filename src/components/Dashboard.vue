@@ -1,5 +1,19 @@
 <template>
 	<div class="grid">
+        <!-- BANNER CONSULTA POR DIAS -->
+        <div class="col-12 lg:col-12">
+            <div class="card flex">
+                <div class="col-4 lg:col-4" align="left"> 
+                    <Button icon="pi pi-angle-left" class="p-button-rounded p-button-success p-button-outlined" @click="retrasarDia()"/>
+                </div>
+                <div class="col-4 lg:col-4" align="center"> 
+                    <Calendar id="buttonbar" dateFormat="dd-mm-yy" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()" :showIcon="true" :locale="es" @date-select="cambiarFecha($event)"/>
+                </div>
+                <div class="col-4 lg:col-4" align="right">
+                    <Button icon="pi pi-angle-right" class="p-button-rounded p-button-success p-button-outlined"  @click="avanzarDia()" :disabled="comprobarFecha"/>
+                </div>
+            </div>
+        </div>
         <!-- PARTE IZQUIERDA -->
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
@@ -373,6 +387,7 @@
 </template>
 
 <script>
+    import moment from "moment";
     import DiaService from "../service/DiaService";
     import UserService from "../service/UserService";
     import ExerciseService from "../service/ExerciseService";
@@ -382,6 +397,8 @@
     export default {
         data() {
             return {
+                fechaConsulta: this.$store.state.fechaHome,
+
                 dia: {},
                 fecha: "",
                 user: "",
@@ -452,20 +469,61 @@
                     return "var(--green-500)"
                 else
                     return "green"
-            }
+            },
+            comprobarFecha(){
+                return (moment(this.$store.state.fechaHome, "YYYY-MM-DD").format('YYYY-MM-DD') == moment().format('YYYY-MM-DD'));
+            },
         },
         created() {
             this.diaService = new DiaService()
             this.userService = new UserService()
             this.exerciseService = new ExerciseService()
         },
-        mounted() { // CAMBIAR POR UN INPUT Y QUE EL KNOB SE ACTUALICE EN FUNCIÓN DEL MISMO
-            //this.pasos = this.pasosRecomendados * this.porcentajePasos / 100;
+        mounted() {
+            this.changeToSpanish()
             this.getPesoObjetivo()
             this.obtenerDatosHome()
             this.getEjecucionesEjercicio()
         },
         methods: {
+            changeToSpanish(){
+                this.$primevue.config.locale.clear = 'Limpiar';
+                this.$primevue.config.locale.today = 'Hoy';
+                this.$primevue.config.locale.dayNamesMin = ["Do","Lu","Ma","Mi","Ju","Vi","Sa"];
+                this.$primevue.config.locale.monthNames = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+            },
+            cambiarFecha(evento){
+                let fechaNueva = new Date(evento).toLocaleDateString("es-ES").replaceAll("/","-");
+                let day = moment(fechaNueva, "DD-MM-YYYY").format('YYYY-MM-DD');
+                this.$store.dispatch("saveFechaHome", day);
+                this.fechaConsulta = day;
+                
+                this.getPesoObjetivo();
+                this.obtenerDatosHome();
+                this.getEjecucionesEjercicio();
+            },
+            avanzarDia(){
+                let dia = this.$store.state.fechaHome;
+                let day = moment(dia, 'YYYY-MM-DD').add(1, 'days').format('YYYY-MM-DD');
+
+                this.$store.dispatch("saveFechaHome", day);
+                this.fechaConsulta = day;
+                
+                this.getPesoObjetivo();
+                this.obtenerDatosHome();
+                this.getEjecucionesEjercicio();
+            },
+            retrasarDia(){
+                let dia = this.$store.state.fechaHome;
+                let day = moment(dia, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
+
+                this.$store.dispatch("saveFechaHome", day);
+                this.fechaConsulta = day;
+                
+                this.getPesoObjetivo();
+                this.obtenerDatosHome();
+                this.getEjecucionesEjercicio();
+            },
             imagenBalanza() {
                 return '/images/icono_balanza.png';
             },
@@ -638,7 +696,7 @@
                 this.userService.savePasos(this.pasosRealizados, this.dia._id);
             },
             async getEjecucionesEjercicio() {
-                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, "2022-04-23")//this.$store.state.fechaHome)
+                let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, this.$store.state.fechaHome)
                 this.ejecucionesEjercicio = ejecuciones.data
 
                 let ejercicios = []
@@ -666,6 +724,34 @@
     }
 </script>
 <style lang="scss">
+
+    .p-button {
+        color: #ffffff;
+        background: #1da750;
+        border: 1px solid #ced4da;
+    }
+
+    .p-button:enabled:hover {
+        background: #1da750;
+        color: #ffffff;
+        border-color: #343a40;
+    }
+
+    .p-button.p-button-text {
+        background-color: transparent;
+        color: #1da750;
+        border-color: transparent;
+    }
+
+    .p-button.p-button-text:enabled:hover {
+        background: #1da750;
+        color: #ffffff;
+        border-color: #343a40;
+    }
+
+    .p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+        background-color: #1da750;
+    }
 
     .p-knob-text {
         font: bolder;
@@ -722,6 +808,18 @@
         }
         .textoImagen {
             display: none;
+        }
+    }
+
+    @media only screen and (max-width: 650px) {
+        .p-inputtext{
+            display: none;
+        }
+        .p-calendar.p-calendar-w-btn .p-datepicker-trigger {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
         }
     }
 </style>
