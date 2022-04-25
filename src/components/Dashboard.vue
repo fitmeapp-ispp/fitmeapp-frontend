@@ -15,22 +15,24 @@
             </div>
         </div>
         <!-- PARTE IZQUIERDA -->
+        {{dia}}
+        {{indiceEjercicio}}
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
                 <div class="grid card col-12 align-content-center justify-content-center">
-                    <div class="col-6 flex flex-column align-items-center justify-content-between">
-                        <Tag class="col-12" style="font-size:1.75rem; font-weight:600; background:#1da750;">Calorías</Tag>
-                        <div class="col-12 flex justify-content-around">
-                            <div class="col-5 flex flex-column align-items-center">
-                                <h3 class="col-12 flex justify-content-center titulo-calorias">Consumidas</h3>
+                    <div class="col-12 lg:col-6 flex flex-column align-items-center justify-content-between">
+                        <Tag class="col-12 textoResponsive">Calorías</Tag>
+                        <div class="col-12 grid justify-content-between">
+                            <div class="col-12 lg:col-4 flex flex-column align-items-center">
+                                <h4 class="col-12 flex justify-content-center titulo-calorias">Consumidas</h4>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="info" size="xlarge" :value="Math.trunc(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)" />
                                 </div>
                             </div>
-                            <div class="col-5 flex flex-column align-items-center">
-                                <h3 class="col-12 flex justify-content-center titulo-calorias">Quemadas</h3>
+                            <div class="col-12 lg:col-4 flex flex-column align-items-center">
+                                <h4 class="col-12 flex justify-content-center titulo-calorias">Quemadas</h4>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
-                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="warning" size="xlarge" :value="Math.trunc(kcalQuemadas)" />
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="warning" size="xlarge" :value="Math.trunc(kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
                             </div>
                         </div>
@@ -38,16 +40,16 @@
                             <div class="col-12 flex flex-column align-items-center">
                                 <h3 class="col-12 flex justify-content-center">Restantes</h3>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
-                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas)" />
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
-                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas) == 0">Objetivo conseguido!</h3>
+                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">Objetivo conseguido!</h3>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 flex flex-column align-items-center">
-                        <Tag class="col-12" style="font-size:1.75rem; font-weight:600; background:#1da750;">Macronutrientes</Tag>
+                    <div class="col-12 lg:col-6 flex flex-column align-items-center">
+                        <Tag class="col-12 textoResponsive">Macronutrientes</Tag>
                         <div class="col-10">
-                            <Chart type="doughnut" :data="pieData" :options="lightOptions" v-if="comidasDesayuno.length > 0 || comidasAlmuerzo.length > 0 || comidasCena.length > 0"/>
+                            <Chart style="max-width:310px; align-content:center;" type="doughnut" :data="pieData" :options="lightOptions" />
                         </div>
                     </div>
                 </div>
@@ -136,7 +138,7 @@
                                 <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
                                     <div class="h-full"  v-bind:style="'width:' + (carbsAlmuerzo/(dia.carbRec/2))*100 + '%'" id="carbIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.trunc(carbsAlmuerzo)}}/{{ Math.trunc(dia.carbRec)}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(carbsAlmuerzo)}}/{{ Math.trunc(dia.carbRec/2)}} g</label>
                             </div>
                         </div>
                         <div class="formgroup-inline align-content-center justify-content-around">
@@ -217,7 +219,7 @@
                                 <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
                                     <div class="h-full"  v-bind:style="'width:' + (grasasCena/(dia.grasasRec/3))*100 + '%'" id="grasasIngeridos"> </div>
                                 </div>
-                                <label class="col-12 text-center">{{ Math.trunc(grasasCena)}}/{{Math.trunc(dia.grasasRec/3 ) / 100}} g</label>
+                                <label class="col-12 text-center">{{ Math.trunc(grasasCena)}}/{{Math.trunc(dia.grasasRec/3)}} g</label>
                             </div>
                         </div>
                     </div>
@@ -261,23 +263,23 @@
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Pasos</Tag>
                     
                     <div class="my-2 text-center">
-                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" />
+                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly/>
                         <h3 class="mt-0" v-if="porcentajePasos >= 100">Objetivo conseguido!</h3>
                     </div>
 
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
                             <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                            <InputNumber v-model="pasosRealizados" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                            <InputNumber v-model="dia.pasosRealizados" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
-                            @focusout="savePasos()" />
+                            @focusout="actualizarPasos()" inputClass="text-center text-900 text-xl font-medium" />
                         </div>
                     </div>
                 
-                    <div class="card flex justify-content-center align-items-center">
-                        <div class="text-center">
+                    <div class="card flex justify-content-center align-items-center col-12">
+                        <div class="col-12 text-center">
                             <Tag class="col-12 mb-2 text-center" value="Pasos recomendados" style="font-size:1.25rem; font-weight:800; background:#1da750"></Tag>
-                            <InputNumber v-model="pasosRecomendados" :disabled="true"/>
+                            <h5 class="m-0 mt-2">{{dia.pasosObjetivo}}</h5>
                         </div>
                     </div>
                 </div>
@@ -285,7 +287,7 @@
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="300px"
-                    class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
+                    class="col-12 grid justify-content-center align-items-center mt-2 ml-1" :index="indiceEjercicio">
                         <template #item="slotProps">
                             <div class="product-item">
                                 <div class="product-item-content">
@@ -301,6 +303,17 @@
                                     </router-link>
                                 </div>
                             </div>
+
+                            <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+                                <div class="flex align-items-center justify-content-center">
+                                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+                                    <span v-if="exerciseToDelete">¿Quieres eliminar el ejercicio <b>{{exerciseToDelete.ejercicio.name}}</b>?</span>
+                                </div>
+                                <template #footer>
+                                    <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteExerciseDialog = false" autofocus />
+                                    <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise(); slotProps.index--" />
+                                </template>
+                            </Dialog>
                         </template>
                     </Carousel>
                     <router-link to="/ejercicios" class="mt-1 col-9 text-center">
@@ -339,31 +352,27 @@
             </div>
 
             <div class="card grid col-12 p-fluid">
-                <div class="card col-12 md:col-12">
-                    <div class="text-center">
-                        <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Peso objetivo: {{pesoObjetivo}} kg</Tag>
+                <div class="col-6">
+                    <div class="card flex justify-content-center align-items-center">
+                        <div class="col-12 text-center">
+                            <Tag class="col-12 mb-2 text-center" value="Peso objetivo" style="font-size:1.25rem; font-weight:800; background:#1da750;" />
+                            <h5 class="m-0 mt-2">{{pesoObjetivo}} kg</h5>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="col-12 md:col-5" >
-                    <div class="card flex justify-content-center align-items-center" style="height:48%;">
+
+                <div class="col-6" >
+                    <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
                             <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                            <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
+                            <InputNumber v-model="dia.pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
-                            @focusout="savePeso()" suffix=" kg"/>
-                        </div>
-                    </div>
-                
-                    <div class="card flex justify-content-center align-items-center" style="height:48%;">
-                        <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Peso de ayer" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                            <InputNumber v-model="pesoDeAyer" :disabled="true" suffix=" kg"/>
+                            @focusout="savePeso()" suffix=" kg" inputClass="text-center text-900 text-xl font-medium" />
                         </div>
                     </div>
                 </div>
                 
-                <div class="card col-12 md:col-7">  
+                <div class="card col-12 md:col-12">  
                     <h5 class="text-center"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
                     <Chart type="line" :data="lineData" :options="lineOptions" />
                 </div>
@@ -405,7 +414,7 @@
 
     <!-- Dialogs -->
 
-    <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+    <!-- <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
         <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="exerciseToDelete">¿Quieres eliminar el ejercicio <b>{{exerciseToDelete.ejercicio.name}}</b>?</span>
@@ -414,7 +423,7 @@
             <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteExerciseDialog = false" autofocus />
             <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise" />
         </template>
-    </Dialog>
+    </Dialog> -->
 
 </template>
 
@@ -429,9 +438,12 @@
     export default {
         data() {
             return {
+                indiceEjercicio: 0,
+                dia: {
+                    pasosRealizados: 0,
+                    pasosObjetivo: 0,
+                },
                 fechaConsulta: this.$store.state.fechaHome,
-
-                dia: {},
                 fecha: "",
                 user: "",
                 tipo: "",
@@ -455,11 +467,6 @@
                 grasasCena: 0,
                 sinConsumicion: [["No se han añadido consumiciones todavía", sinAlimento]],
                 sinEjercicio: [["No se han realizado ejercicios todavía", sinEjercicio]],
-                pasosRecomendados:5000,
-                pasosRealizados: 0,
-
-                pesoActual: 76.5,
-                pesoDeAyer: 77.0,
 
                 imagenesEjercicios: [],
                 imagenesDesayuno: [],
@@ -479,6 +486,7 @@
 
                 lineData: {},
                 kcalQuemadas: 0,
+                kcalQuemadasPasos: 0,
                 lineOptions: null,
                 diaService: null,
                 userService: null,
@@ -489,8 +497,8 @@
         },
         computed: {
             porcentajePasos() {
-                let res = this.round(this.pasosRealizados/this.pasosRecomendados*100)
-                return res >= 100 ? 100 : this.round(this.pasosRealizados/this.pasosRecomendados*100)
+                let res = this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
+                return res >= 100 ? 100 : this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
             },
             colorProgresoPasos() {
                 let porcentaje = this.porcentajePasos
@@ -591,13 +599,9 @@
                 this.fecha = this.$store.state.fechaHome;
 
                 this.diaService.getDatosDia(this.user,this.fecha).then(data =>{
-                    this.dia = data,
+                    this.dia = data
                     
-                    this.pesoActual = this.dia.pesoActual;
-                    this.pasosRecomendados = this.dia.pasosObjetivo;
-                    this.pasosRealizados = this.dia.pasosRealizados;
                     this.agua = this.dia.agua;
-
                     this.carbsDesayuno = this.dia.carbIngeridasDesayuno;
                     this.protDesayuno = this.dia.proteinasIngeridasDesayuno;
                     this.grasasDesayuno = this.dia.grasasIngeridasDesayuno;
@@ -610,13 +614,13 @@
                     this.protCena = this.dia.proteinasIngeridasCena;
                     this.grasasCena = this.dia.grasasIngeridasCena;
 
-                    var sumCarbs = this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena;
-                    var sumProt = this.protDesayuno + this.protAlmuerzo + this.protCena;
-                    var sumGrasas = this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena;
+                    var sumCarbs = Math.trunc(this.carbsDesayuno + this.carbsAlmuerzo + this.carbsCena);
+                    var sumProt = Math.trunc(this.protDesayuno + this.protAlmuerzo + this.protCena);
+                    var sumGrasas = Math.trunc(this.grasasDesayuno + this.grasasAlmuerzo + this.grasasCena);
 
-                    var restanteCarb = Math.abs(data.carbRec - sumCarbs);
-                    var restanteProt = Math.abs(data.proteinasRec - sumProt);
-                    var restanteGrasas = Math.abs(data.grasasRec - sumGrasas);
+                    var restanteCarb = Math.trunc(Math.abs(data.carbRec - sumCarbs));
+                    var restanteProt = Math.trunc(Math.abs(data.proteinasRec - sumProt));
+                    var restanteGrasas = Math.trunc(Math.abs(data.grasasRec - sumGrasas));
 
                     this.pieData = {
                         labels: ['Carbohidratos consumidos','Carbohidratos restantes', 'Proteínas consumidas','Proteínas restantes', 'Grasas consumidas', 'Grasas restantes'],
@@ -636,7 +640,7 @@
                 });
             },
 
-            getPesoObjetivo(){
+            getPesoObjetivo() {
                 this.user = this.$store.state.username;
 
                 this.userService.getUser(this.user).then(data =>{
@@ -644,7 +648,7 @@
                 })
             },
 
-            obtenerDesayuno(){
+            obtenerDesayuno() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
                 this.tipo = "Desayuno";
@@ -659,7 +663,7 @@
                 })
             },
 
-            obtenerAlmuerzo(){
+            obtenerAlmuerzo() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
                 this.tipo = "Almuerzo";
@@ -674,7 +678,7 @@
                 })
             },
 
-            obtenerCena(){
+            obtenerCena() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
                 this.tipo = "Cena";
@@ -689,7 +693,7 @@
                 })
             },
 
-            obtenerPesos(){
+            obtenerPesos() {
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
 
@@ -724,10 +728,11 @@
                 });
             },
             savePeso() {
-                this.userService.savePeso(this.pesoActual, this.$store.state.userId, this.dia._id);
+                this.userService.savePeso(this.dia.pesoActual, this.$store.state.userId, this.dia._id);
             },
-            savePasos() {
-                this.userService.savePasos(this.pasosRealizados, this.dia._id);
+            actualizarPasos() {
+                this.diaService.actualizarDia(this.dia._id, {pasosRealizados: this.dia.pasosRealizados});
+                this.kcalQuemadasPasos = 350/10000 * this.dia.pasosRealizados
             },
             saveAgua() {
                 this.userService.saveAgua(this.agua, this.dia._id);
@@ -825,6 +830,12 @@
         top: -20px;
     }
 
+    .textoResponsive{
+        font-size:1.75rem; 
+        font-weight:600; 
+        background:#1da750;
+    }
+
     .boton-borrar-ejercicio {
             position: relative;
             left: 40%;
@@ -845,6 +856,18 @@
         }
         .textoImagen {
             display: none;
+        }
+    }
+
+    @media only screen and (max-width: 1168px){
+        .textoResponsive{
+            font-size:1.50rem;
+        }
+    }
+
+    @media only screen and (max-width: 323px){
+        .textoResponsive{
+            font-size:1.10rem;
         }
     }
 

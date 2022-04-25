@@ -97,6 +97,11 @@ export default class UserService {
             user.grasas_recomendadas = user.kcal_recomendadas * 0.25
         }
 
+        user.kcal_recomendadas = Math.trunc(user.kcal_recomendadas)
+        user.carbohidratos_recomendados = Math.trunc(user.carbohidratos_recomendados)
+        user.proteinas_recomendadas = Math.trunc(user.proteinas_recomendadas)
+        user.grasas_recomendadas = Math.trunc(user.grasas_recomendadas)
+
         return user
 
         function calcularEdad(fechaNacimiento) {
@@ -147,10 +152,6 @@ export default class UserService {
 
     savePeso(peso, userId, diaId){
         return axios.put('/users/peso/' + peso+"/"+ userId+ "/"+diaId);
-    }
-
-    savePasos(pasos, diaId){
-        return axios.put('/users/pasos/' + pasos+"/"+diaId);
     }
 
     saveAgua(agua, diaId){

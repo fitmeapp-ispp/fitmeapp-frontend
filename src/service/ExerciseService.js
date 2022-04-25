@@ -91,4 +91,13 @@ export default class ExerciseService {
         });
     }
 
+    async getEjecucionPorEjercicio(userId, fecha, exerciseId) {
+        try {
+            let ejecucion = await axios.get("/ejercicio_ejecuciones/"+userId+"/"+fecha+"/"+exerciseId)
+            return ejecucion.data
+        } catch (error) {
+            console.log("Error: ", error)
+        }
+    }
+
 }
