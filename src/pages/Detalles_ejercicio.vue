@@ -165,6 +165,11 @@ export default {
         async fetchExercise(){
             let exercise = await this.exerciseService.getExerciseById(this.$route.params.ejercicioId)
             exercise = exercise.data
+
+            // if (exercise.hecho === true) {
+            //     let ejecucionAsociada = await this.exerciseService.getEjecucionPorEjercicio(this.$store.state.userId, this.$store.state.fechaHome, exercise._id)
+            //     this.$router.push()
+            // }
             this.dataviewValue = exercise;
             let relatedExercises = await this.exerciseService.getExerciseByMuscle(exercise.muscles[0])
             this.relatedExercises = relatedExercises

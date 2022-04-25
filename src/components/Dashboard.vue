@@ -16,6 +16,7 @@
         </div>
         <!-- PARTE IZQUIERDA -->
         {{dia}}
+        {{indiceEjercicio}}
         <div class="col-12 lg:col-6">
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
                 <div class="grid card col-12 align-content-center justify-content-center">
@@ -286,7 +287,7 @@
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="300px"
-                    class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
+                    class="col-12 grid justify-content-center align-items-center mt-2 ml-1" :index="indiceEjercicio">
                         <template #item="slotProps">
                             <div class="product-item">
                                 <div class="product-item-content">
@@ -302,6 +303,17 @@
                                     </router-link>
                                 </div>
                             </div>
+
+                            <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+                                <div class="flex align-items-center justify-content-center">
+                                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+                                    <span v-if="exerciseToDelete">¿Quieres eliminar el ejercicio <b>{{exerciseToDelete.ejercicio.name}}</b>?</span>
+                                </div>
+                                <template #footer>
+                                    <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteExerciseDialog = false" autofocus />
+                                    <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise(); slotProps.index--" />
+                                </template>
+                            </Dialog>
                         </template>
                     </Carousel>
                     <router-link to="/ejercicios" class="mt-1 col-9 text-center">
@@ -402,7 +414,7 @@
 
     <!-- Dialogs -->
 
-    <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+    <!-- <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
         <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="exerciseToDelete">¿Quieres eliminar el ejercicio <b>{{exerciseToDelete.ejercicio.name}}</b>?</span>
@@ -411,7 +423,7 @@
             <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteExerciseDialog = false" autofocus />
             <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise" />
         </template>
-    </Dialog>
+    </Dialog> -->
 
 </template>
 
@@ -426,6 +438,7 @@
     export default {
         data() {
             return {
+                indiceEjercicio: 0,
                 dia: {
                     pasosRealizados: 0,
                     pasosObjetivo: 0,

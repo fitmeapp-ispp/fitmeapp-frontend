@@ -154,10 +154,6 @@ export default class UserService {
         return axios.put('/users/peso/' + peso+"/"+ userId+ "/"+diaId);
     }
 
-    savePasos(pasos, diaId){
-        return axios.put('/users/pasos/' + pasos+"/"+diaId);
-    }
-
     saveAgua(agua, diaId){
         return axios.put('/users/agua/' + agua+"/"+diaId);
     }
