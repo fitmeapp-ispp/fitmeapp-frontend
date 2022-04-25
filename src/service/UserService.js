@@ -38,6 +38,14 @@ export default class UserService {
         });
     }
 
+    actualizar(userId,user){
+        return axios.put(`users/${userId}`,user)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
     actualizarNutrientes(user){
         var corrector_actividad = 1.2
         var tmb = 0
@@ -144,5 +152,13 @@ export default class UserService {
 
     savePeso(peso, userId, diaId){
         return axios.put('/users/peso/' + peso+"/"+ userId+ "/"+diaId);
+    }
+
+    savePasos(pasos, diaId){
+        return axios.put('/users/pasos/' + pasos+"/"+diaId);
+    }
+
+    saveAgua(agua, diaId){
+        return axios.put('/users/agua/' + agua+"/"+diaId);
     }
 }

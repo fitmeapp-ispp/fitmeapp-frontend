@@ -1,15 +1,16 @@
 import { createStore } from 'vuex'
 import createPersistedState from "vuex-persistedstate";
+import moment from "moment";
 
 
 export default createStore({
   plugins: [createPersistedState()],
   state: {
-    username: 'jose00',
+    username: '',
     password: '',
     userId: '',
     loggedIn: false,
-    fechaHome: '2022-04-23',
+    fechaHome: moment().format('YYYY-MM-DD'),
     tipo: 'Almuerzo'
   },
   mutations: {
@@ -45,6 +46,9 @@ export default createStore({
     },
     saveTipo({commit}, tipo){
       commit("saveTipo", tipo);
+    },
+    saveFechaHome({commit}, fecha){
+      commit("saveFechaHome", fecha);
     },
     savePassword({commit}, password){
       commit("savePassword", password);
