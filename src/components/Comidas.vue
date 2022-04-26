@@ -154,36 +154,37 @@
 								</template>
 						</Carousel>
 					</div>
+					<div class="formgroup-inline justify-content-center align-items-center mt-2">
+						<div class="field mb-0">
+							<Button label="Calculadora" class=" text-left p-button-warning" @click="calculadora()"/>
+						</div>
+						<div class="field mb-0">
+							<Button icon="pi pi-info-circle" class=" text-left p-button-info" @click="infocalculadora()"/>
+						</div>
+					</div>
 				</div>
 			</div>
 		<!-- Fin del header-->
 		<!-- Comienza el cuerpo-->
 			<div class="card">
 				<div class="col-12 card surface-400">
-					<div class="grid justify-content-between">
+					<div class="grid justify-content-between align-items-center">
 						<div class="formgroup-inline justify-content-center mt-2">
-							<div class="field">
+							<div class="field lg:mb-0 md:mb-0">
 								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()" />
 							</div>
-							<div class="field">
+							<div class="field lg:mb-0 md:mb-0">
 								<Button label="Recientes" icon="pi pi-clock" @click="recientes()" />
 							</div>
-							<div class="field">
+							<div class="field lg:mb-0 md:mb-0">
 								<Button label="Creados" icon="pi pi-pencil" class="p-button-success" @click="creados()"/>
 							</div>
-							<div class="field">
+							<div class="field lg:mb-0 md:mb-0">
 								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
 							</div>
 						</div>
-						<div class="formgroup-inline justify-content-center mt-2">
-							<div class="text-left field">
-								<Button label="Calculadora" class=" text-left p-button-warning" @click="calculadora()"/>
-							</div>
-							<div class="text-left field">
-								<Button icon="pi pi-info-circle" class=" text-left p-button-info" @click="infocalculadora()"/>
-							</div>
-						</div>
-						<div class="mt-1">
+						
+						<div class="flex justify-content-end md:mt-1">
 							<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
 						</div>
 					</div>
@@ -191,49 +192,55 @@
 				<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
 					:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
 					<template #header>
-						<div class="grid formgroup-inline justify-content-between ">
-							<div class="field">
-								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
-							</div>
-							<div class="field">
-								<span class="p-input-icon-left mb-2">
-									<i class="pi pi-search" />
-									<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
-								</span>
-							</div>
-							<div class="field">
-								<DataViewLayoutOptions v-model="layout" />
-							</div>
+						<div class="grid justify-content-between align-items-center">
+							<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
+							<span class="p-input-icon-left">
+								<i class="pi pi-search" />
+								<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
+							</span>
 						</div>
 					</template>
 					<template #list="slotProps">
 						<div class="col-12">
-							<div class="flex flex-column md:flex-row align-items-center p-3 w-full"  @click="detallesAlimento(slotProps.data)">
-								<img :src="slotProps.data.imagen || 'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" 
-									style="width: 100%; display: block;" id="imagen-busqueda"/>
-								<div class="flex-1 text-center md:text-left">
-									<div class="font-bold text-2xl" style="color:#256029;">
-										{{ slotProps.data.nombre }} 
+							<div @click="detallesAlimento(slotProps.data)" class="text-align-center">
+								<div class="grid mt-4">
+									<div class="col-12 flex align-items-center justify-content-end" v-if="slotProps.data.verificado">
+										<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
 									</div>
-									<div class="mb-3" style="color:#256029;">
-										{{ slotProps.data.kcal_100g }} kcal
-									</div>
-									<div class="mb-3" style="color:#256029;">
-										Grasas {{ slotProps.data.grasa_100g }} g
-									</div>
-									<div class="mb-3" style="color:#256029;">
-										Carbohidratos {{ slotProps.data.carbohidratos_100g }} g
-									</div>
-									<div class="mb-3" style="color:#256029;">
-										Proteínas {{ slotProps.data.proteinas_100g }} g
-									</div>
-									<div class="mb-3">
-										Cantidad máxima recomendada: {{slotProps.data.calculadora}}g
+									<div class="col-12 flex flex-column md:flex-row justify-content-center align-items-center">
+										<div class="col-12 md:col-4 text-center md:text-left">
+											<img :src="slotProps.data.imagen ||'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" 
+													class="w-9 shadow-2 my-3 mx-0" id="imagen-busqueda" style="width:100%;height:100%;max-width:265px;max-height:270px;"/>
+										</div>											
+										<div class="col-8 text-center md:text-left">
+											<div class="text-2xl mt-2 font-bold" style="color:#256029;">
+												{{ slotProps.data.nombre }}
+											</div>
+											<div class="my-3 text-lg md:text-left" style="color:#256029;">
+												{{ Math.round((slotProps.data.kcal_100g + Number.EPSILON) * 100) / 100 }} kcal
+											</div>
+											<div class="mb-3 text-lg md:text-left" style="color:#256029;">
+												Grasas {{ Math.round((slotProps.data.grasa_100g + Number.EPSILON) * 100) / 100 }} g
+											</div>
+											<div class="mb-3 text-lg md:text-left" style="color:#256029;">
+												Carbohidratos {{ Math.round((slotProps.data.carbohidratos_100g + Number.EPSILON) * 100) / 100 }} g
+											</div>
+											<div class="mb-3 text-lg md:text-left" style="color:#256029;">
+												Proteínas {{ Math.round((slotProps.data.proteinas_100g + Number.EPSILON) * 100) / 100 }} g
+											</div>
+											<div class="mb-3 text-lg md:text-left" style="color:#256029;">
+												Cantidad máxima recomendada: {{slotProps.data.calculadora}}g
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class=" flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0" 
-										v-if="slotProps.data.verificado">
-									<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
+							</div>
+							<div class="grid grid-nogutter">		
+								<div class="text-left font-bold col-6">
+									<Button icon="pi pi-plus" class="p-button-rounded p-button-primary mr-2 mb-2" @click="anyadirADataViewCarrusel(slotProps.data._id, false);" />
+								</div>					
+								<div class="text-right font-bold col-6">
+									<Button icon="pi pi-star" :id="slotProps.data._id" class="p-button-rounded p-button-warning mr-2 mb-2" :class="{'p-button-outlined': !this.favoritosList.includes(slotProps.data._id)}" @click="funcionFavoritos(slotProps.data._id);" />
 								</div>
 							</div>
 						</div>
@@ -248,9 +255,8 @@
 													class="w-9 shadow-2 my-3 mx-0" id="imagen-busqueda"/>
 										</div>											
 										<div class="col-8 text-left">
-											<div class="flex align-items-center justify-content-between"
+											<div class="flex align-items-center justify-content-end"
 													v-if="slotProps.data.verificado">
-												<div></div>
 												<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
 											</div>
 											<div class="text-2xl mt-2 font-bold">
@@ -556,7 +562,8 @@
 				isRecientes: false,
 				isFavoritos: false,
 				isCreados: false,
-				dataviewValueCarrusel: [{'alimento': {'nombre': "nombre"}}]
+				dataviewValueCarrusel: [{'alimento': {'nombre': "nombre"}}],
+				windowWidth: 0,
 			}
 		},
 		alimentoService: null,
@@ -566,6 +573,16 @@
 			this.alimentoService = new AlimentoService();
 			this.userService = new UserService();
 			this.inicio();
+			this.windowWidth = window.innerWidth;
+		},
+		watch: {
+			windowWidth(windowWidth) {
+				if(windowWidth <= 980){
+					this.layout = 'list';
+				}else{
+					this.layout = 'grid';
+				}
+			}
 		},
 		mounted() {
 			this.lazyParams = {
@@ -573,10 +590,20 @@
 				sort: [], //2 items: sortField y sortOrder (Ejemplo: Nombre,-1 ==> Ordenar por nombre inversamente)
 				filters: ''
 			};
-			this.fetchItems();
-			
+			this.fetchItems();	
+			this.$nextTick(() => {
+				window.addEventListener('resize', this.onResize);
+			});
+			if(this.windowWidth <= 980){
+				this.layout = 'list';
+			}else{
+				this.layout = 'grid';
+			}
 		},
 		methods: {
+			onResize(){
+				this.windowWidth = window.innerWidth;
+			},
 			inicio(){
 				this.alimentoService.getDia(this.$store.state.userId, this.$route.params.tipo).then(data =>{this.dia = data
 				this.alimentoService.limpiarCarrusel(this.$store.state.userId,this.dia._id,this.$route.params.tipo)
@@ -773,9 +800,9 @@
 
 				}
 				
-			},aCalculadora(consumicionId,alimentoId){
+			},
+			aCalculadora(consumicionId,alimentoId){
 				this.alimentoService.deleteFromCarrusel(consumicionId,this.dia.tipo,this.dia._id).then(() => {this.anyadirADataViewCarrusel(alimentoId, true);});
-				
 			},
 			obtenerAlergenos(alergenosAlimento){
 				let imagenesAlergenos = [];
@@ -810,12 +837,8 @@
 						if(this.isFavoritos){
 							this.fetchItems();
 						}
-					})
-
-					
-				}
-				
-				
+					})	
+				}	
 			},
 			deleteAFavoritos(alimentoId){
 				this.favoritosList = this.favoritosList.filter(e => e != alimentoId)
@@ -855,7 +878,7 @@
 
 				})
 
-			}
+			},
 		}
 	}
 
