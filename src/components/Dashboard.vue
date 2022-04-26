@@ -6,7 +6,8 @@
                 <Button icon="pi pi-angle-left" class="p-button-rounded p-button-success p-button-outlined" @click="retrasarDia()"/>
             </div>
             <div class="col-4 lg:col-4" align="center"> 
-                <Calendar id="buttonbar" dateFormat="dd-mm-yy" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()" :showIcon="true" :locale="es" @date-select="cambiarFecha($event)"/>
+                <Calendar id="buttonbar" dateFormat="dd-mm-yy" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()"
+                :showIcon="true" :locale="es" @date-select="cambiarFecha($event)" inputClass="text-center"/>
             </div>
             <div class="col-4 lg:col-4" align="right">
                 <Button icon="pi pi-angle-right" class="p-button-rounded p-button-success p-button-outlined"  @click="avanzarDia()" :disabled="comprobarFecha"/>
@@ -167,7 +168,7 @@
                     </div>
                 </div>
 
-                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0"> 
+                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0" :key="claveRecargaCarousel"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="300px"
                     class="col-12 grid justify-content-center align-items-center mt-2 ml-1" :index="indiceEjercicio">
@@ -207,7 +208,7 @@
                         </div>
                     </router-link>
                 </div>
-                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-else> 
+                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length == 0" :key="claveRecargaCarousel"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="sinEjercicio" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="240px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
@@ -365,6 +366,7 @@
                 exerciseService: null,
                 deleteExerciseDialog: false,
                 deleteExerciseIndex: 0,
+                claveRecargaCarousel: 0,
             }
         },
         computed: {
@@ -460,6 +462,8 @@
                 try {
                     this.exerciseService.borrarEjecucion(this.exerciseToDelete.ejecucion._id)
                     this.imagenesEjercicios.splice(this.deleteExerciseIndex, 1)
+                    this.kcalQuemadas -= this.exerciseToDelete.ejecucion.kcal
+                    this.claveRecargaCarousel++
                     this.deleteExerciseDialog = false
                 } catch (error) {
                     console.log("Error: ", error)
@@ -645,6 +649,7 @@
                 this.userService.saveAgua(this.agua, this.dia._id);
             },
             async getEjecucionesEjercicio() {
+                this.imagenesEjercicios = []
                 let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, this.$store.state.fechaHome)
                 this.ejecucionesEjercicio = ejecuciones.data
 
