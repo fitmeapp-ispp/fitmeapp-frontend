@@ -1,7 +1,4 @@
 <template>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <div class="grid justify-content-center align-items-center">
         <div class="col-12 text-center mb-6">
             <h1 style="color:#256029; font-size:300%; font-family: 'Oswald', sans-serif;">Plan actual</h1>

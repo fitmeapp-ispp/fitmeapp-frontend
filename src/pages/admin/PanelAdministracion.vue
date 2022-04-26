@@ -1,7 +1,4 @@
 <template>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <h3 style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Panel de administración</h3>
     <br>
     <div class="grid">

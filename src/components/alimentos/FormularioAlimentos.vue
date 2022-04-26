@@ -3,7 +3,7 @@
 		<div class="col-12 md:col-12">
 			<Toast/>
 			<div class="grid justify-content-center" >	
-				<div class=" text-center titulo" style="color:#256029;">
+				<div class=" text-center" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">
 					{{this.titulo}}
 				</div>
 			</div>
@@ -21,7 +21,7 @@
 					</div>
 				</div>
 				<br>
-				<div class="text-center titulo" style="font-size:x-large; color:#256029;">
+				<div class="text-center" style="font-size:x-large; color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">
 						Información Nutricional
 				</div>
 				<br>
