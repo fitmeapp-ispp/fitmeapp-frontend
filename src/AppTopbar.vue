@@ -52,13 +52,13 @@
         <Sidebar v-model:visible="visibleLeft" :baseZIndex="1000">
             <div>
                 <router-link to="/" @click="visibleLeft=false">
-                    <h1 class="color">INICIO</h1>
+                    <h1 class="color titulo">Inicio</h1>
                 </router-link>
                 <router-link to="/ejercicios" @click="visibleLeft=false">
-                    <h1 class="color">EJERCICIOS </h1>
+                    <h1 class="color titulo">Ejercicios </h1>
                 </router-link>
                 <router-link to="/perfil" @click="visibleLeft=false">
-                    <h1 class="color">PERFIL </h1>
+                    <h1 class="color titulo">Perfil</h1>
                 </router-link>
             </div>
             <div align="center">

@@ -11,7 +11,7 @@
                 <div class="grid card col-12 align-content-center justify-content-center mt-3">
                     <div class="p-fluid col-12 lg:col-6 md:col-6">
 
-                        <Tag class="mr-2 col-12" style="font-size:2rem; font-family: 'Oswald', sans-serif; background:#1da750; ">Desayuno</Tag>
+                        <Tag class="mr-2 col-12" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750; ">Desayuno</Tag>
 
                         <div class="formgroup-inline align-content-center justify-content-center">
                             <div class="field ml-2 mr-0 mb-0">
@@ -60,7 +60,7 @@
                 <!--Almuerzo-->
                 <div class="grid card col-12 align-content-center justify-content-center">
                     <div class="p-fluid col-12 lg:col-6 md:col-6">
-                        <Tag class="mr-2 col-12" style="font-size:2rem; font-family: 'Oswald', sans-serif; background:#1da750; ">Almuerzo</Tag>
+                        <Tag class="mr-2 col-12" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750; ">Almuerzo</Tag>
                         <div class="formgroup-inline align-content-center justify-content-center">
                             <div class="field ml-2 mr-0 mb-0">
                                 <label class="col-12 text-center">Carbohidratos</label>
@@ -109,7 +109,7 @@
                 <div class="grid card col-12 align-content-center justify-content-center">
                     <div class="p-fluid col-12 lg:col-6 md:col-6">
                         <div class="field grid align-content-md-center justify-content-md-center">
-                            <Tag class="mr-2 col-12" style="font-size:2rem; font-family: 'Oswald', sans-serif; background:#1da750; ">Cena</Tag>
+                            <Tag class="mr-2 col-12" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750; ">Cena</Tag>
                         </div>
                         <div class="formgroup-inline align-content-center justify-content-center">
                             <div class="field ml-2 mr-0 mb-0">
@@ -166,7 +166,7 @@
            <div class="grid card col-12 p-fluid justify-content-center align-items-start">
 
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center mr-2">
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-family: 'Oswald', sans-serif; font-weight:800; background:#1da750;">Pasos</Tag>
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Pasos</Tag>
                     
                     <div class="my-2 text-center">
                         <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" />
@@ -175,7 +175,7 @@
 
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.5rem; font-family: 'Oswald', sans-serif; background:#1da750;"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                             <InputNumber v-model="pasos" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0" />
                         </div>
@@ -183,14 +183,14 @@
                 
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Pasos recomendados" style="font-size:1.5rem; font-family: 'Oswald', sans-serif; background:#1da750"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Pasos recomendados" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF"></Tag>
                             <InputNumber v-model="pasosRecomendados" :disabled="true"/>
                         </div>
                     </div>
                 </div> 
 
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios"> 
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-family: 'Oswald', sans-serif; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="210px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
                             <div class="product-item">
@@ -219,14 +219,14 @@
             <div class="card grid col-12 p-fluid">
                 <div class="card col-12 md:col-12">
                     <div class="text-center">
-                        <Tag class="col-12 text-center" style="font-size:2.75rem; font-family: 'Oswald', sans-serif; background:#1da750;">Peso objetivo: {{pesoObjetivo}} kg</Tag>
+                        <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Peso objetivo: {{pesoObjetivo}} kg</Tag>
                     </div>
                 </div>
                 
                 <div class="col-12 md:col-5" >
                     <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.5rem; font-family: 'Oswald', sans-serif; background:#1da750;"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                             <InputNumber v-model="pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                              incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
                              @focusout="savePeso()" suffix=" kg"/>
@@ -235,7 +235,7 @@
                 
                     <div class="card flex justify-content-center align-items-center" style="height:48%;">
                         <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Peso de ayer" style="font-size:1.5rem; font-family: 'Oswald', sans-serif; background:#1da750;"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Peso de ayer" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                             <InputNumber v-model="pesoDeAyer" :disabled="true" suffix=" kg"/>
                         </div>
                     </div>

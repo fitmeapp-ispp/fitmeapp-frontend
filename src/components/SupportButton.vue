@@ -1,13 +1,10 @@
  <template>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <div>
         <div class="support">
             <Button @click="openResponsive" icon="pi pi-exclamation-circle" class="p-button-rounded p-button-success soporte" />
         </div>
         <div>
-        <Dialog header="¿Quiéres enviarnos una incidencia?" style="font-size:300%; font-family: 'Oswald', sans-serif;" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}">
+        <Dialog header="¿Quiéres enviarnos una incidencia?" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}">
             <div class="grid justify-content-center align-items-center">
                 <div class="col-12">
                     <h4>Título</h4>

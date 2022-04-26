@@ -1,9 +1,12 @@
 <template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <div class="grid">
         <div class="col-12">
             <div class="tabla">
                 <div class="card">
-                    <h4 class="m-0">ADMINISTRAR ALIMENTOS</h4>
+                    <h4 class="m-0" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Administrar alimentos</h4>
                     <br>
                     <Toast/>
                     <Toolbar class="mb-4">

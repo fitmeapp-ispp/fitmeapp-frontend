@@ -1,5 +1,8 @@
 <template>
-    <h3>PANEL DE ADMINISTRACIÓN</h3>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <h3 style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Panel de administración</h3>
     <br>
     <div class="grid">
 
@@ -7,7 +10,7 @@
             <router-link to="/administrar/usuarios">
             <div class="grid card col-12  justify-content-center">
                 <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#9c9c9c;">Usuarios</Tag>
+                    <Tag class="col-12 text-center" style="color:#256029; font-size:2rem; font-weight:200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Usuarios</Tag>
                 </div>
             </div>
             </router-link>
@@ -16,7 +19,7 @@
             <router-link to="/administrar/ejercicios">
             <div class="grid card col-12  justify-content-center">
                 <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#9c9c9c;">Ejercicios</Tag>
+                    <Tag class="col-12 text-center" style="color:#256029; font-size:2rem; font-weight:200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Ejercicios</Tag>
                 </div>
             </div>
             </router-link>
@@ -36,7 +39,7 @@
             <router-link to="/administrar/alimentos">
             <div class="grid card col-12  justify-content-center">
                 <div class="grid col-12 lg:col-6 align-items-center justify-content-center">
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#9c9c9c;">Alimentos</Tag>
+                    <Tag class="col-12 text-center" style="color:#256029; font-weight:200; font-size:2rem; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Alimentos</Tag>
                 </div>
             </div>
             </router-link>
