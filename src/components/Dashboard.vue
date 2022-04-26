@@ -1,15 +1,17 @@
 <template>
-	<div class="grid">
+	<div class="grid justify-content-center">
         <!-- BANNER CONSULTA POR DIAS -->
-        <div class="box shadow-7 mb-3 col-12 headerDias flex">
-            <div class="col-4 lg:col-4" align="left"> 
-                <Button icon="pi pi-angle-left" class="p-button-rounded p-button-success p-button-outlined" @click="retrasarDia()"/>
+        <div class="box shadow-7 mb-3 col-7 headerDias" id="historial">
+            <div class="col-4 lg:col-4 flex justify-content-center" align="left"> 
+                <Button icon="pi pi-angle-left" class="p-button-lg p-button-rounded p-button-success p-button-outlined" @click="retrasarDia()"/>
             </div>
-            <div class="col-4 lg:col-4" align="center"> 
-                <Calendar id="buttonbar" dateFormat="dd-mm-yy" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()" :showIcon="true" :locale="es" @date-select="cambiarFecha($event)"/>
+            <div class="col-4 lg:col-4" align="center">
+                <Tag class="col-12 textoResponsive m-0 mb-2" id="historialTag">Historial</Tag>
+                <Calendar id="buttonbar" dateFormat="yy-mm-dd" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()"
+                :showIcon="true" :locale="es" @date-select="cambiarFecha($event)" inputClass="text-center text-2xl" class="col-12 m-0 p-0" />
             </div>
-            <div class="col-4 lg:col-4" align="right">
-                <Button icon="pi pi-angle-right" class="p-button-rounded p-button-success p-button-outlined"  @click="avanzarDia()" :disabled="comprobarFecha"/>
+            <div class="col-4 lg:col-4 flex justify-content-center" align="right">
+                <Button icon="pi pi-angle-right" class="p-button-lg p-button-rounded p-button-success p-button-outlined"  @click="avanzarDia()" :disabled="comprobarFecha"/>
             </div>
         </div>
         <!-- PARTE IZQUIERDA -->
@@ -54,7 +56,9 @@
                     <Carousel :value="comidas" :numVisible="1" :numScroll="1">
                         <template #item="slotProps">  
                             <div class="grid col-12 align-content-center justify-content-center">
-                                <Tag class="col-11 mb-2" style="font-size:1.75rem; font-weight:600; background:#1da750; ">{{slotProps.data.Tipo}}</Tag>
+                                <router-link :to="'/comidas/' + slotProps.data.Tipo" class="mt-1 col-12">
+                                    <Tag class="col-12 mb-2" style="font-size:1.75rem; font-weight:600; background:#1da750; ">{{slotProps.data.Tipo}}</Tag>
+                                </router-link>
                                 <div class="p-fluid col-12 lg:col-8 md:col-8 "> 
                                     <div class="formgroup-inline align-content-center justify-content-around">
                                         <div class="field ml-2 mr-0 mb-0 text-center">
@@ -167,7 +171,7 @@
                     </div>
                 </div>
 
-                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0"> 
+                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0" :key="claveRecargaCarousel"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="300px"
                     class="col-12 grid justify-content-center align-items-center mt-2 ml-1" :index="indiceEjercicio">
@@ -186,17 +190,6 @@
                                     </router-link>
                                 </div>
                             </div>
-
-                            <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
-                                <div class="flex align-items-center justify-content-center">
-                                    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                                    <span v-if="exerciseToDelete">¿Quieres eliminar el ejercicio <b>{{exerciseToDelete.ejercicio.name}}</b>?</span>
-                                </div>
-                                <template #footer>
-                                    <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteExerciseDialog = false" autofocus />
-                                    <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise(); slotProps.index--" />
-                                </template>
-                            </Dialog>
                         </template>
                     </Carousel>
                     <router-link to="/ejercicios" class="mt-1 col-9 text-center">
@@ -207,7 +200,7 @@
                         </div>
                     </router-link>
                 </div>
-                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-else> 
+                <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length == 0" :key="claveRecargaCarousel"> 
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="sinEjercicio" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="240px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
@@ -266,16 +259,16 @@
 
     <!-- Dialogs -->
 
-    <!-- <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+    <Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
         <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="exerciseToDelete">¿Quieres eliminar el ejercicio <b>{{exerciseToDelete.ejercicio.name}}</b>?</span>
         </div>
         <template #footer>
             <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteExerciseDialog = false" autofocus />
-            <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise" />
+            <Button label="Si" icon="pi pi-check" class="p-button-text" @click="deleteExercise();" />
         </template>
-    </Dialog> -->
+    </Dialog>
 
 </template>
 
@@ -365,6 +358,7 @@
                 exerciseService: null,
                 deleteExerciseDialog: false,
                 deleteExerciseIndex: 0,
+                claveRecargaCarousel: 0,
             }
         },
         computed: {
@@ -460,6 +454,8 @@
                 try {
                     this.exerciseService.borrarEjecucion(this.exerciseToDelete.ejecucion._id)
                     this.imagenesEjercicios.splice(this.deleteExerciseIndex, 1)
+                    this.kcalQuemadas -= this.exerciseToDelete.ejecucion.kcal
+                    this.claveRecargaCarousel++
                     this.deleteExerciseDialog = false
                 } catch (error) {
                     console.log("Error: ", error)
@@ -645,6 +641,7 @@
                 this.userService.saveAgua(this.agua, this.dia._id);
             },
             async getEjecucionesEjercicio() {
+                this.imagenesEjercicios = []
                 let ejecuciones = await this.exerciseService.getEjecuciones(this.$store.state.userId, this.$store.state.fechaHome)
                 this.ejecucionesEjercicio = ejecuciones.data
 
@@ -743,12 +740,30 @@
         background:#1da750;
     }
     
-    .headerDias{
+    .headerDias {
         position: -webkit-sticky;
         position: sticky;
         background-color: white;
         top: 70px;
         z-index: 999;
+        border-radius: 16px;
+        align-items: center;
+        display: flex;
+    }
+
+    .headerDiasNavbar {
+        position: fixed;
+        height: 5rem;
+        z-index: 997;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0 2rem;
+        background-color: var(--surface-card);
+        transition: left 0.2s;
+        display: flex;
+        align-items: center;
+        box-shadow: 0px 3px 5px rgb(0 0 0 / 2%), 0px 0px 2px rgb(0 0 0 / 5%), 0px 1px 4px rgb(0 0 0 / 8%);
     }
 
     .p-progressbar .p-progressbar-value{

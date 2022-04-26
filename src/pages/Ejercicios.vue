@@ -9,7 +9,7 @@
         <DataTable v-if="dataviewValue.length > 0 && dataviewValue[0].ejercicioDetalles" :value="dataviewValue" :rows="7" responsiveLayout="scroll"> 
           <Column field="name" header="Nombre" :style="{width:'50%'}" >
 						<template #body="{data}">
-              <router-link :to="'/ejercicio/detalles/' + data.ejercicioDetalles[0]._id">
+              <router-link :to="getLink(data)">
                 <p class="p-flex text-center text-bold inline">{{data.ejercicioDetalles[0].name}}</p>
               </router-link>
             </template>
@@ -79,6 +79,13 @@ export default {
         this.dataviewValue = res.data
       });
     },
+    getLink(ejecucion) {
+      if (ejecucion.hecho === true) {
+          return "/ejercicio/detalles/"+ejecucion.ejercicioDetalles[0]._id+"/editar/"+ejecucion._id
+      } else {
+        return '/ejercicio/detalles/' + ejecucion.ejercicioDetalles[0]._id
+      }
+    }
   },
 };
 </script>
