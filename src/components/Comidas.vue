@@ -440,7 +440,7 @@
 									<li> "A calculadora": nos permite entrar en “Modo calculadora”, 
 										que nos permite cambiar las cantidades de todos los alimentos para que se calculen las propiedades.</li>
 								</ol> 
-								<img src='https://i.imgur.com/SnyNZ62.png' alt='Captura de la aplicación'>
+								<img style="width: 70%;height: auto;" src='https://i.imgur.com/SnyNZ62.png' alt='Captura de la aplicación'>
 							</div>
 						</div>
 						<div class="bg-gray-300 card field col-10">
@@ -454,7 +454,7 @@
 									Una vez finalizado el cálculo, se actualizan los datos. Se fijarán en el carrusel y se actualizarán los
 									indicadores de macronutrientes, que la calculadora buscará orientar a nuestro objetivo.
 								</span>
-								<img src='https://i.imgur.com/oFPc6VX.png' alt='Captura de la aplicación'>
+								<img style="width: 70%;height: auto;" src='https://i.imgur.com/oFPc6VX.png' alt='Captura de la aplicación'>
 							</div>
 						</div>
 						
@@ -578,7 +578,7 @@
 		},
 		methods: {
 			inicio(){
-				this.alimentoService.getDia(this.$store.state.userId, this.$route.params.tipo).then(data =>{this.dia = data
+				this.alimentoService.getDia(this.$store.state.userId, this.$route.params.tipo, this.$store.state.fechaHome).then(data =>{this.dia = data
 				this.alimentoService.limpiarCarrusel(this.$store.state.userId,this.dia._id,this.$route.params.tipo)
 				});
 				this.fetchItems();
