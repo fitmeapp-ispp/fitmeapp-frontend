@@ -176,6 +176,7 @@
 							</div>
 						</div>
 						<div class="formgroup-inline justify-content-center mt-2">
+							<i v-if="calculando" class="pi pi-spin pi-spinner mt-2 mr-2" style="font-size: 2rem"></i>
 							<div class="text-left field">
 								<Button label="Calculadora" class=" text-left p-button-warning" @click="calculadora()"/>
 							</div>
@@ -472,6 +473,7 @@
 	export default {
 		data() {
 			return {
+				calculando: false,
 				cambioFav: false,
 				tipo: "",
 				dia: {},
@@ -824,7 +826,7 @@
 				this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
 			},
 			calculadora(){
-
+				this.calculando = true;
 				var alimentosACalcuar = this.dataviewValueCarrusel.filter(x=>x.calculadora).map(x=>x.alimento)
 				var alimentosFijos = this.dataviewValueCarrusel.filter(x=>!x.calculadora)
 				var kcalRecCalculadora = this.dia.kcalRec
@@ -842,7 +844,7 @@
 
 				this.alimentoService.calculadora(alimentosACalcuar,{"kcal_100g":kcalRecCalculadora,
 				"carbohidratos_100g":carbRecCalculadora, "proteinas_100g":proteinasRecCalculadora, "grasa_100g":grasasRecCalculadora},this.$toast).then(data=>{
-					
+					this.calculando = false;
 					async function recargaDatos(service,dia,alimentosACalcuar){
 						for (var j=0; j<data.length;j++){
 						
