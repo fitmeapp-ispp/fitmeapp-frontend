@@ -142,7 +142,7 @@
 											{{slotProps.data.alimento.nombre}}</h4>
 											
 												{{Math.round((slotProps.data.alimento.kcal_100g + Number.EPSILON) * 100) / 100}} kcal/100g. Cantidad:
-												<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" 
+												<InputNumber inputStyle="width: 20px;" class="mt-2 mb-2 ml-5 mr-5 flex" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" 
 												:min="0" :maxFractionDigits="2" autofocus/>
 												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
 											<div>
