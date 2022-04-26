@@ -1,69 +1,164 @@
 <template>
-	<div class="grid">
-		<div class="col-12">
-			<div class="card mb-3 col-12">
-				<div class="formgroup-inline justify-content-around align-items-between ">
-					<div class="field formgroup-inline mt-3 mr-0">
-						<Toast/>
-							<div class="field" v-if="tipo == 'Desayuno'">
-								<Button class="p-button-text" :disabled="true"/>
-							</div>
-							<div class="field" v-if="tipo == 'Almuerzo'">	
-								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Desayuno')"/>
-							</div>
-							<div class="field" v-if="tipo == 'Cena'">	
-								<Button class="p-button-text p-button-rounded mr-1 mb-1" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
-							</div>
-							<div class="field mb-0">
-								<h2 class="text-center mt-1" style="color:#256029;">{{ tipo }}</h2>
-							</div>
-                            <div class="field" v-if="tipo == 'Desayuno'">
-                            <Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
-							</div>
-							<div class="field" v-if="tipo == 'Almuerzo'">
-							<Button class="p-button-text p-button-rounded mb-1" icon="pi pi-angle-right" @click="cambiarTipo('Cena')"/>
-							</div>
-							<div class="field" v-if="tipo == 'Cena'">
-								<Button class="p-button-text" :disabled="true"/>
-							</div>
+	<div class="box shadow-7 mb-3 col-12 headerComida">
+		<div class="formgroup-inline justify-content-around align-items-center">
+			<div class="field formgroup-inline m-0 align-items-center">
+				<Toast/>
+					<div class="" v-if="tipo == 'Desayuno'">
+						<Button class="p-button-text" :disabled="true"/>
 					</div>
-					<div class="field formgroup-inline justify-content-center">
-						<div class="field ml-3">
-							<label class="col-12 text-center">Kcalorías</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-orange-500 h-full"  v-bind:style="'width:' + ratiokcal + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.kcalIngeridas }} Kcal /{{ dia.kcalRec }} Kcal</label>
-						</div>
-						<div class="field field ml-3">
-							<label class="col-12 text-center">Proteínas</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-purple-500 h-full"  v-bind:style="'width:' + ratioProteina + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.proteinasIngeridas }} g /{{ dia.proteinasRec }} g</label>
-						</div>
-						<div class="field field ml-3">
-							<label class="col-12 text-center">Carbohidratos</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-cyan-500 h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.carbIngeridas }} g / {{ dia.carbRec }} g</label>
-						</div>
-						<div class="field field ml-3">
-							<label class="col-12 text-center">Grasas</label>
-							<div class="surface-300 border-round overflow-hidden" style="height:10px">
-								<div class="bg-yellow-400 h-full"  v-bind:style="'width:' + ratioGrasa + '%'"> </div>
-							</div>
-							<label class="col-12 text-center">{{ dia.grasasIngeridas }} g /{{ dia.grasasRec }} g</label>
-						</div>
+					<div class="" v-if="tipo == 'Almuerzo'">	
+						<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Desayuno')"/>
 					</div>
-					<div class="field mt-4 justify-content-center">
-						<router-link to="/alimentos/form">
-							<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success mr-2"/>
-						</router-link>
+					<div class="" v-if="tipo == 'Cena'">	
+						<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
+					</div>
+					<div class="">
+						<h2 class="text-center mt-3" style="color:#256029;">{{ tipo }}</h2>
+					</div>
+					<div v-if="tipo == 'Desayuno'">
+						<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
+					</div>
+					<div v-if="tipo == 'Almuerzo'">
+						<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Cena')"/>
+					</div>
+					<div v-if="tipo == 'Cena'">
+						<Button class="p-button-text" :disabled="true"/>
+					</div>
+			</div>
+			<div class="field formgroup-inline justify-content-center m-0">
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Kcalorías</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraKcal">
+						<div class="h-full"  v-bind:style="'width:' + ratiokcal + '%'" id="kcalIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.kcalIngeridas) }}/{{ Math.trunc(dia.kcalRec) }} Kcal</label>
+				</div>
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Proteínas</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraProteinas">
+						<div class="h-full"  v-bind:style="'width:' + ratioProteina + '%'" id="protIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.proteinasIngeridas) }}/{{ Math.trunc(dia.proteinasRec) }} g</label>
+				</div>
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Carbohidratos</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraCarb">
+						<div class="h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'" id="carbIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.carbIngeridas) }}/{{ Math.trunc(dia.carbRec) }} g</label>
+				</div>
+				<div class="field ml-3 w-14rem mb-0">
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Grasas</label>
+					<div class="border-round overflow-hidden" style="height:15px" id="barraGrasas">
+						<div class="h-full"  v-bind:style="'width:' + ratioGrasa + '%'" id="grasasIngeridos"> </div>
+					</div>
+					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.grasasIngeridas)}}/{{Math.trunc(dia.grasasRec) }} g</label>
+				</div>
+			</div>
+			<div class="field m-0 justify-content-center">
+				<router-link to="/alimentos/form">
+					<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success"/>
+				</router-link>
+			</div>
+		</div>
+	</div>
+	
+	<div class="box shadow-7 mb-3 col-12 headerComidaMovil">
+		<div class="formgroup-inline justify-content-around align-items-center">
+			<Toast/>
+			<div class="" v-if="tipo == 'Desayuno'">
+				<Button class="p-button-text" :disabled="true"/>
+			</div>
+			<div class="" v-if="tipo == 'Almuerzo'">	
+				<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Desayuno')"/>
+			</div>
+			<div class="" v-if="tipo == 'Cena'">	
+				<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
+			</div>
+			<div class=""  @click="infoDetalles">
+				<h2 class="text-center mt-3 flex align-items-center" style="color:#256029;" >{{ tipo }} <i class="pi pi-chart-bar ml-3"></i></h2>
+			</div>
+			<div v-if="tipo == 'Desayuno'">
+				<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
+			</div>
+			<div v-if="tipo == 'Almuerzo'">
+				<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Cena')"/>
+			</div>
+			<div v-if="tipo == 'Cena'">
+				<Button class="p-button-text" :disabled="true"/>
+			</div>
+			<Dialog v-model:visible="detallesDialog" header="Información nutricional" :modal="true" class="p-fluid">
+				<div class="field formgroup-inline justify-content-center m-0">
+					<div class="field ml-3 w-14rem mb-0">
+						<label class="col-12 text-center font-bold text-xl">Kcalorías</label>
+						<div class="border-round overflow-hidden" style="height:15px" id="barraKcal">
+							<div class="h-full"  v-bind:style="'width:' + ratiokcal + '%'" id="kcalIngeridos"> </div>
+						</div>
+						<label class="col-12 text-center text-lg">{{ Math.trunc(dia.kcalIngeridas) }}/{{ Math.trunc(dia.kcalRec) }} Kcal</label>
+					</div>
+					<div class="field ml-3 w-14rem mb-0">
+						<label class="col-12 text-center font-bold text-xl">Proteínas</label>
+						<div class="border-round overflow-hidden" style="height:15px" id="barraProteinas">
+							<div class="h-full"  v-bind:style="'width:' + ratioProteina + '%'" id="protIngeridos"> </div>
+						</div>
+						<label class="col-12 text-center text-lg">{{ Math.trunc(dia.proteinasIngeridas) }}/{{ Math.trunc(dia.proteinasRec) }} g</label>
+					</div>
+					<div class="field ml-3 w-14rem mb-0">
+						<label class="col-12 text-center font-bold text-xl">Carbohidratos</label>
+						<div class="border-round overflow-hidden" style="height:15px" id="barraCarb">
+							<div class="h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'" id="carbIngeridos"> </div>
+						</div>
+						<label class="col-12 text-center text-lg">{{ Math.trunc(dia.carbIngeridas) }}/{{ Math.trunc(dia.carbRec) }} g</label>
+					</div>
+					<div class="field ml-3 w-14rem mb-0">
+						<label class="col-12 text-center font-bold text-xl">Grasas</label>
+						<div class="border-round overflow-hidden" style="height:15px" id="barraGrasas">
+							<div class="h-full"  v-bind:style="'width:' + ratioGrasa + '%'" id="grasasIngeridos"> </div>
+						</div>
+						<label class="col-12 text-center text-lg">{{ Math.trunc(dia.grasasIngeridas)}}/{{Math.trunc(dia.grasasRec) }} g</label>
 					</div>
 				</div>
-
+				<div class="field m-0 justify-content-center">
+					<router-link to="/alimentos/form">
+						<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success"/>
+					</router-link>
+				</div>
+			</Dialog>
+		</div>
+	</div>
+	
+	<div class="grid mt-5">
+			<div class="card mb-3 col-12" v-show="carruselVacio">
+				<div class="col-12 ">
+					<div class="card">
+						<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :responsiveOptions="responsiveOptions">
+								<template #item="slotProps">
+									<div class="product-item">
+										<div class="product-item-content">
+											
+											<h4 class="mb-1"> <i :class="{'pi text-blue-500 pi-lock-open mr-3': slotProps.data.calculadora, 
+											'pi text-blue-500 pi-lock mr-3':!slotProps.data.calculadora}"></i> 
+											
+											{{slotProps.data.alimento.nombre}}</h4>
+											
+												{{Math.round((slotProps.data.alimento.kcal_100g + Number.EPSILON) * 100) / 100}} kcal/100g. Cantidad:
+												<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" 
+												:min="0" :maxFractionDigits="2" autofocus/>
+												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
+											<div>
+												<Button  v-if="!slotProps.data.calculadora" @click="aCalculadora(slotProps.data._id,slotProps.data.alimento._id)" label="A calculadora" class=" mr-2 p-button-warning" />
+												<Button label="Quitar" class="p-button-danger" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
+											</div>
+										</div>
+									</div>
+								</template>
+						</Carousel>
+					</div>
+				</div>
+			</div>
+		<!-- Fin del header-->
+		<!-- Comienza el cuerpo-->
+			<div class="card">
 				<div class="col-12 card surface-400">
 					<div class="grid justify-content-between">
 						<div class="formgroup-inline justify-content-center mt-2">
@@ -93,139 +188,108 @@
 						</div>
 					</div>
 				</div>
-				<div v-show="carruselVacio">
-					<div class="col-12 ">
-						<div class="card">
-							<Carousel :value="dataviewValueCarrusel" :numVisible="4" :numScroll="3" :responsiveOptions="responsiveOptions">
-									<template #item="slotProps">
-										<div class="product-item">
-											<div class="product-item-content">
-												
-												<h4 class="mb-1"> <i :class="{'pi text-blue-500 pi-lock-open mr-3': slotProps.data.calculadora, 
-												'pi text-blue-500 pi-lock mr-3':!slotProps.data.calculadora}"></i> 
-												
-												{{slotProps.data.alimento.nombre}}</h4>
-												
-													{{Math.round((slotProps.data.alimento.kcal_100g + Number.EPSILON) * 100) / 100}} kcal/100g. Cantidad:
-													<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" 
-													:min="0" :maxFractionDigits="2" autofocus/>
-													<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
-												<div>
-													<Button  v-if="!slotProps.data.calculadora" @click="aCalculadora(slotProps.data._id,slotProps.data.alimento._id)" label="A calculadora" class=" mr-2 p-button-warning" />
-													<Button label="Quitar" class="p-button-danger" align="right" v-on:click="eliminarDelCarrusel( slotProps.data._id )" />
-												</div>
-											</div>
-										</div>
-									</template>
-							</Carousel>
+				<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
+					:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
+					<template #header>
+						<div class="grid formgroup-inline justify-content-between ">
+							<div class="field">
+								<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
+							</div>
+							<div class="field">
+								<span class="p-input-icon-left mb-2">
+									<i class="pi pi-search" />
+									<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
+								</span>
+							</div>
+							<div class="field">
+								<DataViewLayoutOptions v-model="layout" />
+							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Fin del header-->
-		<!-- Comienza el cuerpo-->
-		<div class="grid col-12">
-			<!-- Comienza la tabla con los alimentos-->
-			<div class="col-12">
-				<div class="card">
-					<DataView :value="dataviewValue" :layout="layout"  :totalRecords="totalRecords" :lazy="true"
-						:paginator="true" :rows="9" :sortOrder="sortOrder" :sortField="sortField" @page="onPage($event)">
-						<template #header>
-							<div class="grid formgroup-inline justify-content-between ">
-								<div class="field">
-									<Dropdown v-model="sortKey" :options="sortOptions" optionLabel="label" placeholder="Ordenar por" @change="onSortChange($event)"/>
-								</div>
-								<div class="field">
-									<span class="p-input-icon-left mb-2">
-										<i class="pi pi-search" />
-										<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
-									</span>
-								</div>
-								<div class="field">
-									<DataViewLayoutOptions v-model="layout" />
-								</div>
-							</div>
-						</template>
-						<template #list="slotProps">
-							<div class="col-12">
-								<div class="flex flex-column md:flex-row align-items-center p-3 w-full"  @click="detallesAlimento(slotProps.data)">
-									<img :src="slotProps.data.imagen || 'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" 
-										style="width: 100%; display: block;" id="imagen-busqueda"/>
-									<div class="flex-1 text-center md:text-left">
-										<div class="font-bold text-2xl" style="color:#256029;">
-											{{ slotProps.data.nombre }} 
-										</div>
-										<div class="mb-3" style="color:#256029;">
-											{{ slotProps.data.kcal_100g }} kcal
-										</div>
-										<div class="mb-3" style="color:#256029;">
-											Grasas {{ slotProps.data.grasa_100g }} g
-										</div>
-										<div class="mb-3" style="color:#256029;">
-											Carbohidratos {{ slotProps.data.carbohidratos_100g }} g
-										</div>
-										<div class="mb-3" style="color:#256029;">
-											Proteínas {{ slotProps.data.proteinas_100g }} g
-										</div>
+					</template>
+					<template #list="slotProps">
+						<div class="col-12">
+							<div class="flex flex-column md:flex-row align-items-center p-3 w-full"  @click="detallesAlimento(slotProps.data)">
+								<img :src="slotProps.data.imagen || 'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 product-image" 
+									style="width: 100%; display: block;" id="imagen-busqueda"/>
+								<div class="flex-1 text-center md:text-left">
+									<div class="font-bold text-2xl" style="color:#256029;">
+										{{ slotProps.data.nombre }} 
 									</div>
-									<div class=" flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0" 
-											v-if="slotProps.data.verificado">
-										<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
+									<div class="mb-3" style="color:#256029;">
+										{{ slotProps.data.kcal_100g }} kcal
+									</div>
+									<div class="mb-3" style="color:#256029;">
+										Grasas {{ slotProps.data.grasa_100g }} g
+									</div>
+									<div class="mb-3" style="color:#256029;">
+										Carbohidratos {{ slotProps.data.carbohidratos_100g }} g
+									</div>
+									<div class="mb-3" style="color:#256029;">
+										Proteínas {{ slotProps.data.proteinas_100g }} g
+									</div>
+									<div class="mb-3">
+										Cantidad máxima recomendada: {{slotProps.data.calculadora}}g
 									</div>
 								</div>
+								<div class=" flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0" 
+										v-if="slotProps.data.verificado">
+									<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
+								</div>
 							</div>
-						</template>
-						<template #grid="slotProps">
-							<div  class="col-12 md:col-4">
-								<div class="card m-3 border-1 surface-border">
-									<div @click="detallesAlimento(slotProps.data)" class="text-align-center">
-										<div class="grid grid-nogutter alimento-busqueda">
-											<div class="col-4 text-left">
-												<img :src="slotProps.data.imagen ||'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" 
-														class="w-9 shadow-2 my-3 mx-0" id="imagen-busqueda"/>
-											</div>											
-											<div class="col-8 text-left">
-												<div class="flex align-items-center justify-content-between"
-														v-if="slotProps.data.verificado">
-													<div></div>
-													<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
-												</div>
-												<div class="text-2xl mt-2 font-bold">
-													{{ slotProps.data.nombre }} ({{slotProps.data.calculadora}}g) 
-												</div>
-												<div class="mb-3"></div>
-												<div class="mb-3">
-													
-													{{ Math.round((slotProps.data.kcal_100g + Number.EPSILON) * 100) / 100 }} kcal
-												</div>
-												<div class="mb-3">
-													Grasas {{ Math.round((slotProps.data.grasa_100g + Number.EPSILON) * 100) / 100 }} g
-												</div>
-												<div class="mb-3">
-													Carbohidratos {{ Math.round((slotProps.data.carbohidratos_100g + Number.EPSILON) * 100) / 100 }} g
-												</div>
-												<div class="mb-3">
-													Proteínas {{ Math.round((slotProps.data.proteinas_100g + Number.EPSILON) * 100) / 100 }} g
-												</div>
+						</div>
+					</template>
+					<template #grid="slotProps">
+						<div  class="col-12 md:col-4">
+							<div class="card m-3 border-1 surface-border" style="min-height: 92%">
+								<div @click="detallesAlimento(slotProps.data)" class="text-align-center">
+									<div class="grid grid-nogutter alimento-busqueda">
+										<div class="col-4 text-left">
+											<img :src="slotProps.data.imagen ||'https://i.imgur.com/Z8jQBw4.png'" :alt="slotProps.data.nombre" 
+													class="w-9 shadow-2 my-3 mx-0" id="imagen-busqueda"/>
+										</div>											
+										<div class="col-8 text-left">
+											<div class="flex align-items-center justify-content-between"
+													v-if="slotProps.data.verificado">
+												<div></div>
+												<i class="pi text-green-500 pi-check-circle" style="transform: scale(1.5);"></i>
+											</div>
+											<div class="text-2xl mt-2 font-bold">
+												{{ slotProps.data.nombre }}
+											</div>
+											<div class="mb-3"></div>
+											<div class="mb-3">
+												
+												{{ Math.round((slotProps.data.kcal_100g + Number.EPSILON) * 100) / 100 }} kcal
+											</div>
+											<div class="mb-3">
+												Grasas {{ Math.round((slotProps.data.grasa_100g + Number.EPSILON) * 100) / 100 }} g
+											</div>
+											<div class="mb-3">
+												Carbohidratos {{ Math.round((slotProps.data.carbohidratos_100g + Number.EPSILON) * 100) / 100 }} g
+											</div>
+											<div class="mb-3">
+												Proteínas {{ Math.round((slotProps.data.proteinas_100g + Number.EPSILON) * 100) / 100 }} g
+											</div>
+											<div class="mb-3">
+												Cantidad máxima recomendada: {{slotProps.data.calculadora}}g
 											</div>
 										</div>
 									</div>
-									<div class="grid grid-nogutter">		
-										<div class="text-left font-bold col-6">
-											
-											<Button icon="pi pi-plus" class="p-button-rounded p-button-primary mr-2 mb-2" @click="anyadirADataViewCarrusel(slotProps.data._id, false);" />
-										</div>					
-										<div class="text-right font-bold col-6">
-											
-											<Button icon="pi pi-star" :id="slotProps.data._id" class="p-button-rounded p-button-warning mr-2 mb-2" :class="{'p-button-outlined': !this.favoritosList.includes(slotProps.data._id)}" @click="funcionFavoritos(slotProps.data._id);" />
-										</div>
+								</div>
+								<div class="grid grid-nogutter">		
+									<div class="text-left font-bold col-6">
+										
+										<Button icon="pi pi-plus" class="p-button-rounded p-button-primary mr-2 mb-2" @click="anyadirADataViewCarrusel(slotProps.data._id, false);" />
+									</div>					
+									<div class="text-right font-bold col-6">
+										
+										<Button icon="pi pi-star" :id="slotProps.data._id" class="p-button-rounded p-button-warning mr-2 mb-2" :class="{'p-button-outlined': !this.favoritosList.includes(slotProps.data._id)}" @click="funcionFavoritos(slotProps.data._id);" />
 									</div>
 								</div>
 							</div>
-						</template>
-					</DataView>
-				</div>
+						</div>
+					</template>
+				</DataView>
 			</div>
 			<!-- Fin tabla con los alimentos-->
 			<!-- Comienzan los detalles-->
@@ -397,8 +461,6 @@
 					</div>
 				</div>
 			</Dialog>
-
-		</div>
 		<!-- Fin cuerpo-->
 	</div> 
 </template>
@@ -415,6 +477,7 @@
 				dia: {},
 				alimentoDialog: false,
 				infoDialog: false,
+				detallesDialog: false,
 				carruselVacio: false,
 				dataUserView: {},
 				kcal_recomendadas: 0,
@@ -679,6 +742,9 @@
 			infocalculadora(){
 				this.infoDialog = true;
 			},
+			infoDetalles(){
+				this.detallesDialog = true;
+			},
 			anyadirConsumicion(alimentoId, cantidad){
 				if (cantidad == null){
 					cantidad = this.cantidad
@@ -792,9 +858,39 @@
 			}
 		}
 	}
+
 </script>
 
 <style scoped lang="scss">
 @import "../assets/demo/badges.scss";
 @import "../assets/styles/comidas.scss";
+
+.headerComida{
+	position: -webkit-sticky;
+	position: sticky;
+    background-color: white;
+	top: 70px;
+	z-index: 999;
+}
+
+.headerComidaMovil{
+	position: -webkit-sticky;
+	position: sticky;
+	display:none;
+	top: 70px;
+	z-index: 999;
+    background-color: white;
+}
+
+@media only screen and (max-width: 1377px){
+	.headerComida{
+		display:none;
+	}
+
+	.headerComidaMovil{
+		display: block;
+	}
+
+}
+
 </style>
