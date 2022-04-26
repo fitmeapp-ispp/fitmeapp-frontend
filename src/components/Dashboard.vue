@@ -131,7 +131,7 @@
                     </div>
 
                     <div class="col-5">
-                        <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
+                        <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.75rem;  color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                         <InputNumber v-model="agua" :step="0.125" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                                 incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
                                 :min="0" :max="2" suffix=" L"/>
