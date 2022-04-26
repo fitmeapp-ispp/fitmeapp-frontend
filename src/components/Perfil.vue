@@ -22,23 +22,23 @@
             <div class="card">
                 <div class= "p-fluid formgrid grid text-center">
                     <div class="field col-12 md:col-4">
-                        <h5 for="nombre" style="color:#256029; font-size:150%; font-family: 'Oswald', sans-serif;">Nombre:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Nombre:</h5>
                         <span>{{user.nombre}}</span>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <h5 for="nombre" style="color:#256029; font-size:150%; font-family: 'Oswald', sans-serif;">Apellido/s:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Apellido/s:</h5>
                         <span>{{user.apellidos}}</span>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <h5 for="nombre" style="color:#256029; font-size:150%; font-family: 'Oswald', sans-serif;">Edad:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Edad:</h5>
                         <span>{{user.edad}}</span>
                     </div>
                     <div class="field col-12 md:col-6">
-                        <h5 for="nombre" style="color:#256029; font-size:150%; font-family: 'Oswald', sans-serif;">Peso Actual:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Peso Actual:</h5>
                         <span>{{user.peso_actual}}</span>
                     </div>
                     <div class="field col-12 md:col-6">
-                        <h5 for="nombre" style="color:#256029; font-size:150%; font-family: 'Oswald', sans-serif;">Objetivo:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Objetivo:</h5>
                         <span>{{user.objetivo}}</span>
                     </div>
                 </div>
