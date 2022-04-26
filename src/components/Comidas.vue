@@ -296,7 +296,7 @@
 			<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%" @close="this.imagenesAlergenos = []">
 				<div class="contenedor-imagen-detalles">
 					<img :src="alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
-					<h4 class="centered">{{ alimento.nombre }}</h4>
+					<h4 class="centered" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">{{ alimento.nombre }}</h4>
 				</div>
 				<div class="container">
 					<div class="grid justify-content-center mb-3">
@@ -320,12 +320,13 @@
 						</div>
 					</div>
 					<div class="formgroup-inline justify-content-around">
-						<div class=" field bg-gray-500 card lg:col-6 md:col-12 justify-content-center">
+						<div class=" field bg-gray-300 card lg:col-6 md:col-12 justify-content-center">
 							<div class="row justify-content-center text-center flex">
-								<h4 class="tituloDetalles text-center p-flex">
+								<h4 class="tituloDetalles text-center p-flex" style="color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">
 									Valores nutricionales (100g)
 								</h4>
 							</div>
+								<br>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
@@ -380,10 +381,11 @@
 								</div>
 							</div>
 						</div>
-						<div class="field bg-gray-500 card lg:col-5 md:col-12 justify-content-center">
+						<div class="field bg-gray-300 card lg:col-5 md:col-12 justify-content-center">
 							<div class="row justify-content-center text-center flex">
-								<h4 class="tituloDetalles text-center p-flex">Alérgenos</h4>
+								<h4 class="tituloDetalles text-center p-flex" style="color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">Alérgenos</h4>
 							</div>
+							<br>
 							<div class="formgroup-inline row flex justify-content-around">
 								<div class="field" v-for="alergeno of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
 									<span class="p-image p-component p-image-preview-container">
