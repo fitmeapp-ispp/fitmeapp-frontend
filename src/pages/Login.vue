@@ -56,6 +56,8 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 import axios from "axios";
 import Toast from 'primevue/toast';
+import moment from 'moment';
+
 export default {
     name: 'Login',
     components: {
@@ -107,9 +109,11 @@ export default {
             .then((response) => {
                 this.$store.dispatch("saveUserId", response.data.userId);
                 this.$store.dispatch("logIn");
+                this.$store.dispatch("saveFechaHome", moment().format('YYYY-MM-DD'));
+
                 if (response.data.admin){
                     window.location.href = '/administrar'
-                }else{
+                } else {
                     window.location.href = '/';
                 }
                 this.$toast.add({severity:'success', summary: 'Successful', detail: 'Inicio de sesión correcto', life: 3000});
