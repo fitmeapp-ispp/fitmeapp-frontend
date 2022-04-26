@@ -122,7 +122,7 @@
                 <div class="grid justify-content-center align-items-center">
                     <div class="col-5 field">
                         <label class="col-12 text-center">Litros de agua</label>
-                        <ProgressBar :value="(agua/2)*100" :showValue="false" style="background-color:rgb(173 218 240);transform:rotate(270deg);margin-top:87px;margin-bottom:97px;"/>
+                        <ProgressBar :value="(agua/2)*100" :showValue="false" style="background-color:rgb(173 218 240);transform:rotate(270deg);margin-top:90px;margin-bottom:97px;"/>
                         <label class="col-12 text-center">{{agua}}/2 L</label>
                     </div>
 
