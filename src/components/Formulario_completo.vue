@@ -76,9 +76,10 @@
 						<label for="objetivo_peso">Objetivo de peso</label>
 						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorObjetivoPeso" v-if="enviado && errorObjetivoPeso">{{this.errorObjetivoPeso}}</small>
+						
 					</div>
-					<div class="field col-12 md:col-4">
-						<label for="objetivo_semanal">Objetivo semanal</label>
+					<div class="field col-12 md:col-4">						
+						<label for="objetivo_semanal">Objetivo semanal*</label><i class="ml-2 pi pi-info-circle" v-tooltip.top="'Introduzca un número positivo si quiere aumentar su masa muscular y uno negativo si quiere bajar de peso'"></i>
 						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
 						<small class="p-invalid" :key="errorObjetivoSemanal" v-if="enviado && errorObjetivoSemanal">{{this.errorObjetivoSemanal}}</small>
 					</div>
@@ -259,10 +260,10 @@
 
 			}
 			var fecha = new Date();
-			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha)
+			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha || fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()<16)
 			{
 				resultado = false;
-				this.errorFecha = 'La fecha es obligatoria y debe ser anterior al día de hoy';
+				this.errorFecha = 'La fecha es obligatoria, debe ser anterior al día de hoy y debe ser mayor de 16 años';
 
 			}else{
 				this.errorFecha = null;
@@ -355,7 +356,7 @@
 				this.errorObjetivo = null;
 				
 			}
-			if(!this.user.altura || this.user.altura >300 || this.user.altura < 0)
+			if(!this.user.altura || this.user.altura >300 || this.user.altura < 50)
 			{
 				resultado = false;
 				this.errorAltura = 'Altura inválida';
@@ -364,7 +365,7 @@
 				this.errorAltura = null;
 				
 			}
-			if(!this.user.peso_inicial || this.user.peso_inicial >1000 || this.user.peso_inicial < 0)
+			if(!this.user.peso_inicial || this.user.peso_inicial >1000 || this.user.peso_inicial < 30)
 			{
 				resultado = false;
 				this.errorPesoInicial = 'Peso inválido';
