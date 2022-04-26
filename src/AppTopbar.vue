@@ -137,7 +137,7 @@ export default {
         line-height: 2;
     }
     .color:hover {
-        color: black;
+        color: #256029;
     }
     span.color{
         transition: 0.5s;
