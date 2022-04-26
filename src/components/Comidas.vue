@@ -142,7 +142,7 @@
 											{{slotProps.data.alimento.nombre}}</h4>
 											
 												{{Math.round((slotProps.data.alimento.kcal_100g + Number.EPSILON) * 100) / 100}} kcal/100g. Cantidad:
-												<InputNumber class="mt-2 mb-2" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" 
+												<InputNumber inputStyle="width: 20px;" class="mt-2 mb-2 ml-5 mr-5 flex" width="10px" suffix=" g" v-model="slotProps.data.cantidad" showButtons mode="decimal" 
 												:min="0" :maxFractionDigits="2" autofocus/>
 												<Button  @click="anyadirConsumicion(slotProps.data.alimento._id, slotProps.data.cantidad)" label="Guardar" class="ml-2 mb-2 mr-2 p-button-secondary" />
 											<div>
@@ -176,6 +176,7 @@
 							</div>
 						</div>
 						<div class="formgroup-inline justify-content-center mt-2">
+							<i v-if="calculando" class="pi pi-spin pi-spinner mt-2 mr-2" style="font-size: 2rem"></i>
 							<div class="text-left field">
 								<Button label="Calculadora" class=" text-left p-button-warning" @click="calculadora()"/>
 							</div>
@@ -440,7 +441,7 @@
 									<li> "A calculadora": nos permite entrar en “Modo calculadora”, 
 										que nos permite cambiar las cantidades de todos los alimentos para que se calculen las propiedades.</li>
 								</ol> 
-								<img src='https://i.imgur.com/SnyNZ62.png' alt='Captura de la aplicación'>
+								<img style="width: 70%;height: auto;" src='https://i.imgur.com/SnyNZ62.png' alt='Captura de la aplicación'>
 							</div>
 						</div>
 						<div class="bg-gray-300 card field col-10">
@@ -454,7 +455,7 @@
 									Una vez finalizado el cálculo, se actualizan los datos. Se fijarán en el carrusel y se actualizarán los
 									indicadores de macronutrientes, que la calculadora buscará orientar a nuestro objetivo.
 								</span>
-								<img src='https://i.imgur.com/oFPc6VX.png' alt='Captura de la aplicación'>
+								<img style="width: 70%;height: auto;" src='https://i.imgur.com/oFPc6VX.png' alt='Captura de la aplicación'>
 							</div>
 						</div>
 						
@@ -472,6 +473,7 @@
 	export default {
 		data() {
 			return {
+				calculando: false,
 				cambioFav: false,
 				tipo: "",
 				dia: {},
@@ -578,7 +580,7 @@
 		},
 		methods: {
 			inicio(){
-				this.alimentoService.getDia(this.$store.state.userId, this.$route.params.tipo).then(data =>{this.dia = data
+				this.alimentoService.getDia(this.$store.state.userId, this.$route.params.tipo, this.$store.state.fechaHome).then(data =>{this.dia = data
 				this.alimentoService.limpiarCarrusel(this.$store.state.userId,this.dia._id,this.$route.params.tipo)
 				});
 				this.fetchItems();
@@ -824,7 +826,7 @@
 				this.userService.deleteFavoritos(this.$store.state.userId,alimentoId)
 			},
 			calculadora(){
-
+				this.calculando = true;
 				var alimentosACalcuar = this.dataviewValueCarrusel.filter(x=>x.calculadora).map(x=>x.alimento)
 				var alimentosFijos = this.dataviewValueCarrusel.filter(x=>!x.calculadora)
 				var kcalRecCalculadora = this.dia.kcalRec
@@ -842,7 +844,7 @@
 
 				this.alimentoService.calculadora(alimentosACalcuar,{"kcal_100g":kcalRecCalculadora,
 				"carbohidratos_100g":carbRecCalculadora, "proteinas_100g":proteinasRecCalculadora, "grasa_100g":grasasRecCalculadora},this.$toast).then(data=>{
-					
+					this.calculando = false;
 					async function recargaDatos(service,dia,alimentosACalcuar){
 						for (var j=0; j<data.length;j++){
 						
