@@ -519,16 +519,6 @@
             this.getEjecucionesEjercicio()
         },
         methods: {
-            isUsersBirthday() {
-                this.userService.getUser(this.user).then(data =>{
-
-                    let cumpleBool = this.userService.checkIsBirthday(data);
-                    if (cumpleBool) {
-                        let newUser = this.userService.actualizarNutrientes(data);
-                        this.userService.actualizar(data._id, newUser);
-                    }
-                })
-            },
             changeToSpanish(){
                 this.$primevue.config.locale.clear = 'Limpiar';
                 this.$primevue.config.locale.today = 'Hoy';
