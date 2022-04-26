@@ -23,6 +23,28 @@
 import AppTopBar from './AppTopbar.vue';
 import AppFooter from './AppFooter.vue';
 import SupportButton from "./components/SupportButton.vue";
+
+window.onscroll = function() {
+        if (window.location.pathname === "/") {
+            if (window.scrollY >= 80) {
+                document.getElementById("navbar").style.display = "none"
+                document.getElementById("historial").className = "headerDiasNavbar"
+                document.getElementById("historialTag").classList.add("hidden")
+                document.getElementsByClassName("layout-main-container")[0].style.padding = "13rem 2rem 2rem 4rem"
+            } else {
+                document.getElementById("navbar").style.display = "flex"
+                document.getElementById("historial").className = "box shadow-7 mb-3 col-7 headerDias"
+                document.getElementById("historialTag").classList.remove("hidden")
+                document.getElementsByClassName("layout-main-container")[0].style.padding = "7rem 2rem 2rem 4rem"
+            }
+        } else {
+            document.getElementById("navbar").style.display = "flex"
+            // document.getElementById("historial").className = "box shadow-7 mb-3 col-7 headerDias"
+            // document.getElementById("historialTag").classList.remove("hidden")
+            document.getElementsByClassName("layout-main-container")[0].style.padding = "7rem 2rem 2rem 4rem"
+        }
+    };
+
 export default {
     emits: ['change-theme'],
     data() {

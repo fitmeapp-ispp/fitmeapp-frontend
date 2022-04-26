@@ -44,8 +44,8 @@
           <div class="col-12 lg:col-4 md:col-6">
             <div class="card m-3 border-1 surface-border">
               <div class="grid">
-                <div class="col-12 text-center">
-                  <router-link :to='"/ejercicio/detalles/"+slotProps.data._id'>
+                <div class="col-12 text-center" v-if="slotProps.data.link">
+                  <router-link :to="slotProps.data.link">
                     <h4 style="color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">{{ slotProps.data.name }}</h4>
                   </router-link>
                 </div>
@@ -164,7 +164,7 @@ export default {
   methods: {
     fetchItems() {
       this.exerciseService.buscarEjercicios(this.filtroNombreEjercicio, this.lazyParams)
-      .then(data => {
+      .then(async data => {
         this.totalRecords = data.total;
         this.ejercicios = data.resultado;
         for (let ejercicio of this.ejercicios){
@@ -180,6 +180,7 @@ export default {
               }
             }
             ejercicio.muscleImage = musclesUrls.join()+",url(https://wger.de/static/images/muscles/muscular_system_front.svg)";
+            ejercicio.link = await this.getLink(ejercicio)
         }
       });
     },
@@ -194,6 +195,14 @@ export default {
     buscarPorMateriales(){
       this.lazyParams.filterMat = this.filtroMaterial;
       this.fetchItems();
+    },
+    async getLink(ejercicio) {
+      let ejecucionAsociada = await this.exerciseService.getEjecucionPorEjercicio(this.$store.state.userId, this.$store.state.fechaHome, ejercicio._id)
+      if (ejecucionAsociada && ejecucionAsociada.hecho === true) {
+        return "/ejercicio/detalles/"+ejercicio._id+"/editar/"+ejecucionAsociada._id
+      } else {
+        return '/ejercicio/detalles/' + ejercicio._id
+      }
     }
   }, 
 };
