@@ -7,7 +7,6 @@
 				<br>
 				</div>
 				<div class="p-fluid formgrid grid">
-					<Toast/>
 					<div class="field col-12 md:col-4">
 						<label for="nombre">Nombre*</label>
 						<InputText v-model="user.nombre" required="true" id="nombre" type="text" autofocus :class="{'p-invalid': enviado && errorNombre}"/>
@@ -80,7 +79,7 @@
 						
 					</div>
 					<div class="field col-12 md:col-4">						
-						<label for="objetivo_semanal">Objetivo semanal*</label><i class="ml-2 pi pi-info-circle" @mouseover="info()"></i>
+						<label for="objetivo_semanal">Objetivo semanal*</label><i class="ml-2 pi pi-info-circle" v-tooltip.top="'Introduzca un número positivo si quiere aumentar su masa muscular y uno negativo si quiere bajar de peso'"></i>
 						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
 						<small class="p-invalid" :key="errorObjetivoSemanal" v-if="enviado && errorObjetivoSemanal">{{this.errorObjetivoSemanal}}</small>
 					</div>
@@ -194,9 +193,6 @@
 		this.userService = new UserService;
 	},
 	methods: {
-		info(){
-			this.$toast.add({severity:'info', summary: 'Objetivo Semanal', detail: 'Introduzca un número positivo para aumento de la masa muscular y uno negativo si quiere peder peso', life: 3000});
-		},
 		cambioObjetivo(){
 			this.objetivo_peso_disabled = false;
 			if (!this.user.objetivo){
