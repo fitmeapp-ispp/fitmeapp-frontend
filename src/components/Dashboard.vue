@@ -517,7 +517,6 @@
             this.getPesoObjetivo()
             this.obtenerDatosHome()
             this.getEjecucionesEjercicio()
-            this.isUsersBirthday()
         },
         methods: {
             isUsersBirthday() {
