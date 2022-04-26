@@ -13,7 +13,7 @@
 						<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
 					</div>
 					<div class="">
-						<h2 class="text-center mt-3" style="color:#256029;">{{ tipo }}</h2>
+						<h2 class="text-center mt-3" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">{{ tipo }}</h2>
 					</div>
 					<div v-if="tipo == 'Desayuno'">
 						<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
@@ -76,7 +76,7 @@
 				<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
 			</div>
 			<div class=""  @click="infoDetalles">
-				<h2 class="text-center mt-3 flex align-items-center" style="color:#256029;" >{{ tipo }} <i class="pi pi-chart-bar ml-3"></i></h2>
+				<h2 class="text-center mt-3 flex align-items-center" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;" >{{ tipo }} <i class="pi pi-chart-bar ml-3"></i></h2>
 			</div>
 			<div v-if="tipo == 'Desayuno'">
 				<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
