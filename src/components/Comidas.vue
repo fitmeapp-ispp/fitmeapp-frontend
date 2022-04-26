@@ -668,7 +668,7 @@
 			obtenerDatosDia(){
 
 				this.tipo = this.$route.params.tipo
-				this.alimentoService.getDia(this.$store.state.userId, this.tipo).then(data =>{this.dia = data,
+				this.alimentoService.getDia(this.$store.state.userId, this.tipo, this.$store.state.fechaHome).then(data =>{this.dia = data,
 
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
 				if(this.tipo != "Cena"){
