@@ -1,4 +1,5 @@
 <template>
+
   <div class="grid">
     <div class="card col-12">
       <DataView :value="ejercicios" layout="grid" :totalRecords="totalRecords" :lazy="true"
@@ -6,7 +7,7 @@
         <template #header>
           <div class="grid formgroup-inline justify-content-around align-items-center">
             <div class="col-12 field m-0">
-              <h1 class="text-center" style="color:#256029;">Ejercicios</h1>
+              <h1 class="text-center" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Ejercicios</h1>
             </div>
             <div class="field formgroup-inline justify-content-center align-items-center m-0">
               <div class="field mt-2">
@@ -45,7 +46,7 @@
               <div class="grid">
                 <div class="col-12 text-center" v-if="slotProps.data.link">
                   <router-link :to="slotProps.data.link">
-                    <h4 style="color:#256029;">{{ slotProps.data.name }}</h4>
+                    <h4 style="color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">{{ slotProps.data.name }}</h4>
                   </router-link>
                 </div>
                 <div class="col-12 grid">

@@ -3,7 +3,7 @@
 		<div class="col-12">
 
 			<div class="card">
-				<h4 class="m-0">ADMINISTRAR EJERCICIOS</h4>
+				<h4 class="m-0" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Administrar ejercicios</h4>
 				<br>
 				<Toast/>
 				

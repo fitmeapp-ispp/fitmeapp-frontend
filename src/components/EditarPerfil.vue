@@ -3,7 +3,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="text-align-center" style="text-align:center">
-				<h3>Editar perfil</h3>
+				<h3 style="color:#256029; font-size:250%; font-family: 'Oswald', sans-serif;">Editar perfil</h3>
 				<br>
 				</div>
 				<div class="p-fluid formgrid grid">

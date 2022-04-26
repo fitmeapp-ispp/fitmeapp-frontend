@@ -3,7 +3,7 @@
 		<div class="col-12">
 
 			<div class="card">
-				<h4>ADMINISTRAR USUARIOS</h4>
+				<h4 style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Administrar usuarios</h4>
 				<Toast/>
 
 				<DataTable ref="dt" :value="users" v-model:selection="selectedUsers" dataKey="_id" :paginator="true" :rows="10" :filters="filters"

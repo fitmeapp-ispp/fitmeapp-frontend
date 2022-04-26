@@ -1,6 +1,7 @@
 <template>
 <div class="card">
-<h1>Aviso legal</h1>
+<h1 class="text-center" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Aviso legal</h1>
+<br>
 <p>
 Javier Gutiérrez Falcón, provisto con NIF/CIF 29545802W, dirección calle Colombia 14, no puede asumir ninguna responsabilidad derivada del uso incorrecto, inapropiado o ilícito de la información aparecida en la página de Internet de enlace a fitmeapp.
 </p>
