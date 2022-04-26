@@ -793,8 +793,9 @@
         }
     }
 
-    @media only screen and (max-width: 650px) {
+    @media only screen and (max-width: 1056px) {
         #buttonbar{
+            margin-left: 1.25rem;
             &.p-inputtext{
                 display: none;
             }
