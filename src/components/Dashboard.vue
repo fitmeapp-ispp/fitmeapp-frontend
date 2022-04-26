@@ -254,37 +254,6 @@
                 </div>
             </div>
 
-            <!--contador agua-->
-             <div class="card grid col-12 p-fluid">
-
-                <div class="card col-12 md:col-12">
-                    <div class="text-center">
-                    <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Contador de agua</Tag>
-                    </div>
-                </div>
-
-                <div class="field ml-2 mr-0 mb-0">
-                    <label class="col-12 text-center">Litros de agua</label>
-                    <div class="border-round overflow-hidden w-20rem" style="height:25px; background:#96DDFF">
-                        <div class="h-full"  v-bind:style="'width:' + agua*100 + '%'" id="agua"> </div>
-                    </div>
-                    <label class="col-12 text-center">{{agua}}/2 L</label>
-                </div>
-                
-                <div class="card col-12 md:col-5">
-                    <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
-                    <InputNumber v-model="agua" :step="0.125" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
-                            incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
-                            :min="0" :max="2" suffix=" L" @focusout="saveAgua()"/>
-                </div>
-
-                
-                
-                
-            </div>
-
-
-
         </div>
 	</div>
 
