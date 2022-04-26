@@ -373,7 +373,7 @@
                 </div>
                 
                 <div class="card col-12 md:col-12">  
-                    <h5 class="text-center"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
+                    <h5 class="text-center" style="font-size:1.5rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif;"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
                     <Chart type="line" :data="lineData" :options="lineOptions" />
                 </div>
             </div>
