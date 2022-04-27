@@ -158,7 +158,7 @@
 			</div>
 		<!-- Fin del header-->
 		<!-- Comienza el cuerpo-->
-			<div class="card">
+			<div class="card col-12">
 				<div class="col-12 card surface-400">
 					<div class="grid justify-content-between">
 						<div class="formgroup-inline justify-content-center mt-2">
@@ -786,11 +786,13 @@
 			},
 			obtenerAlergenos(alergenosAlimento){
 				let imagenesAlergenos = [];
-				for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
-				{
-					if (expresion.test(alergenosAlimento.toLowerCase()))
+				if(alergenosAlimento != undefined){
+					for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
 					{
-						imagenesAlergenos.push(alergeno);
+						if (expresion.test(alergenosAlimento.toLowerCase()))
+						{
+							imagenesAlergenos.push(alergeno);
+						}
 					}
 				}
 				return imagenesAlergenos;
