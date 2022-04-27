@@ -40,7 +40,7 @@
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
-                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">Objetivo conseguido!</h3>
+                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">¡Objetivo conseguido!</h3>
                             </div>
                         </div>
                     </div>
@@ -151,12 +151,12 @@
                     
                     <div class="my-2 text-center">
                         <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly/>
-                        <h3 class="mt-0" v-if="porcentajePasos >= 100">Objetivo conseguido!</h3>
+                        <h3 class="mt-0" v-if="porcentajePasos >= 100">¡Objetivo conseguido!</h3>
                     </div>
 
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF">></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF"></Tag>
                             <InputNumber v-model="dia.pasosRealizados" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
                             @focusout="actualizarPasos()" inputClass="text-center text-900 text-xl font-medium" />
@@ -404,6 +404,9 @@
                 let day = moment(fechaNueva, "DD-MM-YYYY").format('YYYY-MM-DD');
                 this.$store.dispatch("saveFechaHome", day);
                 this.fechaConsulta = day;
+
+                this.kcalQuemadas = 0;
+                this.kcalQuemadasPasos = 0;
                 
                 this.getPesoObjetivo();
                 this.obtenerDatosHome();
@@ -415,6 +418,9 @@
 
                 this.$store.dispatch("saveFechaHome", day);
                 this.fechaConsulta = day;
+
+                this.kcalQuemadas = 0;
+                this.kcalQuemadasPasos = 0;
                 
                 this.getPesoObjetivo();
                 this.obtenerDatosHome();
@@ -426,6 +432,9 @@
 
                 this.$store.dispatch("saveFechaHome", day);
                 this.fechaConsulta = day;
+
+                this.kcalQuemadas = 0;
+                this.kcalQuemadasPasos = 0;
                 
                 this.getPesoObjetivo();
                 this.obtenerDatosHome();
