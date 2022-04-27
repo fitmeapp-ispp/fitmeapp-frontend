@@ -672,6 +672,7 @@
 			obtenerDatosDia(){
 
 				this.tipo = this.$route.params.tipo
+				this.$store.dispatch("saveTipo", this.tipo);
 				this.alimentoService.getDia(this.$store.state.userId, this.tipo, this.$store.state.fechaHome).then(data =>{this.dia = data,
 
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
@@ -793,6 +794,7 @@
 				return imagenesAlergenos;
 			},
 			cambiarTipo(tipo){
+				this.$store.dispatch("saveTipo", tipo);
 				location.href ='/comidas/'+tipo
 			},
 			funcionFavoritos(alimentoId){

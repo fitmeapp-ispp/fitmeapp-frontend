@@ -24,7 +24,7 @@
                             <div class="col-12 lg:col-4 flex flex-column align-items-center">
                                 <h4 class="col-12 flex justify-content-center titulo-calorias" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Consumidas</h4>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
-                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="info" size="xlarge" :value="Math.trunc(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)" />
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="info" size="xlarge" :value="Math.trunc(this.comidas[0].kcal + this.comidas[1].kcal + this.comidas[2].kcal)" />
                                 </div>
                             </div>
                             <div class="col-12 lg:col-4 flex flex-column align-items-center">
