@@ -29,43 +29,43 @@
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Energía* (Kcal)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.kcal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.kcal_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.kcal_100g">Debe indicar cuántas kcal tiene.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.kcal_100g < 0)">Debe indicar cuántas kcal tiene.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Proteinas* (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.proteinas_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.proteinas_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.proteinas_100g">Debe indicar si lleva proteinas.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.proteinas_100g < 0)">Debe indicar si lleva proteinas.</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="grasas">Grasas* (g)</label>
 						<InputNumber id="grasas" mode="decimal" :min="0" v-model="alimento.grasa_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasa_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.grasa_100g">Debe indicar si lleva grasas.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.grasa_100g < 0)">Debe indicar si lleva grasas.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="grasasStd">Grasas saturadas* (g)</label>
 						<InputNumber id="grasasStd" mode="decimal" :min="0" v-model="alimento.grasas_std_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasas_std_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.grasas_std_100g">Debe indicar si lleva grasas saturadas.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.grasas_std_100g < 0)">Debe indicar si lleva grasas saturadas.</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Carbohidratos* (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.carbohidratos_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.carbohidratos_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.carbohidratos_100g">Debe indicar si lleva carbohidratos.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.carbohidratos_100g < 0)">Debe indicar si lleva carbohidratos.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Azúcares* (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.azucares_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.azucares_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.azucares_100g">Debe indicar si lleva azúcares.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.azucares_100g < 0)">Debe indicar si lleva azúcares.</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="name2">Sal* (g)</label>
 						<InputNumber id="inputtext" mode="decimal" :min="0" v-model="alimento.sal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.sal_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.sal_100g">Debe indicar si lleva sal.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.sal_100g < 0)">Debe indicar si lleva sal.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Sodio (g)</label>
@@ -226,8 +226,7 @@ export default {
 			}else{
 				this.errorMarca = "";
 			}
-			if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento.grasas_std_100g 
-				|| !this.alimento.carbohidratos_100g || !this.alimento.azucares_100g || !this.alimento.sal_100g){
+			if ((this.alimento.kcal_100g < 0) || (this.alimento.proteinas_100g < 0) || (this.alimento.grasa_100g < 0) || (this.alimento.grasas_std_100g < 0) || (this.alimento.carbohidratos_100g < 0) || (this.alimento.azucares_100g < 0) || (this.alimento.sal_100g < 0)){
 				resultado = false;
 			}
 			this.$forceUpdate();

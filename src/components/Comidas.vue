@@ -296,7 +296,7 @@
 			<!-- Comienzan los detalles-->
 			<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%" @close="this.imagenesAlergenos = []">
 				<div class="contenedor-imagen-detalles">
-					<img :src="alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
+					<img :src="!(alimento.imagen_peq) ? sinAlimento : alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
 					<h4 class="centered" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">{{ alimento.nombre }}</h4>
 				</div>
 				<div class="container">
@@ -471,10 +471,12 @@
 <script>
 	import AlimentoService from "../service/AlimentoService";
 	import UserService from "../service/UserService";
+	import sinAlimento from "../../public/images/sin_imagen_alimento.png";
 	require("dotenv").config();
 	export default {
 		data() {
 			return {
+				sinAlimento: sinAlimento,
 				calculando: false,
 				cambioFav: false,
 				tipo: "",
@@ -671,7 +673,7 @@
 			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			obtenerDatosDia(){
 
-				this.tipo = this.$route.params.tipo
+				this.tipo = this.$route.params.tipo;
 				this.$store.dispatch("saveTipo", this.tipo);
 				this.alimentoService.getDia(this.$store.state.userId, this.tipo, this.$store.state.fechaHome).then(data =>{this.dia = data,
 
