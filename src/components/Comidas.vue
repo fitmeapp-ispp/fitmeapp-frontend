@@ -1,5 +1,5 @@
 <template>
-	<div class="box shadow-7 mb-3 col-12 headerComida">
+	<div class="box shadow-7 mb-3 col-12 headerComida" >
 		<div class="formgroup-inline justify-content-around align-items-center">
 			<div class="field formgroup-inline m-0 align-items-center">
 				<Toast/>
@@ -390,7 +390,7 @@
 							<div class="formgroup-inline row flex justify-content-around">
 								<div class="field" v-for="alergeno of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
 									<span class="p-image p-component p-image-preview-container">
-										<img :src="'images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
+										<img :src="'/images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
 									</span>
 								</div>
 							</div>
@@ -864,11 +864,9 @@
 					recargaDatos(this.alimentoService,this.dia,alimentosACalcuar).then(()=>{this.fetchItems()});
 
 				})
-
 			}
 		}
 	}
-
 </script>
 
 <style scoped lang="scss">
