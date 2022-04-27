@@ -57,7 +57,7 @@
 			</div>
 			<div class="field m-0 justify-content-center">
 				<router-link to="/alimentos/form">
-					<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success"/>
+					<Button label="Añadir Alimento" icon="pi pi-plus" class="p-button-success"/>
 				</router-link>
 			</div>
 		</div>

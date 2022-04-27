@@ -240,10 +240,11 @@
 
 			}
 			var fecha = new Date();
-			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha)
+			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha || fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()<16
+			|| fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()>=90)
 			{
 				resultado = false;
-				this.errorFecha = 'La fecha es obligatoria y debe ser anterior al día de hoy';
+				this.errorFecha = 'La fecha es obligatoria, debe ser anterior al día de hoy, debe ser mayor de 16 años y no tener más de 90 años';
 
 			}else{
 				this.errorFecha = null;
