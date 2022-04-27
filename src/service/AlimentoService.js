@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+require("dotenv").config();
 export default class AlimentoService {
 
     getAlimentos(lazyParams, buscador){
@@ -118,24 +118,8 @@ export default class AlimentoService {
         });
     }
 
-    anyadirACarrusel(alimentoId,cantidad, diaId,tipo){
-        return axios.post(`/comidas/add/${alimentoId}/${cantidad}/${diaId}/${tipo}`,)
-        .then((response) => response.data)
-        .catch((e)=>{
-            console.log('error' + e);
-        });
-    }
-
-    nuevaConsumicion(alimentoId, username){
-        return axios.post(`/alimentos/newConsumption/${alimentoId}/${username}`)
-        .then((response) => response.data)
-        .catch((e)=>{
-            console.log('error' + e);
-        });
-    }
-
-    crearConsumicion(){
-        return axios.post(`/consumicion`, {usuario: "6244d94635c17b47d527f178", alimento: "623240e3997148f56622accd", cantidad: 100})
+    anyadirACarrusel(alimentoId,cantidad, diaId,tipo,calculadora){
+        return axios.post(`/comidas/add/${alimentoId}/${cantidad}/${diaId}/${tipo}/${calculadora}`,)
         .then((response) => response.data)
         .catch((e)=>{
             console.log('error' + e);
@@ -152,12 +136,39 @@ export default class AlimentoService {
         });
     }
 
-    getDia(userId,tipo){
-        return axios.get(`/comidas/${tipo}/`+"2022-04-01T19:01:28.616+00:00"+"/"+userId)
+    getDia(userId,tipo,fecha){
+        return axios.get(`/comidas/${tipo}/`+fecha+"/"+userId)
         .then((response) => 
 			response.data)
         .catch((e)=>{
             console.log('error' + e);
+        });
+    }
+
+    limpiarCarrusel(userId,diaId,tipo){
+        return axios.delete(`/comidas/limpiarCarrusel/${userId}/${diaId}/${tipo}`)
+        .then((response) => response.data)
+        .catch((e)=>{
+            console.log('error' + e);
+        });
+    }
+
+    calculadora(alimentos, macronutrientes,toast){
+        const url=process.env.VUE_APP_CALCULADORA
+        var json = {
+            "alimentos":alimentos,
+            "macronutrientes":macronutrientes
+            }
+
+        return axios.post(url, json, {
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Headers" : "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        })
+        .then((response) => response.data)
+        .catch(()=>{
+            toast.add({severity:'warn', summary: 'Calculadora', detail: 'Seleccione un mímino de 3 alimentos a calcular', life: 3000});
         });
     }
 

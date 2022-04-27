@@ -1,4 +1,7 @@
 <template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <div :class="containerClass" @click="onWrapperClick">
         <AppTopBar @menu-toggle="onMenuToggle" id="navbar" />
         <SupportButton />
@@ -18,8 +21,30 @@
 
 <script>
 import AppTopBar from './AppTopbar.vue';
-/* import AppFooter from './AppFooter.vue'; */
+import AppFooter from './AppFooter.vue';
 import SupportButton from "./components/SupportButton.vue";
+
+window.onscroll = function() {
+        if (window.location.pathname === "/") {
+            if (window.scrollY >= 80) {
+                document.getElementById("navbar").style.display = "none"
+                document.getElementById("historial").className = "headerDiasNavbar"
+                document.getElementById("historialTag").classList.add("hidden")
+                document.getElementsByClassName("layout-main-container")[0].style.padding = "13rem 2rem 2rem 4rem"
+            } else {
+                document.getElementById("navbar").style.display = "flex"
+                document.getElementById("historial").className = "box shadow-7 mb-3 col-7 headerDias"
+                document.getElementById("historialTag").classList.remove("hidden")
+                document.getElementsByClassName("layout-main-container")[0].style.padding = "7rem 2rem 2rem 4rem"
+            }
+        } else {
+            document.getElementById("navbar").style.display = "flex"
+            // document.getElementById("historial").className = "box shadow-7 mb-3 col-7 headerDias"
+            // document.getElementById("historialTag").classList.remove("hidden")
+            document.getElementsByClassName("layout-main-container")[0].style.padding = "7rem 2rem 2rem 4rem"
+        }
+    };
+
 export default {
     emits: ['change-theme'],
     data() {
@@ -140,7 +165,7 @@ export default {
     },
     watch: {   
         $route() {
-            if (this.$route.fullPath === "/login" || this.$route.fullPath === "/register" || this.$route.fullPath.match(/^(\/administrar)/gm)) {
+            if (this.$route.fullPath === "/login" || this.$route.fullPath === "/register" || this.$route.fullPath === "/condiciones" || this.$route.fullPath.match(/^(\/administrar)/gm)) {
                 document.getElementById("navbar").style = "display:none; position: absolute"
             } else {
                 document.getElementById("navbar").style = ""
@@ -246,7 +271,7 @@ export default {
     components: {
         "SupportButton": SupportButton,
         'AppTopBar': AppTopBar,
-        /* 'AppFooter': AppFooter, */
+        'AppFooter': AppFooter,
     }
 }
 </script>

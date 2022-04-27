@@ -3,7 +3,7 @@
 		<div class="col-12 md:col-12">
 			<Toast/>
 			<div class="grid justify-content-center" >	
-				<div class="card p-fluid text-center" style="background-color:#4CD07D; color:white; font-size:x-large;">
+				<div class=" text-center" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">
 					{{this.titulo}}
 				</div>
 			</div>
@@ -20,11 +20,11 @@
 						<small class="p-invalid" :key="errorMarca" v-if="enviado && errorMarca">{{this.errorMarca}}</small>
 					</div>
 				</div>
-
-				<div class="card text-center" style="background-color:#4CD07D; color:white; font-size:x-large">
+				<br>
+				<div class="text-center" style="font-size:x-large; color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">
 						Información Nutricional
 				</div>
-
+				<br>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Energía* (Kcal)</label>

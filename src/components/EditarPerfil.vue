@@ -3,7 +3,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="text-align-center" style="text-align:center">
-				<h3 style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Registro</h3>
+				<h3 style="color:#256029; font-size:250%; font-family: 'Oswald', sans-serif;">Editar perfil</h3>
 				<br>
 				</div>
 				<div class="p-fluid formgrid grid">
@@ -21,21 +21,6 @@
 						<label for="fecha">Fecha de Nacimiento*</label>
 						<InputText v-model="user.fechaNacimiento" required="true" id="fechaNacimiento" type="date" :class="{'p-invalid': enviado && errorFecha}"/>
 						<small class="p-invalid" :key="errorFecha" v-if="enviado && errorFecha">{{this.errorFecha}}</small>
-					</div>
-					<div class="field col-12 md:col-4">
-						<label for="username">Nombre de usuario*</label>
-						<InputText v-model="user.username" required="true" id="username" type="text" :class="{'p-invalid': enviado && errorUser}"/>
-						<small class="p-invalid" :key="errorUser" v-if="enviado && errorUser">{{this.errorUser}}</small>
-					</div>
-					<div class="field col-12 md:col-4">
-						<label for="password">Contraseña*</label>
-						<InputText v-model="user.password" required="true" id="password" type="password" :class="{'p-invalid': enviado && errorPassword}"/>
-						<small class="p-invalid" :key="errorPassword" v-if="enviado && errorPassword">{{this.errorPassword}}</small>
-					</div>
-					<div class="field col-12 md:col-4">
-						<label for="password_confirm">Confirmación de la Contraseña*</label>
-						<InputText v-model="user.password_confirm" required="true"  id="password_confirm" type="password" :class="{'p-invalid': enviado && errorConfirmPassword}"/>
-						<small class="p-invalid" :key="errorConfirmPassword" v-if="enviado && errorConfirmPassword">{{this.errorConfirmPassword}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="email">Email</label>
@@ -76,9 +61,8 @@
 						<label for="objetivo_peso">Objetivo de peso</label>
 						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorObjetivoPeso" v-if="enviado && errorObjetivoPeso">{{this.errorObjetivoPeso}}</small>
-						
 					</div>
-					<div class="field col-12 md:col-4">						
+					<div class="field col-12 md:col-4">
 						<label for="objetivo_semanal">Objetivo semanal*</label><i class="ml-2 pi pi-info-circle" v-tooltip.top="'Introduzca un número positivo si quiere aumentar su masa muscular y uno negativo si quiere bajar de peso'"></i>
 						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
 						<small class="p-invalid" :key="errorObjetivoSemanal" v-if="enviado && errorObjetivoSemanal">{{this.errorObjetivoSemanal}}</small>
@@ -98,17 +82,11 @@
 						<InputNumber id="pasos" v-model="user.pasos" required="true" :class="{'p-invalid': enviado && errorPasos}" suffix=" pasos"/>
 						<small class="p-invalid" :key="errorPasos" v-if="enviado && errorPasos">{{this.errorPasos}}</small>
 					</div>
-					<div class="field col-12 md:col-4">
-						<input type="checkbox" id="condicionesLegales"/>
-							<label for="condicionesLegales">He leído y acepto las <router-link to="/condiciones">condiciones legales</router-link></label>
-						<br>
-						<small class="p-invalid" style="color:red" :key="errorCondiciones" v-if="enviado && errorCondiciones">{{this.errorCondiciones}}</small>
-					</div>
 				</div>
 			</div>
 			<div class="p-fluid formgrid grid">
 				<div class="field col-12 md:col-2 md:col-offset-5">
-					<Button label="Guardar" style="background-color:#1DA750; color:white;" @click="guardar"/>
+					<Button label="Actualizar" style="background-color:#1DA750; color:white;" @click="guardar"/>
 				</div>
 				<div class="field col-12 md:col-2 md:col-offset-3">
 					<Button label="Volver" style="background-color:#1DA750; color:white;" @click="volver"/>
@@ -191,6 +169,7 @@
 	},
 	created(){
 		this.userService = new UserService;
+        this.obtenerUser();
 	},
 	methods: {
 		cambioObjetivo(){
@@ -214,6 +193,7 @@
 			//HACER COMPROBACIONES PERTINENTES DE LOS CAMPOS
 			let comprobado = this.comprobarCampos();
 			if(comprobado){
+                
 				this.user.peso_actual = this.user.peso_inicial
 				this.user.sexo = this.user.sexo.name
 				this.user.nivel_actividad = this.user.nivel_actividad.name
@@ -224,16 +204,16 @@
 				this.user.carbohidratos_recomendados = 125;
 				this.user.grasas_recomendadas = 70;
 				this.user.proteinas_recomendadas = 50;
-				delete this.user.password_confirm
-				this.userService.guardar(this.userService.actualizarNutrientes(this.user))
+                console.log("Comprobado:"+this.user)
+				this.userService.actualizar(this.$store.state.userId,this.userService.actualizarNutrientes(this.user))
 				.then(() => {
 					//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
-					this.$router.push({ name: 'login', params: {mensaje: 'registroRealizado'} });
+					this.$router.push({ name: 'perfil', params: {mensaje: 'registroRealizado'} });
 				})
 				.catch((e)=>{
 					//SI OCURRE ALGÚN FALLO AL INSERTAR EN LA BD, MOSTRAR
 					console.log('error' + e);
-					this.$toast.add({severity:'error', summary: 'Fallo', detail: 'No se ha podido registrar correctamente, lo sentimos.', life: 3000});
+					this.$toast.add({severity:'error', summary: 'Fallo', detail: 'No se ha podido actualizar correctamente, lo sentimos.', life: 3000});
 				})
 			}
 		},
@@ -260,10 +240,10 @@
 
 			}
 			var fecha = new Date();
-			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha || fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()<16)
+			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha)
 			{
 				resultado = false;
-				this.errorFecha = 'La fecha es obligatoria, debe ser anterior al día de hoy y debe ser mayor de 16 años';
+				this.errorFecha = 'La fecha es obligatoria y debe ser anterior al día de hoy';
 
 			}else{
 				this.errorFecha = null;
@@ -299,15 +279,6 @@
 
 			}else{
 				this.errorPassword = null;
-				
-			}
-			if(this.user.password !== this.user.password_confirm)
-			{
-				resultado = false;
-				this.errorConfirmPassword = 'Las contraseñas no coinciden';
-
-			}else{
-				this.errorConfirmPassword = null;
 				
 			}
 
@@ -356,7 +327,7 @@
 				this.errorObjetivo = null;
 				
 			}
-			if(!this.user.altura || this.user.altura >300 || this.user.altura < 50)
+			if(!this.user.altura || this.user.altura >300 || this.user.altura < 0)
 			{
 				resultado = false;
 				this.errorAltura = 'Altura inválida';
@@ -365,7 +336,7 @@
 				this.errorAltura = null;
 				
 			}
-			if(!this.user.peso_inicial || this.user.peso_inicial >1000 || this.user.peso_inicial < 30)
+			if(!this.user.peso_inicial || this.user.peso_inicial >1000 || this.user.peso_inicial < 0)
 			{
 				resultado = false;
 				this.errorPesoInicial = 'Peso inválido';
@@ -455,21 +426,25 @@
 				this.errorPasos = null;
 				
 			}
-			const condicionesCheck = document.getElementById("condicionesLegales");
-			if(condicionesCheck.checked==false){
-				resultado = false;
-				this.errorCondiciones = 'Debe leer y aceptar las condiciones legales';
-			}else{
-				this.errorCondiciones = null;
-				
-			}
 			this.$forceUpdate();
 			return resultado;
 			
 		},
+        obtenerUser(){
+
+            this.userService.getUser(this.$store.state.username).then(data => {
+                this.user = data;
+                this.user.sexo = this.sexos.filter(x => x.name == this.user.sexo)[0]
+                this.user.tipo_alimentacion = this.tipos_alimentacion.filter(x => x.name == this.user.tipo_alimentacion)[0]
+                this.user.objetivo = this.objetivos.filter(x => x.name == this.user.objetivo)[0]
+                this.user.nivel_actividad = this.niveles_actividad.filter(x => x.name == this.user.nivel_actividad)[0]
+                this.user.dieta_pref = this.dieta_prefs.filter(x => x.name == this.user.dieta_pref)[0]
+                console.log(this.user)
+            });
+        },
 		volver()
 		{
-			this.$router.push('/login');
+			this.$router.push('/perfil');
 		}
 	}
 	}

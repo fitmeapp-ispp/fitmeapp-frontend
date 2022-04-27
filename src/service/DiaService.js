@@ -37,4 +37,8 @@ export default class DiaService{
             console.log('Error: ' + e);
         });
     }
+
+    actualizarDia(diaId, nuevosValores) {
+        return axios.put("/dia/" + diaId, nuevosValores);
+    }
 }
