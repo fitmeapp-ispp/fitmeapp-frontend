@@ -359,12 +359,16 @@
                 deleteExerciseDialog: false,
                 deleteExerciseIndex: 0,
                 claveRecargaCarousel: 0,
+                
             }
         },
         computed: {
             porcentajePasos() {
-                let res = this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
-                return res >= 100 ? 100 : this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
+                let res = 0;
+                if( this.dia.pasosRealizados || this.dia.pasosObjetivo){
+                   res = this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
+                }
+                return res >= 100 ? 100 : res
             },
             colorProgresoPasos() {
                 let porcentaje = this.porcentajePasos
@@ -408,9 +412,7 @@
                 this.kcalQuemadas = 0;
                 this.kcalQuemadasPasos = 0;
                 
-                this.getPesoObjetivo();
-                this.obtenerDatosHome();
-                this.getEjecucionesEjercicio();
+                location.href = "/"
             },
             avanzarDia(){
                 let dia = this.$store.state.fechaHome;
@@ -422,9 +424,7 @@
                 this.kcalQuemadas = 0;
                 this.kcalQuemadasPasos = 0;
                 
-                this.getPesoObjetivo();
-                this.obtenerDatosHome();
-                this.getEjecucionesEjercicio();
+                location.href = "/"
             },
             retrasarDia(){
                 let dia = this.$store.state.fechaHome;
@@ -436,9 +436,7 @@
                 this.kcalQuemadas = 0;
                 this.kcalQuemadasPasos = 0;
                 
-                this.getPesoObjetivo();
-                this.obtenerDatosHome();
-                this.getEjecucionesEjercicio();
+                location.href = "/"
             },
             imagenBalanza() {
                 return '/images/icono_balanza.png';
@@ -474,7 +472,6 @@
                 
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
-
                 this.diaService.getDatosDia(this.user,this.fecha).then(data =>{
                     this.dia = data;
 
@@ -510,7 +507,6 @@
                     this.comidas[2].protRec = Math.trunc(data.proteinasRec/3);
                     this.comidas[2].grasasRec = Math.trunc(data.grasasRec/3);
 
-
                     //DOUGHNUT DATA
                     var sumCarbs = Math.trunc(data.carbIngeridasDesayuno + data.carbIngeridasAlmuerzo + data.carbIngeridasCena);
                     var sumProt = Math.trunc(data.proteinasIngeridasDesayuno + data.proteinasIngeridasAlmuerzo + data.proteinasIngeridasCena);
@@ -535,6 +531,7 @@
                     this.obtenerAlmuerzo();
                     this.obtenerCena();
                     this.obtenerPesos();
+
                 });
             },
 
