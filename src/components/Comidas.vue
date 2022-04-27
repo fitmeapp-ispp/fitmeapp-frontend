@@ -1,5 +1,5 @@
 <template>
-	<div class="box shadow-7 mb-3 col-12 headerComida">
+	<div class="box shadow-7 mb-3 col-12 headerComida" >
 		<div class="formgroup-inline justify-content-around align-items-center">
 			<div class="field formgroup-inline m-0 align-items-center">
 				<Toast/>
@@ -57,7 +57,7 @@
 			</div>
 			<div class="field m-0 justify-content-center">
 				<router-link to="/alimentos/form">
-					<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success"/>
+					<Button label="Añadir Alimento" icon="pi pi-plus" class="p-button-success"/>
 				</router-link>
 			</div>
 		</div>
@@ -158,7 +158,7 @@
 			</div>
 		<!-- Fin del header-->
 		<!-- Comienza el cuerpo-->
-			<div class="card">
+			<div class="card col-12">
 				<div class="col-12 card surface-400">
 					<div class="grid justify-content-between">
 						<div class="formgroup-inline justify-content-center mt-2">
@@ -296,7 +296,7 @@
 			<!-- Comienzan los detalles-->
 			<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%" @close="this.imagenesAlergenos = []">
 				<div class="contenedor-imagen-detalles">
-					<img :src="alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
+					<img :src="!(alimento.imagen_peq) ? sinAlimento : alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
 					<h4 class="centered" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">{{ alimento.nombre }}</h4>
 				</div>
 				<div class="container">
@@ -390,7 +390,7 @@
 							<div class="formgroup-inline row flex justify-content-around">
 								<div class="field" v-for="alergeno of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
 									<span class="p-image p-component p-image-preview-container">
-										<img :src="'images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
+										<img :src="'/images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
 									</span>
 								</div>
 							</div>
@@ -471,10 +471,12 @@
 <script>
 	import AlimentoService from "../service/AlimentoService";
 	import UserService from "../service/UserService";
+	import sinAlimento from "../../public/images/sin_imagen_alimento.png";
 	require("dotenv").config();
 	export default {
 		data() {
 			return {
+				sinAlimento: sinAlimento,
 				calculando: false,
 				cambioFav: false,
 				tipo: "",
@@ -671,7 +673,8 @@
 			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			obtenerDatosDia(){
 
-				this.tipo = this.$route.params.tipo
+				this.tipo = this.$route.params.tipo;
+				this.$store.dispatch("saveTipo", this.tipo);
 				this.alimentoService.getDia(this.$store.state.userId, this.tipo, this.$store.state.fechaHome).then(data =>{this.dia = data,
 
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
@@ -783,16 +786,19 @@
 			},
 			obtenerAlergenos(alergenosAlimento){
 				let imagenesAlergenos = [];
-				for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
-				{
-					if (expresion.test(alergenosAlimento.toLowerCase()))
+				if(alergenosAlimento != undefined){
+					for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
 					{
-						imagenesAlergenos.push(alergeno);
+						if (expresion.test(alergenosAlimento.toLowerCase()))
+						{
+							imagenesAlergenos.push(alergeno);
+						}
 					}
 				}
 				return imagenesAlergenos;
 			},
 			cambiarTipo(tipo){
+				this.$store.dispatch("saveTipo", tipo);
 				location.href ='/comidas/'+tipo
 			},
 			funcionFavoritos(alimentoId){
@@ -858,11 +864,9 @@
 					recargaDatos(this.alimentoService,this.dia,alimentosACalcuar).then(()=>{this.fetchItems()});
 
 				})
-
 			}
 		}
 	}
-
 </script>
 
 <style scoped lang="scss">
