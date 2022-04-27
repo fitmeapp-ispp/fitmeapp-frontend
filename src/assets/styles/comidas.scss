@@ -1,32 +1,35 @@
 .grid {
     &.grid-nogutter {
         color: #256029;
-    &.alimento-busqueda{
-        height: 225px;
     }
+
+    &.alimento-busqueda {
+        max-height: 500px;
     }
 }
-.carrousel-comidas{
+.carrousel-comidas {
     max-height: 150px;
     align-items: right;
     margin: 4px;
 }
-#imagen-busqueda{
+
+#imagen-busqueda {
     width: 150px;
     height: 200px;
     object-fit: cover;
 }
-#imagen-comida{
+
+#imagen-comida {
     height: 10px  !important;
     width: 10% !important;
 }
 
-.contenedor-imagen-detalles{
+.contenedor-imagen-detalles {
     position: relative;
     text-align: center;
 }
 
-.imagen-comida-detalles{
+.imagen-comida-detalles {
     width: 150px;
     height: 150px;
     object-fit: cover;
@@ -41,12 +44,48 @@
 	transform: translate(-50%, -50%);
 }
 
-.tituloDetalles{
+.tituloDetalles {
     color:black;
     font-size: x-large;
 }
 
-.imagen-alergeno{
+.imagen-alergeno {
     width: 100%;
     object-fit: contain;
+}
+
+#barraKcal {
+    background-color:#7f9ec6;
+}
+
+#kcalIngeridos {
+    background-color:#006fff;
+}
+
+#barraCarb {
+    background-color:#d7a57b;
+}
+
+#carbIngeridos{
+    background-color:#b35a02;
+}
+
+#barraProteinas {
+    background-color:rgb(216 169 169);
+}
+
+#protIngeridos {
+    background-color:#e30000;
+}
+
+#barraGrasas {
+    background-color:rgb(228 218 190);
+}
+
+#grasasIngeridos {
+    background-color:#eec137;
+}
+
+#kcalQuemadas {
+    background-color: #32CD32;
 }

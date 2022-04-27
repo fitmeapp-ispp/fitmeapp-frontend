@@ -10,21 +10,21 @@
         <ul class="layout-topbar-menu hidden lg:flex origin-top align-items-center justify-content-left">
             <li class="mt-3 ml-8">
                 <router-link to="/">
-                    <h1 class="color">INICIO</h1>
+                    <h1 class="color titulo">Inicio</h1>
                 </router-link>
             </li>
             <li class="mt-3 ml-8">
             <router-link to="/ejercicios">
-                <h1 class="color">EJERCICIOS </h1>
+                <h1 class="color titulo">Ejercicios </h1>
             </router-link>
             </li>
             <li class="mt-3 ml-8">
             <router-link to="/perfil">
-                <h1 class="color">PERFIL </h1>
+                <h1 class="color titulo">Perfil </h1>
             </router-link>
             </li>
             <button class="p-link layout-topbar-button ml-8" v-if="$store.state.username" @click="toggleMenu">
-            <i class="pi pi-user"></i>
+                <i class="pi pi-user"></i>
             </button>
             <Menu ref="menu" :model="overlayMenuItems" :popup="true"/>
             
@@ -41,7 +41,7 @@
             </Dialog>
         </ul>
         <div>
-            <button class="p-link layout-topbar-menu-button layout-topbar-button mr-3" v-if="$store.state.username" @click="toggleMenu">
+            <button class="p-link layout-topbar-menu-button layout-topbar-button mr-3" id="btUsuario" v-if="$store.state.username" @click="toggleMenu">
                 <i class="pi pi-user"></i>
             </button>
             <button class="p-link layout-topbar-menu-button layout-topbar-button" @click="visibleLeft=true">
@@ -52,17 +52,22 @@
         <Sidebar v-model:visible="visibleLeft" :baseZIndex="1000">
             <div>
                 <router-link to="/" @click="visibleLeft=false">
-                    <h1 class="color">INICIO</h1>
+                    <h1 class="color titulo">Inicio</h1>
                 </router-link>
                 <router-link to="/ejercicios" @click="visibleLeft=false">
-                    <h1 class="color">EJERCICIOS </h1>
+                    <h1 class="color titulo">Ejercicios </h1>
                 </router-link>
                 <router-link to="/perfil" @click="visibleLeft=false">
-                    <h1 class="color">PERFIL </h1>
+                    <h1 class="color titulo">Perfil</h1>
                 </router-link>
             </div>
             <div align="center">
                 <img alt="Logo" :src="topbarImage()"/>
+            </div>
+            <div class="flex p-sidebar-bottom align-items-end justify-content-end">
+                <button class="p-link mr-3" id="btUsuario2" v-if="$store.state.username" @click="toggleMenu" style="">
+                    <i class="pi pi-user"></i>
+                </button>
             </div>
         </Sidebar>
     </div>  
@@ -132,7 +137,7 @@ export default {
         line-height: 2;
     }
     .color:hover {
-        color: black;
+        color: #256029;
     }
     span.color{
         transition: 0.5s;
@@ -143,5 +148,35 @@ export default {
     }
     .p-sidebar-left {
         background-color:rgb(22 163 74) ;
+    }
+    #btUsuario2{
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        color: var(--green-600);
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        background-color: var(--surface-a);
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    #btUsuario2:hover{
+        color: var(--surface-a);
+        background-color: var(--green-600);
+    }
+    @media only screen and (max-width: 294px) {
+        #btUsuario{
+            display: none;
+        }
+    }
+    @media only screen and (min-width: 294px) {
+        #btUsuario2{
+            display: none;
+        }
     }
 </style>

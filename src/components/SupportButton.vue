@@ -1,5 +1,6 @@
  <template>
     <div>
+        <Toast/>
         <div class="support">
             <Button @click="openResponsive" icon="pi pi-exclamation-circle" class="p-button-rounded p-button-success soporte" />
         </div>
@@ -16,8 +17,8 @@
                 </div>
             </div>
             <template #footer>
-                <Button label="Cancelar" icon="pi pi-times" @click="closeResponsive"  style="background-color:#1DA750; color:white;" />
-                <Button label="Enviar" icon="pi pi-check" @click="enviarIssue" autofocus  style="background-color:#1DA750; color:white;"/>
+                <Button label="Cancelar" icon="pi pi-times" @click="closeResponsive" autofocus style="background-color:#1DA750; color:white;" />
+                <Button label="Enviar" icon="pi pi-check" @click="enviarIssue"  style="background-color:#1DA750; color:white;"/>
             </template>
         </Dialog>
         </div>
@@ -66,6 +67,7 @@ export default {
                 this.closeResponsive()
                 this.title=""
                 this.body=""
+                this.$toast.add({severity:'success', summary: 'Incidencia', detail: 'Incidencia enviada con éxito', life: 3000});
             })
         }
     },

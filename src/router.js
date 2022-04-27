@@ -7,6 +7,8 @@ import FormularioAlimentos from './components/alimentos/FormularioAlimentos.vue'
 //import SelectorFormularios from './components/alimentos/SelectorFormularios.vue';
 import Comidas from './components/Comidas.vue';
 import Perfil from './components/Perfil.vue';
+import EditarPerfil from './components/EditarPerfil.vue';
+import CambiarContrasena from './components/CambiarContrasena.vue';
 const Login = () => import("./pages/Login.vue");
 import store from './store'
 import axios from 'axios';
@@ -43,6 +45,11 @@ const routes = [
         component: () => import('./pages/Detalles_ejercicio.vue')
     },
     {
+        path: '/ejercicio/detalles/:ejercicioId/editar/:ejecucionId',
+        name: 'Editar_Ejercicio',
+        component: () => import('./pages/Detalles_ejercicio.vue')
+    },
+    {
         path: '/ejercicios',
         name: 'ejercicios',
         component: () => import('./pages/Ejercicios.vue')
@@ -56,6 +63,16 @@ const routes = [
         path: '/alimentos/form',
         name: 'alimentos_form',
         component: FormularioAlimentos
+    },
+    {
+        path: '/editar_perfil',
+        name: 'editar_perfil',
+        component: EditarPerfil
+    },
+    {
+        path: '/cambio_contrasena',
+        name: 'cambio_contrasena',
+        component: CambiarContrasena
     },
 /*     {
         path: '/recetas/form',
@@ -103,6 +120,16 @@ const routes = [
         name: 'register',
         component: () => import('./components/Formulario_completo.vue')
     },
+    {
+        path: '/GDPR',
+        name: 'GDPR',
+        component: () => import('./components/GDPR.vue')
+    },
+    {
+        path: '/condiciones',
+        name: 'condiciones',
+        component: () => import('./components/GDPR_registro.vue')
+    },
 ];
 
 const router = createRouter({
@@ -112,7 +139,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
     const adminPages = ['/administrar','/administrar/usuarios','/administrar/ejercicios','/administrar/recetas','/administrar/alimentos'];
-    const publicPages = ['/login','/register'];
+    const publicPages = ['/login','/register','/condiciones'];
 
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = store.state.loggedIn;

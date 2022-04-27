@@ -1,7 +1,51 @@
 <template>
     <div class="grid justify-content-center align-items-center">
+        <div class="col-12">
+            <div class="p-fluid formgrid grid text-center">
+                <div class="field col-12 lg:col-4"></div>
+                <div class="field col-12 lg:col-4">
+                    <h1 style="color:#256029; font-size:300%; font-family: 'Oswald', sans-serif;">Perfil</h1>
+                </div>
+                <div class="field col-12 lg:col-2">
+                    <router-link to="/cambio_contrasena">
+                        <Button label="Cambiar contraseña" icon="pi pi-pencil" class="p-button-success"/>
+                    </router-link>
+                </div>
+                <div class="field col-12 lg:col-2">
+                    <router-link to="/editar_perfil">
+                        <Button label="Editar perfil" icon="pi pi-user-edit" class="p-button-success"/>
+                    </router-link>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class= "p-fluid formgrid grid text-center">
+                    <div class="field col-12 md:col-4">
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Nombre:</h5>
+                        <span>{{user.nombre}}</span>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Apellido/s:</h5>
+                        <span>{{user.apellidos}}</span>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Edad:</h5>
+                        <span>{{user.edad}}</span>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Peso Actual:</h5>
+                        <span>{{user.peso_actual}}</span>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Objetivo:</h5>
+                        <span>{{user.objetivo}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-12 text-center mb-6">
-            <h1>Plan actual</h1>
+            <h1 style="color:#256029; font-size:300%; font-family: 'Oswald', sans-serif;">Plan actual</h1>
             <div v-if="suscripcion">
                 <img :src="planActual" alt="Plan de suscripción de 1 mes" width="150" />
                 <h3>Finaliza el: {{this.suscripcion.fechaFin}}</h3>
@@ -51,6 +95,7 @@ import userService from '../service/UserService';
 export default {
 	data() {
         return {
+            user: {nombre: ""},
             unMes: unMes,
             tresMeses: tresMeses,
             seisMeses: seisMeses,
@@ -66,6 +111,7 @@ export default {
     userService: null,
     created(){
         this.userService = new userService();
+        this.obtenerUser();
     },
     mounted(){
         this.obtenerSuscripcion();
@@ -86,6 +132,26 @@ export default {
                         this.planActual = doceMeses;
                     }
                 }
+            });
+        },
+        obtenerUser(){
+
+            function calcularEdad(fechaNacimiento) {
+            var hoy = new Date();
+            var cumpleanos = new Date(fechaNacimiento);
+            var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+            var m = hoy.getMonth() - cumpleanos.getMonth();
+        
+            if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+                edad--;
+            }
+        
+            return edad;
+        }
+            this.userService.getUser(this.$store.state.username).then(data => {
+                this.user = data;
+                this.user.edad = calcularEdad(this.user.fechaNacimiento)
+                console.log(this.user)
             });
         }
     },

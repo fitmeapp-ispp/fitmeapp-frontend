@@ -1,4 +1,5 @@
 <template>
+
     <Toast position="bottom-right"/>
 
     <div class="flex align-items-center justify-content-center overflow-hidden">
@@ -10,7 +11,7 @@
                 <div class="h-full w-full m-0 py-7 px-4" :style="'border-radius:53px; background: linear-gradient('+grados+'deg, var(--green-600), var(--surface-card) 70%); animation: rotation 2s linear infinite;'">
                     <div class="text-center mb-5">
                         <img :src="topbarImage()" alt="Logo" class="mb-3" height="50">
-                        <div class="text-900 text-3xl font-medium mb-3">Bienvenido a FitMeApp!</div>
+                        <div class=" font-medium mb-3" style="font-size:3rem; color:#256029; font-family: 'Oswald', sans-serif;">Bienvenido a FitMeApp!</div>
                         <span class="text-900 font-medium">Inicia sesión para continuar</span>
                     </div>
                 
@@ -20,7 +21,7 @@
                         :class="{'p-invalid': submitted && error.field === 'username'} + '; w-full mb-2'" placeholder="Nombre de usuario" style="padding:1rem;" />
                         <small class="p-error" v-if="submitted && error.field === 'username'" :key="error.message">{{error.message}}</small>
                 
-                        <label for="passwordId" class="block text-900 font-medium text-xl mt-2 mb-2">Contraseña</label>
+                        <label for="passwordId" class="block text-900 font-medium text-xl mt-2 mb-2" >Contraseña</label>
                         <Password v-model="password" name="password" id="passwordId" :feedback="false" @keypress.enter="signIn()" 
                         :class="{'p-invalid': submitted && error.field === 'password'}" placeholder="Contraseña" :toggleMask="true"
                         class="w-full mb-2" inputClass="w-full" inputStyle="padding:1rem" />
@@ -56,6 +57,8 @@ import Password from 'primevue/password'
 import Button from 'primevue/button'
 import axios from "axios";
 import Toast from 'primevue/toast';
+import moment from 'moment';
+
 export default {
     name: 'Login',
     components: {
@@ -107,9 +110,11 @@ export default {
             .then((response) => {
                 this.$store.dispatch("saveUserId", response.data.userId);
                 this.$store.dispatch("logIn");
+                this.$store.dispatch("saveFechaHome", moment().format('YYYY-MM-DD'));
+
                 if (response.data.admin){
                     window.location.href = '/administrar'
-                }else{
+                } else {
                     window.location.href = '/';
                 }
                 this.$toast.add({severity:'success', summary: 'Successful', detail: 'Inicio de sesión correcto', life: 3000});
