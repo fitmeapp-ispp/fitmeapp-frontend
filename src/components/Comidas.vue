@@ -1,5 +1,5 @@
 <template>
-	<div class="box shadow-7 mb-3 col-12 headerComida">
+	<div class="box shadow-7 mb-3 col-12 headerComida" >
 		<div class="formgroup-inline justify-content-around align-items-center">
 			<div class="field formgroup-inline m-0 align-items-center">
 				<Toast/>
@@ -13,7 +13,7 @@
 						<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
 					</div>
 					<div class="">
-						<h2 class="text-center mt-3" style="color:#256029;">{{ tipo }}</h2>
+						<h2 class="text-center mt-3" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">{{ tipo }}</h2>
 					</div>
 					<div v-if="tipo == 'Desayuno'">
 						<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
@@ -27,28 +27,28 @@
 			</div>
 			<div class="field formgroup-inline justify-content-center m-0">
 				<div class="field ml-3 w-14rem mb-0">
-					<label class="col-12 text-center font-bold text-xl">Kcalorías</label>
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Kcalorías</label>
 					<div class="border-round overflow-hidden" style="height:15px" id="barraKcal">
 						<div class="h-full"  v-bind:style="'width:' + ratiokcal + '%'" id="kcalIngeridos"> </div>
 					</div>
 					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.kcalIngeridas) }}/{{ Math.trunc(dia.kcalRec) }} Kcal</label>
 				</div>
 				<div class="field ml-3 w-14rem mb-0">
-					<label class="col-12 text-center font-bold text-xl">Proteínas</label>
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Proteínas</label>
 					<div class="border-round overflow-hidden" style="height:15px" id="barraProteinas">
 						<div class="h-full"  v-bind:style="'width:' + ratioProteina + '%'" id="protIngeridos"> </div>
 					</div>
 					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.proteinasIngeridas) }}/{{ Math.trunc(dia.proteinasRec) }} g</label>
 				</div>
 				<div class="field ml-3 w-14rem mb-0">
-					<label class="col-12 text-center font-bold text-xl">Carbohidratos</label>
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Carbohidratos</label>
 					<div class="border-round overflow-hidden" style="height:15px" id="barraCarb">
 						<div class="h-full"  v-bind:style="'width:' + ratioCarbohidrato + '%'" id="carbIngeridos"> </div>
 					</div>
 					<label class="col-12 text-center text-lg">{{ Math.trunc(dia.carbIngeridas) }}/{{ Math.trunc(dia.carbRec) }} g</label>
 				</div>
 				<div class="field ml-3 w-14rem mb-0">
-					<label class="col-12 text-center font-bold text-xl">Grasas</label>
+					<label class="col-12 text-center" style="color:#256029; font-size:1.75rem; font-family: 'Oswald', sans-serif;">Grasas</label>
 					<div class="border-round overflow-hidden" style="height:15px" id="barraGrasas">
 						<div class="h-full"  v-bind:style="'width:' + ratioGrasa + '%'" id="grasasIngeridos"> </div>
 					</div>
@@ -57,7 +57,7 @@
 			</div>
 			<div class="field m-0 justify-content-center">
 				<router-link to="/alimentos/form">
-					<Button label="Añadir Comida" icon="pi pi-plus" class="p-button-success"/>
+					<Button label="Añadir Alimento" icon="pi pi-plus" class="p-button-success"/>
 				</router-link>
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 				<Button class="p-button-text p-button-rounded mr-2" icon="pi pi-angle-left" @click="cambiarTipo('Almuerzo')"/>
 			</div>
 			<div class=""  @click="infoDetalles">
-				<h2 class="text-center mt-3 flex align-items-center" style="color:#256029;" >{{ tipo }} <i class="pi pi-chart-bar ml-3"></i></h2>
+				<h2 class="text-center mt-3 flex align-items-center" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;" >{{ tipo }} <i class="pi pi-chart-bar ml-3"></i></h2>
 			</div>
 			<div v-if="tipo == 'Desayuno'">
 				<Button class="p-button-text p-button-rounded ml-2" icon="pi pi-angle-right" @click="cambiarTipo('Almuerzo')"/>
@@ -158,7 +158,7 @@
 			</div>
 		<!-- Fin del header-->
 		<!-- Comienza el cuerpo-->
-			<div class="card">
+			<div class="card col-12">
 				<div class="col-12 card surface-400">
 					<div class="grid justify-content-between">
 						<div class="formgroup-inline justify-content-center mt-2">
@@ -296,8 +296,8 @@
 			<!-- Comienzan los detalles-->
 			<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%" @close="this.imagenesAlergenos = []">
 				<div class="contenedor-imagen-detalles">
-					<img :src="alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
-					<h4 class="centered">{{ alimento.nombre }}</h4>
+					<img :src="!(alimento.imagen_peq) ? sinAlimento : alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
+					<h4 class="centered" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">{{ alimento.nombre }}</h4>
 				</div>
 				<div class="container">
 					<div class="grid justify-content-center mb-3">
@@ -321,12 +321,13 @@
 						</div>
 					</div>
 					<div class="formgroup-inline justify-content-around">
-						<div class=" field bg-gray-500 card lg:col-6 md:col-12 justify-content-center">
+						<div class=" field bg-gray-300 card lg:col-6 md:col-12 justify-content-center">
 							<div class="row justify-content-center text-center flex">
-								<h4 class="tituloDetalles text-center p-flex">
+								<h4 class="tituloDetalles text-center p-flex" style="color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">
 									Valores nutricionales (100g)
 								</h4>
 							</div>
+								<br>
 							<div class="formgroup-inline justify-content-around row text-center flex">
 								<div class="field">
 									<h5 class="p-flex">
@@ -381,14 +382,15 @@
 								</div>
 							</div>
 						</div>
-						<div class="field bg-gray-500 card lg:col-5 md:col-12 justify-content-center">
+						<div class="field bg-gray-300 card lg:col-5 md:col-12 justify-content-center">
 							<div class="row justify-content-center text-center flex">
-								<h4 class="tituloDetalles text-center p-flex">Alérgenos</h4>
+								<h4 class="tituloDetalles text-center p-flex" style="color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">Alérgenos</h4>
 							</div>
+							<br>
 							<div class="formgroup-inline row flex justify-content-around">
 								<div class="field" v-for="alergeno of obtenerAlergenos(alimento.alergenos)" :key="alergeno">
 									<span class="p-image p-component p-image-preview-container">
-										<img :src="'images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
+										<img :src="'/images/alergenos/' + alergeno + '.svg'" width="100" :alt="alergeno"/>
 									</span>
 								</div>
 							</div>
@@ -469,10 +471,12 @@
 <script>
 	import AlimentoService from "../service/AlimentoService";
 	import UserService from "../service/UserService";
+	import sinAlimento from "../../public/images/sin_imagen_alimento.png";
 	require("dotenv").config();
 	export default {
 		data() {
 			return {
+				sinAlimento: sinAlimento,
 				calculando: false,
 				cambioFav: false,
 				tipo: "",
@@ -669,7 +673,8 @@
 			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
 			obtenerDatosDia(){
 
-				this.tipo = this.$route.params.tipo
+				this.tipo = this.$route.params.tipo;
+				this.$store.dispatch("saveTipo", this.tipo);
 				this.alimentoService.getDia(this.$store.state.userId, this.tipo, this.$store.state.fechaHome).then(data =>{this.dia = data,
 
 				this.dia.kcalRec = (this.dia.kcalRec/3).toFixed(2)
@@ -781,16 +786,19 @@
 			},
 			obtenerAlergenos(alergenosAlimento){
 				let imagenesAlergenos = [];
-				for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
-				{
-					if (expresion.test(alergenosAlimento.toLowerCase()))
+				if(alergenosAlimento != undefined){
+					for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
 					{
-						imagenesAlergenos.push(alergeno);
+						if (expresion.test(alergenosAlimento.toLowerCase()))
+						{
+							imagenesAlergenos.push(alergeno);
+						}
 					}
 				}
 				return imagenesAlergenos;
 			},
 			cambiarTipo(tipo){
+				this.$store.dispatch("saveTipo", tipo);
 				location.href ='/comidas/'+tipo
 			},
 			funcionFavoritos(alimentoId){
@@ -856,11 +864,9 @@
 					recargaDatos(this.alimentoService,this.dia,alimentosACalcuar).then(()=>{this.fetchItems()});
 
 				})
-
 			}
 		}
 	}
-
 </script>
 
 <style scoped lang="scss">

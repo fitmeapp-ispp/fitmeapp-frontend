@@ -6,7 +6,7 @@
                 <Button icon="pi pi-angle-left" class="p-button-lg p-button-rounded p-button-success p-button-outlined" @click="retrasarDia()"/>
             </div>
             <div class="col-4 lg:col-4" align="center">
-                <Tag class="col-12 textoResponsive m-0 mb-2" id="historialTag">Historial</Tag>
+                <Tag class="col-12 textoResponsive m-0 mb-2" id="historialTag" style="font-size:3rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Historial</Tag>
                 <Calendar id="buttonbar" dateFormat="yy-mm-dd" v-model="fechaConsulta" :showButtonBar="true" :maxDate="new Date()"
                 :showIcon="true" :locale="es" @date-select="cambiarFecha($event)" inputClass="text-center text-2xl" class="col-12 m-0 p-0" />
             </div>
@@ -19,16 +19,16 @@
             <div class="grid card col-12 justify-content-center align-items-center"  style="margin-bottom:1em">
                 <div class="grid card col-12 align-content-center justify-content-center">
                     <div class="col-12 lg:col-6 flex flex-column align-items-center justify-content-between">
-                        <Tag class="col-12 textoResponsive">Calorías</Tag>
+                        <Tag class="col-12 textoResponsive" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Calorías</Tag>
                         <div class="col-12 grid justify-content-between">
                             <div class="col-12 lg:col-4 flex flex-column align-items-center">
-                                <h4 class="col-12 flex justify-content-center titulo-calorias">Consumidas</h4>
+                                <h4 class="col-12 flex justify-content-center titulo-calorias" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Consumidas</h4>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
-                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="info" size="xlarge" :value="Math.trunc(dia.kcalIngeridasDesayuno + dia.kcalIngeridasAlmuerzo + dia.kcalIngeridasCena)" />
+                                    <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="info" size="xlarge" :value="Math.trunc(this.comidas[0].kcal + this.comidas[1].kcal + this.comidas[2].kcal)" />
                                 </div>
                             </div>
                             <div class="col-12 lg:col-4 flex flex-column align-items-center">
-                                <h4 class="col-12 flex justify-content-center titulo-calorias">Quemadas</h4>
+                                <h4 class="col-12 flex justify-content-center titulo-calorias" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Quemadas</h4>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" severity="warning" size="xlarge" :value="Math.trunc(kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
@@ -36,16 +36,16 @@
                         </div>
                         <div class="col-12">
                             <div class="col-12 flex flex-column align-items-center">
-                                <h3 class="col-12 flex justify-content-center">Restantes</h3>
+                                <h3 class="col-12 flex justify-content-center" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Restantes</h3>
                                 <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
-                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">Objetivo conseguido!</h3>
+                                <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">¡Objetivo conseguido!</h3>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 lg:col-6 flex flex-column align-items-center">
-                        <Tag class="col-12 textoResponsive">Macronutrientes</Tag>
+                        <Tag class="col-12 textoResponsive " style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Macronutrientes</Tag>
                         <div class="col-10">
                             <Chart style="max-width:310px; align-content:center;" type="doughnut" :data="pieData" :options="lightOptions" />
                         </div>
@@ -57,7 +57,7 @@
                         <template #item="slotProps">  
                             <div class="grid col-12 align-content-center justify-content-center">
                                 <router-link :to="'/comidas/' + slotProps.data.Tipo" class="mt-1 col-12">
-                                    <Tag class="col-12 mb-2" style="font-size:1.75rem; font-weight:600; background:#1da750; ">{{slotProps.data.Tipo}}</Tag>
+                                    <Tag class="col-12 mb-2" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750; ">{{slotProps.data.Tipo}}</Tag>
                                 </router-link>
                                 <div class="p-fluid col-12 lg:col-8 md:col-8 "> 
                                     <div class="formgroup-inline align-content-center justify-content-around">
@@ -119,7 +119,7 @@
             <div class="card grid col-12 p-fluid justify-content-center">
                 <div class="col-12 md:col-12">
                     <div class="text-center">
-                    <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight:800; background:#1da750;">Contador de agua</Tag>
+                    <Tag class="col-12 text-center" style="font-size:2.75rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Contador de agua</Tag>
                     </div>
                 </div>
             
@@ -131,7 +131,7 @@
                     </div>
 
                     <div class="col-5">
-                        <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
+                        <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.75rem;  color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                         <InputNumber v-model="agua" :step="0.125" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                                 incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
                                 :min="0" :max="2" suffix=" L" @focusout="saveAgua()"/>
@@ -147,16 +147,16 @@
            <div class="grid card col-12 p-fluid justify-content-center align-items-start">
 
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center mr-2">
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Pasos</Tag>
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Pasos</Tag>
                     
                     <div class="my-2 text-center">
                         <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly/>
-                        <h3 class="mt-0" v-if="porcentajePasos >= 100">Objetivo conseguido!</h3>
+                        <h3 class="mt-0" v-if="porcentajePasos >= 100">¡Objetivo conseguido!</h3>
                     </div>
 
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Pasos realizados" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF"></Tag>
                             <InputNumber v-model="dia.pasosRealizados" :step="50" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
                             @focusout="actualizarPasos()" inputClass="text-center text-900 text-xl font-medium" />
@@ -165,14 +165,14 @@
                 
                     <div class="card flex justify-content-center align-items-center col-12">
                         <div class="col-12 text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Pasos recomendados" style="font-size:1.25rem; font-weight:800; background:#1da750"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Pasos recomendados" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                             <h5 class="m-0 mt-2">{{dia.pasosObjetivo}}</h5>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length > 0" :key="claveRecargaCarousel"> 
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="imagenesEjercicios" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="300px"
                     class="col-12 grid justify-content-center align-items-center mt-2 ml-1" :index="indiceEjercicio">
                         <template #item="slotProps">
@@ -201,7 +201,7 @@
                     </router-link>
                 </div>
                 <div class="grid col-12 lg:col-6 align-content-center justify-content-center" v-if="imagenesEjercicios.length == 0" :key="claveRecargaCarousel"> 
-                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight:800; background:#1da750;">Ejercicios realizados</Tag>
+                    <Tag class="col-12 text-center" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Ejercicios realizados</Tag>
                     <Carousel :value="sinEjercicio" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="240px" class="col-12 grid justify-content-center align-items-center mt-2 ml-1">
                         <template #item="slotProps">
                             <div class="product-item">
@@ -231,7 +231,7 @@
                 <div class="col-12 lg:col-6">
                     <div class="card flex justify-content-center align-items-center">
                         <div class="col-12 text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Peso objetivo" style="font-size:1.25rem; font-weight:800; background:#1da750;" />
+                            <Tag class="col-12 mb-2 text-center" value="Peso objetivo" style="font-size:2.75rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;" />
                             <h5 class="m-0 mt-2">{{pesoObjetivo}} kg</h5>
                         </div>
                     </div>
@@ -240,7 +240,7 @@
                 <div class="col-12 lg:col-6" >
                     <div class="card flex justify-content-center align-items-center">
                         <div class="text-center">
-                            <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.25rem; font-weight:800; background:#1da750;"></Tag>
+                            <Tag class="col-12 mb-2 text-center" value="Peso actual" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                             <InputNumber v-model="dia.pesoActual" :step="0.5" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                             incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" :min="0"
                             @focusout="savePeso()" suffix=" kg" inputClass="text-center text-900 text-xl font-medium" />
@@ -249,7 +249,7 @@
                 </div>
                 
                 <div class="card col-12 md:col-12">  
-                    <h5 class="text-center"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
+                    <h5 class="text-center" style="font-size:1.5rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif;"><i class="pi pi-chart-line"/> Gráfica de peso</h5>
                     <Chart type="line" :data="lineData" :options="lineOptions" />
                 </div>
             </div>
@@ -359,12 +359,16 @@
                 deleteExerciseDialog: false,
                 deleteExerciseIndex: 0,
                 claveRecargaCarousel: 0,
+                
             }
         },
         computed: {
             porcentajePasos() {
-                let res = this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
-                return res >= 100 ? 100 : this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
+                let res = 0;
+                if( this.dia.pasosRealizados || this.dia.pasosObjetivo){
+                   res = this.round(this.dia.pasosRealizados/this.dia.pasosObjetivo*100)
+                }
+                return res >= 100 ? 100 : res
             },
             colorProgresoPasos() {
                 let porcentaje = this.porcentajePasos
@@ -404,10 +408,11 @@
                 let day = moment(fechaNueva, "DD-MM-YYYY").format('YYYY-MM-DD');
                 this.$store.dispatch("saveFechaHome", day);
                 this.fechaConsulta = day;
+
+                this.kcalQuemadas = 0;
+                this.kcalQuemadasPasos = 0;
                 
-                this.getPesoObjetivo();
-                this.obtenerDatosHome();
-                this.getEjecucionesEjercicio();
+                location.href = "/"
             },
             avanzarDia(){
                 let dia = this.$store.state.fechaHome;
@@ -415,10 +420,11 @@
 
                 this.$store.dispatch("saveFechaHome", day);
                 this.fechaConsulta = day;
+
+                this.kcalQuemadas = 0;
+                this.kcalQuemadasPasos = 0;
                 
-                this.getPesoObjetivo();
-                this.obtenerDatosHome();
-                this.getEjecucionesEjercicio();
+                location.href = "/"
             },
             retrasarDia(){
                 let dia = this.$store.state.fechaHome;
@@ -426,10 +432,11 @@
 
                 this.$store.dispatch("saveFechaHome", day);
                 this.fechaConsulta = day;
+
+                this.kcalQuemadas = 0;
+                this.kcalQuemadasPasos = 0;
                 
-                this.getPesoObjetivo();
-                this.obtenerDatosHome();
-                this.getEjecucionesEjercicio();
+                location.href = "/"
             },
             imagenBalanza() {
                 return '/images/icono_balanza.png';
@@ -465,7 +472,6 @@
                 
                 this.user = this.$store.state.username;
                 this.fecha = this.$store.state.fechaHome;
-
                 this.diaService.getDatosDia(this.user,this.fecha).then(data =>{
                     this.dia = data;
 
@@ -501,7 +507,6 @@
                     this.comidas[2].protRec = Math.trunc(data.proteinasRec/3);
                     this.comidas[2].grasasRec = Math.trunc(data.grasasRec/3);
 
-
                     //DOUGHNUT DATA
                     var sumCarbs = Math.trunc(data.carbIngeridasDesayuno + data.carbIngeridasAlmuerzo + data.carbIngeridasCena);
                     var sumProt = Math.trunc(data.proteinasIngeridasDesayuno + data.proteinasIngeridasAlmuerzo + data.proteinasIngeridasCena);
@@ -526,6 +531,7 @@
                     this.obtenerAlmuerzo();
                     this.obtenerCena();
                     this.obtenerPesos();
+
                 });
             },
 

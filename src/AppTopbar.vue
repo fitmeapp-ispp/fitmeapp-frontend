@@ -10,17 +10,17 @@
         <ul class="layout-topbar-menu hidden lg:flex origin-top align-items-center justify-content-left">
             <li class="mt-3 ml-8">
                 <router-link to="/">
-                    <h1 class="color">INICIO</h1>
+                    <h1 class="color titulo">Inicio</h1>
                 </router-link>
             </li>
             <li class="mt-3 ml-8">
             <router-link to="/ejercicios">
-                <h1 class="color">EJERCICIOS </h1>
+                <h1 class="color titulo">Ejercicios </h1>
             </router-link>
             </li>
             <li class="mt-3 ml-8">
             <router-link to="/perfil">
-                <h1 class="color">PERFIL </h1>
+                <h1 class="color titulo">Perfil </h1>
             </router-link>
             </li>
             <button class="p-link layout-topbar-button ml-8" v-if="$store.state.username" @click="toggleMenu">
@@ -52,13 +52,13 @@
         <Sidebar v-model:visible="visibleLeft" :baseZIndex="1000">
             <div>
                 <router-link to="/" @click="visibleLeft=false">
-                    <h1 class="color">INICIO</h1>
+                    <h1 class="color titulo">Inicio</h1>
                 </router-link>
                 <router-link to="/ejercicios" @click="visibleLeft=false">
-                    <h1 class="color">EJERCICIOS </h1>
+                    <h1 class="color titulo">Ejercicios </h1>
                 </router-link>
                 <router-link to="/perfil" @click="visibleLeft=false">
-                    <h1 class="color">PERFIL </h1>
+                    <h1 class="color titulo">Perfil</h1>
                 </router-link>
             </div>
             <div align="center">
@@ -137,7 +137,7 @@ export default {
         line-height: 2;
     }
     .color:hover {
-        color: black;
+        color: #256029;
     }
     span.color{
         transition: 0.5s;

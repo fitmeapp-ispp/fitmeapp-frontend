@@ -3,12 +3,12 @@
 		<div class="col-12">
 
 			<div class="card">
-				<h4>ADMINISTRAR USUARIOS</h4>
+				<h4 style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Administrar usuarios</h4>
 				<Toast/>
 
-				<DataTable ref="dt" :value="users" v-model:selection="selectedUsers" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
+				<DataTable ref="dt" :value="users" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios" responsiveLayout="scroll">
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios" responsiveLayout="scroll" :globalFilterFields="['nombre','apellidos']">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							
@@ -18,54 +18,48 @@
                             </span>
 						</div>
 					</template>
+					<Column field="nombre" header="Nombre" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+						<template #body="slotProps">
+							<span class="p-column-title">Nombre</span>
+							{{slotProps.data.nombre}}
+						</template>
+					</Column>
 
-					<Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+					<Column field="apellidos" header="Apellidos" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+						<template #body="slotProps">
+							<span class="p-column-title">Apellidos</span>
+							{{slotProps.data.apellidos}}
+						</template>
+					</Column>
 
-		<Column field="nombre" header="Nombre" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-					<template #body="slotProps">
-						<span class="p-column-title">Nombre</span>
-						{{slotProps.data.nombre}}
-					</template>
-				</Column>
+					<Column field="username" header="Usuario" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+						<template #body="slotProps">
+							<span class="p-column-title">Usuario</span>
+							{{slotProps.data.username}}
+						</template>
+					</Column>
 
-		<Column field="apellidos" header="Apellidos" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-					<template #body="slotProps">
-						<span class="p-column-title">Apellidos</span>
-						{{slotProps.data.apellidos}}
-					</template>
-				</Column>
+					<Column field="email" header="Correo" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+						<template #body="slotProps">
+							<span class="p-column-title">Correo</span>
+							{{slotProps.data.email}}
+						</template>
+					</Column>
 
-		<Column field="username" header="Usuario" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-					<template #body="slotProps">
-						<span class="p-column-title">Usuario</span>
-						{{slotProps.data.username}}
-					</template>
-				</Column>
-
-
-		<Column field="email" header="Correo" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-					<template #body="slotProps">
-						<span class="p-column-title">Correo</span>
-						{{slotProps.data.email}}
-					</template>
-				</Column>
-
-		<Column field="isAdmin" header="Administrador" :sortable="true" headerStyle="width:20%; min-width:10rem;">
-					<template #body="slotProps">
-						<span class="p-column-title">Administrador</span>
-						<i class="pi pi-check ml-5" v-if="slotProps.data.isAdmin"></i>
-						<i class="pi pi-times ml-5" v-if="!slotProps.data.isAdmin"></i>
-					</template>
-				</Column>
-                    
-
-				<!-- acciones -->
-				<Column headerStyle="min-width:10rem;">
-					<template #body="slotProps">
-						<Button icon="pi pi-trash" class="p-button-rounded p-button-danger mt-2" @click="confirmDeleteUser(slotProps.data)" />
-					</template>
-				</Column>
-			</DataTable>
+					<Column field="isAdmin" header="Administrador" :sortable="true" headerStyle="width:20%; min-width:10rem;">
+						<template #body="slotProps">
+							<span class="p-column-title">Administrador</span>
+							<i class="pi pi-check ml-5" v-if="slotProps.data.isAdmin"></i>
+							<i class="pi pi-times ml-5" v-if="!slotProps.data.isAdmin"></i>
+						</template>
+					</Column>
+					<!-- acciones -->
+					<Column headerStyle="min-width:10rem;">
+						<template #body="slotProps">
+							<Button icon="pi pi-trash" class="p-button-rounded p-button-danger mt-2" @click="confirmDeleteUser(slotProps.data)" />
+						</template>
+					</Column>
+				</DataTable>
 
 
         <!-- confirmacion para borrar -->
@@ -101,7 +95,7 @@
 
 <script>
 import axios from "axios"
-import {FilterMatchMode} from 'primevue/api';
+import {FilterMatchMode, FilterOperator} from 'primevue/api';
 import UserService from '../../service/UserService';
 export default {
 	data() {
@@ -124,11 +118,10 @@ export default {
 		this.initFilters();
 	},
 	mounted() {
-		this.userService.getUsers().then(data => this.user = data);
         this.fetchItems();
 	},
 	methods: {
-        fetchItems(){
+        fetchItems(){			
 			axios.get("/users", {
 				params: {
 					userId: this.$store.state.userId
@@ -180,7 +173,7 @@ export default {
 		*/
 		initFilters() {
             this.filters = {
-                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
+                'global': {operator: FilterOperator.OR, constraints: [{value: null, matchMode: FilterMatchMode.CONTAINS}]},
             }
         },
 		volver(){

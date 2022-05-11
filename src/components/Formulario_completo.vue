@@ -3,7 +3,7 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="text-align-center" style="text-align:center">
-				<h3>Registro</h3>
+				<h3 style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">Registro</h3>
 				<br>
 				</div>
 				<div class="p-fluid formgrid grid">
@@ -64,23 +64,23 @@
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="altura">Altura*</label>
-						<InputNumber id="altura" v-model="user.altura"  mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" placeholder="cm"  :class="{'p-invalid': enviado && errorAltura}"/>
+						<InputNumber id="altura" v-model="user.altura" showButtons mode="decimal" :min="1" :minFractionDigits="0" :maxFractionDigits="2" type="text" placeholder="cm"  :class="{'p-invalid': enviado && errorAltura}"/>
 						<small class="p-invalid" :key="errorAltura" v-if="enviado && errorAltura">{{this.errorAltura}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="peso_inicial">Peso inicial*</label>
-						<InputNumber id="peso_inicial" v-model="user.peso_inicial" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" suffix=" kg" placeholder="kg" :class="{'p-invalid': enviado && errorPesoInicial}" @change="cambioObjetivo()"/>
+						<InputNumber id="peso_inicial" v-model="user.peso_inicial" showButtons step="0.5" :min="0.5" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" type="text" suffix=" kg" placeholder="kg" :class="{'p-invalid': enviado && errorPesoInicial}" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorPesoInicial" v-if="enviado && errorAltura">{{this.errorPesoInicial}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
 						<label for="objetivo_peso">Objetivo de peso</label>
-						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled" @change="cambioObjetivo()"/>
+						<InputNumber id="objetivo_peso" v-model="user.objetivo_peso" showButtons step="0.5" :min="0.5" mode="decimal" decimalSeparator="," :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" type="text" placeholder="kg" :class="{'p-invalid': enviado && errorObjetivoPeso}" :disabled="this.objetivo_peso_disabled" @change="cambioObjetivo()"/>
 						<small class="p-invalid" :key="errorObjetivoPeso" v-if="enviado && errorObjetivoPeso">{{this.errorObjetivoPeso}}</small>
 						
 					</div>
 					<div class="field col-12 md:col-4">						
 						<label for="objetivo_semanal">Objetivo semanal*</label><i class="ml-2 pi pi-info-circle" v-tooltip.top="'Introduzca un número positivo si quiere aumentar su masa muscular y uno negativo si quiere bajar de peso'"></i>
-						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
+						<InputNumber id="objetivo_semanal" v-model="user.objetivo_semanal" showButtons step="0.5" mode="decimal"  :minFractionDigits="0" :maxFractionDigits="2" suffix=" kg" required="true" type="text" :class="{'p-invalid': enviado && errorObjetivoSemanal}" :disabled="this.objetivo_peso_disabled"/>
 						<small class="p-invalid" :key="errorObjetivoSemanal" v-if="enviado && errorObjetivoSemanal">{{this.errorObjetivoSemanal}}</small>
 					</div>
 					<div class="field col-12 md:col-4">
@@ -260,10 +260,11 @@
 
 			}
 			var fecha = new Date();
-			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha || fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()<16)
+			if(!this.user.fechaNacimiento || Date.parse(this.user.fechaNacimiento)>=fecha || fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()<16
+			|| fecha.getFullYear()-new Date(this.user.fechaNacimiento).getFullYear()>=90)
 			{
 				resultado = false;
-				this.errorFecha = 'La fecha es obligatoria, debe ser anterior al día de hoy y debe ser mayor de 16 años';
+				this.errorFecha = 'La fecha es obligatoria, debe ser anterior al día de hoy, debe ser mayor de 16 años y no tener más de 90 años';
 
 			}else{
 				this.errorFecha = null;
@@ -449,7 +450,7 @@
 			if(!this.user.pasos || this.user.pasos < 0)
 			{
 				resultado = false;
-				this.errorPasos = 'El número de pasos debe ser posivito';
+				this.errorPasos = 'El número de pasos debe ser positivo';
 
 			}else{
 				this.errorPasos = null;

@@ -3,7 +3,7 @@
 		<div class="col-12 md:col-12">
 			<Toast/>
 			<div class="grid justify-content-center" >	
-				<div class="card p-fluid text-center" style="background-color:#4CD07D; color:white; font-size:x-large;">
+				<div class=" text-center" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">
 					{{this.titulo}}
 				</div>
 			</div>
@@ -20,52 +20,52 @@
 						<small class="p-invalid" :key="errorMarca" v-if="enviado && errorMarca">{{this.errorMarca}}</small>
 					</div>
 				</div>
-
-				<div class="card text-center" style="background-color:#4CD07D; color:white; font-size:x-large">
+				<br>
+				<div class="text-center" style="font-size:x-large; color:#256029; font-size:2rem; font-family: 'Oswald', sans-serif;">
 						Información Nutricional
 				</div>
-
+				<br>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Energía* (Kcal)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.kcal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.kcal_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.kcal_100g">Debe indicar cuántas kcal tiene.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.kcal_100g < 0)">Debe indicar cuántas kcal tiene.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Proteinas* (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.proteinas_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.proteinas_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.proteinas_100g">Debe indicar si lleva proteinas.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.proteinas_100g < 0)">Debe indicar si lleva proteinas.</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="grasas">Grasas* (g)</label>
 						<InputNumber id="grasas" mode="decimal" :min="0" v-model="alimento.grasa_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasa_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.grasa_100g">Debe indicar si lleva grasas.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.grasa_100g < 0)">Debe indicar si lleva grasas.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="grasasStd">Grasas saturadas* (g)</label>
 						<InputNumber id="grasasStd" mode="decimal" :min="0" v-model="alimento.grasas_std_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasas_std_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.grasas_std_100g">Debe indicar si lleva grasas saturadas.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.grasas_std_100g < 0)">Debe indicar si lleva grasas saturadas.</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Carbohidratos* (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.carbohidratos_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.carbohidratos_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.carbohidratos_100g">Debe indicar si lleva carbohidratos.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.carbohidratos_100g < 0)">Debe indicar si lleva carbohidratos.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Azúcares* (g)</label>
 						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.azucares_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.azucares_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.azucares_100g">Debe indicar si lleva azúcares.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.azucares_100g < 0)">Debe indicar si lleva azúcares.</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="name2">Sal* (g)</label>
 						<InputNumber id="inputtext" mode="decimal" :min="0" v-model="alimento.sal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.sal_100g}"/>
-						<small class="p-invalid" v-if="enviado && !alimento.sal_100g">Debe indicar si lleva sal.</small>
+						<small class="p-invalid" v-if="enviado && (alimento.sal_100g < 0)">Debe indicar si lleva sal.</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Sodio (g)</label>
@@ -198,7 +198,7 @@ export default {
 					this.alimentoService.guardarAlimento(this.alimento)
 					.then(() => {
 						//REDIRIGIR A LA PAGINA DE LISTADO CON UN TOAST DE CONFIRMACIÓN
-						this.$router.push({ path: '/comidas/Almuerzo', params: {mensaje: 'alimentoInsertado'} });
+						this.$router.push({ path: `/comidas/${this.$store.state.tipo}`, params: {mensaje: 'alimentoInsertado'} });
 					})
 					.catch((e)=>{
 						//SI OCURRE ALGÚN FALLO AL INSERTAR EN LA BD, MOSTRAR
@@ -226,8 +226,7 @@ export default {
 			}else{
 				this.errorMarca = "";
 			}
-			if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento.grasas_std_100g 
-				|| !this.alimento.carbohidratos_100g || !this.alimento.azucares_100g || !this.alimento.sal_100g){
+			if ((this.alimento.kcal_100g < 0) || (this.alimento.proteinas_100g < 0) || (this.alimento.grasa_100g < 0) || (this.alimento.grasas_std_100g < 0) || (this.alimento.carbohidratos_100g < 0) || (this.alimento.azucares_100g < 0) || (this.alimento.sal_100g < 0)){
 				resultado = false;
 			}
 			this.$forceUpdate();
@@ -235,7 +234,7 @@ export default {
 		},
 		volver()
 		{
-			this.$router.push('/comidas/Almuerzo');
+			this.$router.push(`/comidas/${this.$store.state.tipo}`);
 		}
 	}
 }

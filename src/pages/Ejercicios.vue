@@ -1,16 +1,17 @@
 <template>
+
   <div class="grid justify-content-between">
     <!-- PARTE IZQUIERDA -->
     <div class="col-12 lg:col-6 justify-content-center">
         <div class="col-12">
-          <h3 class="text-center"> EJERCICIOS RECOMENDADOS DEL DÍA </h3>
+          <h3 class="text-center titulo" style="color:#256029;"> Ejercicios recomendados del día </h3>
         </div>
         <div class="card col-12">
         <DataTable v-if="dataviewValue.length > 0 && dataviewValue[0].ejercicioDetalles" :value="dataviewValue" :rows="7" responsiveLayout="scroll"> 
           <Column field="name" header="Nombre" :style="{width:'50%'}" >
 						<template #body="{data}">
               <router-link :to="getLink(data)">
-                <p class="p-flex text-center text-bold inline">{{data.ejercicioDetalles[0].name}}</p>
+                <p class="p-flex text-center text-bold inline" style="color:rgb(22 163 74)">{{data.ejercicioDetalles[0].name}}</p>
               </router-link>
             </template>
 					</Column>
@@ -37,7 +38,7 @@
     <!-- PARTE DERECHA -->
     <div class="grid col-12 lg:col-6 justify-content-center">
         <div class="col-12">
-          <h3 class="p-flex text-center">BUSCADOR DE EJERCICIOS</h3>
+          <h3 class="p-flex text-center titulo" style="color:#256029;">Buscador de ejercicios</h3>
         </div>
         <router-link to= "/ejercicio">
           <img src='../../public/images/buscador_ejercicios.png' alt='Buscador de Ejercicios' class="img-fluid"/>
@@ -91,6 +92,8 @@ export default {
 </script>
 
 <style>
+
+
 .p-galleria .p-galleria-thumbnail-container{
   display: none;
 }

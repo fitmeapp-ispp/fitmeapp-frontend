@@ -4,7 +4,7 @@
             <div class="p-fluid formgrid grid text-center">
                 <div class="field col-12 lg:col-4"></div>
                 <div class="field col-12 lg:col-4">
-                    <h1>Perfil</h1>
+                    <h1 style="color:#256029; font-size:300%; font-family: 'Oswald', sans-serif;">Perfil</h1>
                 </div>
                 <div class="field col-12 lg:col-2">
                     <router-link to="/cambio_contrasena">
@@ -22,30 +22,30 @@
             <div class="card">
                 <div class= "p-fluid formgrid grid text-center">
                     <div class="field col-12 md:col-4">
-                        <h5 for="nombre">Nombre:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Nombre:</h5>
                         <span>{{user.nombre}}</span>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <h5 for="nombre">Apellido/s:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Apellido/s:</h5>
                         <span>{{user.apellidos}}</span>
                     </div>
                     <div class="field col-12 md:col-4">
-                        <h5 for="nombre">Edad:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Edad:</h5>
                         <span>{{user.edad}}</span>
                     </div>
                     <div class="field col-12 md:col-6">
-                        <h5 for="nombre">Peso Actual:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Peso Actual:</h5>
                         <span>{{user.peso_actual}}</span>
                     </div>
                     <div class="field col-12 md:col-6">
-                        <h5 for="nombre">Objetivo:</h5>
+                        <h5 for="nombre" style="color:#256029; font-size:175%; font-family: 'Oswald', sans-serif;">Objetivo:</h5>
                         <span>{{user.objetivo}}</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-12 text-center mb-6">
-            <h1>Plan actual</h1>
+            <h1 style="color:#256029; font-size:300%; font-family: 'Oswald', sans-serif;">Plan actual</h1>
             <div v-if="suscripcion">
                 <img :src="planActual" alt="Plan de suscripción de 1 mes" width="150" />
                 <h3>Finaliza el: {{this.suscripcion.fechaFin}}</h3>
