@@ -163,13 +163,13 @@
 					<div class="grid justify-content-between">
 						<div class="formgroup-inline justify-content-center mt-2">
 							<div class="field">
-								<Button label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()" />
+								<Button id="btFavoritos" label="Favoritos" icon="pi pi-star" class="p-button-warning" @click="favoritos()"/>
 							</div>
 							<div class="field">
-								<Button label="Recientes" icon="pi pi-clock" @click="recientes()" />
+								<Button id="btRecientes" label="Recientes" icon="pi pi-clock" @click="recientes()" />
 							</div>
 							<div class="field">
-								<Button label="Creados" icon="pi pi-pencil" class="p-button-success" @click="creados()"/>
+								<Button id="btCreados" label="Creados" icon="pi pi-pencil" class="p-button-success" @click="creados()"/>
 							</div>
 							<div class="field">
 								<Button label="Limpiar Filtros" icon="pi pi-filter-slash" class="p-button-danger" @click="limpiarFiltros()"/>
@@ -185,6 +185,7 @@
 							</div>
 						</div>
 						<div class="mt-1">
+							<label for="alergenos">No contenga:  </label>
 							<Dropdown id="alergenos" v-model="alergenosSel2" :options="selector_alergenos2" optionLabel="name" placeholder="Alérgenos" @change="alergenos()"></Dropdown>
 						</div>
 					</div>
@@ -198,8 +199,8 @@
 							</div>
 							<div class="field">
 								<span class="p-input-icon-left mb-2">
-									<i class="pi pi-search" />
-									<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" id="BuscadorComidas"/>
+									<i class="pi pi-search" @click="fetchItems()" style="cursor:pointer;"/>
+									<InputText placeholder="Buscar" style="width: 100%" @keyup.enter="fetchItems()" @focusout="fetchItems()" id="BuscadorComidas" v-model="buscador"/>
 								</span>
 							</div>
 							<div class="field">
@@ -493,6 +494,8 @@
 				ratiokcal: 0,
 				ratioProteina: 0,
 				ratioCarbohidrato: 0,
+				buscador: '',
+				buscadorAntiguo: '',
 				ratioGrasa: 0,
 				dataviewValueComida: {'kcal_100g':0,'proteinas_100g':0,'carbohidratos_100g':0,'grasa_100g':0},
 				layout: 'grid',
@@ -507,6 +510,22 @@
 					{label: 'Alfabéticamente inverso', value: '!nombre'},
 				],
 				alergenosSel2: [],
+				dctAlergenos: {
+					'gluten': /(gluten)/,
+					'crustaceos': /(crustaceans|crustaceos)/,
+					'huevos': /(eggs|huevos)/,
+					'pescado': /(fish|pescado)/,
+					'cacahuetes': /(peanuts|cacahuetes)/,
+					'soja': /(soybeans|soja)/,
+					'leche': /(milk|leche)/,
+					'frutos_de_cascara': /(nuts|frutos)/,
+					'apio': /(celery|apio)/,
+					'mostaza': /(mustard|mostaza)/,
+					'sesamo': /(sesame|sesamo)/,
+					'azufre_sulfitos': /(sulphites|sulfitos)/,
+					'altramuces': /(lupins|altramuces)/,
+					'moluscos': /(molluscs|moluscos)/
+				},
 				selector_alergenos2: [
 					{name: 'Gluten', code: 'gluten'},
 					{name: 'Crustáceos', code: 'crustaceos'},
@@ -523,22 +542,6 @@
 					{name: 'Altramuces', code: 'altramuces'},
 					{name: 'Moluscos', code: 'moluscos'}
 				],
-				dctAlergenos: {
-					'gluten': /(gluten)/,
-					'crustaceos': /(crustaceans|crustaceos)/,
-					'huevo': /(eggs|huevos)/,
-					'pescado': /(fish|pescado)/,
-					'cacahuetes': /(peanuts|cacahuetes)/,
-					'soja': /(soybeans|soja)/,
-					'leche': /(milk|leche)/,
-					'frutos_de_cascara': /(nuts|frutos)/,
-					'apio': /(celery|apio)/,
-					'mostaza': /(mustard|mostaza)/,
-					'sesamo': /(sesame|sesamo)/,
-					'azufre_sulfitos': /(sulphites|sulfitos)/,
-					'altramuces': /(lupins|altramuces)/,
-					'moluscos': /(molluscs|moluscos)/
-				},
 				responsiveOptions: [
 					{
 						breakpoint: '1460px',
@@ -593,47 +596,74 @@
 			fetchItems(){
 
 				if (this.isRecientes === true){
-					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
-						this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
-						.then(data => {
-							this.totalRecords = data.total;
-							this.dataviewValue = data.resultado;
-							this.obtenerDatosDia(); 
+					if (!document.getElementById('btRecientes').classList.contains('p-disabled') || this.buscadorAntiguo === '' || this.buscador !== this.buscadorAntiguo){
+
+						document.getElementById('btRecientes').classList.add('p-disabled');
+						if (document.getElementById('btFavoritos').classList.contains('p-disabled')) document.getElementById('btFavoritos').classList.remove('p-disabled');
+						if (document.getElementById('btCreados').classList.contains('p-disabled')) document.getElementById('btCreados').classList.remove('p-disabled');
+						this.buscadorAntiguo = this.buscador
+
+						this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
+							this.alimentoService.getRecientes(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value)
+							.then(data => {
+								this.totalRecords = data.total;
+								this.dataviewValue = data.resultado;
+								this.obtenerDatosDia(); 
+							});
 						});
-					});
+					}
 				}else if (this.isFavoritos === true){
-					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
-						this.alimentoService.getFavoritos(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value,this.favoritosList)
-						.then(data => {
-							this.totalRecords = data.total;
-							this.dataviewValue = data.resultado;
-							this.obtenerDatosDia(); 
-						});
-					})
-				}else if (this.isCreados === true){
-					this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
-						this.alimentoService.getCreados(this.$store.state.username, this.lazyParams, document.getElementById('BuscadorComidas').value)
-						.then(data => {
-							this.totalRecords = data.total;
-							this.dataviewValue = data.resultado;
-							this.obtenerDatosDia(); 
-						});
+					if (!document.getElementById('btFavoritos').classList.contains('p-disabled') || this.buscadorAntiguo === '' || this.buscador !== this.buscadorAntiguo){
+						
+						if (document.getElementById('btRecientes').classList.contains('p-disabled')) document.getElementById('btRecientes').classList.remove('p-disabled');
+						document.getElementById('btFavoritos').classList.add('p-disabled');
+						if (document.getElementById('btCreados').classList.contains('p-disabled')) document.getElementById('btCreados').classList.remove('p-disabled');
+						this.buscadorAntiguo = this.buscador
 
-					})
-				}else{
+						this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
+							this.alimentoService.getFavoritos(this.$store.state.userId, this.lazyParams, document.getElementById('BuscadorComidas').value,this.favoritosList)
+							.then(data => {
+								this.totalRecords = data.total;
+								this.dataviewValue = data.resultado;
+								this.obtenerDatosDia(); 
+							});
+						})
+					}
 					
-					this.userService.getFavoritos(this.$store.state.userId).then(data => {
-							this.favoritosList = data
-							
-						this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
-						.then(data => {
-							this.totalRecords = data.total;
-							this.dataviewValue = data.resultado;
-							this.obtenerDatosDia(); 
-							
-						});
+				}else if (this.isCreados === true){
+					if (document.getElementById('btCreados').classList.contains('p-disabled') || this.buscadorAntiguo === '' || this.buscador !== this.buscadorAntiguo){
+						
+						if (document.getElementById('btRecientes').classList.contains('p-disabled')) document.getElementById('btRecientes').classList.remove('p-disabled');
+						if (document.getElementById('btFavoritos').classList.contains('p-disabled')) document.getElementById('btFavoritos').classList.remove('p-disabled');
+						document.getElementById('btCreados').classList.add('p-disabled');
+						this.buscadorAntiguo = this.buscador
 
-					})	
+						this.userService.getFavoritos(this.$store.state.userId).then(data => {this.favoritosList = data
+							this.alimentoService.getCreados(this.$store.state.username, this.lazyParams, document.getElementById('BuscadorComidas').value)
+							.then(data => {
+								this.totalRecords = data.total;
+								this.dataviewValue = data.resultado;
+								this.obtenerDatosDia(); 
+							});
+
+						})
+					}
+				}else{
+					if (this.buscadorAntiguo === '' || this.buscador !== this.buscadorAntiguo){
+						this.buscadorAntiguo = this.buscador
+						this.userService.getFavoritos(this.$store.state.userId).then(data => {
+								this.favoritosList = data
+								
+							this.alimentoService.getAlimentos(this.lazyParams, document.getElementById('BuscadorComidas').value)
+							.then(data => {
+								this.totalRecords = data.total;
+								this.dataviewValue = data.resultado;
+								this.obtenerDatosDia(); 
+								
+							});
+
+						})	
+					}
 				}
 			},
 			onPage(event){
@@ -665,9 +695,15 @@
 				this.isRecientes = false;
 				this.isFavoritos = false;
 				this.alergenosSel2 = [];
-				this.sortKey = null,
-				this.sortOrder = null,
-				this.sortField = null,
+				this.sortKey = null;
+				this.sortOrder = null;
+				this.sortField = null;
+				this.buscador = '';
+				this.buscadorAntiguo = '';
+				document.getElementById('BuscadorComidas').value = '';
+				if (document.getElementById('btRecientes').classList.contains('p-disabled')) document.getElementById('btRecientes').classList.remove('p-disabled');
+				if (document.getElementById('btFavoritos').classList.contains('p-disabled')) document.getElementById('btFavoritos').classList.remove('p-disabled');
+				if (document.getElementById('btCreados').classList.contains('p-disabled'))   document.getElementById('btCreados').classList.remove('p-disabled');
 				this.fetchItems();
 			},
 			//TERMINA BUSCADOR/PAGINACION/FILTRO/ORDEN
