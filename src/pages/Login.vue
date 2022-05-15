@@ -1,7 +1,5 @@
 <template>
 
-    <Toast position="bottom-right"/>
-
     <div class="flex align-items-center justify-content-center overflow-hidden">
         <div class="grid justify-content-center p-2 lg:p-0" style="min-width:80%">
             <div class="col-12 mt-5 xl:mt-0 text-center">
@@ -56,7 +54,6 @@ import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
 import axios from "axios";
-import Toast from 'primevue/toast';
 import moment from 'moment';
 
 export default {
@@ -65,7 +62,6 @@ export default {
     InputText,
     Password,
     Button,
-    Toast,
     },
     created() {
         if (this.loggedIn) {

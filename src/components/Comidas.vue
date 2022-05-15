@@ -295,7 +295,7 @@
 			</div>
 			<!-- Fin tabla con los alimentos-->
 			<!-- Comienzan los detalles-->
-			<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%" @close="this.imagenesAlergenos = []">
+			<Dialog v-model:visible="alimentoDialog" header="Detalles del alimento" :modal="true" class="p-fluid" style="flex: 0 0 auto; width: 66.6667%" @close="this.imagenesAlergenos = []" :dismissableMask="true" :draggable="false">
 				<div class="contenedor-imagen-detalles">
 					<img :src="!(alimento.imagen_peq) ? sinAlimento : alimento.imagen_peq" :alt="alimento.nombre" class="mt-0 mx-auto mb-5 block shadow-2 imagen-comida-detalles"/>
 					<h4 class="centered" style="color:#256029; font-size:2.5rem; font-family: 'Oswald', sans-serif;">{{ alimento.nombre }}</h4>

@@ -92,7 +92,7 @@
                     </DataTable>
                 </div>
                 <!--Create-->
-                <Dialog v-model:visible="alimentoDialog" :style="{width: '500px'}" header="Detalles de Receta" :modal="true" class="p-fluid">					
+                <Dialog v-model:visible="alimentoDialog" :style="{width: '500px'}" header="Detalles del alimento" :modal="true" class="p-fluid" :dismissableMask="true" :draggable="false">					
                     <div class="field">
 						<label for="nombre">Nombre*</label>
 						<InputText id="nombre" v-model="alimento.nombre" required="true" autofocus :class="{'p-invalid': submitted && errorNombre}" />
@@ -322,7 +322,6 @@ export default {
             if (!this.alimento.kcal_100g || !this.alimento.proteinas_100g || !this.alimento.grasa_100g || !this.alimento['grasas-std_100g'] 
                 || !this.alimento.carbohidratos_100g || !this.alimento.azucares_100g || !this.alimento.sal_100g){
                 resultado = false;
-                console.log("Faltan datos alimenticios");
             }
 
             return resultado;
