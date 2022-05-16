@@ -159,7 +159,7 @@
 						<MultiSelect v-model="alergenosSel" :options="selector_alergenos" optionLabel="Alérgenos" placeholder="Seleccione los alérgenos" :filter="true">
 							<template #value="slotProps">
 								<div class="inline-flex align-items-center py-1 px-2 bg-primary text-primary border-round mr-2" v-for="option of slotProps.value" :key="option.code">
-									<span :class="'mr-2 flag flag-' + option.code.toLowerCase()" style="width:18px; height: 12px"/>
+									<span :class="'mr-2 flag flag-' + option.code.toLowerCase" style="width:18px; height: 12px"/>
 									<div>{{option.name}}</div>
 								</div>
 								<template v-if="!slotProps.value || slotProps.value.length === 0">
@@ -184,7 +184,7 @@
 				<Dialog v-model:visible="deleteAlimentoDialog" :style="{width: '450px'}" header="Confirmación" :modal="true" :dismissableMask="true" :draggable="false">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-						<span v-if="alimento">¿Quieres borrar la receta <b>{{alimento.nombre}}</b>?</span>
+						<span v-if="alimento">¿Quieres borrar el alimento <b>{{alimento.nombre}}</b>?</span>
 					</div>
 					<template #footer>
 						<Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteAlimentoDialog = false"/>
@@ -230,6 +230,22 @@ export default {
 				{name: 'Altramuces', code: 'altramuces'},
 				{name: 'Moluscos', code: 'moluscos'}
 			],
+            dctAlergenos: {
+                'gluten': /(gluten)/,
+                'crustaceos': /(crustaceans|crustaceos)/,
+                'huevos': /(eggs|huevos)/,
+                'pescado': /(fish|pescado)/,
+                'cacahuetes': /(peanuts|cacahuetes)/,
+                'soja': /(soybeans|soja)/,
+                'leche': /(milk|leche)/,
+                'frutos_de_cascara': /(nuts|frutos)/,
+                'apio': /(celery|apio)/,
+                'mostaza': /(mustard|mostaza)/,
+                'sesamo': /(sesame|sesamo)/,
+                'azufre_sulfitos': /(sulphites|sulfitos)/,
+                'altramuces': /(lupins|altramuces)/,
+                'moluscos': /(molluscs|moluscos)/
+            },
             lazyParams: {},
         };
     },
@@ -329,6 +345,20 @@ export default {
         editAlimento(alimento) {
             this.alimentoDialog = true;
             this.alimento = alimento;
+            if(alimento.alergenos != undefined){
+                for (let [alergeno, expresion] of Object.entries(this.dctAlergenos))
+                {
+                    if (expresion.test(alimento.alergenos.toLowerCase()))
+                    {
+                        let selector = this.selector_alergenos.find(a => {return a.code === alergeno})
+                        if (selector){
+                            console.log('selector: ', selector)
+                            this.alergenosSel.push(selector);
+                        }
+                        
+                    }
+                }
+            }
             this.editing = true;
         },
         putAlimento() {
@@ -361,7 +391,7 @@ export default {
             this.alimento = {};
             this.alergenosSel= [];
             this.deleteAlimentoDialog=false;
-            this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Receta eliminada', life: 3000});
+            this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Alimento eliminado', life: 3000});
         },
         exportCSV() {
             this.$refs.dt.exportCSV();
