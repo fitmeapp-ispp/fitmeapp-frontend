@@ -2,8 +2,11 @@ import axios from 'axios';
 
 export default class ExerciseService {
 
-    saveExercise(exercise) { 
-        return axios.post('/ejercicio_ejecuciones', exercise)
+    saveExercise(exercise, fecha) { 
+        return axios.post('/ejercicio_ejecuciones', {
+            exercise: exercise,
+            fecha: fecha
+        })
         .catch((e)=>{
             console.log('error' + e);
         });
@@ -61,8 +64,12 @@ export default class ExerciseService {
         }
     }
     
-    getRecomendaciones(userId){
-        return axios.get(`ejercicio_ejecuciones/recomendacion/${userId}`)
+    getRecomendaciones(userId, fecha){
+        return axios.get(`ejercicio_ejecuciones/recomendacion/${userId}`, {
+            params:{
+                fecha: fecha
+            }
+        })
         .catch((e)=>{
             console.log('error' + e);
         });

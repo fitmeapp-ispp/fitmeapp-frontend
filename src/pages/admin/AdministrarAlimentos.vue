@@ -28,55 +28,55 @@
 							</div>
                         </template>
                     
-                        <Column field="nombre" header="Alimento" :sortable="true" headerStyle="width:10%;">
+                        <Column field="nombre" header="Alimento"  headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Alimento</span>
                                 {{slotProps.data.nombre}}
                             </template>
                         </Column>
-                        <Column field="kcal_100g" header="Kcal" :sortable="true" headerStyle="width:10%;">
+                        <Column field="kcal_100g" header="Kcal"  headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Kcal</span>
                                 {{slotProps.data.kcal_100g}}
                             </template>
                         </Column>
-                        <Column field="grasa_100g" header="Grasas" :sortable="true" headerStyle="width:10%;">
+                        <Column field="grasa_100g" header="Grasas"  headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Grasas</span>
                                 {{slotProps.data.grasa_100g}}
                             </template>
                         </Column>
-                        <Column field="carbohidratos_100g" header="Carbohidratos" :sortable="true" headerStyle="width:10%;">
+                        <Column field="carbohidratos_100g" header="Carbohidratos"  headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Carbohidratos</span>
                                 {{slotProps.data.carbohidratos_100g}}
                             </template>
                         </Column>
-                        <Column field="azucares_100g" header="Azúcares" :sortable="true" headerStyle="width:10%;">
+                        <Column field="azucares_100g" header="Azúcares"  headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Azúcares</span>
                                 {{slotProps.data.azucares_100g}}
                             </template>
                         </Column>
-                        <Column field="proteinas_100g" header="Proteínas" :sortable="true" headerStyle="width:10%;">
+                        <Column field="proteinas_100g" header="Proteínas"  headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Proteínas</span>
                                 {{slotProps.data.proteinas_100g}}
                             </template>
                         </Column>
-                        <Column field="sal_100g" header="Sal" :sortable="true" headerStyle="width:10%;">
+                        <Column field="sal_100g" header="Sal"  headerStyle="width:10%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Sal</span>
                                 {{slotProps.data.sal_100g}}
                             </template>
                         </Column>
-                        <Column field="fibra_100g" header="Fibra" :sortable="true" headerStyle="width:5%;">
+                        <Column field="fibra_100g" header="Fibra"  headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Fibra</span>
                                 {{slotProps.data.fibra_100g}}
                             </template>
                         </Column>
-                        <Column field="colesterol_100g" header="Colesterol" :sortable="true" headerStyle="width:5%;">
+                        <Column field="colesterol_100g" header="Colesterol"  headerStyle="width:5%;">
                             <template #body="slotProps">
                             <span class="p-column-title">Colesterol</span>
                                 {{slotProps.data.colesterol_100g}}
@@ -181,7 +181,7 @@
                     </template>
                 </Dialog>
                 <!-- confirmacion para borrar -->
-				<Dialog v-model:visible="deleteAlimentoDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+				<Dialog v-model:visible="deleteAlimentoDialog" :style="{width: '450px'}" header="Confirmación" :modal="true" :dismissableMask="true" :draggable="false">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
 						<span v-if="alimento">¿Quieres borrar la receta <b>{{alimento.nombre}}</b>?</span>

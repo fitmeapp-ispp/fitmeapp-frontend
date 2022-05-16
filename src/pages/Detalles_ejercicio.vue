@@ -1,7 +1,6 @@
 <template>
 
 	<div class="grid" v-if="dataviewValue">
-        <Toast position="bottom-right"/>
         <div class="grid card col-12">
             <div class="col-12 lg:col-11 md:col-11">
                 <h1 style="color:#256029; font-family: 'Oswald', sans-serif;">{{dataviewValue.name}}</h1>
@@ -188,10 +187,10 @@ export default {
                 exercise.ejercicio = this.dataviewValue._id;
                 exercise.usuario = this.$store.state.userId;
 
-                this.exerciseService.saveExercise(exercise)
+                this.exerciseService.saveExercise(exercise, this.$store.state.fechaHome)
                 .then(() => {
+                    window.location.href = '/'
                     this.$toast.add({severity:'success', summary: 'Éxito', detail: 'El ejercicio se ha añadido a la lista de realizados.', life: 3000})
-                    this.$router.push('/');
                 })
                 .catch(() => this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Lo sentimos, ocurrió un fallo al guardar su ejercicio realizado.', life: 3000}));
             } else {
@@ -206,8 +205,8 @@ export default {
 
                 this.exerciseService.updateExercise(exercise)
                 .then(() => {
+                    window.location.href = '/'
                     this.$toast.add({severity:'success', summary: 'Éxito', detail: 'El ejercicio se ha añadido a la lista de realizados.', life: 3000})
-                    this.$router.push('/');
                 })
                 .catch(() => this.$toast.add({severity:'error', summary: 'Fallo', detail: 'Lo sentimos, ocurrió un fallo al guardar su ejercicio realizado.', life: 3000}));
             } else {

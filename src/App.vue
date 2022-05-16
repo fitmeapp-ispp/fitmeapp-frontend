@@ -38,10 +38,13 @@ window.onscroll = function() {
                 document.getElementsByClassName("layout-main-container")[0].style.padding = "7rem 2rem 2rem 4rem"
             }
         } else {
-            document.getElementById("navbar").style.display = "flex"
-            // document.getElementById("historial").className = "box shadow-7 mb-3 col-7 headerDias"
-            // document.getElementById("historialTag").classList.remove("hidden")
-            document.getElementsByClassName("layout-main-container")[0].style.padding = "7rem 2rem 2rem 4rem"
+            if(!(this.$route.fullPath === "/login" || this.$route.fullPath === "/register" || this.$route.fullPath === "/condiciones" || this.$route.fullPath.match(/^(\/administrar)/gm))){
+
+                document.getElementById("navbar").style.display = "flex"
+                // document.getElementById("historial").className = "box shadow-7 mb-3 col-7 headerDias"
+                // document.getElementById("historialTag").classList.remove("hidden")
+                document.getElementsByClassName("layout-main-container")[0].style.padding = "7rem 2rem 2rem 4rem"
+            }
         }
     };
 

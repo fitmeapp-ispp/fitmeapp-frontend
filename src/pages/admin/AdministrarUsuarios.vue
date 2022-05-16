@@ -8,7 +8,7 @@
 
 				<DataTable ref="dt" :value="users" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios" responsiveLayout="scroll" :globalFilterFields="['nombre','apellidos']">
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios" responsiveLayout="scroll" :globalFilterFields="['nombre','apellidos']" :removableSort="true">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							
@@ -63,7 +63,7 @@
 
 
         <!-- confirmacion para borrar -->
-				<Dialog v-model:visible="deleteUserDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+				<Dialog v-model:visible="deleteUserDialog" :style="{width: '450px'}" header="Confirmación" :modal="true" :dismissableMask="true" :draggable="false">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
 						<span v-if="user">¿Quieres borrar el usuario <b>{{user.username}}</b>?</span>
@@ -74,7 +74,7 @@
 					</template>
 				</Dialog>
 
-				<Dialog v-model:visible="deleteUsersDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+				<Dialog v-model:visible="deleteUsersDialog" :style="{width: '450px'}" header="Confirmación" :modal="true" :dismissableMask="true" :draggable="false">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
 						<span v-if="user">¿Quieres eliminar los usuarios seleccionados?</span>
