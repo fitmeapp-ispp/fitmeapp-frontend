@@ -12,12 +12,12 @@
 					<div class="field col-12 md:col-6">
 						<label for="nombre">Nombre*</label>
 						<InputText id="nombre" v-model.trim="alimento.nombre" required="true" autofocus :class="{'p-invalid': enviado && errorNombre}" />
-						<small class="p-invalid" :key="errorNombre" v-if="enviado && errorNombre">{{this.errorNombre}}</small>
+						<small class="p-invalid" :key="errorNombre" v-if="enviado && errorNombre">{{errorNombre}}</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="marca">Marca*</label>
 						<InputText id="marca" v-model="alimento.marca" required="true" autofocus :class="{'p-invalid': enviado && errorMarca}" />
-						<small class="p-invalid" :key="errorMarca" v-if="enviado && errorMarca">{{this.errorMarca}}</small>
+						<small class="p-invalid" :key="errorMarca" v-if="enviado && errorMarca">{{errorMarca}}</small>
 					</div>
 				</div>
 				<br>
@@ -28,44 +28,44 @@
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Energía* (Kcal)</label>
-						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.kcal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.kcal_100g}"/>
-						<small class="p-invalid" v-if="enviado && (alimento.kcal_100g < 0)">Debe indicar cuántas kcal tiene.</small>
+						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.kcal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && errorKcal}"/>
+						<small class="p-invalid" :key="errorKcal" v-if="enviado && errorKcal">{{errorKcal}}</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Proteinas* (g)</label>
-						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.proteinas_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.proteinas_100g}"/>
-						<small class="p-invalid" v-if="enviado && (alimento.proteinas_100g < 0)">Debe indicar si lleva proteinas.</small>
+						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.proteinas_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && errorProt}"/>
+						<small class="p-invalid" :key="errorProt" v-if="enviado && errorProt">{{errorProt}}</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="grasas">Grasas* (g)</label>
-						<InputNumber id="grasas" mode="decimal" :min="0" v-model="alimento.grasa_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasa_100g}"/>
-						<small class="p-invalid" v-if="enviado && (alimento.grasa_100g < 0)">Debe indicar si lleva grasas.</small>
+						<InputNumber id="grasas" mode="decimal" :min="0" v-model="alimento.grasa_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && errorGrasa}"/>
+						<small class="p-invalid" :key="errorGrasa" v-if="enviado && errorGrasa">{{errorGrasa}}</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="grasasStd">Grasas saturadas* (g)</label>
-						<InputNumber id="grasasStd" mode="decimal" :min="0" v-model="alimento.grasas_std_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.grasas_std_100g}"/>
-						<small class="p-invalid" v-if="enviado && (alimento.grasas_std_100g < 0)">Debe indicar si lleva grasas saturadas.</small>
+						<InputNumber id="grasasStd" mode="decimal" :min="0" v-model="alimento['grasas-std_100g']" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && errorStd}"/>
+						<small class="p-invalid" :key="errorStd" v-if="enviado && errorStd">{{errorStd}}</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Carbohidratos* (g)</label>
-						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.carbohidratos_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.carbohidratos_100g}"/>
-						<small class="p-invalid" v-if="enviado && (alimento.carbohidratos_100g < 0)">Debe indicar si lleva carbohidratos.</small>
+						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.carbohidratos_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && errorCarb}"/>
+						<small class="p-invalid" :key="errorCarb" v-if="enviado && errorCarb">{{errorCarb}}</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Azúcares* (g)</label>
-						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.azucares_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.azucares_100g}"/>
-						<small class="p-invalid" v-if="enviado && (alimento.azucares_100g < 0)">Debe indicar si lleva azúcares.</small>
+						<InputNumber id="kcal" mode="decimal" :min="0" v-model="alimento.azucares_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && errorAzucar}"/>
+						<small class="p-invalid" :key="errorAzucar" v-if="enviado && errorAzucar">{{errorAzucar}}</small>
 					</div>
 				</div>
 				<div class="p-fluid formgrid grid">
 					<div class="field col-12 md:col-6">
 						<label for="name2">Sal* (g)</label>
-						<InputNumber id="inputtext" mode="decimal" :min="0" v-model="alimento.sal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && !alimento.sal_100g}"/>
-						<small class="p-invalid" v-if="enviado && (alimento.sal_100g < 0)">Debe indicar si lleva sal.</small>
+						<InputNumber id="inputtext" mode="decimal" :min="0" v-model="alimento.sal_100g" :maxFractionDigits="2" required="true" autofocus :class="{'p-invalid': enviado && errorSal}"/>
+						<small class="p-invalid" :key="errorSal" v-if="enviado && errorSal">{{errorSal}}</small>
 					</div>
 					<div class="field col-12 md:col-6">
 						<label for="kcal">Sodio (g)</label>
@@ -133,6 +133,13 @@ export default {
 			enviado: false,
 			errorNombre: null,
 			errorMarca: null,
+			errorKcal: null,
+			errorProt: null,
+			errorGrasa: null,
+			errorStd: null,
+			errorCarb: null,
+			errorAzucar: null,
+			errorSal: null,
 			alergenosSel: [],
 			selector_alergenos: [
 				{name: 'Gluten', code: 'gluten'},
@@ -217,18 +224,58 @@ export default {
 				resultado = false;
 				this.errorNombre = 'El nombre solo puede tener letras';
 			}else{
-				this.errorNombre = "";
+				this.errorNombre = null;
 			}
 			if (!this.alimento.marca || !regexLetras.test(this.alimento.marca))
 			{
 				resultado = false;
 				this.errorMarca = 'La marca solo puede tener letras';
 			}else{
-				this.errorMarca = "";
+				this.errorMarca = null;
 			}
-			if ((this.alimento.kcal_100g < 0) || (this.alimento.proteinas_100g < 0) || (this.alimento.grasa_100g < 0) || (this.alimento.grasas_std_100g < 0) || (this.alimento.carbohidratos_100g < 0) || (this.alimento.azucares_100g < 0) || (this.alimento.sal_100g < 0)){
+			if (!this.alimento.kcal_100g || this.alimento.kcal_100g < 0){
 				resultado = false;
+				this.errorKcal = 'Debe indicar cuántas kcal tiene.';
+			}else{
+				this.errorKcal = null;
 			}
+			if(!this.alimento.proteinas_100g || this.alimento.proteinas_100g < 0){
+				resultado = false;
+				this.errorProt = 'Debe indicar si lleva proteinas.';
+			}else{
+				this.errorProt = null;
+			}
+			if(!this.alimento.grasa_100g || this.alimento.grasa_100g < 0){
+				resultado = false;
+				this.errorGrasa = 'Debe indicar si lleva grasas.';
+			}else{
+				this.errorGrasa = null;
+			}
+			if(!this.alimento['grasas-std_100g'] || this.alimento['grasas-std_100g'] < 0){
+				resultado = false;
+				this.errorStd = 'Debe indicar si lleva grasas saturadas.';
+			}else{
+				this.errorStd = null;
+			}
+			if(!this.alimento.carbohidratos_100g || this.alimento.carbohidratos_100g < 0){
+				resultado = false;
+				this.errorCarb = 'Debe indicar si lleva carbohidratos.';
+			}else{
+				this.errorCarb = null;
+			}
+			if(!this.alimento.azucares_100g || this.alimento.azucares_100g < 0){
+				resultado = false;
+				this.errorAzucar = 'Debe indicar cuántas kcal tiene.';
+			}else{
+				this.errorAzucar = null;
+			}
+			if(!this.alimento.sal_100g || this.alimento.sal_100g < 0){
+				resultado = false;
+				this.errorSal = 'Debe indicar si lleva sal.';
+			}else{
+				this.errorSal = null;
+			}
+			
 			this.$forceUpdate();
 			return resultado;
 		},

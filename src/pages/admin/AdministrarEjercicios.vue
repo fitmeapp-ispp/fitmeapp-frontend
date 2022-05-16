@@ -18,7 +18,7 @@
 
 				<DataTable ref="dt" :value="exercises" v-model:selection="selectedExercises" dataKey="_id" :paginator="true" :rows="10" :filters="filters"
 							paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]"
-							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} ejercicios" responsiveLayout="scroll">
+							currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} ejercicios" responsiveLayout="scroll"  :removableSort="true">
 					<template #header>
 						<div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
 							
@@ -58,7 +58,7 @@
 						</template>
 					</Column>
 
-					<Column field="muscle" header="Músculos principales" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+					<Column field="muscles" header="Músculos principales" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span v-for="muscleId, index of slotProps.data.muscles" :key="muscleId">
 								{{muscleList[muscleId - 1].name}}
@@ -67,7 +67,7 @@
 						</template>
 					</Column>
 
-					<Column field="muscle" header="Músculos secundarios" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+					<Column field="muscles_secondary" header="Músculos secundarios" :sortable="true" headerStyle="width:14%; min-width:10rem;">
 						<template #body="slotProps">
 							<span v-for="muscleId, index of slotProps.data.muscles_secondary" :key="muscleId">
 								{{muscleList[muscleId - 1].name}}
@@ -95,7 +95,7 @@
 
 
                 <!-- crear nuevo -->
-				<Dialog v-model:visible="exerciseDialog" :style="{width: '500px'}" header="Detalles de Ejercicio" :modal="true" class="p-fluid">
+				<Dialog v-model:visible="exerciseDialog" :style="{width: '500px'}" header="Detalles de Ejercicio" :modal="true" class="p-fluid" :dismissableMask="true" :draggable="false">
 					<img :src="'images/exercise/' + exercise.image" :alt="exercise.image" v-if="exercise.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" />
 					
                     <div class="field">
@@ -185,7 +185,7 @@
 
 
                 <!-- confirmacion para borrar -->
-				<Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+				<Dialog v-model:visible="deleteExerciseDialog" :style="{width: '450px'}" header="Confirmación" :modal="true" :dismissableMask="true" :draggable="false">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
 						<span v-if="exercise">¿Quieres borrar el ejercicio <b>{{exercise.name}}</b>?</span>
@@ -196,7 +196,7 @@
 					</template>
 				</Dialog>
 
-				<Dialog v-model:visible="deleteExercisesDialog" :style="{width: '450px'}" header="Confirmación" :modal="true">
+				<Dialog v-model:visible="deleteExercisesDialog" :style="{width: '450px'}" header="Confirmación" :modal="true" :dismissableMask="true" :draggable="false">
 					<div class="flex align-items-center justify-content-center">
 						<i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
 						<span v-if="exercise">¿Quieres eliminar los ejercicios seleccionados?</span>

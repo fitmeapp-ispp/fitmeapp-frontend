@@ -150,7 +150,7 @@
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Pasos</Tag>
                     
                     <div class="my-2 text-center">
-                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly/>
+                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly valueTemplate="{value}%"/>
                         <h3 class="mt-0" v-if="porcentajePasos >= 100">¡Objetivo conseguido!</h3>
                     </div>
 
@@ -512,9 +512,9 @@
                     var sumProt = Math.trunc(data.proteinasIngeridasDesayuno + data.proteinasIngeridasAlmuerzo + data.proteinasIngeridasCena);
                     var sumGrasas = Math.trunc(data.grasasIngeridasDesayuno + data.grasasIngeridasAlmuerzo + data.grasasIngeridasCena);
 
-                    var restanteCarb = Math.trunc(Math.abs(data.carbRec - sumCarbs));
-                    var restanteProt = Math.trunc(Math.abs(data.proteinasRec - sumProt));
-                    var restanteGrasas = Math.trunc(Math.abs(data.grasasRec - sumGrasas));
+                    var restanteCarb = Math.trunc(data.carbRec - sumCarbs) < 0 ? 0 : Math.trunc(Math.abs(data.carbRec - sumCarbs));
+                    var restanteProt = Math.trunc(data.proteinasRec - sumProt) < 0 ? 0 : Math.trunc(Math.abs(data.proteinasRec - sumProt));
+                    var restanteGrasas = Math.trunc(data.grasasRec - sumGrasas) < 0 ? 0 : Math.trunc(Math.abs(data.grasasRec - sumGrasas));
 
                     this.pieData = {
                         labels: ['Carbohidratos consumidos','Carbohidratos restantes', 'Proteínas consumidas','Proteínas restantes', 'Grasas consumidas', 'Grasas restantes'],

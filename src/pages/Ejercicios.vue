@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     fetchItems(){
-      this.exerciseService.getRecomendaciones(this.$store.state.userId)
+      this.exerciseService.getRecomendaciones(this.$store.state.userId, this.$store.state.fechaHome)
       .then(res => {
         this.dataviewValue = res.data
       });
