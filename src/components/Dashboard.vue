@@ -37,7 +37,7 @@
                         <div class="col-12">
                             <div class="col-12 flex flex-column align-items-center">
                                 <h3 class="col-12 flex justify-content-center" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Restantes</h3>
-                                <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
+                                <div class="flex align-items-center py-3 px-2 border-top-1 surface-border" v-tooltip.bottom="{value:'Si el valor de las calorías restantes es positivo, significa que debería consumir dicho número de calorías. \n\n En caso de que sea negativo, debería quemar dicha cantidad.', class: 'text-justify'}" >
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
                                 <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">¡Objetivo conseguido!</h3>
