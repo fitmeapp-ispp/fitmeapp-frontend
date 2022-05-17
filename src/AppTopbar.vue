@@ -62,7 +62,7 @@
                 </router-link>
             </div>
             <div align="center">
-                <img alt="Logo" :src="topbarImage()"/>
+                <img alt="Logo" :src="topbarImage()" width="100"/>
             </div>
             <div class="flex p-sidebar-bottom align-items-end justify-content-end">
                 <button class="p-link mr-3" id="btUsuario2" v-if="$store.state.username" @click="toggleMenu" style="">

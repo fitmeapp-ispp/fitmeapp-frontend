@@ -8,7 +8,7 @@
             <div class="col-12 xl:col-6" style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, #256029, rgba(33, 150, 243, 0) 30%);">
                 <div class="h-full w-full m-0 py-7 px-4" :style="'border-radius:53px; background: #b0e0c1'">
                     <div class="text-center mb-5">
-                        <img :src="topbarImage()" alt="Logo" class="mb-3" height="50">
+                        <img :src="topbarImage()" alt="Logo" class="mb-3" width="100">
                         <div class=" font-medium mb-3" style="font-size:3rem; color:#256029; font-family: 'Oswald', sans-serif;">¡Bienvenido a FitMeApp!</div>
                         <span class="text-900 font-medium">Inicia sesión para continuar</span>
                     </div>
