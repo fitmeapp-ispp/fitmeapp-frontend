@@ -360,7 +360,7 @@ export default {
 		deleteExercise() {
 			let id = this.exercise._id.split('').join(''); //Clone string
 			this.exercises = this.exercises.filter(val => val._id !== this.exercise._id);
-			axios.delete("/exercise/"+id);
+			axios.delete("/ejercicios/"+id);
 			this.deleteExerciseDialog = false;
 			this.exercise = {};
 			this.$toast.add({severity:'success', summary: 'Correcto', detail: 'Ejercicio eliminado', life: 3000});
