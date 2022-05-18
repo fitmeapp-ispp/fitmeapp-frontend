@@ -37,7 +37,7 @@
                         <div class="col-12">
                             <div class="col-12 flex flex-column align-items-center">
                                 <h3 class="col-12 flex justify-content-center" style="font-size:1.75rem; color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;">Restantes</h3>
-                                <div class="flex align-items-center py-3 px-2 border-top-1 surface-border">
+                                <div class="flex align-items-center py-3 px-2 border-top-1 surface-border" v-tooltip.bottom="{value:'Si el valor de las calorías restantes es positivo, significa que debería consumir dicho número de calorías. \n\n En caso de que sea negativo, debería quemar dicha cantidad.', class: 'text-justify'}" >
                                     <Badge class="col-12 flex justify-content-center align-items-center line-height-1" :severity="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0 ? 'success' : 'danger'" size="xlarge" :value="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos)" />
                                 </div>
                                 <h3 v-if="Math.trunc(dia.kcalRec - dia.kcalIngeridasDesayuno - dia.kcalIngeridasAlmuerzo - dia.kcalIngeridasCena + kcalQuemadas + kcalQuemadasPasos) == 0">¡Objetivo conseguido!</h3>
@@ -52,8 +52,69 @@
                     </div>
                 </div>
 
-                <div class="card col-12 align-content-center justify-content-center mt-3">
+                <div class="card col-12 align-content-center justify-content-center mt-3" id="carouselNormal">
                     <Carousel :value="comidas" :numVisible="1" :numScroll="1">
+                        <template #item="slotProps">  
+                            <div class="grid col-12 align-content-center justify-content-center">
+                                <router-link :to="'/comidas/' + slotProps.data.Tipo" class="mt-1 col-12">
+                                    <Tag class="col-12 mb-2" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750; ">{{slotProps.data.Tipo}}</Tag>
+                                </router-link>
+                                <div class="p-fluid col-12 lg:col-8 md:col-8 "> 
+                                    <div class="formgroup-inline align-content-center justify-content-around">
+                                        <div class="field ml-2 mr-0 mb-0 text-center">
+                                            <label class="col-12">KCalorías</label>
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraKcal">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.kcal/slotProps.data.kcalRec)*100 + '%'" id="kcalIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12">{{slotProps.data.kcal}}/{{slotProps.data.kcalRec}} kcal</label>
+                                        </div>
+                                        <div class="field ml-2 mr-0 mb-0">
+                                            <label class="col-12 text-center">Carbohidratos</label>
+
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraCarb">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.carbs/slotProps.data.carbsRec)*100 + '%'" id="carbIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12 text-center">{{slotProps.data.carbs}}/{{ slotProps.data.carbsRec}} g</label>
+                                        </div>
+                                    </div>
+                                    <div class="formgroup-inline align-content-center justify-content-around">
+                                        <div class="field ml-2 mr-1 mb-0">
+                                            <label class="col-12 text-center">Proteínas</label>
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraProteinas">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.prot/slotProps.data.protRec)*100 + '%'" id="protIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12 text-center">{{ slotProps.data.prot }}/{{ slotProps.data.protRec }} g</label>
+                                        </div>
+                                        <div class="field ml-2 mr-0 mb-0">
+                                            <label class="col-12 text-center">Grasas</label>
+                                            <div class="border-round overflow-hidden w-10rem" style="height:10px;" id="barraGrasas">
+                                                <div class="h-full"  v-bind:style="'width:' + (slotProps.data.grasas / slotProps.data.grasasRec)*100 + '%'" id="grasasIngeridos"> </div>
+                                            </div>
+                                            <label class="col-12 text-center">{{ slotProps.data.grasas }}/{{ slotProps.data.grasasRec }} g</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid col-12 lg:col-4 md:col-4 justify-content-center align-items-center">
+                                    <Galleria class="col-12" :value="slotProps.data.imagenes" :numVisible="1" :circular="true" :autoPlay="true" :transitionInterval="2000" containerStyle="max-width: 500px; margin: auto">
+                                        <template #item="slotProps" class="flex flex-column">
+                                            <div class="flex justify-content-center" style="height:120px;">
+                                                <img :src="slotProps.item[1]" :alt="slotProps.item[0]" style="display: block;"  class="product-image-2 mt-2"/>
+                                            </div>
+                                            <div class="my-4 textoImagen text-center white-space-nowrap overflow-hidden text-overflow-ellipsis font-bold" style="width:200px">
+                                                {{slotProps.item[0]}}
+                                            </div>
+                                        </template>
+                                    </Galleria>
+                                </div>
+                                <router-link :to="'/comidas/' + slotProps.data.Tipo" class="mt-1 col-10">
+                                    <Button :label="'Añadir ' + slotProps.data.Tipo" class="p-button-outlined p-button-secondary col-12"/>
+                                </router-link>
+                            </div>
+                        </template>
+                    </Carousel>
+                    </div>
+                    <div class="card col-12 align-content-center justify-content-center mt-3" id="carouselMovil">
+                    <Carousel :value="comidas" :numVisible="1" :numScroll="1" orientation="vertical" verticalViewPortHeight="573px">
                         <template #item="slotProps">  
                             <div class="grid col-12 align-content-center justify-content-center">
                                 <router-link :to="'/comidas/' + slotProps.data.Tipo" class="mt-1 col-12">
@@ -124,13 +185,13 @@
                 </div>
             
                 <div class="grid justify-content-center align-items-center">
-                    <div class="col-5 field">
+                    <div class="col-12 sm:col-5 field">
                         <label class="col-12 text-center">Litros de agua</label>
-                        <ProgressBar :value="(agua/2)*100" :showValue="false" style="background-color:rgb(173 218 240);transform:rotate(270deg);margin-top:90px;margin-bottom:97px;"/>
+                        <ProgressBar :value="(agua/2)*100" :showValue="false" style="background-color:rgb(173 218 240);transform:rotate(270deg);margin-top:120px;margin-bottom:120px;"/>
                         <label class="col-12 text-center">{{agua}}/2 L</label>
                     </div>
 
-                    <div class="col-5">
+                    <div class="col-12 sm:col-5 field">
                         <Tag class="col-12 mb-2 text-center" value="Añadir agua" style="font-size:1.75rem;  color:#256029; font-weight: 200; font-family: 'Oswald', sans-serif; background:#FFFFFF;"></Tag>
                         <InputNumber v-model="agua" :step="0.125" showButtons buttonLayout="horizontal" decrementButtonClass="p-button-success"
                                 incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" 
@@ -150,7 +211,7 @@
                     <Tag class="col-12 text-center" style="font-size:2rem; font-weight: 200; font-family: 'Oswald', sans-serif; background:#1da750;">Pasos</Tag>
                     
                     <div class="my-2 text-center">
-                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly/>
+                        <Knob v-model="porcentajePasos" :valueColor="colorProgresoPasos" :strokeWidth="18" :size="175" readonly valueTemplate="{value}%"/>
                         <h3 class="mt-0" v-if="porcentajePasos >= 100">¡Objetivo conseguido!</h3>
                     </div>
 
@@ -512,9 +573,9 @@
                     var sumProt = Math.trunc(data.proteinasIngeridasDesayuno + data.proteinasIngeridasAlmuerzo + data.proteinasIngeridasCena);
                     var sumGrasas = Math.trunc(data.grasasIngeridasDesayuno + data.grasasIngeridasAlmuerzo + data.grasasIngeridasCena);
 
-                    var restanteCarb = Math.trunc(Math.abs(data.carbRec - sumCarbs));
-                    var restanteProt = Math.trunc(Math.abs(data.proteinasRec - sumProt));
-                    var restanteGrasas = Math.trunc(Math.abs(data.grasasRec - sumGrasas));
+                    var restanteCarb = Math.trunc(data.carbRec - sumCarbs) < 0 ? 0 : Math.trunc(Math.abs(data.carbRec - sumCarbs));
+                    var restanteProt = Math.trunc(data.proteinasRec - sumProt) < 0 ? 0 : Math.trunc(Math.abs(data.proteinasRec - sumProt));
+                    var restanteGrasas = Math.trunc(data.grasasRec - sumGrasas) < 0 ? 0 : Math.trunc(Math.abs(data.grasasRec - sumGrasas));
 
                     this.pieData = {
                         labels: ['Carbohidratos consumidos','Carbohidratos restantes', 'Proteínas consumidas','Proteínas restantes', 'Grasas consumidas', 'Grasas restantes'],
@@ -790,6 +851,10 @@
         }
     }
 
+    #carouselMovil{
+        display: none;
+    }
+
     @media only screen and (max-width: 1438px) {
         .product-image-2 {
             width: 100%;
@@ -812,6 +877,15 @@
             border-top-right-radius: 3px;
             border-bottom-right-radius: 3px;
         }
+        .p-calendar{
+            justify-content: center;
+        }
+    }
+
+    @media only screen and (max-width:590px){
+        #historialTag{
+            display: none;
+        }
     }
 
     @media only screen and (max-width: 1168px){
@@ -823,6 +897,15 @@
     @media only screen and (max-width: 323px){
         .textoResponsive{
             font-size:1.10rem;
+        }
+    }
+
+    @media only screen and (max-width: 420px){
+        #carouselNormal{
+            display: none;
+        }
+        #carouselMovil{
+            display: flex;
         }
     }
 </style>

@@ -1,17 +1,15 @@
 <template>
 
-    <Toast position="bottom-right"/>
-
     <div class="flex align-items-center justify-content-center overflow-hidden">
         <div class="grid justify-content-center p-2 lg:p-0" style="min-width:80%">
             <div class="col-12 mt-5 xl:mt-0 text-center">
                 <!-- <img :src="topbarImage()" alt="Logo" class="mb-5"> -->
             </div>
-            <div class="col-12 xl:col-6" style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color), rgba(33, 150, 243, 0) 30%);">
-                <div class="h-full w-full m-0 py-7 px-4" :style="'border-radius:53px; background: linear-gradient('+grados+'deg, var(--green-600), var(--surface-card) 70%); animation: rotation 2s linear infinite;'">
+            <div class="col-12 xl:col-6" style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, #256029, rgba(33, 150, 243, 0) 30%);">
+                <div class="h-full w-full m-0 py-7 px-4" :style="'border-radius:53px; background: #b0e0c1'">
                     <div class="text-center mb-5">
-                        <img :src="topbarImage()" alt="Logo" class="mb-3" height="50">
-                        <div class=" font-medium mb-3" style="font-size:3rem; color:#256029; font-family: 'Oswald', sans-serif;">Bienvenido a FitMeApp!</div>
+                        <img :src="topbarImage()" alt="Logo" class="mb-3" width="100">
+                        <div class=" font-medium mb-3" style="font-size:3rem; color:#256029; font-family: 'Oswald', sans-serif;">¡Bienvenido a FitMeApp!</div>
                         <span class="text-900 font-medium">Inicia sesión para continuar</span>
                     </div>
                 
@@ -56,7 +54,6 @@ import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
 import axios from "axios";
-import Toast from 'primevue/toast';
 import moment from 'moment';
 
 export default {
@@ -65,7 +62,6 @@ export default {
     InputText,
     Password,
     Button,
-    Toast,
     },
     created() {
         if (this.loggedIn) {
