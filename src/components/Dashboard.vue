@@ -592,7 +592,7 @@
                     this.obtenerAlmuerzo();
                     this.obtenerCena();
                     this.obtenerPesos();
-
+                    this.kcalQuemadasPasos = 350/10000 * this.dia.pasosRealizados
                 });
             },
 
